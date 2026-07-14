@@ -17,7 +17,9 @@ const labels = {
 };
 
 const iranLabels = {
-  verified_working: "✅ تست‌شده",
+  verified_working: "✅ مستقیم تست‌شده",
+  verified_working_vpn: "🛡️ با VPN تست‌شده",
+  direct_blocked_vpn_working: "🛡️ مستقیم مسدود / VPN موفق",
   verified_blocked: "⛔ مسدود",
   officially_unsupported: "🚫 پشتیبانی‌نشده رسمی",
   intermittent: "⚠️ ناپایدار",

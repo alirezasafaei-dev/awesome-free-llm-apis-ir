@@ -4,12 +4,15 @@
   "title": "Sanitized Iran access test report",
   "type": "object",
   "additionalProperties": false,
-  "required": ["schema_version", "run_id", "run_at", "declared_country", "network", "results", "safety"],
+  "required": ["schema_version", "run_id", "run_at", "declared_country", "connection_route", "observed_exit_country", "vpn_provider", "network", "results", "safety"],
   "properties": {
     "schema_version": { "const": "1.0.0" },
     "run_id": { "type": "string" },
     "run_at": { "type": "string", "format": "date-time" },
     "declared_country": { "type": "string", "pattern": "^[A-Z]{2}$" },
+    "connection_route": { "enum": ["direct", "vpn"] },
+    "observed_exit_country": { "type": "string", "pattern": "^[A-Z]{2}$" },
+    "vpn_provider": { "type": ["string", "null"] },
     "network": {
       "type": "object",
       "additionalProperties": false,
@@ -51,4 +54,3 @@
     }
   }
 }
-

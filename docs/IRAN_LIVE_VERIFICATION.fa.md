@@ -1,6 +1,6 @@
 # اجرای تست واقعی از داخل ایران
 
-این تست باید روی اتصال واقعی ایران اجرا شود. VPN، Proxy، سرور خارجی و GitHub-hosted runner نتیجهٔ معتبر ایران تولید نمی‌کنند.
+این ابزار دو مسیر را جداگانه ثبت می‌کند: اتصال مستقیم ایران و اتصال از ایران با VPN. تست VPN معتبر است، اما هرگز جای تست مستقیم را نمی‌گیرد و باید با کشور خروجی جدا ثبت شود. GitHub-hosted runner نتیجهٔ محلی ایران تولید نمی‌کند.
 
 ## آماده‌سازی
 
@@ -14,6 +14,9 @@ cp .env.example .env
 
 ```dotenv
 IR_TEST_COUNTRY=IR
+IR_TEST_ROUTE=direct
+IR_TEST_EXIT_COUNTRY=IR
+IR_TEST_VPN_PROVIDER=
 IR_TEST_ISP=نام اپراتور
 IR_TEST_ASN=AS12345
 IR_TEST_CITY=
@@ -31,6 +34,16 @@ npm run verify:iran:dry
 npm run verify:iran -- --providers=openrouter,groq
 ```
 
+برای تست دوم با VPN، پس از ذخیرهٔ گزارش مستقیم، VPN مجاز خود را فعال و مسیر را دقیق ثبت کنید:
+
+```dotenv
+IR_TEST_ROUTE=vpn
+IR_TEST_EXIT_COUNTRY=DE
+IR_TEST_VPN_PROVIDER=نام عمومی سرویس
+```
+
+کشور خروجی باید مقدار مشاهده‌شده باشد. موفقیت VPN نباید وضعیت سیاست رسمی یا دسترسی مستقیم را بازنویسی کند.
+
 خروجی پاک‌سازی‌شده در `reports/local/` ذخیره می‌شود. این پوشه عمداً Gitignore است. گزارش خام را Commit نکنید؛ ابتدا نتیجه را بررسی و فقط خلاصهٔ لازم را در Issue یا PR وارد کنید.
 
 ## کنترل اعتبار کلید
@@ -40,4 +53,3 @@ npm run verify:iran -- --providers=openrouter,groq
 ## حریم خصوصی
 
 اسکریپت IP، کلید، Headerهای پاسخ، متن پاسخ یا پیام کامل خطا را ذخیره نمی‌کند. فقط کد HTTP، دستهٔ نتیجه، زمان پاسخ و Hash بدنه ثبت می‌شوند.
-
