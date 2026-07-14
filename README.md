@@ -4,11 +4,11 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Persian](https://img.shields.io/badge/lang-فارسی-239f40.svg)](README.md)
 [![English](https://img.shields.io/badge/lang-English-blue.svg)](README.en.md)
-[![Website](https://img.shields.io/badge/website-live-7c3aed.svg)](https://alirezasafaei-dev.github.io/awesome-free-llm-apis-ir/)
+[![Website](https://img.shields.io/badge/website-live-7c3aed.svg)](https://llm.persiantoolbox.ir/)
 
 فهرست آزاد، فارسی و ماشین‌خوان از APIهای رایگان مدل‌های زبانی؛ با تمرکز ویژه بر **محدودیت مصرف، توکن، نیاز به پرداخت، دسترسی مستقیم از ایران و دسترسی با VPN**.
 
-🌐 **[مشاهدهٔ وب‌سایت جست‌وجو و فیلتر APIها](https://alirezasafaei-dev.github.io/awesome-free-llm-apis-ir/)**
+🌐 **[وب‌سایت اصلی](https://llm.persiantoolbox.ir/)** · **[آینهٔ ایران](https://ir.llm.persiantoolbox.ir/)** · **[نسخهٔ پشتیبان GitHub Pages](https://alirezasafaei-dev.github.io/awesome-free-llm-apis-ir/)**
 
 > [!IMPORTANT]
 > «رایگان» بودن یک سرویس به معنی «قابل استفاده بودن از ایران» نیست. وضعیت ایران فقط با مدرک رسمی یا تست تاریخ‌دار ثبت می‌شود. `نامشخص` یعنی هنوز مدرک کافی نداریم، نه اینکه سرویس حتماً کار می‌کند.
@@ -118,7 +118,7 @@ npm run benchmark:run
 2. **راستی‌آزمایی ایران:** تست مستقیم و VPN روی چند ISP و ثبت شواهد پاک‌سازی‌شده
 3. **منابع ایرانی:** ممیزی APIهای بومی NLP، OCR و مدل‌های فارسی با همان استاندارد سخت‌گیرانه
 4. **کیفیت فارسی:** ✅ بنچمارک پایهٔ نسخه‌دار؛ مرحلهٔ بعد گسترش Dataset و اجرای مدل‌های بیشتر
-5. **وب‌سایت و جامعه:** ✅ جست‌وجو، فیلتر، هشدار دادهٔ قدیمی و استقرار خودکار Pages
+5. **وب‌سایت و جامعه:** ✅ جست‌وجو، فیلتر، هشدار دادهٔ قدیمی، Pages و انتشار دوگانهٔ VPS
 
 ## مشارکت
 

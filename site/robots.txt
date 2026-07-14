@@ -1,5 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://alirezasafaei-dev.github.io/awesome-free-llm-apis-ir/sitemap.xml
-
+Sitemap: https://llm.persiantoolbox.ir/sitemap.xml

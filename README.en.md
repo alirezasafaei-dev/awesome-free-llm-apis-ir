@@ -2,6 +2,8 @@
 
 A free, Persian-first, machine-readable catalog of free LLM APIs, focused on quotas, token limits, payment requirements, direct access from Iranian IP addresses, and separately verified VPN access.
 
+Website: [llm.persiantoolbox.ir](https://llm.persiantoolbox.ir/) · Iran mirror: [ir.llm.persiantoolbox.ir](https://ir.llm.persiantoolbox.ir/) · [GitHub Pages fallback](https://alirezasafaei-dev.github.io/awesome-free-llm-apis-ir/)
+
 > [!IMPORTANT]
 > A free tier does not imply availability in Iran. Direct and VPN results are never conflated: every VPN report records its route and exit country. `Unknown` means there is not enough evidence; it does not mean the service works.
 

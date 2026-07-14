@@ -1,0 +1,145 @@
+name: Deploy VPS mirrors
+
+on:
+  workflow_dispatch:
+    inputs:
+      target:
+        description: Deployment target
+        required: true
+        default: both
+        type: choice
+        options:
+          - both
+          - global
+          - iran
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-vps-${{ inputs.target }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm test
+      - run: npm run site:build
+        env:
+          SOURCE_REVISION: ${{ github.sha }}
+      - name: Package immutable release
+        run: tar -C .site-dist -czf site-release.tar.gz .
+      - uses: actions/upload-artifact@v4
+        with:
+          name: site-release-${{ github.sha }}
+          path: |
+            site-release.tar.gz
+            deploy/remote-release.sh
+            deploy/rollback-release.sh
+          if-no-files-found: error
+          retention-days: 7
+
+  deploy-global:
+    if: inputs.target == 'both' || inputs.target == 'global'
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: production-global
+      url: https://llm.persiantoolbox.ir/
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: site-release-${{ github.sha }}
+      - name: Configure pinned SSH identity
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SSH_KNOWN_HOSTS: ${{ secrets.SSH_KNOWN_HOSTS }}
+        run: |
+          test -n "$SSH_PRIVATE_KEY"
+          test -n "$SSH_KNOWN_HOSTS"
+          install -d -m 700 ~/.ssh
+          printf '%s\n' "$SSH_PRIVATE_KEY" > ~/.ssh/id_ed25519
+          printf '%s\n' "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
+          chmod 600 ~/.ssh/id_ed25519 ~/.ssh/known_hosts
+          ssh-keygen -y -f ~/.ssh/id_ed25519 >/dev/null
+      - name: Publish atomic release
+        id: release
+        run: |
+          SSH=(ssh -i ~/.ssh/id_ed25519 -p 22 -o BatchMode=yes -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes)
+          SCP=(scp -i ~/.ssh/id_ed25519 -P 22 -o BatchMode=yes -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes)
+          "${SCP[@]}" site-release.tar.gz asdev@91.107.153.223:/tmp/llm-site-${GITHUB_SHA}.tar.gz
+          "${SCP[@]}" deploy/remote-release.sh asdev@91.107.153.223:/tmp/llm-release-${GITHUB_SHA}.sh
+          "${SCP[@]}" deploy/rollback-release.sh asdev@91.107.153.223:/tmp/llm-rollback-${GITHUB_SHA}.sh
+          "${SSH[@]}" asdev@91.107.153.223 "bash /tmp/llm-release-${GITHUB_SHA}.sh /srv/awesome-free-llm-apis-ir /tmp/llm-site-${GITHUB_SHA}.tar.gz ${GITHUB_SHA}"
+      - name: Verify public revision
+        run: |
+          for attempt in $(seq 1 12); do
+            if curl --fail --silent --show-error --max-time 15 https://llm.persiantoolbox.ir/build-meta.json -o /tmp/build-meta.json && \
+              node -e 'const m=require("/tmp/build-meta.json"); if(m.source_revision!==process.env.GITHUB_SHA||m.provider_count<1) process.exit(1)'; then
+              exit 0
+            fi
+            sleep 5
+          done
+          exit 1
+      - name: Roll back failed publication
+        if: failure() && steps.release.outcome == 'success'
+        run: |
+          ssh -i ~/.ssh/id_ed25519 -p 22 -o BatchMode=yes -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes asdev@91.107.153.223 "bash /tmp/llm-rollback-${GITHUB_SHA}.sh /srv/awesome-free-llm-apis-ir" || true
+      - name: Remove local SSH material
+        if: always()
+        run: rm -f ~/.ssh/id_ed25519 ~/.ssh/known_hosts
+
+  deploy-iran:
+    if: inputs.target == 'both' || inputs.target == 'iran'
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: production-iran
+      url: https://ir.llm.persiantoolbox.ir/
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: site-release-${{ github.sha }}
+      - name: Configure pinned SSH identity
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SSH_KNOWN_HOSTS: ${{ secrets.SSH_KNOWN_HOSTS }}
+        run: |
+          test -n "$SSH_PRIVATE_KEY"
+          test -n "$SSH_KNOWN_HOSTS"
+          install -d -m 700 ~/.ssh
+          printf '%s\n' "$SSH_PRIVATE_KEY" > ~/.ssh/id_ed25519
+          printf '%s\n' "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
+          chmod 600 ~/.ssh/id_ed25519 ~/.ssh/known_hosts
+          ssh-keygen -y -f ~/.ssh/id_ed25519 >/dev/null
+      - name: Publish atomic release
+        id: release
+        run: |
+          SSH=(ssh -i ~/.ssh/id_ed25519 -p 22 -o BatchMode=yes -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes)
+          SCP=(scp -i ~/.ssh/id_ed25519 -P 22 -o BatchMode=yes -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes)
+          "${SCP[@]}" site-release.tar.gz ubuntu@193.93.169.32:/tmp/llm-site-${GITHUB_SHA}.tar.gz
+          "${SCP[@]}" deploy/remote-release.sh ubuntu@193.93.169.32:/tmp/llm-release-${GITHUB_SHA}.sh
+          "${SCP[@]}" deploy/rollback-release.sh ubuntu@193.93.169.32:/tmp/llm-rollback-${GITHUB_SHA}.sh
+          "${SSH[@]}" ubuntu@193.93.169.32 "bash /tmp/llm-release-${GITHUB_SHA}.sh /srv/awesome-free-llm-apis-ir /tmp/llm-site-${GITHUB_SHA}.tar.gz ${GITHUB_SHA}"
+      - name: Verify public revision
+        run: |
+          for attempt in $(seq 1 12); do
+            if curl --fail --silent --show-error --max-time 15 https://ir.llm.persiantoolbox.ir/build-meta.json -o /tmp/build-meta.json && \
+              node -e 'const m=require("/tmp/build-meta.json"); if(m.source_revision!==process.env.GITHUB_SHA||m.provider_count<1) process.exit(1)'; then
+              exit 0
+            fi
+            sleep 5
+          done
+          exit 1
+      - name: Roll back failed publication
+        if: failure() && steps.release.outcome == 'success'
+        run: |
+          ssh -i ~/.ssh/id_ed25519 -p 22 -o BatchMode=yes -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes ubuntu@193.93.169.32 "bash /tmp/llm-rollback-${GITHUB_SHA}.sh /srv/awesome-free-llm-apis-ir" || true
+      - name: Remove local SSH material
+        if: always()
+        run: rm -f ~/.ssh/id_ed25519 ~/.ssh/known_hosts
