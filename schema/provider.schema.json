@@ -69,6 +69,7 @@
               "daily_units": { "type": ["number", "null"], "minimum": 0 },
               "unit_name": { "type": ["string", "null"] },
               "monthly_credit_usd": { "type": ["number", "null"], "minimum": 0 },
+              "monthly_requests": { "type": ["number", "null"], "minimum": 0 },
               "notes_fa": { "type": ["string", "null"] }
             }
           }
@@ -141,4 +142,3 @@
     }
   }
 }
-

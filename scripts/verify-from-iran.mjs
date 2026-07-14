@@ -77,6 +77,38 @@ const providers = [
     validatedEnv: "CLOUDFLARE_CREDENTIAL_VALIDATED",
     requiredEnv: ["CLOUDFLARE_ACCOUNT_ID"],
     endpoint: () => `https://api.cloudflare.com/client/v4/accounts/${process.env.CLOUDFLARE_ACCOUNT_ID}/ai/v1/chat/completions`
+  },
+  {
+    id: "mistral",
+    keyEnv: "MISTRAL_API_KEY",
+    modelEnv: "MISTRAL_MODEL",
+    defaultModel: "mistral-small-latest",
+    validatedEnv: "MISTRAL_CREDENTIAL_VALIDATED",
+    endpoint: () => "https://api.mistral.ai/v1/chat/completions"
+  },
+  {
+    id: "sambanova",
+    keyEnv: "SAMBANOVA_API_KEY",
+    modelEnv: "SAMBANOVA_MODEL",
+    defaultModel: "gpt-oss-120b",
+    validatedEnv: "SAMBANOVA_CREDENTIAL_VALIDATED",
+    endpoint: () => "https://api.sambanova.ai/v1/chat/completions"
+  },
+  {
+    id: "cohere",
+    keyEnv: "COHERE_API_KEY",
+    modelEnv: "COHERE_MODEL",
+    defaultModel: "command-a-03-2025",
+    validatedEnv: "COHERE_CREDENTIAL_VALIDATED",
+    endpoint: () => "https://api.cohere.com/v2/chat"
+  },
+  {
+    id: "nvidia-nim",
+    keyEnv: "NVIDIA_API_KEY",
+    modelEnv: "NVIDIA_MODEL",
+    defaultModel: "meta/llama-3.1-8b-instruct",
+    validatedEnv: "NVIDIA_CREDENTIAL_VALIDATED",
+    endpoint: () => "https://integrate.api.nvidia.com/v1/chat/completions"
   }
 ];
 
@@ -202,4 +234,3 @@ if (!results.some((result) => result.tested)) {
   console.error("No provider was tested. Add credentials to .env.");
   process.exit(2);
 }
-

@@ -1,0 +1,47 @@
+{
+  "schema_version": "1.0.0",
+  "id": "mistral",
+  "name": "Mistral AI",
+  "website": "https://mistral.ai/",
+  "docs": "https://docs.mistral.ai/getting-started/quickstarts/studio/activate-and-generate-api-key",
+  "signup": "https://console.mistral.ai/",
+  "api": {
+    "base_url": "https://api.mistral.ai/v1",
+    "openai_compatible": true,
+    "auth": "api_key"
+  },
+  "capabilities": ["chat", "text_generation", "reasoning", "embeddings", "tool_calling", "structured_output"],
+  "free_tier": {
+    "status": "active",
+    "type": "permanent_allowance",
+    "requires_payment_method": false,
+    "limits": [],
+    "notes_fa": "Free mode بدون کارت بانکی API Key می‌دهد. محدودیت دقیق حساب و مدل در صفحه Limits کنسول نمایش داده می‌شود."
+  },
+  "iran_access": {
+    "status": "unknown",
+    "official_policy": "not_documented",
+    "tested_from_iran": false,
+    "tested_at": null,
+    "test_method": "not_tested",
+    "network": null,
+    "evidence": []
+  },
+  "models": {
+    "dynamic": true,
+    "source": "https://docs.mistral.ai/models/overview",
+    "notable": ["mistral-small-latest"]
+  },
+  "verification": {
+    "level": "docs_verified",
+    "last_checked": "2026-07-14",
+    "checked_by": "maintainers",
+    "stale_after_days": 30
+  },
+  "notes_fa": "Free mode برای مصرف محدود و آزمایش است؛ عدد سهمیه عمومی و ثابت در مستندات نمایش داده نشده است.",
+  "sources": [
+    "https://docs.mistral.ai/getting-started/quickstarts/studio/activate-and-generate-api-key",
+    "https://docs.mistral.ai/admin/billing-usage/usage-limits"
+  ]
+}
+

@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0.0",
   "last_updated": "2026-07-14",
-  "provider_count": 7,
+  "provider_count": 11,
   "providers": [
     {
       "schema_version": "1.0.0",
@@ -149,6 +149,70 @@
       "sources": [
         "https://developers.cloudflare.com/workers-ai/platform/pricing/",
         "https://developers.cloudflare.com/workers-ai/platform/limits/"
+      ]
+    },
+    {
+      "schema_version": "1.0.0",
+      "id": "cohere",
+      "name": "Cohere",
+      "website": "https://cohere.com/",
+      "docs": "https://docs.cohere.com/docs/rate-limits",
+      "signup": "https://dashboard.cohere.com/welcome/register",
+      "api": {
+        "base_url": "https://api.cohere.com/v2",
+        "openai_compatible": false,
+        "auth": "api_key"
+      },
+      "capabilities": [
+        "chat",
+        "text_generation",
+        "reasoning",
+        "embeddings",
+        "tool_calling",
+        "structured_output"
+      ],
+      "free_tier": {
+        "status": "trial",
+        "type": "trial",
+        "requires_payment_method": false,
+        "limits": [
+          {
+            "scope": "trial key chat models",
+            "model": null,
+            "condition": "evaluation/non-production key",
+            "rpm": 20,
+            "monthly_requests": 1000,
+            "notes_fa": "برخی Endpointها محدودیت دقیقه‌ای متفاوت دارند."
+          }
+        ],
+        "notes_fa": "کلید Trial رایگان و محدود به ارزیابی است؛ سقف کلی ۱۰۰۰ فراخوانی در ماه اعلام شده است."
+      },
+      "iran_access": {
+        "status": "unknown",
+        "official_policy": "not_documented",
+        "tested_from_iran": false,
+        "tested_at": null,
+        "test_method": "not_tested",
+        "network": null,
+        "evidence": []
+      },
+      "models": {
+        "dynamic": true,
+        "source": "https://docs.cohere.com/docs/models",
+        "notable": [
+          "command-a-03-2025"
+        ]
+      },
+      "verification": {
+        "level": "docs_verified",
+        "last_checked": "2026-07-14",
+        "checked_by": "maintainers",
+        "stale_after_days": 30
+      },
+      "notes_fa": "Trial برای Production در نظر گرفته نشده و باید جدا از Free Tier دائمی نمایش داده شود.",
+      "sources": [
+        "https://docs.cohere.com/docs/rate-limits",
+        "https://docs.cohere.com/docs/how-does-cohere-pricing-work"
       ]
     },
     {
@@ -448,6 +512,114 @@
     },
     {
       "schema_version": "1.0.0",
+      "id": "mistral",
+      "name": "Mistral AI",
+      "website": "https://mistral.ai/",
+      "docs": "https://docs.mistral.ai/getting-started/quickstarts/studio/activate-and-generate-api-key",
+      "signup": "https://console.mistral.ai/",
+      "api": {
+        "base_url": "https://api.mistral.ai/v1",
+        "openai_compatible": true,
+        "auth": "api_key"
+      },
+      "capabilities": [
+        "chat",
+        "text_generation",
+        "reasoning",
+        "embeddings",
+        "tool_calling",
+        "structured_output"
+      ],
+      "free_tier": {
+        "status": "active",
+        "type": "permanent_allowance",
+        "requires_payment_method": false,
+        "limits": [],
+        "notes_fa": "Free mode بدون کارت بانکی API Key می‌دهد. محدودیت دقیق حساب و مدل در صفحه Limits کنسول نمایش داده می‌شود."
+      },
+      "iran_access": {
+        "status": "unknown",
+        "official_policy": "not_documented",
+        "tested_from_iran": false,
+        "tested_at": null,
+        "test_method": "not_tested",
+        "network": null,
+        "evidence": []
+      },
+      "models": {
+        "dynamic": true,
+        "source": "https://docs.mistral.ai/models/overview",
+        "notable": [
+          "mistral-small-latest"
+        ]
+      },
+      "verification": {
+        "level": "docs_verified",
+        "last_checked": "2026-07-14",
+        "checked_by": "maintainers",
+        "stale_after_days": 30
+      },
+      "notes_fa": "Free mode برای مصرف محدود و آزمایش است؛ عدد سهمیه عمومی و ثابت در مستندات نمایش داده نشده است.",
+      "sources": [
+        "https://docs.mistral.ai/getting-started/quickstarts/studio/activate-and-generate-api-key",
+        "https://docs.mistral.ai/admin/billing-usage/usage-limits"
+      ]
+    },
+    {
+      "schema_version": "1.0.0",
+      "id": "nvidia-nim",
+      "name": "NVIDIA NIM API Catalog",
+      "website": "https://build.nvidia.com/",
+      "docs": "https://docs.api.nvidia.com/nim/docs/product",
+      "signup": "https://developer.nvidia.com/login",
+      "api": {
+        "base_url": "https://integrate.api.nvidia.com/v1",
+        "openai_compatible": true,
+        "auth": "api_key"
+      },
+      "capabilities": [
+        "chat",
+        "text_generation",
+        "reasoning",
+        "embeddings",
+        "tool_calling",
+        "structured_output"
+      ],
+      "free_tier": {
+        "status": "limited",
+        "type": "permanent_allowance",
+        "requires_payment_method": false,
+        "limits": [],
+        "notes_fa": "اعضای رایگان NVIDIA Developer Program برای Prototype، تحقیق، توسعه و آزمایش به Endpointهای میزبانی‌شده دسترسی دارند؛ استفاده Production نیازمند مجوز تجاری است."
+      },
+      "iran_access": {
+        "status": "unknown",
+        "official_policy": "not_documented",
+        "tested_from_iran": false,
+        "tested_at": null,
+        "test_method": "not_tested",
+        "network": null,
+        "evidence": []
+      },
+      "models": {
+        "dynamic": true,
+        "source": "https://build.nvidia.com/explore/discover",
+        "notable": []
+      },
+      "verification": {
+        "level": "docs_verified",
+        "last_checked": "2026-07-14",
+        "checked_by": "maintainers",
+        "stale_after_days": 30
+      },
+      "notes_fa": "این دسترسی برای Production رایگان نیست و سقف عددی ثابت عمومی در منبع بررسی‌شده اعلام نشده است.",
+      "sources": [
+        "https://docs.api.nvidia.com/nim/docs/product",
+        "https://build.nvidia.com/explore/discover"
+      ]
+    },
+    {
+      "schema_version": "1.0.0",
       "id": "openrouter",
       "name": "OpenRouter",
       "website": "https://openrouter.ai/",
@@ -513,6 +685,91 @@
       "sources": [
         "https://openrouter.ai/docs/api/reference/limits",
         "https://openrouter.ai/docs/guides/routing/model-variants/free"
+      ]
+    },
+    {
+      "schema_version": "1.0.0",
+      "id": "sambanova",
+      "name": "SambaNova Cloud",
+      "website": "https://cloud.sambanova.ai/",
+      "docs": "https://docs.sambanova.ai/docs/en/developer-guide/quickstart",
+      "signup": "https://cloud.sambanova.ai/",
+      "api": {
+        "base_url": "https://api.sambanova.ai/v1",
+        "openai_compatible": true,
+        "auth": "api_key"
+      },
+      "capabilities": [
+        "chat",
+        "text_generation",
+        "reasoning",
+        "embeddings",
+        "tool_calling",
+        "structured_output"
+      ],
+      "free_tier": {
+        "status": "active",
+        "type": "permanent_allowance",
+        "requires_payment_method": false,
+        "limits": [
+          {
+            "scope": "free tier model",
+            "model": "DeepSeek-V3.1",
+            "condition": "no payment method linked",
+            "rpm": 20,
+            "rpd": 20,
+            "tpd": 200000,
+            "notes_fa": null
+          },
+          {
+            "scope": "free tier model",
+            "model": "Meta-Llama-3.3-70B-Instruct",
+            "condition": "no payment method linked",
+            "rpm": 20,
+            "rpd": 20,
+            "tpd": 200000,
+            "notes_fa": null
+          },
+          {
+            "scope": "free tier model",
+            "model": "gpt-oss-120b",
+            "condition": "no payment method linked",
+            "rpm": 20,
+            "rpd": 20,
+            "tpd": 200000,
+            "notes_fa": null
+          }
+        ],
+        "notes_fa": "Free Tier وقتی اعمال می‌شود که روش پرداخت به حساب متصل نباشد. محدودیت‌های Preview جدا و قابل تغییرند."
+      },
+      "iran_access": {
+        "status": "unknown",
+        "official_policy": "not_documented",
+        "tested_from_iran": false,
+        "tested_at": null,
+        "test_method": "not_tested",
+        "network": null,
+        "evidence": []
+      },
+      "models": {
+        "dynamic": true,
+        "source": "https://docs.sambanova.ai/docs/en/models/sambacloud-models",
+        "notable": [
+          "DeepSeek-V3.1",
+          "Meta-Llama-3.3-70B-Instruct",
+          "gpt-oss-120b"
+        ]
+      },
+      "verification": {
+        "level": "docs_verified",
+        "last_checked": "2026-07-14",
+        "checked_by": "maintainers",
+        "stale_after_days": 30
+      },
+      "notes_fa": "وضعیت ثبت‌نام و API از ایران هنوز تست نشده است.",
+      "sources": [
+        "https://docs.sambanova.ai/docs/en/models/rate-limits",
+        "https://docs.sambanova.ai/docs/en/features/openai-compatibility"
       ]
     }
   ]

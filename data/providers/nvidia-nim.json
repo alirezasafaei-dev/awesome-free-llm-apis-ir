@@ -1,0 +1,44 @@
+{
+  "schema_version": "1.0.0",
+  "id": "nvidia-nim",
+  "name": "NVIDIA NIM API Catalog",
+  "website": "https://build.nvidia.com/",
+  "docs": "https://docs.api.nvidia.com/nim/docs/product",
+  "signup": "https://developer.nvidia.com/login",
+  "api": {
+    "base_url": "https://integrate.api.nvidia.com/v1",
+    "openai_compatible": true,
+    "auth": "api_key"
+  },
+  "capabilities": ["chat", "text_generation", "reasoning", "embeddings", "tool_calling", "structured_output"],
+  "free_tier": {
+    "status": "limited",
+    "type": "permanent_allowance",
+    "requires_payment_method": false,
+    "limits": [],
+    "notes_fa": "اعضای رایگان NVIDIA Developer Program برای Prototype، تحقیق، توسعه و آزمایش به Endpointهای میزبانی‌شده دسترسی دارند؛ استفاده Production نیازمند مجوز تجاری است."
+  },
+  "iran_access": {
+    "status": "unknown",
+    "official_policy": "not_documented",
+    "tested_from_iran": false,
+    "tested_at": null,
+    "test_method": "not_tested",
+    "network": null,
+    "evidence": []
+  },
+  "models": {
+    "dynamic": true,
+    "source": "https://build.nvidia.com/explore/discover",
+    "notable": []
+  },
+  "verification": {
+    "level": "docs_verified",
+    "last_checked": "2026-07-14",
+    "checked_by": "maintainers",
+    "stale_after_days": 30
+  },
+  "notes_fa": "این دسترسی برای Production رایگان نیست و سقف عددی ثابت عمومی در منبع بررسی‌شده اعلام نشده است.",
+  "sources": ["https://docs.api.nvidia.com/nim/docs/product", "https://build.nvidia.com/explore/discover"]
+}
+
