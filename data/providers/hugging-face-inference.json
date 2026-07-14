@@ -1,0 +1,46 @@
+{
+  "schema_version": "1.0.0",
+  "id": "hugging-face-inference",
+  "name": "Hugging Face Inference Providers",
+  "website": "https://huggingface.co/inference-providers",
+  "docs": "https://huggingface.co/docs/inference-providers/",
+  "signup": "https://huggingface.co/join",
+  "api": {
+    "base_url": "https://router.huggingface.co/v1",
+    "openai_compatible": true,
+    "auth": "token"
+  },
+  "capabilities": ["chat", "text_generation", "reasoning", "embeddings", "tool_calling", "structured_output"],
+  "free_tier": {
+    "status": "limited",
+    "type": "monthly_credit",
+    "requires_payment_method": false,
+    "limits": [
+      { "scope": "free user", "model": null, "condition": "monthly reset; subject to change", "monthly_credit_usd": 0.1, "notes_fa": "مقدار قابل استفاده به قیمت ارائه‌دهنده و مدل انتخابی وابسته است." }
+    ],
+    "notes_fa": "کاربر رایگان در حال حاضر ماهانه ۰٫۱۰ دلار اعتبار Inference Providers دریافت می‌کند."
+  },
+  "iran_access": {
+    "status": "unknown",
+    "official_policy": "not_documented",
+    "tested_from_iran": false,
+    "tested_at": null,
+    "test_method": "not_tested",
+    "network": null,
+    "evidence": []
+  },
+  "models": {
+    "dynamic": true,
+    "source": "https://huggingface.co/models?inference_provider=all&pipeline_tag=text-generation",
+    "notable": []
+  },
+  "verification": {
+    "level": "docs_verified",
+    "last_checked": "2026-07-14",
+    "checked_by": "maintainers",
+    "stale_after_days": 30
+  },
+  "notes_fa": "این سهمیه اعتبار دلاری است، نه تعداد ثابت درخواست یا توکن.",
+  "sources": ["https://huggingface.co/docs/inference-providers/en/pricing", "https://huggingface.co/docs/inference-providers/en/index"]
+}
+

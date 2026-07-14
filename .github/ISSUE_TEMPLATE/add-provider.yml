@@ -1,0 +1,61 @@
+name: Add a provider
+description: پیشنهاد افزودن یک API رایگان LLM
+title: "[Provider]: "
+labels: ["provider", "needs-verification"]
+body:
+  - type: input
+    id: name
+    attributes:
+      label: نام سرویس
+    validations:
+      required: true
+  - type: input
+    id: docs
+    attributes:
+      label: لینک مستندات رسمی API
+    validations:
+      required: true
+  - type: input
+    id: limits
+    attributes:
+      label: لینک رسمی سهمیه رایگان و Rate Limit
+    validations:
+      required: true
+  - type: dropdown
+    id: free_type
+    attributes:
+      label: نوع دسترسی رایگان
+      options:
+        - سهمیه دائمی
+        - مدل‌های رایگان
+        - اعتبار ماهانه
+        - Trial
+        - نامشخص
+    validations:
+      required: true
+  - type: dropdown
+    id: iran
+    attributes:
+      label: آیا با IP ایران تست شده است؟
+      options:
+        - خیر / نامشخص
+        - بله، موفق
+        - بله، ناموفق
+        - فقط ثبت‌نام تست شده
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: جزئیات و مدرک
+      description: تاریخ، ISP/ASN، کد وضعیت و مرحله تست را بدون IP کامل، کلید یا اطلاعات حساب بنویسید.
+    validations:
+      required: true
+  - type: checkboxes
+    id: privacy
+    attributes:
+      label: تأیید حریم خصوصی
+      options:
+        - label: هیچ کلید API، توکن، IP کامل یا اطلاعات شخصی در گزارش نیست.
+          required: true
+

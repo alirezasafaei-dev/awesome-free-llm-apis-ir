@@ -1,0 +1,19 @@
+{
+  "name": "awesome-free-llm-apis-ir",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Verified, machine-readable catalog of free LLM APIs for Persian speakers and users in Iran.",
+  "scripts": {
+    "validate": "node scripts/validate.mjs",
+    "generate": "node scripts/generate-readme.mjs",
+    "generate:check": "node scripts/generate-readme.mjs --check",
+    "check:links": "node scripts/check-links.mjs",
+    "test": "npm run validate && npm run generate:check"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "license": "MIT"
+}
+

@@ -1,0 +1,46 @@
+{
+  "schema_version": "1.0.0",
+  "id": "cloudflare-workers-ai",
+  "name": "Cloudflare Workers AI",
+  "website": "https://developers.cloudflare.com/workers-ai/",
+  "docs": "https://developers.cloudflare.com/workers-ai/get-started/rest-api/",
+  "signup": "https://dash.cloudflare.com/sign-up",
+  "api": {
+    "base_url": "https://api.cloudflare.com/client/v4/accounts/{account_id}/ai/run",
+    "openai_compatible": true,
+    "auth": "account_id_and_token"
+  },
+  "capabilities": ["chat", "text_generation", "embeddings", "tool_calling", "structured_output"],
+  "free_tier": {
+    "status": "active",
+    "type": "permanent_allowance",
+    "requires_payment_method": false,
+    "limits": [
+      { "scope": "account", "model": null, "condition": "Workers Free or Paid", "daily_units": 10000, "unit_name": "neurons", "notes_fa": "مصرف واقعی هر درخواست به مدل و تعداد توکن وابسته است." }
+    ],
+    "notes_fa": "۱۰٬۰۰۰ Neuron در روز رایگان است؛ برای مصرف بیشتر باید Workers Paid فعال شود."
+  },
+  "iran_access": {
+    "status": "unknown",
+    "official_policy": "not_documented",
+    "tested_from_iran": false,
+    "tested_at": null,
+    "test_method": "not_tested",
+    "network": null,
+    "evidence": []
+  },
+  "models": {
+    "dynamic": true,
+    "source": "https://developers.cloudflare.com/workers-ai/models/",
+    "notable": []
+  },
+  "verification": {
+    "level": "docs_verified",
+    "last_checked": "2026-07-14",
+    "checked_by": "maintainers",
+    "stale_after_days": 30
+  },
+  "notes_fa": "API پایه شامل account_id است و برای نمایش در URL به صورت placeholder نگهداری شده است.",
+  "sources": ["https://developers.cloudflare.com/workers-ai/platform/pricing/", "https://developers.cloudflare.com/workers-ai/platform/limits/"]
+}
+

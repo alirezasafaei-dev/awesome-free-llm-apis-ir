@@ -1,0 +1,48 @@
+{
+  "schema_version": "1.0.0",
+  "id": "github-models",
+  "name": "GitHub Models",
+  "website": "https://github.com/marketplace/models",
+  "docs": "https://docs.github.com/github-models/prototyping-with-ai-models",
+  "signup": "https://github.com/signup",
+  "api": {
+    "base_url": "https://models.github.ai/inference",
+    "openai_compatible": true,
+    "auth": "token"
+  },
+  "capabilities": ["chat", "text_generation", "reasoning", "embeddings", "tool_calling", "structured_output"],
+  "free_tier": {
+    "status": "active",
+    "type": "permanent_allowance",
+    "requires_payment_method": false,
+    "limits": [
+      { "scope": "low models / Copilot Free", "model": null, "condition": "free API preview", "rpm": 15, "rpd": 150, "input_tokens": 8000, "output_tokens": 4000, "concurrent_requests": 5, "notes_fa": null },
+      { "scope": "high models / Copilot Free", "model": null, "condition": "free API preview", "rpm": 10, "rpd": 50, "input_tokens": 8000, "output_tokens": 4000, "concurrent_requests": 2, "notes_fa": null },
+      { "scope": "embedding models / Copilot Free", "model": null, "condition": "free API preview", "rpm": 15, "rpd": 150, "input_tokens": 64000, "output_tokens": null, "concurrent_requests": 5, "notes_fa": null }
+    ],
+    "notes_fa": "استفادهٔ رایگان API در Public Preview است؛ بعضی مدل‌ها محدودیت اختصاصی پایین‌تری دارند."
+  },
+  "iran_access": {
+    "status": "unknown",
+    "official_policy": "not_documented",
+    "tested_from_iran": false,
+    "tested_at": null,
+    "test_method": "not_tested",
+    "network": null,
+    "evidence": []
+  },
+  "models": {
+    "dynamic": true,
+    "source": "https://github.com/marketplace/models",
+    "notable": []
+  },
+  "verification": {
+    "level": "docs_verified",
+    "last_checked": "2026-07-14",
+    "checked_by": "maintainers",
+    "stale_after_days": 30
+  },
+  "notes_fa": "برای API به توکن GitHub با مجوز models:read نیاز است.",
+  "sources": ["https://docs.github.com/github-models/prototyping-with-ai-models", "https://docs.github.com/billing/managing-billing-for-your-products/about-billing-for-github-models"]
+}
+

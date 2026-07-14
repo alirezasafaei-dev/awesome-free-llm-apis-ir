@@ -1,0 +1,51 @@
+{
+  "schema_version": "1.0.0",
+  "id": "google-gemini",
+  "name": "Google Gemini API",
+  "website": "https://ai.google.dev/",
+  "docs": "https://ai.google.dev/gemini-api/docs",
+  "signup": "https://aistudio.google.com/",
+  "api": {
+    "base_url": "https://generativelanguage.googleapis.com/v1beta",
+    "openai_compatible": true,
+    "auth": "api_key"
+  },
+  "capabilities": ["chat", "text_generation", "reasoning", "embeddings", "tool_calling", "structured_output"],
+  "free_tier": {
+    "status": "active",
+    "type": "permanent_allowance",
+    "requires_payment_method": false,
+    "limits": [],
+    "notes_fa": "Free Tier وجود دارد، اما محدودیت دقیق به مدل و وضعیت حساب وابسته است و در AI Studio نمایش داده می‌شود."
+  },
+  "iran_access": {
+    "status": "officially_unsupported",
+    "official_policy": "unsupported",
+    "tested_from_iran": false,
+    "tested_at": null,
+    "test_method": "official_docs",
+    "network": null,
+    "evidence": [
+      {
+        "type": "official_docs",
+        "url": "https://ai.google.dev/gemini-api/docs/available-regions",
+        "checked_at": "2026-07-14",
+        "notes_fa": "ایران در فهرست رسمی مناطق قابل استفادهٔ Google AI Studio و Gemini API قرار ندارد."
+      }
+    ]
+  },
+  "models": {
+    "dynamic": true,
+    "source": "https://ai.google.dev/gemini-api/docs/models",
+    "notable": []
+  },
+  "verification": {
+    "level": "docs_verified",
+    "last_checked": "2026-07-14",
+    "checked_by": "maintainers",
+    "stale_after_days": 30
+  },
+  "notes_fa": "به دلیل وضعیت رسمی منطقه‌ای، در گروه گزینه‌های قابل استفادهٔ مستقیم از ایران قرار نمی‌گیرد.",
+  "sources": ["https://ai.google.dev/gemini-api/docs/rate-limits", "https://ai.google.dev/gemini-api/docs/available-regions"]
+}
+
