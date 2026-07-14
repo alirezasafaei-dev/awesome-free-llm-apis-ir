@@ -57,6 +57,18 @@ cd awesome-free-llm-apis-ir
 npm test
 ```
 
+## تست واقعی از ایران
+
+ابزار داخلی پروژه با مصرف حداقلی، نتیجهٔ درخواست‌ها را بدون ذخیرهٔ IP، کلید یا متن پاسخ ثبت می‌کند:
+
+```bash
+cp .env.example .env
+npm run verify:iran:dry
+npm run verify:iran -- --providers=openrouter,groq
+```
+
+پیش از اجرا [راهنمای تست زندهٔ ایران](docs/IRAN_LIVE_VERIFICATION.fa.md) را بخوانید. برای اجرای کامل روی کامپیوتر دارای IP ایران، [پرامپت اجرایی ایجنت محلی](docs/LOCAL_AGENT_EXECUTION_PROMPT.fa.md) آماده شده است.
+
 ## مشارکت
 
 - برای افزودن سرویس از فرم **Add a provider** استفاده کنید.
@@ -73,4 +85,3 @@ npm test
 ## مجوز
 
 کد و محتوای این مخزن تحت [MIT License](LICENSE) منتشر شده‌اند.
-

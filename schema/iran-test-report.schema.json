@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir/schema/iran-test-report.schema.json",
+  "title": "Sanitized Iran access test report",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "run_id", "run_at", "declared_country", "network", "results", "safety"],
+  "properties": {
+    "schema_version": { "const": "1.0.0" },
+    "run_id": { "type": "string" },
+    "run_at": { "type": "string", "format": "date-time" },
+    "declared_country": { "type": "string", "pattern": "^[A-Z]{2}$" },
+    "network": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["isp", "asn", "city"],
+      "properties": {
+        "isp": { "type": ["string", "null"] },
+        "asn": { "type": ["string", "null"] },
+        "city": { "type": ["string", "null"] }
+      }
+    },
+    "results": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["provider_id", "model", "tested", "credential_validated_elsewhere", "outcome", "http_status", "latency_ms", "response_fingerprint", "publishable_claim"],
+        "properties": {
+          "provider_id": { "type": "string" },
+          "model": { "type": "string" },
+          "tested": { "type": "boolean" },
+          "credential_validated_elsewhere": { "type": "boolean" },
+          "outcome": { "enum": ["success", "geo_blocked", "auth_failed", "policy_denied", "rate_limited", "provider_error", "network_error", "invalid_response", "skipped"] },
+          "http_status": { "type": ["integer", "null"] },
+          "latency_ms": { "type": ["integer", "null"] },
+          "response_fingerprint": { "type": ["string", "null"] },
+          "publishable_claim": { "type": "boolean" }
+        }
+      }
+    },
+    "safety": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["raw_ip_stored", "credentials_stored", "response_bodies_stored"],
+      "properties": {
+        "raw_ip_stored": { "const": false },
+        "credentials_stored": { "const": false },
+        "response_bodies_stored": { "const": false }
+      }
+    }
+  }
+}
+

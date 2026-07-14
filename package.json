@@ -9,7 +9,9 @@
     "generate": "node scripts/generate-readme.mjs",
     "generate:check": "node scripts/generate-readme.mjs --check",
     "check:links": "node scripts/check-links.mjs",
-    "test": "npm run validate && npm run generate:check"
+    "verify:iran": "node scripts/verify-from-iran.mjs",
+    "verify:iran:dry": "node scripts/verify-from-iran.mjs --dry-run",
+    "test": "npm run validate && npm run generate:check && npm run verify:iran:dry"
   },
   "engines": {
     "node": ">=20"
