@@ -8,7 +8,7 @@ const allowed = {
   capabilities: new Set(["chat", "text_generation", "reasoning", "embeddings", "tool_calling", "structured_output"]),
   freeStatus: new Set(["active", "limited", "trial", "none", "unknown"]),
   freeType: new Set(["permanent_allowance", "free_models", "monthly_credit", "trial", "unknown"]),
-  iranStatus: new Set(["verified_working", "verified_blocked", "officially_unsupported", "intermittent", "signup_blocked", "unknown"]),
+  iranStatus: new Set(["verified_working", "verified_working_vpn", "direct_blocked_vpn_working", "verified_blocked", "officially_unsupported", "intermittent", "signup_blocked", "unknown"]),
   officialPolicy: new Set(["supported", "unsupported", "not_documented", "unknown"]),
   verification: new Set(["docs_verified", "live_verified", "community_report", "unverified"])
 };
@@ -68,7 +68,8 @@ function validateProvider(p, file) {
 
   if (!allowed.iranStatus.has(p.iran_access?.status)) fail(file, "invalid iran_access.status");
   if (!allowed.officialPolicy.has(p.iran_access?.official_policy)) fail(file, "invalid iran_access.official_policy");
-  const claimsLiveResult = ["verified_working", "verified_blocked", "intermittent"].includes(p.iran_access?.status);
+  const claimsLiveResult = ["verified_working", "verified_working_vpn", "direct_blocked_vpn_working", "verified_blocked", "intermittent"].includes(p.iran_access?.status);
+  const claimsVpnResult = ["verified_working_vpn", "direct_blocked_vpn_working"].includes(p.iran_access?.status);
   if (claimsLiveResult && !p.iran_access?.tested_from_iran) fail(file, "verified Iran status requires tested_from_iran=true");
   if (p.iran_access?.tested_from_iran && !validDate(p.iran_access?.tested_at ?? "")) fail(file, "Iran test requires tested_at date");
   if (p.iran_access?.status === "officially_unsupported" && p.iran_access?.official_policy !== "unsupported") {
@@ -77,6 +78,8 @@ function validateProvider(p, file) {
   if (claimsLiveResult && !(p.iran_access?.evidence ?? []).some((e) => ["live_test", "community_report"].includes(e.type))) {
     fail(file, "verified Iran status requires live/community evidence");
   }
+  if (claimsVpnResult && p.iran_access?.network?.route !== "vpn") fail(file, "VPN status requires network.route=vpn");
+  if (claimsVpnResult && !p.iran_access?.network?.exit_country) fail(file, "VPN status requires network.exit_country");
 
   if (!allowed.verification.has(p.verification?.level)) fail(file, "invalid verification.level");
   if (!validDate(p.verification?.last_checked ?? "")) fail(file, "invalid verification.last_checked");
@@ -108,4 +111,3 @@ for (const message of errors) console.error(`ERROR ${message}`);
 
 if (errors.length) process.exit(1);
 console.log(`Validated ${files.length} provider files with ${warnings.length} warning(s).`);
-

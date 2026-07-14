@@ -82,7 +82,7 @@
       "additionalProperties": false,
       "required": ["status", "official_policy", "tested_from_iran", "tested_at", "test_method", "network", "evidence"],
       "properties": {
-        "status": { "enum": ["verified_working", "verified_blocked", "officially_unsupported", "intermittent", "signup_blocked", "unknown"] },
+        "status": { "enum": ["verified_working", "verified_working_vpn", "direct_blocked_vpn_working", "verified_blocked", "officially_unsupported", "intermittent", "signup_blocked", "unknown"] },
         "official_policy": { "enum": ["supported", "unsupported", "not_documented", "unknown"] },
         "tested_from_iran": { "type": "boolean" },
         "tested_at": { "type": ["string", "null"], "format": "date" },
@@ -93,7 +93,10 @@
           "properties": {
             "isp": { "type": ["string", "null"] },
             "asn": { "type": ["string", "null"] },
-            "city": { "type": ["string", "null"] }
+            "city": { "type": ["string", "null"] },
+            "route": { "enum": ["direct", "vpn"] },
+            "exit_country": { "type": ["string", "null"], "pattern": "^[A-Z]{2}$" },
+            "vpn_provider": { "type": ["string", "null"] }
           }
         },
         "evidence": {

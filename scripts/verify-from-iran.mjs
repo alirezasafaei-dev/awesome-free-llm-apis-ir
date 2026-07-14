@@ -140,6 +140,12 @@ if (dryRun) {
 
 const declaredCountry = (process.env.IR_TEST_COUNTRY ?? "").toUpperCase();
 if (!/^[A-Z]{2}$/.test(declaredCountry)) throw new Error("Set IR_TEST_COUNTRY to a two-letter country code; use IR only when actually testing from Iran.");
+const connectionRoute = (process.env.IR_TEST_ROUTE ?? "direct").toLowerCase();
+if (!new Set(["direct", "vpn"]).has(connectionRoute)) throw new Error("IR_TEST_ROUTE must be direct or vpn.");
+const observedExitCountry = (process.env.IR_TEST_EXIT_COUNTRY ?? "").toUpperCase();
+if (!/^[A-Z]{2}$/.test(observedExitCountry)) throw new Error("Set IR_TEST_EXIT_COUNTRY to the observed two-letter exit country.");
+if (connectionRoute === "direct" && observedExitCountry !== declaredCountry) throw new Error("Direct tests require IR_TEST_EXIT_COUNTRY to match IR_TEST_COUNTRY.");
+if (connectionRoute === "vpn" && !nullable(process.env.IR_TEST_VPN_PROVIDER)) throw new Error("VPN tests require IR_TEST_VPN_PROVIDER without account details.");
 
 function classify(status, bodyText) {
   const locationWords = /country|region|location|territor|geograph|unsupported.*(country|region)|not available in your/i;
@@ -176,7 +182,10 @@ async function testProvider(provider) {
     });
     const bodyText = await response.text();
     const outcome = classify(response.status, bodyText);
-    const publishable = declaredCountry === "IR" && (outcome === "success" || (outcome === "geo_blocked" && credentialValidated));
+    const routeIsValid = connectionRoute === "direct"
+      ? declaredCountry === "IR" && observedExitCountry === "IR"
+      : declaredCountry === "IR" && observedExitCountry !== "IR";
+    const publishable = routeIsValid && (outcome === "success" || (outcome === "geo_blocked" && credentialValidated));
     return {
       provider_id: provider.id,
       model,
@@ -215,6 +224,9 @@ const report = {
   run_id: randomUUID(),
   run_at: new Date().toISOString(),
   declared_country: declaredCountry,
+  connection_route: connectionRoute,
+  observed_exit_country: observedExitCountry,
+  vpn_provider: connectionRoute === "vpn" ? nullable(process.env.IR_TEST_VPN_PROVIDER) : null,
   network: {
     isp: nullable(process.env.IR_TEST_ISP),
     asn: nullable(process.env.IR_TEST_ASN),

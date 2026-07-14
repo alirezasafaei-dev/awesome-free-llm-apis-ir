@@ -39,8 +39,10 @@ body:
       label: آیا با IP ایران تست شده است؟
       options:
         - خیر / نامشخص
-        - بله، موفق
-        - بله، ناموفق
+        - بله، اتصال مستقیم موفق
+        - بله، اتصال مستقیم ناموفق
+        - بله، با VPN موفق
+        - اتصال مستقیم ناموفق و VPN موفق
         - فقط ثبت‌نام تست شده
     validations:
       required: true
@@ -48,7 +50,7 @@ body:
     id: evidence
     attributes:
       label: جزئیات و مدرک
-      description: تاریخ، ISP/ASN، کد وضعیت و مرحله تست را بدون IP کامل، کلید یا اطلاعات حساب بنویسید.
+      description: تاریخ، مسیر direct/vpn، ISP/ASN، کشور خروجی، کد وضعیت و مرحله تست را بدون IP کامل، کلید یا اطلاعات حساب بنویسید.
     validations:
       required: true
   - type: checkboxes
@@ -58,4 +60,3 @@ body:
       options:
         - label: هیچ کلید API، توکن، IP کامل یا اطلاعات شخصی در گزارش نیست.
           required: true
-
