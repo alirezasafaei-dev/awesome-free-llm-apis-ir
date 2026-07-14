@@ -6,7 +6,7 @@
   "docs": "https://developers.cloudflare.com/workers-ai/get-started/rest-api/",
   "signup": "https://dash.cloudflare.com/sign-up",
   "api": {
-    "base_url": "https://api.cloudflare.com/client/v4/accounts/{account_id}/ai/run",
+    "base_url": "https://api.cloudflare.com/client/v4/accounts/{account_id}/ai/v1",
     "openai_compatible": true,
     "auth": "account_id_and_token"
   },
@@ -43,4 +43,3 @@
   "notes_fa": "API پایه شامل account_id است و برای نمایش در URL به صورت placeholder نگهداری شده است.",
   "sources": ["https://developers.cloudflare.com/workers-ai/platform/pricing/", "https://developers.cloudflare.com/workers-ai/platform/limits/"]
 }
-
