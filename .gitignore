@@ -6,3 +6,4 @@ node_modules/
 !.env.example
 reports/local/
 .site-dist/
+benchmarks/results/local/
