@@ -39,13 +39,14 @@ test -s "$STAGING/index.html"
 test -s "$STAGING/catalog.json"
 test -s "$STAGING/build-meta.json"
 
-node -e '
-  const fs = require("fs");
-  const [file, revision] = process.argv.slice(1);
-  const meta = JSON.parse(fs.readFileSync(file, "utf8"));
-  if (meta.source_revision !== revision) throw new Error("Artifact revision mismatch");
-  if (!Number.isInteger(meta.provider_count) || meta.provider_count < 1) throw new Error("Invalid provider count");
-' "$STAGING/build-meta.json" "$REVISION"
+if ! grep -Eq "\"source_revision\"[[:space:]]*:[[:space:]]*\"$REVISION\"" "$STAGING/build-meta.json"; then
+  echo "Artifact revision mismatch" >&2
+  exit 65
+fi
+if ! grep -Eq '"provider_count"[[:space:]]*:[[:space:]]*[1-9][0-9]*' "$STAGING/build-meta.json"; then
+  echo "Invalid provider count" >&2
+  exit 65
+fi
 
 mv -- "$STAGING" "$RELEASE"
 trap - EXIT
