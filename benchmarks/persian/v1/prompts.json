@@ -1,0 +1,107 @@
+[
+  {
+    "id": "instruction-01",
+    "category": "instruction_following",
+    "prompt_fa": "فقط یک کلمه بنویس و هیچ توضیحی اضافه نکن: آبی",
+    "max_tokens": 16,
+    "scoring": { "type": "exact_normalized", "expected": ["آبی"] }
+  },
+  {
+    "id": "instruction-02",
+    "category": "instruction_following",
+    "prompt_fa": "واژهٔ «کتاب» را دقیقاً دو بار بنویس و میان آن‌ها فقط نویسهٔ | قرار بده. هیچ فاصله‌ای ننویس.",
+    "max_tokens": 16,
+    "scoring": { "type": "exact_normalized", "expected": ["کتاب|کتاب"] }
+  },
+  {
+    "id": "instruction-03",
+    "category": "instruction_following",
+    "prompt_fa": "اگر عدد ۸ از ۵ بزرگ‌تر است فقط «بله» و در غیر این صورت فقط «خیر» بنویس.",
+    "max_tokens": 16,
+    "scoring": { "type": "exact_normalized", "expected": ["بله"] }
+  },
+  {
+    "id": "reading-01",
+    "category": "reading_comprehension",
+    "prompt_fa": "متن: «کتابخانه شنبه تا چهارشنبه باز است، پنجشنبه تا ظهر کار می‌کند و جمعه بسته است.» پرسش: کتابخانه در چه روزی کاملاً بسته است؟ فقط نام روز را بنویس.",
+    "max_tokens": 16,
+    "scoring": { "type": "exact_normalized", "expected": ["جمعه"] }
+  },
+  {
+    "id": "reading-02",
+    "category": "reading_comprehension",
+    "prompt_fa": "متن: «سارا ابتدا به شیراز رفت و پس از دو روز از آنجا با قطار به اصفهان سفر کرد. مقصد نهایی او تهران نبود.» پرسش: مقصد نهایی سارا کدام شهر بود؟ فقط نام شهر را بنویس.",
+    "max_tokens": 16,
+    "scoring": { "type": "exact_normalized", "expected": ["اصفهان"] }
+  },
+  {
+    "id": "reading-03",
+    "category": "reading_comprehension",
+    "prompt_fa": "متن: «در جعبه سه مداد قرمز، دو مداد سبز و یک مداد آبی است. نیما یک مداد قرمز برداشت.» پرسش: اکنون چند مداد در جعبه مانده است؟ فقط عدد را بنویس.",
+    "max_tokens": 16,
+    "scoring": { "type": "numeric", "expected": 5 }
+  },
+  {
+    "id": "reasoning-01",
+    "category": "numeric_reasoning",
+    "prompt_fa": "حاصل ۲۳ ضرب‌در ۴ چند است؟ فقط عدد نهایی را بنویس.",
+    "max_tokens": 16,
+    "scoring": { "type": "numeric", "expected": 92 }
+  },
+  {
+    "id": "reasoning-02",
+    "category": "numeric_reasoning",
+    "prompt_fa": "قیمت کالایی ۲۵۰٬۰۰۰ تومان است. اگر ۲۰ درصد تخفیف بخورد، مبلغ نهایی چند تومان می‌شود؟ فقط عدد را بنویس.",
+    "max_tokens": 24,
+    "scoring": { "type": "numeric", "expected": 200000 }
+  },
+  {
+    "id": "reasoning-03",
+    "category": "numeric_reasoning",
+    "prompt_fa": "سه‌چهارم عدد ۱۲۰ چند است؟ فقط عدد را بنویس.",
+    "max_tokens": 16,
+    "scoring": { "type": "numeric", "expected": 90 }
+  },
+  {
+    "id": "json-01",
+    "category": "structured_output",
+    "prompt_fa": "فقط JSON معتبر و بدون Markdown بساز: شیئی با کلید «نام» برابر «سارا»، کلید «سن» برابر ۲۷ و کلید «فعال» برابر true.",
+    "max_tokens": 64,
+    "scoring": { "type": "json_equal", "expected": { "نام": "سارا", "سن": 27, "فعال": true } }
+  },
+  {
+    "id": "json-02",
+    "category": "structured_output",
+    "prompt_fa": "فقط یک آرایهٔ JSON معتبر و بدون Markdown شامل این سه رشته و با همین ترتیب برگردان: الف، ب، پ.",
+    "max_tokens": 48,
+    "scoring": { "type": "json_equal", "expected": ["الف", "ب", "پ"] }
+  },
+  {
+    "id": "json-03",
+    "category": "structured_output",
+    "prompt_fa": "فقط JSON معتبر و بدون Markdown برگردان. شیء باید دقیقاً دو کلید داشته باشد: «جمع» برابر حاصل ۷+۸ و «زوج» برابر false.",
+    "max_tokens": 48,
+    "scoring": { "type": "json_equal", "expected": { "جمع": 15, "زوج": false } }
+  },
+  {
+    "id": "persian-01",
+    "category": "persian_text",
+    "prompt_fa": "این ارقام لاتین را فقط به رقم فارسی تبدیل کن: 1234567890",
+    "max_tokens": 24,
+    "scoring": { "type": "exact_surface", "expected": ["۱۲۳۴۵۶۷۸۹۰"] }
+  },
+  {
+    "id": "persian-02",
+    "category": "persian_text",
+    "prompt_fa": "عبارت «مي روم» را با نویسه‌های استاندارد فارسی و نیم‌فاصلهٔ درست بازنویسی کن. فقط خود عبارت را بنویس.",
+    "max_tokens": 16,
+    "scoring": { "type": "exact_surface", "expected": ["می‌روم"] }
+  },
+  {
+    "id": "persian-03",
+    "category": "persian_text",
+    "prompt_fa": "جملهٔ زیر را فقط با تبدیل «ي» و «ك» عربی به نویسه‌های فارسی بازنویسی کن و هیچ بخش دیگری را تغییر نده: علي يك كتاب دارد.",
+    "max_tokens": 32,
+    "scoring": { "type": "exact_surface", "expected": ["علی یک کتاب دارد."] }
+  }
+]

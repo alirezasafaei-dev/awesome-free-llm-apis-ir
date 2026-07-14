@@ -12,10 +12,14 @@
     "check:freshness": "node scripts/check-freshness.mjs --strict",
     "site:build": "node scripts/build-site.mjs",
     "site:check": "node scripts/check-site.mjs",
+    "benchmark:validate": "node scripts/validate-benchmark.mjs",
+    "benchmark:dry": "node scripts/run-persian-benchmark.mjs --dry-run",
+    "benchmark:test": "node scripts/test-benchmark-runner.mjs",
+    "benchmark:run": "node scripts/run-persian-benchmark.mjs",
     "check:links": "node scripts/check-links.mjs",
     "verify:iran": "node scripts/verify-from-iran.mjs",
     "verify:iran:dry": "node scripts/verify-from-iran.mjs --dry-run",
-    "test": "npm run validate && npm run generate:check && npm run catalog:check && npm run verify:iran:dry && npm run site:check"
+    "test": "npm run validate && npm run generate:check && npm run catalog:check && npm run verify:iran:dry && npm run benchmark:validate && npm run benchmark:dry && npm run benchmark:test && npm run site:check"
   },
   "engines": {
     "node": ">=20"
