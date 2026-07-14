@@ -1,6 +1,8 @@
 name: Deploy VPS mirrors
 
 on:
+  push:
+    branches: [main]
   workflow_dispatch:
     inputs:
       target:
@@ -17,7 +19,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: deploy-vps-${{ inputs.target }}
+  group: deploy-vps-${{ github.event_name == 'push' && 'auto' || inputs.target }}
   cancel-in-progress: false
 
 jobs:
@@ -45,7 +47,7 @@ jobs:
           retention-days: 7
 
   deploy-global:
-    if: inputs.target == 'both' || inputs.target == 'global'
+    if: github.event_name == 'push' || inputs.target == 'both' || inputs.target == 'global'
     needs: build
     runs-on: ubuntu-latest
     environment:
@@ -95,7 +97,7 @@ jobs:
         run: rm -f ~/.ssh/id_ed25519 ~/.ssh/known_hosts
 
   deploy-iran:
-    if: inputs.target == 'both' || inputs.target == 'iran'
+    if: github.event_name == 'push' || inputs.target == 'both' || inputs.target == 'iran'
     needs: build
     runs-on: ubuntu-latest
     environment:
