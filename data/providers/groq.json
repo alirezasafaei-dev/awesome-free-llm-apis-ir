@@ -1,0 +1,48 @@
+{
+  "schema_version": "1.0.0",
+  "id": "groq",
+  "name": "Groq",
+  "website": "https://groq.com/",
+  "docs": "https://console.groq.com/docs/quickstart",
+  "signup": "https://console.groq.com/",
+  "api": {
+    "base_url": "https://api.groq.com/openai/v1",
+    "openai_compatible": true,
+    "auth": "api_key"
+  },
+  "capabilities": ["chat", "text_generation", "reasoning", "tool_calling", "structured_output"],
+  "free_tier": {
+    "status": "active",
+    "type": "permanent_allowance",
+    "requires_payment_method": false,
+    "limits": [
+      { "scope": "model", "model": "llama-3.1-8b-instant", "condition": "Free Plan", "rpm": 30, "rpd": 14400, "tpm": 6000, "tpd": 500000, "notes_fa": null },
+      { "scope": "model", "model": "llama-3.3-70b-versatile", "condition": "Free Plan", "rpm": 30, "rpd": 1000, "tpm": 12000, "tpd": 100000, "notes_fa": null },
+      { "scope": "model", "model": "qwen/qwen3-32b", "condition": "Free Plan", "rpm": 60, "rpd": 1000, "tpm": 6000, "tpd": 500000, "notes_fa": null }
+    ],
+    "notes_fa": "سهمیه‌ها در سطح Organization اعمال می‌شوند و مدل‌به‌مدل متفاوت‌اند. صفحه Limits حساب مرجع نهایی است."
+  },
+  "iran_access": {
+    "status": "unknown",
+    "official_policy": "not_documented",
+    "tested_from_iran": false,
+    "tested_at": null,
+    "test_method": "not_tested",
+    "network": null,
+    "evidence": []
+  },
+  "models": {
+    "dynamic": true,
+    "source": "https://console.groq.com/docs/models",
+    "notable": ["llama-3.1-8b-instant", "llama-3.3-70b-versatile", "qwen/qwen3-32b"]
+  },
+  "verification": {
+    "level": "docs_verified",
+    "last_checked": "2026-07-14",
+    "checked_by": "maintainers",
+    "stale_after_days": 30
+  },
+  "notes_fa": "دسترسی ایران نیازمند تست جداگانهٔ ثبت‌نام و درخواست API است.",
+  "sources": ["https://console.groq.com/docs/rate-limits", "https://console.groq.com/docs/models"]
+}
+

@@ -1,0 +1,49 @@
+name: Report a change
+description: گزارش تغییر سهمیه، مدل‌ها یا دسترسی ایران
+title: "[Change]: "
+labels: ["data-change", "needs-verification"]
+body:
+  - type: input
+    id: provider
+    attributes:
+      label: نام سرویس
+    validations:
+      required: true
+  - type: dropdown
+    id: change
+    attributes:
+      label: نوع تغییر
+      options:
+        - سهمیه یا Rate Limit
+        - مدل‌ها
+        - قیمت یا Trial
+        - دسترسی با IP ایران
+        - ثبت‌نام
+        - لینک خراب
+    validations:
+      required: true
+  - type: input
+    id: date
+    attributes:
+      label: تاریخ مشاهده
+      placeholder: YYYY-MM-DD
+    validations:
+      required: true
+  - type: textarea
+    id: details
+    attributes:
+      label: نتیجه و مراحل بازتولید
+    validations:
+      required: true
+  - type: input
+    id: source
+    attributes:
+      label: لینک منبع یا مدرک عمومی
+  - type: checkboxes
+    id: privacy
+    attributes:
+      label: تأیید حریم خصوصی
+      options:
+        - label: اطلاعات حساس و شخصی حذف شده‌اند.
+          required: true
+

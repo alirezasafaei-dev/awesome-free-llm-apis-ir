@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.0.0",
+  "id": "openrouter",
+  "name": "OpenRouter",
+  "website": "https://openrouter.ai/",
+  "docs": "https://openrouter.ai/docs/quickstart",
+  "signup": "https://openrouter.ai/sign-up",
+  "api": {
+    "base_url": "https://openrouter.ai/api/v1",
+    "openai_compatible": true,
+    "auth": "api_key"
+  },
+  "capabilities": ["chat", "text_generation", "reasoning", "tool_calling", "structured_output"],
+  "free_tier": {
+    "status": "active",
+    "type": "free_models",
+    "requires_payment_method": false,
+    "limits": [
+      {
+        "scope": "free model variants",
+        "model": "*:free",
+        "condition": "less than USD 10 purchased lifetime",
+        "rpm": 20,
+        "rpd": 50,
+        "notes_fa": "مدل‌های رایگان ممکن است محدودیت بالادستی و ظرفیت متغیر هم داشته باشند."
+      },
+      {
+        "scope": "free model variants",
+        "model": "*:free",
+        "condition": "at least USD 10 purchased lifetime",
+        "rpm": 20,
+        "rpd": 1000,
+        "notes_fa": "افزایش سهمیه روزانه نیازمند خرید قبلی اعتبار است."
+      }
+    ],
+    "notes_fa": "شناسهٔ مدل رایگان با پسوند :free مشخص می‌شود. موجودی و مدل‌ها ممکن است تغییر کنند."
+  },
+  "iran_access": {
+    "status": "unknown",
+    "official_policy": "not_documented",
+    "tested_from_iran": false,
+    "tested_at": null,
+    "test_method": "not_tested",
+    "network": null,
+    "evidence": []
+  },
+  "models": {
+    "dynamic": true,
+    "source": "https://openrouter.ai/models?fmt=cards&max_price=0",
+    "notable": []
+  },
+  "verification": {
+    "level": "docs_verified",
+    "last_checked": "2026-07-14",
+    "checked_by": "maintainers",
+    "stale_after_days": 30
+  },
+  "notes_fa": "برای ادعای دسترسی مستقیم با IP ایران هنوز تست تاریخ‌دار ثبت نشده است.",
+  "sources": [
+    "https://openrouter.ai/docs/api/reference/limits",
+    "https://openrouter.ai/docs/guides/routing/model-variants/free"
+  ]
+}
+

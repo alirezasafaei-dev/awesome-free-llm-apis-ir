@@ -1,0 +1,48 @@
+{
+  "schema_version": "1.0.0",
+  "id": "cerebras",
+  "name": "Cerebras Inference",
+  "website": "https://cloud.cerebras.ai/",
+  "docs": "https://inference-docs.cerebras.ai/quickstart",
+  "signup": "https://cloud.cerebras.ai/",
+  "api": {
+    "base_url": "https://api.cerebras.ai/v1",
+    "openai_compatible": true,
+    "auth": "api_key"
+  },
+  "capabilities": ["chat", "text_generation", "reasoning", "tool_calling", "structured_output"],
+  "free_tier": {
+    "status": "trial",
+    "type": "trial",
+    "requires_payment_method": null,
+    "limits": [
+      { "scope": "free trial", "model": "gpt-oss-120b", "condition": null, "rpm": 5, "tpm": 30000, "tph": 1000000, "tpd": 1000000, "notes_fa": null },
+      { "scope": "free trial", "model": "zai-glm-4.7", "condition": null, "rpm": 5, "tpm": 30000, "tph": 1000000, "tpd": 1000000, "notes_fa": null },
+      { "scope": "free trial", "model": "gemma-4-31b", "condition": null, "rpm": 5, "tpm": 30000, "tph": 1000000, "tpd": 1000000, "notes_fa": "مدل Preview است و محدودیت تصویر هم دارد." }
+    ],
+    "notes_fa": "مستندات نرخ، این سطح را Free Trial می‌نامند؛ بنابراین به‌عنوان رایگان دائمی برچسب نخورده است."
+  },
+  "iran_access": {
+    "status": "unknown",
+    "official_policy": "not_documented",
+    "tested_from_iran": false,
+    "tested_at": null,
+    "test_method": "not_tested",
+    "network": null,
+    "evidence": []
+  },
+  "models": {
+    "dynamic": true,
+    "source": "https://inference-docs.cerebras.ai/models/overview",
+    "notable": ["gpt-oss-120b", "zai-glm-4.7", "gemma-4-31b"]
+  },
+  "verification": {
+    "level": "docs_verified",
+    "last_checked": "2026-07-14",
+    "checked_by": "maintainers",
+    "stale_after_days": 30
+  },
+  "notes_fa": "محدودیت دقیق حساب در بخش Limits کنسول مرجع نهایی است.",
+  "sources": ["https://inference-docs.cerebras.ai/support/rate-limits", "https://inference-docs.cerebras.ai/models/overview"]
+}
+

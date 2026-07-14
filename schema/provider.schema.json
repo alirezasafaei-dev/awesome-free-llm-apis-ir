@@ -1,0 +1,144 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir/schema/provider.schema.json",
+  "title": "Free LLM API provider",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "id",
+    "name",
+    "website",
+    "docs",
+    "api",
+    "capabilities",
+    "free_tier",
+    "iran_access",
+    "verification",
+    "sources"
+  ],
+  "properties": {
+    "schema_version": { "const": "1.0.0" },
+    "id": { "type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$" },
+    "name": { "type": "string", "minLength": 2 },
+    "website": { "type": "string", "format": "uri" },
+    "docs": { "type": "string", "format": "uri" },
+    "signup": { "type": ["string", "null"], "format": "uri" },
+    "api": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["base_url", "openai_compatible", "auth"],
+      "properties": {
+        "base_url": { "type": "string", "format": "uri" },
+        "openai_compatible": { "type": "boolean" },
+        "auth": { "enum": ["api_key", "oauth", "token", "account_id_and_token", "other"] }
+      }
+    },
+    "capabilities": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": { "enum": ["chat", "text_generation", "reasoning", "embeddings", "tool_calling", "structured_output"] }
+    },
+    "free_tier": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "type", "requires_payment_method", "limits", "notes_fa"],
+      "properties": {
+        "status": { "enum": ["active", "limited", "trial", "none", "unknown"] },
+        "type": { "enum": ["permanent_allowance", "free_models", "monthly_credit", "trial", "unknown"] },
+        "requires_payment_method": { "type": ["boolean", "null"] },
+        "limits": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["scope"],
+            "properties": {
+              "scope": { "type": "string" },
+              "model": { "type": ["string", "null"] },
+              "condition": { "type": ["string", "null"] },
+              "rpm": { "type": ["number", "null"], "minimum": 0 },
+              "rpd": { "type": ["number", "null"], "minimum": 0 },
+              "tpm": { "type": ["number", "null"], "minimum": 0 },
+              "tph": { "type": ["number", "null"], "minimum": 0 },
+              "tpd": { "type": ["number", "null"], "minimum": 0 },
+              "input_tokens": { "type": ["number", "null"], "minimum": 0 },
+              "output_tokens": { "type": ["number", "null"], "minimum": 0 },
+              "concurrent_requests": { "type": ["number", "null"], "minimum": 0 },
+              "daily_units": { "type": ["number", "null"], "minimum": 0 },
+              "unit_name": { "type": ["string", "null"] },
+              "monthly_credit_usd": { "type": ["number", "null"], "minimum": 0 },
+              "notes_fa": { "type": ["string", "null"] }
+            }
+          }
+        },
+        "notes_fa": { "type": "string" }
+      }
+    },
+    "iran_access": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "official_policy", "tested_from_iran", "tested_at", "test_method", "network", "evidence"],
+      "properties": {
+        "status": { "enum": ["verified_working", "verified_blocked", "officially_unsupported", "intermittent", "signup_blocked", "unknown"] },
+        "official_policy": { "enum": ["supported", "unsupported", "not_documented", "unknown"] },
+        "tested_from_iran": { "type": "boolean" },
+        "tested_at": { "type": ["string", "null"], "format": "date" },
+        "test_method": { "enum": ["live_request", "signup_only", "community_report", "official_docs", "not_tested"] },
+        "network": {
+          "type": ["object", "null"],
+          "additionalProperties": false,
+          "properties": {
+            "isp": { "type": ["string", "null"] },
+            "asn": { "type": ["string", "null"] },
+            "city": { "type": ["string", "null"] }
+          }
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["type", "url", "checked_at", "notes_fa"],
+            "properties": {
+              "type": { "enum": ["official_docs", "live_test", "community_report"] },
+              "url": { "type": ["string", "null"], "format": "uri" },
+              "checked_at": { "type": "string", "format": "date" },
+              "notes_fa": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    "models": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["dynamic", "source", "notable"],
+      "properties": {
+        "dynamic": { "type": "boolean" },
+        "source": { "type": ["string", "null"], "format": "uri" },
+        "notable": { "type": "array", "items": { "type": "string" }, "uniqueItems": true }
+      }
+    },
+    "verification": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["level", "last_checked", "checked_by", "stale_after_days"],
+      "properties": {
+        "level": { "enum": ["docs_verified", "live_verified", "community_report", "unverified"] },
+        "last_checked": { "type": "string", "format": "date" },
+        "checked_by": { "type": "string" },
+        "stale_after_days": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "notes_fa": { "type": "string" },
+    "sources": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": { "type": "string", "format": "uri" }
+    }
+  }
+}
+
