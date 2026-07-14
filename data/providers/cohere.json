@@ -1,0 +1,46 @@
+{
+  "schema_version": "1.0.0",
+  "id": "cohere",
+  "name": "Cohere",
+  "website": "https://cohere.com/",
+  "docs": "https://docs.cohere.com/docs/rate-limits",
+  "signup": "https://dashboard.cohere.com/welcome/register",
+  "api": {
+    "base_url": "https://api.cohere.com/v2",
+    "openai_compatible": false,
+    "auth": "api_key"
+  },
+  "capabilities": ["chat", "text_generation", "reasoning", "embeddings", "tool_calling", "structured_output"],
+  "free_tier": {
+    "status": "trial",
+    "type": "trial",
+    "requires_payment_method": false,
+    "limits": [
+      { "scope": "trial key chat models", "model": null, "condition": "evaluation/non-production key", "rpm": 20, "monthly_requests": 1000, "notes_fa": "برخی Endpointها محدودیت دقیقه‌ای متفاوت دارند." }
+    ],
+    "notes_fa": "کلید Trial رایگان و محدود به ارزیابی است؛ سقف کلی ۱۰۰۰ فراخوانی در ماه اعلام شده است."
+  },
+  "iran_access": {
+    "status": "unknown",
+    "official_policy": "not_documented",
+    "tested_from_iran": false,
+    "tested_at": null,
+    "test_method": "not_tested",
+    "network": null,
+    "evidence": []
+  },
+  "models": {
+    "dynamic": true,
+    "source": "https://docs.cohere.com/docs/models",
+    "notable": ["command-a-03-2025"]
+  },
+  "verification": {
+    "level": "docs_verified",
+    "last_checked": "2026-07-14",
+    "checked_by": "maintainers",
+    "stale_after_days": 30
+  },
+  "notes_fa": "Trial برای Production در نظر گرفته نشده و باید جدا از Free Tier دائمی نمایش داده شود.",
+  "sources": ["https://docs.cohere.com/docs/rate-limits", "https://docs.cohere.com/docs/how-does-cohere-pricing-work"]
+}
+

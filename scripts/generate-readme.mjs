@@ -35,6 +35,7 @@ function compactLimit(provider) {
   if (first.tpm != null) bits.push(`${first.tpm.toLocaleString("en-US")} TPM`);
   if (first.daily_units != null) bits.push(`${first.daily_units.toLocaleString("en-US")} ${first.unit_name ?? "unit"}/day`);
   if (first.monthly_credit_usd != null) bits.push(`$${first.monthly_credit_usd}/month`);
+  if (first.monthly_requests != null) bits.push(`${first.monthly_requests.toLocaleString("en-US")} requests/month`);
   return bits.slice(0, 2).join(" · ") || "مدل‌محور";
 }
 
@@ -67,4 +68,3 @@ if (process.argv.includes("--check")) {
   await writeFile(readmePath, next);
   console.log(`Generated README table for ${providers.length} providers.`);
 }
-
