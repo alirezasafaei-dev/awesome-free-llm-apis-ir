@@ -49,13 +49,15 @@
 
 ## استفادهٔ ماشینی
 
-هر سرویس یک فایل مستقل در [`data/providers`](data/providers) دارد و ساختار آن با [`schema/provider.schema.json`](schema/provider.schema.json) تعریف شده است. وب‌سایت‌ها و ابزارهای دیگر می‌توانند این داده‌ها را مستقیماً مصرف کنند.
+هر سرویس یک فایل مستقل در [`data/providers`](data/providers) دارد و ساختار آن با [`schema/provider.schema.json`](schema/provider.schema.json) تعریف شده است. وب‌سایت‌ها می‌توانند فایل یکپارچهٔ [`catalog.json`](catalog.json) را مستقیماً مصرف کنند.
 
 ```bash
 git clone https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir.git
 cd awesome-free-llm-apis-ir
 npm test
 ```
+
+فایل `catalog.json` و جدول README هر دو از منبع اصلی تولید می‌شوند و CI از قدیمی‌شدن آن‌ها جلوگیری می‌کند. Workflow هفتگی نیز رکوردهای منقضی‌شده را پیدا و یک Issue نگهداری ایجاد یا به‌روزرسانی می‌کند.
 
 ## تست واقعی از ایران
 

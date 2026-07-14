@@ -6,16 +6,17 @@
   "description": "Verified, machine-readable catalog of free LLM APIs for Persian speakers and users in Iran.",
   "scripts": {
     "validate": "node scripts/validate.mjs",
-    "generate": "node scripts/generate-readme.mjs",
+    "generate": "node scripts/generate-readme.mjs && node scripts/generate-catalog.mjs",
     "generate:check": "node scripts/generate-readme.mjs --check",
+    "catalog:check": "node scripts/generate-catalog.mjs --check",
+    "check:freshness": "node scripts/check-freshness.mjs --strict",
     "check:links": "node scripts/check-links.mjs",
     "verify:iran": "node scripts/verify-from-iran.mjs",
     "verify:iran:dry": "node scripts/verify-from-iran.mjs --dry-run",
-    "test": "npm run validate && npm run generate:check && npm run verify:iran:dry"
+    "test": "npm run validate && npm run generate:check && npm run catalog:check && npm run verify:iran:dry"
   },
   "engines": {
     "node": ">=20"
   },
   "license": "MIT"
 }
-
