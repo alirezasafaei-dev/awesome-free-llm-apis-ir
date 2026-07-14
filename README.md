@@ -4,8 +4,11 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Persian](https://img.shields.io/badge/lang-فارسی-239f40.svg)](README.md)
 [![English](https://img.shields.io/badge/lang-English-blue.svg)](README.en.md)
+[![Website](https://img.shields.io/badge/website-live-7c3aed.svg)](https://alirezasafaei-dev.github.io/awesome-free-llm-apis-ir/)
 
 فهرست آزاد، فارسی و ماشین‌خوان از APIهای رایگان مدل‌های زبانی؛ با تمرکز ویژه بر **محدودیت مصرف، توکن، نیاز به پرداخت، دسترسی مستقیم از ایران و دسترسی با VPN**.
+
+🌐 **[مشاهدهٔ وب‌سایت جست‌وجو و فیلتر APIها](https://alirezasafaei-dev.github.io/awesome-free-llm-apis-ir/)**
 
 > [!IMPORTANT]
 > «رایگان» بودن یک سرویس به معنی «قابل استفاده بودن از ایران» نیست. وضعیت ایران فقط با مدرک رسمی یا تست تاریخ‌دار ثبت می‌شود. `نامشخص` یعنی هنوز مدرک کافی نداریم، نه اینکه سرویس حتماً کار می‌کند.
