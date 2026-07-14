@@ -30,6 +30,10 @@
 6. در دسکتاپ و موبایل این موارد را واقعاً امتحان کن: جست‌وجو، تمام Filterها، Sort، Dark mode، کپی API URL، لینک مستندات و خواندن `catalog.json`.
 7. نتیجه را با URL اجرای موفق Actions و زمان مشاهده ثبت کن. Screenshot نباید اطلاعات حساب، Cookie یا Token داشته باشد.
 
+## فاز یک‌ونیم — انتشار دوگانهٔ VPS
+
+راهنمای `docs/VPS_DUAL_DEPLOYMENT.fa.md` را بدون حذف کنترل‌های ایمنی اجرا کن. سرور خارج با `asdev@91.107.153.223:22` و Caddy میزبان Canonical `llm.persiantoolbox.ir` است. سرور ایران با `ubuntu@193.93.169.32:22` و Nginx آینهٔ `ir.llm.persiantoolbox.ir` است. برای هر سرور کلید Deployment جدا بساز، Host key را از مسیر مستقل تأیید کن و Secrets را فقط در Environment متناظر GitHub وارد کن. ابتدا Target `global` و سپس `iran` را جدا اجرا کن؛ فقط پس از دو موفقیت از `both` استفاده کن. هیچ Secret را در خروجی یا گفتگو نمایش نده.
+
 ## فاز دو — تست دسترسی مستقیم و VPN از ایران
 
 1. فایل `docs/LOCAL_AGENT_EXECUTION_PROMPT.fa.md` را کامل اجرا کن؛ این بخش خلاصهٔ جایگزین آن نیست.

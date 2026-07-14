@@ -1,0 +1,27 @@
+llm.persiantoolbox.ir {
+	encode zstd gzip
+	root * /srv/awesome-free-llm-apis-ir/current
+
+	@catalog path /catalog.json
+	header @catalog Cache-Control "public, max-age=300, must-revalidate"
+	@buildmeta path /build-meta.json
+	header @buildmeta Cache-Control "no-store"
+	@index path / /index.html
+	header @index Cache-Control "no-cache, must-revalidate"
+
+	header {
+		X-Content-Type-Options "nosniff"
+		X-Frame-Options "DENY"
+		Referrer-Policy "strict-origin-when-cross-origin"
+		Permissions-Policy "camera=(), microphone=(), geolocation=()"
+		Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'; upgrade-insecure-requests"
+	}
+
+	try_files {path} {path}/ /index.html
+	file_server
+
+	log {
+		output file /var/log/caddy/llm.persiantoolbox.ir.access.log
+		format json
+	}
+}
