@@ -100,6 +100,17 @@ main { max-width: 1240px; margin: 0 auto; padding: 0 24px 60px; }
 .checkbox-field { justify-content: center; flex-direction: row !important; align-items: center; gap: 8px !important; }
 .checkbox-field input { width: 18px; height: 18px; accent-color: var(--primary); }
 .reset-button { align-self: center; border: 0; color: var(--primary); background: transparent; font-size: 13px; font-weight: 800; }
+.advisor { margin-top: 18px; padding: 20px; border: 1px solid var(--border); border-radius: var(--radius); background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 10%, var(--surface)), var(--surface)); box-shadow: var(--shadow); display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(260px, .9fr) minmax(260px, 1fr); gap: 18px; align-items: start; }
+.advisor h3 { margin: 0; font-size: 22px; }
+.advisor p { margin: 8px 0 0; color: var(--muted); font-size: 13px; }
+.advisor-controls { display: grid; gap: 10px; }
+.advisor-controls label { display: flex; flex-direction: column; gap: 6px; color: var(--muted); font-size: 12px; font-weight: 700; }
+.advisor-controls select { width: 100%; min-height: 42px; border: 1px solid var(--border); border-radius: 12px; background: var(--surface-soft); color: var(--text); padding: 8px 12px; outline: none; }
+.advisor-results { margin: 0; padding: 0; list-style: none; display: grid; gap: 8px; }
+.advisor-results li { padding: 10px 12px; border: 1px solid var(--border); border-radius: 14px; background: color-mix(in srgb, var(--surface) 88%, transparent); }
+.advisor-results strong, .advisor-results span, .advisor-results small { display: block; }
+.advisor-results span { color: var(--text); font-size: 12px; }
+.advisor-results small { color: var(--muted); font-size: 11px; }
 .results-bar { display: flex; align-items: center; justify-content: space-between; gap: 20px; margin: 24px 2px 16px; }
 .results-bar p { color: var(--muted); }
 .sort-field { flex-direction: row; align-items: center; }
@@ -146,6 +157,7 @@ footer a { color: var(--primary); }
   .hero { grid-template-columns: 1fr; }
   .hero-panel { grid-template-columns: repeat(3, 1fr); }
   .filters { grid-template-columns: repeat(2, 1fr); }
+  .advisor { grid-template-columns: 1fr; }
   .search-field { grid-column: 1 / -1; }
   .provider-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
