@@ -18,13 +18,21 @@ on:
 permissions:
   contents: read
 
+# Serialize every production deployment, regardless of whether it was triggered
+# manually or by a push to main. This prevents an older run from finishing after
+# a newer run and accidentally reactivating an older revision.
 concurrency:
-  group: deploy-vps-${{ github.event_name == 'push' && 'auto' || inputs.target }}
+  group: deploy-vps-production
   cancel-in-progress: false
+
+defaults:
+  run:
+    shell: bash
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -50,6 +58,7 @@ jobs:
     if: github.event_name == 'push' || inputs.target == 'both' || inputs.target == 'global'
     needs: build
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     environment:
       name: production-global
       url: https://llm.persiantoolbox.ir/
@@ -62,6 +71,7 @@ jobs:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           SSH_KNOWN_HOSTS: ${{ secrets.SSH_KNOWN_HOSTS }}
         run: |
+          set -Eeuo pipefail
           test -n "$SSH_PRIVATE_KEY"
           test -n "$SSH_KNOWN_HOSTS"
           install -d -m 700 ~/.ssh
@@ -72,19 +82,41 @@ jobs:
       - name: Publish atomic release
         id: release
         run: |
+          set -Eeuo pipefail
           SSH=(ssh -i ~/.ssh/id_ed25519 -p 22 -o BatchMode=yes -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes)
           SCP=(scp -i ~/.ssh/id_ed25519 -P 22 -o BatchMode=yes -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes)
           "${SCP[@]}" site-release.tar.gz asdev@91.107.153.223:/tmp/llm-site-${GITHUB_SHA}.tar.gz
           "${SCP[@]}" deploy/remote-release.sh asdev@91.107.153.223:/tmp/llm-release-${GITHUB_SHA}.sh
           "${SCP[@]}" deploy/rollback-release.sh asdev@91.107.153.223:/tmp/llm-rollback-${GITHUB_SHA}.sh
           "${SSH[@]}" asdev@91.107.153.223 "bash /tmp/llm-release-${GITHUB_SHA}.sh /srv/awesome-free-llm-apis-ir /tmp/llm-site-${GITHUB_SHA}.tar.gz ${GITHUB_SHA}"
-      - name: Verify public revision
+      - name: Verify canonical deployment
+        env:
+          EXPECTED_SHA: ${{ github.sha }}
         run: |
+          set -Eeuo pipefail
           for attempt in $(seq 1 12); do
-            if curl --fail --silent --show-error --max-time 15 https://llm.persiantoolbox.ir/build-meta.json -o /tmp/build-meta.json && \
-              node -e 'const m=require("/tmp/build-meta.json"); if(m.source_revision!==process.env.GITHUB_SHA||m.provider_count<1) process.exit(1)'; then
-              exit 0
+            headers="$(mktemp)"
+            body="$(mktemp)"
+            if curl --fail --silent --show-error --location --max-time 15 \
+              --dump-header "$headers" --output /dev/null \
+              https://llm.persiantoolbox.ir/ && \
+              curl --fail --silent --show-error --location --max-time 15 \
+              --output "$body" \
+              https://llm.persiantoolbox.ir/build-meta.json && \
+              EXPECTED_SHA="$EXPECTED_SHA" META_FILE="$body" node -e '
+                const fs = require("node:fs");
+                const meta = JSON.parse(fs.readFileSync(process.env.META_FILE, "utf8"));
+                if (meta.source_revision !== process.env.EXPECTED_SHA) process.exit(1);
+                if (!Number.isInteger(meta.provider_count) || meta.provider_count < 1) process.exit(1);
+              '; then
+              if grep -Eiq '^x-robots-tag:.*noindex' "$headers"; then
+                echo 'Canonical endpoint unexpectedly contains noindex.' >&2
+              else
+                rm -f "$headers" "$body"
+                exit 0
+              fi
             fi
+            rm -f "$headers" "$body"
             sleep 5
           done
           exit 1
@@ -100,6 +132,7 @@ jobs:
     if: github.event_name == 'push' || inputs.target == 'both' || inputs.target == 'iran'
     needs: build
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     environment:
       name: production-iran
       url: https://ir.llm.persiantoolbox.ir/
@@ -112,6 +145,7 @@ jobs:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           SSH_KNOWN_HOSTS: ${{ secrets.SSH_KNOWN_HOSTS }}
         run: |
+          set -Eeuo pipefail
           test -n "$SSH_PRIVATE_KEY"
           test -n "$SSH_KNOWN_HOSTS"
           install -d -m 700 ~/.ssh
@@ -122,19 +156,40 @@ jobs:
       - name: Publish atomic release
         id: release
         run: |
+          set -Eeuo pipefail
           SSH=(ssh -i ~/.ssh/id_ed25519 -p 22 -o BatchMode=yes -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes)
           SCP=(scp -i ~/.ssh/id_ed25519 -P 22 -o BatchMode=yes -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes)
           "${SCP[@]}" site-release.tar.gz ubuntu@193.93.169.32:/tmp/llm-site-${GITHUB_SHA}.tar.gz
           "${SCP[@]}" deploy/remote-release.sh ubuntu@193.93.169.32:/tmp/llm-release-${GITHUB_SHA}.sh
           "${SCP[@]}" deploy/rollback-release.sh ubuntu@193.93.169.32:/tmp/llm-rollback-${GITHUB_SHA}.sh
           "${SSH[@]}" ubuntu@193.93.169.32 "bash /tmp/llm-release-${GITHUB_SHA}.sh /srv/awesome-free-llm-apis-ir /tmp/llm-site-${GITHUB_SHA}.tar.gz ${GITHUB_SHA}"
-      - name: Verify public revision
+      - name: Verify Iran mirror deployment
+        env:
+          EXPECTED_SHA: ${{ github.sha }}
         run: |
+          set -Eeuo pipefail
           for attempt in $(seq 1 12); do
-            if curl --fail --silent --show-error --max-time 15 https://ir.llm.persiantoolbox.ir/build-meta.json -o /tmp/build-meta.json && \
-              node -e 'const m=require("/tmp/build-meta.json"); if(m.source_revision!==process.env.GITHUB_SHA||m.provider_count<1) process.exit(1)'; then
-              exit 0
+            headers="$(mktemp)"
+            body="$(mktemp)"
+            if curl --fail --silent --show-error --location --max-time 15 \
+              --dump-header "$headers" --output /dev/null \
+              https://ir.llm.persiantoolbox.ir/ && \
+              curl --fail --silent --show-error --location --max-time 15 \
+              --output "$body" \
+              https://ir.llm.persiantoolbox.ir/build-meta.json && \
+              EXPECTED_SHA="$EXPECTED_SHA" META_FILE="$body" node -e '
+                const fs = require("node:fs");
+                const meta = JSON.parse(fs.readFileSync(process.env.META_FILE, "utf8"));
+                if (meta.source_revision !== process.env.EXPECTED_SHA) process.exit(1);
+                if (!Number.isInteger(meta.provider_count) || meta.provider_count < 1) process.exit(1);
+              '; then
+              if grep -Eiq '^x-robots-tag:.*noindex' "$headers"; then
+                rm -f "$headers" "$body"
+                exit 0
+              fi
+              echo 'Iran mirror is missing X-Robots-Tag noindex.' >&2
             fi
+            rm -f "$headers" "$body"
             sleep 5
           done
           exit 1
@@ -145,3 +200,35 @@ jobs:
       - name: Remove local SSH material
         if: always()
         run: rm -f ~/.ssh/id_ed25519 ~/.ssh/known_hosts
+
+  verify-mirror-consistency:
+    if: >-
+      always() &&
+      (github.event_name == 'push' || inputs.target == 'both') &&
+      needs.deploy-global.result == 'success' &&
+      needs.deploy-iran.result == 'success'
+    needs: [deploy-global, deploy-iran]
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Verify both public mirrors expose the same release
+        env:
+          EXPECTED_SHA: ${{ github.sha }}
+        run: |
+          set -Eeuo pipefail
+          curl --fail --silent --show-error --location --max-time 15 \
+            https://llm.persiantoolbox.ir/build-meta.json -o /tmp/global-meta.json
+          curl --fail --silent --show-error --location --max-time 15 \
+            https://ir.llm.persiantoolbox.ir/build-meta.json -o /tmp/iran-meta.json
+          EXPECTED_SHA="$EXPECTED_SHA" node <<'NODE'
+          const fs = require('node:fs');
+          const globalMeta = JSON.parse(fs.readFileSync('/tmp/global-meta.json', 'utf8'));
+          const iranMeta = JSON.parse(fs.readFileSync('/tmp/iran-meta.json', 'utf8'));
+          const expected = process.env.EXPECTED_SHA;
+          if (globalMeta.source_revision !== expected || iranMeta.source_revision !== expected) {
+            throw new Error('One or both mirrors expose an unexpected source_revision');
+          }
+          if (globalMeta.provider_count !== iranMeta.provider_count) {
+            throw new Error('Provider counts differ between global and Iran mirrors');
+          }
+          NODE
