@@ -20,13 +20,26 @@
     "notes_fa": "Free mode بدون کارت بانکی API Key می‌دهد. محدودیت دقیق حساب و مدل در صفحه Limits کنسول نمایش داده می‌شود."
   },
   "iran_access": {
-    "status": "unknown",
+    "status": "verified_working",
     "official_policy": "not_documented",
-    "tested_from_iran": false,
-    "tested_at": null,
-    "test_method": "not_tested",
-    "network": null,
-    "evidence": []
+    "tested_from_iran": true,
+    "tested_at": "2026-07-15",
+    "test_method": "live_request",
+    "network": {
+      "country": "IR",
+      "route": "direct"
+    },
+    "evidence": [
+      {
+        "type": "live_test",
+        "timestamp": "2026-07-15T21:15:11Z",
+        "http_status": 200,
+        "latency_ms": 2440,
+        "model_tested": "mistral-small-latest",
+        "endpoint": "https://api.mistral.ai/v1/chat/completions",
+        "source": "LOCAL_PC — Iran fixed network"
+      }
+    ]
   },
   "models": {
     "dynamic": true,

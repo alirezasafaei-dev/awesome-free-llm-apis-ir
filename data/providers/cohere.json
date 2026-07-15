@@ -24,11 +24,25 @@
   "iran_access": {
     "status": "unknown",
     "official_policy": "not_documented",
-    "tested_from_iran": false,
-    "tested_at": null,
-    "test_method": "not_tested",
-    "network": null,
-    "evidence": []
+    "tested_from_iran": true,
+    "tested_at": "2026-07-15",
+    "test_method": "live_request",
+    "network": {
+      "country": "IR",
+      "route": "direct"
+    },
+    "evidence": [
+      {
+        "type": "live_test",
+        "timestamp": "2026-07-15T21:15:11Z",
+        "http_status": 403,
+        "latency_ms": 2440,
+        "model_tested": "command-a-03-2025",
+        "endpoint": "https://api.cohere.com/v2/chat",
+        "source": "LOCAL_PC — Iran fixed network",
+        "notes_fa": "403 بدون کلمه کلیدی منطقه‌ای. برای تأیید Geo-block نیاز به اعتبارسنجی همان کلید از منطقه مجاز است."
+      }
+    ]
   },
   "models": {
     "dynamic": true,

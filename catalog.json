@@ -133,11 +133,25 @@
       "iran_access": {
         "status": "unknown",
         "official_policy": "not_documented",
-        "tested_from_iran": false,
-        "tested_at": null,
-        "test_method": "not_tested",
-        "network": null,
-        "evidence": []
+        "tested_from_iran": true,
+        "tested_at": "2026-07-15",
+        "test_method": "live_request",
+        "network": {
+          "country": "IR",
+          "route": "direct"
+        },
+        "evidence": [
+          {
+            "type": "live_test",
+            "timestamp": "2026-07-15T21:15:11Z",
+            "http_status": 403,
+            "latency_ms": 2440,
+            "model_tested": "gpt-oss-120b",
+            "endpoint": "https://api.cerebras.ai/v1/chat/completions",
+            "source": "LOCAL_PC — Iran fixed network",
+            "notes_fa": "403 بدون کلمه کلیدی منطقه‌ای. برای تأیید Geo-block نیاز به اعتبارسنجی همان کلید از منطقه مجاز است."
+          }
+        ]
       },
       "models": {
         "dynamic": true,
@@ -197,18 +211,35 @@
         "notes_fa": "۱۰٬۰۰۰ Neuron در روز رایگان است؛ برای مصرف بیشتر باید Workers Paid فعال شود."
       },
       "iran_access": {
-        "status": "unknown",
+        "status": "verified_working",
         "official_policy": "not_documented",
-        "tested_from_iran": false,
-        "tested_at": null,
-        "test_method": "not_tested",
-        "network": null,
-        "evidence": []
+        "tested_from_iran": true,
+        "tested_at": "2026-07-15",
+        "test_method": "live_request",
+        "network": {
+          "country": "IR",
+          "route": "direct"
+        },
+        "evidence": [
+          {
+            "type": "live_test",
+            "timestamp": "2026-07-15T21:15:11Z",
+            "http_status": 200,
+            "latency_ms": 2440,
+            "model_tested": "@cf/meta/llama-3.2-3b-instruct",
+            "endpoint": "https://api.cloudflare.com/client/v4/accounts/{account_id}/ai/v1/chat/completions",
+            "source": "LOCAL_PC — Iran fixed network",
+            "notes_fa": "مدل پیش‌فرض قبلی (@cf/meta/llama-3.1-8b-instruct) در 2026-05-30 منسوخ شده است. تست با @cf/meta/llama-3.2-3b-instruct موفق بود."
+          }
+        ],
+        "notes_fa": "⚠️ مدل پیش‌فرض از @cf/meta/llama-3.1-8b-instruct به @cf/meta/llama-3.2-3b-instruct تغییر یافت."
       },
       "models": {
         "dynamic": true,
         "source": "https://developers.cloudflare.com/workers-ai/models/",
-        "notable": []
+        "notable": [
+          "@cf/meta/llama-3.2-3b-instruct"
+        ]
       },
       "verification": {
         "level": "docs_verified",
@@ -262,11 +293,25 @@
       "iran_access": {
         "status": "unknown",
         "official_policy": "not_documented",
-        "tested_from_iran": false,
-        "tested_at": null,
-        "test_method": "not_tested",
-        "network": null,
-        "evidence": []
+        "tested_from_iran": true,
+        "tested_at": "2026-07-15",
+        "test_method": "live_request",
+        "network": {
+          "country": "IR",
+          "route": "direct"
+        },
+        "evidence": [
+          {
+            "type": "live_test",
+            "timestamp": "2026-07-15T21:15:11Z",
+            "http_status": 403,
+            "latency_ms": 2440,
+            "model_tested": "command-a-03-2025",
+            "endpoint": "https://api.cohere.com/v2/chat",
+            "source": "LOCAL_PC — Iran fixed network",
+            "notes_fa": "403 بدون کلمه کلیدی منطقه‌ای. برای تأیید Geo-block نیاز به اعتبارسنجی همان کلید از منطقه مجاز است."
+          }
+        ]
       },
       "models": {
         "dynamic": true,
@@ -744,13 +789,26 @@
         "notes_fa": "Free mode بدون کارت بانکی API Key می‌دهد. محدودیت دقیق حساب و مدل در صفحه Limits کنسول نمایش داده می‌شود."
       },
       "iran_access": {
-        "status": "unknown",
+        "status": "verified_working",
         "official_policy": "not_documented",
-        "tested_from_iran": false,
-        "tested_at": null,
-        "test_method": "not_tested",
-        "network": null,
-        "evidence": []
+        "tested_from_iran": true,
+        "tested_at": "2026-07-15",
+        "test_method": "live_request",
+        "network": {
+          "country": "IR",
+          "route": "direct"
+        },
+        "evidence": [
+          {
+            "type": "live_test",
+            "timestamp": "2026-07-15T21:15:11Z",
+            "http_status": 200,
+            "latency_ms": 2440,
+            "model_tested": "mistral-small-latest",
+            "endpoint": "https://api.mistral.ai/v1/chat/completions",
+            "source": "LOCAL_PC — Iran fixed network"
+          }
+        ]
       },
       "models": {
         "dynamic": true,
@@ -952,13 +1010,26 @@
         "notes_fa": "Free Tier وقتی اعمال می‌شود که روش پرداخت به حساب متصل نباشد. محدودیت‌های Preview جدا و قابل تغییرند."
       },
       "iran_access": {
-        "status": "unknown",
+        "status": "verified_working",
         "official_policy": "not_documented",
-        "tested_from_iran": false,
-        "tested_at": null,
-        "test_method": "not_tested",
-        "network": null,
-        "evidence": []
+        "tested_from_iran": true,
+        "tested_at": "2026-07-15",
+        "test_method": "live_request",
+        "network": {
+          "country": "IR",
+          "route": "direct"
+        },
+        "evidence": [
+          {
+            "type": "live_test",
+            "timestamp": "2026-07-15T21:15:11Z",
+            "http_status": 200,
+            "latency_ms": 2440,
+            "model_tested": "gpt-oss-120b",
+            "endpoint": "https://api.sambanova.ai/v1/chat/completions",
+            "source": "LOCAL_PC — Iran fixed network"
+          }
+        ]
       },
       "models": {
         "dynamic": true,
