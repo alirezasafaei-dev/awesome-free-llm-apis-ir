@@ -108,7 +108,7 @@
           "items": {
             "type": "object",
             "additionalProperties": false,
-            "required": ["type", "notes_fa"],
+            "required": ["type"],
             "properties": {
               "type": { "enum": ["official_docs", "live_test", "community_report"] },
               "url": { "type": ["string", "null"], "format": "uri" },
@@ -119,16 +119,18 @@
               "model_tested": { "type": ["string", "null"] },
               "endpoint": { "type": ["string", "null"] },
               "source": { "type": ["string", "null"] },
-              "notes_fa": { "type": "string" }
+              "response_fingerprint": { "type": ["string", "null"] },
+              "response_body_fingerprint": { "type": ["string", "null"] },
+              "notes_fa": { "type": ["string", "null"] }
             },
             "allOf": [
               {
                 "if": { "properties": { "type": { "const": "official_docs" } } },
-                "then": { "required": ["url", "checked_at"] }
+                "then": { "required": ["url", "checked_at", "notes_fa"] }
               },
               {
                 "if": { "properties": { "type": { "const": "community_report" } } },
-                "then": { "required": ["url", "checked_at"] }
+                "then": { "required": ["url", "checked_at", "notes_fa"] }
               },
               {
                 "if": { "properties": { "type": { "const": "live_test" } } },
