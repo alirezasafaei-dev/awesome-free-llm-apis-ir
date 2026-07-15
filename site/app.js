@@ -37,7 +37,8 @@ const capabilityLabels = {
 const elements = Object.fromEntries([
   "provider-grid", "provider-template", "loading", "error", "empty", "result-count",
   "catalog-updated", "search", "free-type", "access-status", "capability", "openai-only",
-  "sort", "filters", "reset-filters", "theme-toggle", "stat-total", "stat-free", "stat-openai", "stat-fresh"
+  "sort", "filters", "reset-filters", "theme-toggle", "stat-total", "stat-free", "stat-openai", "stat-fresh",
+  "advisor-usecase", "advisor-priority", "advisor-results"
 ].map((id) => [id, document.getElementById(id)]));
 
 let providers = [];
@@ -161,11 +162,57 @@ function createCard(provider) {
   return card;
 }
 
+function usecaseCapabilities(usecase) {
+  const map = {
+    chat: ["chat", "text_generation"],
+    coding: ["tool_calling", "structured_output"],
+    reasoning: ["reasoning"],
+    embeddings: ["embeddings"]
+  };
+  return map[usecase] ?? map.chat;
+}
+
+function recommendationScore(provider, usecase, priority) {
+  const capabilities = usecaseCapabilities(usecase);
+  let score = 0;
+  if (capabilities.some((capability) => provider.capabilities.includes(capability))) score += 35;
+  if (provider.api.openai_compatible) score += priority === "openai-compatible" ? 28 : 10;
+  if (provider.free_tier.type === "permanent_allowance") score += 18;
+  if (provider.free_tier.type === "free_models") score += 14;
+  if (provider.free_tier.requires_payment_method === false) score += priority === "low-friction" ? 20 : 8;
+  if (!isStale(provider)) score += priority === "fresh" ? 20 : 8;
+  if (provider.iran_access.status !== "unknown") score += priority === "iran-aware" ? 22 : 5;
+  if (["officially_unsupported", "verified_blocked"].includes(provider.iran_access.status)) score -= 12;
+  return score;
+}
+
+function renderAdvisor() {
+  const usecase = elements["advisor-usecase"].value;
+  const priority = elements["advisor-priority"].value;
+  const recommendations = providers
+    .map((provider) => ({ provider, score: recommendationScore(provider, usecase, priority) }))
+    .sort((a, b) => b.score - a.score || a.provider.name.localeCompare(b.provider.name, "en"))
+    .slice(0, 3);
+
+  elements["advisor-results"].replaceChildren(...recommendations.map(({ provider, score }) => {
+    const item = document.createElement("li");
+    const title = document.createElement("strong");
+    title.textContent = provider.name;
+    const meta = document.createElement("span");
+    meta.textContent = `${freeLabels[provider.free_tier.type] ?? provider.free_tier.type} · ${provider.api.openai_compatible ? "OpenAI-compatible" : "API اختصاصی"} · امتیاز ${score.toLocaleString("fa-IR")}`;
+    const reason = document.createElement("small");
+    reason.textContent = `${limitText(provider)} · ${accessLabels[provider.iran_access.status] ?? provider.iran_access.status}`;
+    item.append(title, meta, reason);
+    return item;
+  }));
+}
+
 function render() {
   const result = filteredProviders();
   elements["provider-grid"].replaceChildren(...result.map(createCard));
   elements["result-count"].textContent = `${result.length.toLocaleString("fa-IR")} مورد از ${providers.length.toLocaleString("fa-IR")}`;
   elements.empty.hidden = result.length !== 0;
+  renderAdvisor();
 }
 
 function setStats() {
@@ -201,6 +248,8 @@ async function init() {
   loadUrlFilters();
   elements.filters.addEventListener("input", render);
   elements.sort.addEventListener("change", render);
+  elements["advisor-usecase"].addEventListener("change", renderAdvisor);
+  elements["advisor-priority"].addEventListener("change", renderAdvisor);
   elements.filters.addEventListener("reset", () => setTimeout(() => { elements.sort.value = "name"; render(); }, 0));
 
   try {

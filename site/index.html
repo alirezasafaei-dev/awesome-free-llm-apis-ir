@@ -107,6 +107,35 @@
           <button id="reset-filters" class="reset-button" type="reset">پاک‌کردن فیلترها</button>
         </form>
 
+        <section class="advisor" aria-labelledby="advisor-title">
+          <div>
+            <p class="eyebrow">پیشنهاد سریع</p>
+            <h3 id="advisor-title">برای شروع کدام API مناسب‌تر است؟</h3>
+            <p>اولویت و کاربردت را انتخاب کن تا با همین داده‌های کاتالوگ، گزینه‌های کم‌ریسک‌تر و کاربردی‌تر برجسته شوند.</p>
+          </div>
+          <div class="advisor-controls">
+            <label>
+              <span>کاربرد</span>
+              <select id="advisor-usecase">
+                <option value="chat">چت و تولید متن</option>
+                <option value="coding">کدنویسی و Tool calling</option>
+                <option value="reasoning">استدلال و حل مسئله</option>
+                <option value="embeddings">Embedding و جست‌وجو</option>
+              </select>
+            </label>
+            <label>
+              <span>اولویت</span>
+              <select id="advisor-priority">
+                <option value="low-friction">شروع سریع و بدون دردسر</option>
+                <option value="iran-aware">شفافیت وضعیت ایران</option>
+                <option value="openai-compatible">سازگاری با OpenAI API</option>
+                <option value="fresh">دادهٔ تازه‌تر</option>
+              </select>
+            </label>
+          </div>
+          <ol id="advisor-results" class="advisor-results" aria-live="polite"></ol>
+        </section>
+
         <div class="results-bar">
           <p id="result-count" aria-live="polite">در حال بارگذاری…</p>
           <label class="sort-field">
