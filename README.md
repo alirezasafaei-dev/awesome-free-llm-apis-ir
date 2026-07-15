@@ -29,16 +29,16 @@
 | سرویس | رایگان | محدودیت نمونه | OpenAI-compatible | دسترسی ایران | آخرین بررسی |
 |---|---|---|:---:|---|---|
 | [Cerebras Inference](https://cloud.cerebras.ai/) | آزمایشی | 5 RPM · 30,000 TPM | ✅ | ❔ نامشخص | 2026-07-14 |
-| [Cloudflare Workers AI](https://developers.cloudflare.com/workers-ai/) | سهمیه دائمی | 10,000 neurons/day | ✅ | ❔ نامشخص | 2026-07-14 |
+| [Cloudflare Workers AI](https://developers.cloudflare.com/workers-ai/) | سهمیه دائمی | 10,000 neurons/day | ✅ | ✅ مستقیم تست‌شده | 2026-07-14 |
 | [Cohere](https://cohere.com/) | آزمایشی | 20 RPM · 1,000 requests/month | — | ❔ نامشخص | 2026-07-14 |
 | [GitHub Models](https://github.com/marketplace/models) | سهمیه دائمی | 15 RPM · 150 RPD | ✅ | ✅ مستقیم تست‌شده | 2026-07-14 |
 | [Google Gemini API](https://ai.google.dev/) | سهمیه دائمی | وابسته به حساب/مدل | ✅ | 🚫 پشتیبانی‌نشده رسمی | 2026-07-14 |
 | [Groq](https://groq.com/) | سهمیه دائمی | 30 RPM · 14400 RPD | ✅ | ❔ نامشخص | 2026-07-14 |
 | [Hugging Face Inference Providers](https://huggingface.co/inference-providers) | اعتبار ماهانه | $0.1/month | ✅ | ✅ مستقیم تست‌شده | 2026-07-14 |
-| [Mistral AI](https://mistral.ai/) | سهمیه دائمی | وابسته به حساب/مدل | ✅ | ❔ نامشخص | 2026-07-14 |
+| [Mistral AI](https://mistral.ai/) | سهمیه دائمی | وابسته به حساب/مدل | ✅ | ✅ مستقیم تست‌شده | 2026-07-14 |
 | [NVIDIA NIM API Catalog](https://build.nvidia.com/) | سهمیه دائمی | وابسته به حساب/مدل | ✅ | ❔ نامشخص | 2026-07-14 |
 | [OpenRouter](https://openrouter.ai/) | مدل‌های رایگان | 20 RPM · 50 RPD | ✅ | ❔ نامشخص | 2026-07-14 |
-| [SambaNova Cloud](https://cloud.sambanova.ai/) | سهمیه دائمی | 20 RPM · 20 RPD | ✅ | ❔ نامشخص | 2026-07-14 |
+| [SambaNova Cloud](https://cloud.sambanova.ai/) | سهمیه دائمی | 20 RPM · 20 RPD | ✅ | ✅ مستقیم تست‌شده | 2026-07-14 |
 <!-- PROVIDERS_TABLE_END -->
 
 ## معنی وضعیت دسترسی ایران

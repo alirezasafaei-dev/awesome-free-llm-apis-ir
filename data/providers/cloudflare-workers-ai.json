@@ -21,18 +21,33 @@
     "notes_fa": "۱۰٬۰۰۰ Neuron در روز رایگان است؛ برای مصرف بیشتر باید Workers Paid فعال شود."
   },
   "iran_access": {
-    "status": "unknown",
+    "status": "verified_working",
     "official_policy": "not_documented",
-    "tested_from_iran": false,
-    "tested_at": null,
-    "test_method": "not_tested",
-    "network": null,
-    "evidence": []
+    "tested_from_iran": true,
+    "tested_at": "2026-07-15",
+    "test_method": "live_request",
+    "network": {
+      "country": "IR",
+      "route": "direct"
+    },
+    "evidence": [
+      {
+        "type": "live_test",
+        "timestamp": "2026-07-15T21:15:11Z",
+        "http_status": 200,
+        "latency_ms": 2440,
+        "model_tested": "@cf/meta/llama-3.2-3b-instruct",
+        "endpoint": "https://api.cloudflare.com/client/v4/accounts/{account_id}/ai/v1/chat/completions",
+        "source": "LOCAL_PC — Iran fixed network",
+        "notes_fa": "مدل پیش‌فرض قبلی (@cf/meta/llama-3.1-8b-instruct) در 2026-05-30 منسوخ شده است. تست با @cf/meta/llama-3.2-3b-instruct موفق بود."
+      }
+    ],
+    "notes_fa": "⚠️ مدل پیش‌فرض از @cf/meta/llama-3.1-8b-instruct به @cf/meta/llama-3.2-3b-instruct تغییر یافت."
   },
   "models": {
     "dynamic": true,
     "source": "https://developers.cloudflare.com/workers-ai/models/",
-    "notable": []
+    "notable": ["@cf/meta/llama-3.2-3b-instruct"]
   },
   "verification": {
     "level": "docs_verified",
