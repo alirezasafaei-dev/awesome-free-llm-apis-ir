@@ -1,0 +1,95 @@
+name: Upstream repository watch
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "11 6 * * 2"
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: upstream-repository-watch
+  cancel-in-progress: false
+
+jobs:
+  monitor:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Test comparison logic
+        run: npm run upstreams:test
+
+      - name: Restore previous snapshot
+        uses: actions/cache@v4
+        with:
+          path: .cache/upstreams/previous.json
+          key: upstream-watch-${{ github.run_id }}
+          restore-keys: |
+            upstream-watch-
+
+      - name: Collect and compare upstream state
+        id: watch
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: npm run upstreams:check
+
+      - name: Upload reproducible report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: upstream-watch-${{ github.run_id }}
+          path: |
+            artifacts/upstream-report.md
+            artifacts/upstream-snapshot.json
+          if-no-files-found: warn
+          retention-days: 30
+
+      - name: Create or update verification issue
+        if: steps.watch.outputs.meaningful == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const marker = '<!-- automated-upstream-repository-watch -->';
+            const report = fs.readFileSync('artifacts/upstream-report.md', 'utf8');
+            const body = `${marker}
+            ## تغییرات Upstream نیازمند راستی‌آزمایی
+
+            ${report}
+
+            ## چک‌لیست پذیرش
+
+            - [ ] تغییر با مستندات رسمی Provider تطبیق داده شود
+            - [ ] Free Tier از Trial/Credit تفکیک شود
+            - [ ] روش احراز هویت و نیاز به کارت/پرداخت بررسی شود
+            - [ ] سازگاری OpenAI با نمونهٔ واقعی یا مستندات رسمی تأیید شود
+            - [ ] وضعیت ایران فقط با سیاست رسمی یا تست تاریخ‌دار تغییر کند
+            - [ ] ابزارهای Proxy/Session Bridge وارد Catalog اصلی نشوند
+            - [ ] پس از تغییر داده‌ها، \`npm test\` و تولید Catalog اجرا شود
+
+            این Workflow فقط تغییر را کشف می‌کند و هیچ ادعایی را خودکار وارد Catalog نمی‌کند.`;
+
+            const q = `repo:${context.repo.owner}/${context.repo.repo} is:issue is:open in:body "${marker}"`;
+            const found = await github.rest.search.issuesAndPullRequests({ q, per_page: 1 });
+            if (found.data.items.length) {
+              await github.rest.issues.update({
+                ...context.repo,
+                issue_number: found.data.items[0].number,
+                title: '[Maintenance] Upstream changes require verification',
+                body
+              });
+            } else {
+              await github.rest.issues.create({
+                ...context.repo,
+                title: '[Maintenance] Upstream changes require verification',
+                body
+              });
+            }

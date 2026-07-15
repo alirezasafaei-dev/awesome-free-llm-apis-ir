@@ -1,6 +1,7 @@
 # Awesome Free LLM APIs IR
 
 [![Validate data](https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir/actions/workflows/validate.yml/badge.svg)](https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir/actions/workflows/validate.yml)
+[![Upstream watch](https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir/actions/workflows/upstream-watch.yml/badge.svg)](https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir/actions/workflows/upstream-watch.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Persian](https://img.shields.io/badge/lang-فارسی-239f40.svg)](README.md)
 [![English](https://img.shields.io/badge/lang-English-blue.svg)](README.en.md)
@@ -82,6 +83,17 @@ npm test
 ```
 
 فایل `catalog.json` و جدول README هر دو از منبع اصلی تولید می‌شوند و CI از قدیمی‌شدن آن‌ها جلوگیری می‌کند. Workflow هفتگی نیز رکوردهای منقضی‌شده را پیدا و یک Issue نگهداری ایجاد یا به‌روزرسانی می‌کند.
+
+## پایش منابع بالادستی
+
+Repositoryهای مرجع، Gatewayها و ابزارهای پرنوسان در [`data/upstreams.json`](data/upstreams.json) ثبت شده‌اند. Workflow هفتگی فقط SHA فایل‌های حساس را مقایسه می‌کند و در صورت تغییر، یک Issue یکتا برای راستی‌آزمایی انسانی می‌سازد؛ هیچ ادعایی خودکار وارد Catalog نمی‌شود.
+
+```bash
+npm run upstreams:test
+GITHUB_TOKEN=... npm run upstreams:check
+```
+
+جزئیات معماری، Tierهای اعتماد، Artifact/Cache و روش پاسخ به هشدار در [راهنمای پایش Repositoryهای بالادستی](docs/UPSTREAM_REPOSITORY_WATCH.fa.md) آمده است.
 
 ## تست واقعی از ایران
 

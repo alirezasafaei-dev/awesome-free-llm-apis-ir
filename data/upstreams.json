@@ -1,0 +1,77 @@
+{
+  "schema_version": "1.0.0",
+  "sources": [
+    {
+      "repository": "cheahjs/free-llm-api-resources",
+      "role": "source_of_record",
+      "trust_tier": 1,
+      "classification": "catalog",
+      "paths": ["README.md"],
+      "review_policy": "Verify every provider claim against first-party documentation before changing the canonical catalog.",
+      "notes_fa": "مرجع اصلی برای کشف Providerهای رسمی و تفکیک Free Tier از Trial/Credit."
+    },
+    {
+      "repository": "mnfst/awesome-free-llm-apis",
+      "role": "curated_reference",
+      "trust_tier": 1,
+      "classification": "catalog",
+      "paths": ["README.md", "data.json"],
+      "review_policy": "Treat additions as high-signal candidates, but re-check limits and authentication in official docs.",
+      "notes_fa": "مرجع سخت‌گیرانه برای سهمیه‌های رایگان دائمی و سازگاری OpenAI."
+    },
+    {
+      "repository": "open-free-llm-api/awesome-freellm-apis",
+      "role": "discovery_feed",
+      "trust_tier": 2,
+      "classification": "catalog",
+      "paths": ["README.md"],
+      "review_policy": "Use only as a change detector; never merge generated claims without independent verification.",
+      "notes_fa": "دیتاست وسیع و خودکار؛ مناسب کشف تغییر، نه منبع نهایی حقیقت."
+    },
+    {
+      "repository": "Free-The-Ai/free-ai",
+      "role": "provider_candidate",
+      "trust_tier": 2,
+      "classification": "community_gateway",
+      "paths": ["README.md", "CHANGELOG.md", "SKILL.md"],
+      "review_policy": "Re-check signup, daily check-in, model aliases and free-tier limits before catalog updates.",
+      "notes_fa": "Gateway اجتماعی سازگار با OpenAI؛ تغییرات مدل و احراز هویت باید پیگیری شود."
+    },
+    {
+      "repository": "pollinations/pollinations",
+      "role": "provider_candidate",
+      "trust_tier": 2,
+      "classification": "official_provider",
+      "paths": ["README.md", "APIDOCS.md"],
+      "review_policy": "Track authentication, anonymous throttling and budget semantics; avoid describing it as permanently no-auth without current evidence.",
+      "notes_fa": "پلتفرم رسمی چندرسانه‌ای؛ مدل اقتصادی و Key policy آن متغیر است."
+    },
+    {
+      "repository": "tashfeenahmed/freellmapi",
+      "role": "tooling_watch",
+      "trust_tier": 3,
+      "classification": "self_hosted",
+      "paths": ["README.md"],
+      "review_policy": "Keep in the tooling appendix; do not import aggregated provider claims directly.",
+      "notes_fa": "Proxy محلی برای تجمیع Free Tierها؛ منبع کشف و معماری است، نه Provider رسمی."
+    },
+    {
+      "repository": "xtekky/gpt4free",
+      "role": "tooling_watch",
+      "trust_tier": 3,
+      "classification": "session_bridge",
+      "paths": ["README.md"],
+      "review_policy": "Monitor only in the proxy/session-bridge appendix because cookies, browser state and third-party behavior are volatile.",
+      "notes_fa": "پروکسی پرکاربرد اما پرریسک از نظر پایداری، سشن و شرایط استفاده."
+    },
+    {
+      "repository": "Free-AI-Things/g4f-working",
+      "role": "volatility_radar",
+      "trust_tier": 3,
+      "classification": "monitoring_companion",
+      "paths": ["README.md"],
+      "review_policy": "Use availability results only as advisory signals; require independent reproduction before publication.",
+      "notes_fa": "رادار روزانه برای نوسان Providerهای بدون احراز هویت در اکوسیستم g4f."
+    }
+  ]
+}

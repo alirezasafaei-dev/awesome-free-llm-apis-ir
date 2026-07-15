@@ -94,6 +94,7 @@
           "type": ["object", "null"],
           "additionalProperties": false,
           "properties": {
+            "country": { "type": ["string", "null"], "pattern": "^[A-Z]{2}$" },
             "isp": { "type": ["string", "null"] },
             "asn": { "type": ["string", "null"] },
             "city": { "type": ["string", "null"] },
@@ -107,13 +108,35 @@
           "items": {
             "type": "object",
             "additionalProperties": false,
-            "required": ["type", "url", "checked_at", "notes_fa"],
+            "required": ["type"],
             "properties": {
               "type": { "enum": ["official_docs", "live_test", "community_report"] },
               "url": { "type": ["string", "null"], "format": "uri" },
-              "checked_at": { "type": "string", "format": "date" },
-              "notes_fa": { "type": "string" }
-            }
+              "checked_at": { "type": ["string", "null"], "format": "date" },
+              "timestamp": { "type": ["string", "null"], "format": "date-time" },
+              "http_status": { "type": ["integer", "null"], "minimum": 100, "maximum": 599 },
+              "latency_ms": { "type": ["integer", "null"], "minimum": 0 },
+              "model_tested": { "type": ["string", "null"] },
+              "endpoint": { "type": ["string", "null"] },
+              "source": { "type": ["string", "null"] },
+              "response_fingerprint": { "type": ["string", "null"] },
+              "response_body_fingerprint": { "type": ["string", "null"] },
+              "notes_fa": { "type": ["string", "null"] }
+            },
+            "allOf": [
+              {
+                "if": { "properties": { "type": { "const": "official_docs" } } },
+                "then": { "required": ["url", "checked_at", "notes_fa"] }
+              },
+              {
+                "if": { "properties": { "type": { "const": "community_report" } } },
+                "then": { "required": ["url", "checked_at", "notes_fa"] }
+              },
+              {
+                "if": { "properties": { "type": { "const": "live_test" } } },
+                "then": { "required": ["timestamp", "http_status", "latency_ms", "model_tested", "endpoint", "source"] }
+              }
+            ]
           }
         }
       }
