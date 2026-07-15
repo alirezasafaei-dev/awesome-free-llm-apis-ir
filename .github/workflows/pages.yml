@@ -24,6 +24,8 @@ jobs:
           node-version: 22
       - run: npm test
       - run: npm run site:build
+        env:
+          SOURCE_REVISION: ${{ github.sha }}
       - uses: actions/configure-pages@v5
         with:
           enablement: true
