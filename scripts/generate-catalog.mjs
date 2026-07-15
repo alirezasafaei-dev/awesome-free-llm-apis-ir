@@ -14,7 +14,7 @@ for (const file of (await readdir(providersDir)).filter((name) => name.endsWith(
 providers.sort((a, b) => a.id.localeCompare(b.id, "en"));
 const lastUpdated = providers.map((provider) => provider.verification.last_checked).sort().at(-1) ?? null;
 const catalog = {
-  schema_version: "1.0.0",
+  schema_version: "1.1.0",
   last_updated: lastUpdated,
   provider_count: providers.length,
   providers
@@ -37,4 +37,3 @@ if (process.argv.includes("--check")) {
   await writeFile(outputPath, next);
   console.log(`Generated catalog.json with ${providers.length} providers.`);
 }
-

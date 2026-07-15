@@ -1,5 +1,6 @@
 {
-  "schema_version": "1.0.0",
+  "schema_version": "1.1.0",
+  "service_type": "official_gateway",
   "id": "openrouter",
   "name": "OpenRouter",
   "website": "https://openrouter.ai/",
@@ -61,4 +62,3 @@
     "https://openrouter.ai/docs/guides/routing/model-variants/free"
   ]
 }
-

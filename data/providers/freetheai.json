@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.1.0",
+  "service_type": "community_gateway",
+  "id": "freetheai",
+  "name": "FreeTheAI",
+  "website": "https://freetheai.xyz/",
+  "docs": "https://freetheai.xyz/docs",
+  "signup": "https://freetheai.xyz/",
+  "api": {
+    "base_url": "https://api.freetheai.xyz/v1",
+    "openai_compatible": true,
+    "auth": "api_key"
+  },
+  "capabilities": ["chat", "text_generation", "reasoning", "tool_calling", "structured_output"],
+  "free_tier": {
+    "status": "active",
+    "type": "free_models",
+    "requires_payment_method": false,
+    "limits": [
+      {
+        "scope": "account",
+        "model": null,
+        "condition": "Tier 1 after Discord signup",
+        "rpm": 10,
+        "rpd": 250,
+        "concurrent_requests": 1,
+        "notes_fa": "سقف روزانه پیش‌فرض برای پاسخ‌های موفق است؛ Tierهای بالاتر با فعالیت اجتماعی تا ۳۵ RPM و concurrency برابر ۳ می‌رسند."
+      }
+    ],
+    "notes_fa": "ثبت‌نام و check-in روزانه به Discord وابسته است. فهرست مدل‌ها و ظرفیت سرویس پویا است."
+  },
+  "iran_access": {
+    "status": "unknown",
+    "official_policy": "not_documented",
+    "tested_from_iran": false,
+    "tested_at": null,
+    "test_method": "not_tested",
+    "network": null,
+    "evidence": []
+  },
+  "models": {
+    "dynamic": true,
+    "source": "https://freetheai.xyz/models",
+    "notable": []
+  },
+  "verification": {
+    "level": "docs_verified",
+    "last_checked": "2026-07-15",
+    "checked_by": "maintainers",
+    "stale_after_days": 14
+  },
+  "notes_fa": "این سرویس یک Gateway اجتماعی است، نه Provider اصلی مدل. پایداری، قوانین و ظرفیت آن باید مستقل از Providerهای رسمی پایش شود.",
+  "sources": [
+    "https://github.com/Free-The-Ai/free-ai/blob/master/README.md",
+    "https://freetheai.xyz/docs",
+    "https://freetheai.xyz/models"
+  ]
+}

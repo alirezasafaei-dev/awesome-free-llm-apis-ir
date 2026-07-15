@@ -6,6 +6,7 @@
   "additionalProperties": false,
   "required": [
     "schema_version",
+    "service_type",
     "id",
     "name",
     "website",
@@ -18,7 +19,8 @@
     "sources"
   ],
   "properties": {
-    "schema_version": { "const": "1.0.0" },
+    "schema_version": { "const": "1.1.0" },
+    "service_type": { "enum": ["official_provider", "official_gateway", "community_gateway", "session_bridge", "self_hosted"] },
     "id": { "type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$" },
     "name": { "type": "string", "minLength": 2 },
     "website": { "type": "string", "format": "uri" },
@@ -31,7 +33,7 @@
       "properties": {
         "base_url": { "type": "string", "format": "uri" },
         "openai_compatible": { "type": "boolean" },
-        "auth": { "enum": ["api_key", "oauth", "token", "account_id_and_token", "other"] }
+        "auth": { "enum": ["api_key", "oauth", "token", "account_id_and_token", "none_or_api_key", "other"] }
       }
     },
     "capabilities": {
@@ -60,6 +62,7 @@
               "condition": { "type": ["string", "null"] },
               "rpm": { "type": ["number", "null"], "minimum": 0 },
               "rpd": { "type": ["number", "null"], "minimum": 0 },
+              "rph": { "type": ["number", "null"], "minimum": 0 },
               "tpm": { "type": ["number", "null"], "minimum": 0 },
               "tph": { "type": ["number", "null"], "minimum": 0 },
               "tpd": { "type": ["number", "null"], "minimum": 0 },

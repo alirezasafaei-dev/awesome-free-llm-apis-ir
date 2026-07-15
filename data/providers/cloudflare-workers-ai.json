@@ -1,5 +1,6 @@
 {
-  "schema_version": "1.0.0",
+  "schema_version": "1.1.0",
+  "service_type": "official_gateway",
   "id": "cloudflare-workers-ai",
   "name": "Cloudflare Workers AI",
   "website": "https://developers.cloudflare.com/workers-ai/",

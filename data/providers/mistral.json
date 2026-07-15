@@ -1,5 +1,6 @@
 {
-  "schema_version": "1.0.0",
+  "schema_version": "1.1.0",
+  "service_type": "official_provider",
   "id": "mistral",
   "name": "Mistral AI",
   "website": "https://mistral.ai/",
@@ -44,4 +45,3 @@
     "https://docs.mistral.ai/admin/billing-usage/usage-limits"
   ]
 }
-

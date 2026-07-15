@@ -21,24 +21,29 @@
 - دسته‌بندی قابلیت‌ها برای چت، Reasoning، کدنویسی، Embedding و پردازش متن
 - آماده‌سازی دادهٔ ماشین‌خوان برای وب‌سایت و ابزارهای جامعهٔ فارسی‌زبان
 - افزودن سرویس‌های ایرانی فقط پس از اثبات API عمومی و سهمیهٔ رایگان
+- جداسازی Provider رسمی، Gateway رسمی و Gateway اجتماعی از ابزارهای Session/Cookie
 
 ## فهرست سریع
 
 <!-- PROVIDERS_TABLE_START -->
 <!-- This section is generated. Run: npm run generate -->
-| سرویس | رایگان | محدودیت نمونه | OpenAI-compatible | دسترسی ایران | آخرین بررسی |
-|---|---|---|:---:|---|---|
-| [Cerebras Inference](https://cloud.cerebras.ai/) | آزمایشی | 5 RPM · 30,000 TPM | ✅ | ❔ نامشخص | 2026-07-14 |
-| [Cloudflare Workers AI](https://developers.cloudflare.com/workers-ai/) | سهمیه دائمی | 10,000 neurons/day | ✅ | ❔ نامشخص | 2026-07-14 |
-| [Cohere](https://cohere.com/) | آزمایشی | 20 RPM · 1,000 requests/month | — | ❔ نامشخص | 2026-07-14 |
-| [GitHub Models](https://github.com/marketplace/models) | سهمیه دائمی | 15 RPM · 150 RPD | ✅ | ❔ نامشخص | 2026-07-14 |
-| [Google Gemini API](https://ai.google.dev/) | سهمیه دائمی | وابسته به حساب/مدل | ✅ | 🚫 پشتیبانی‌نشده رسمی | 2026-07-14 |
-| [Groq](https://groq.com/) | سهمیه دائمی | 30 RPM · 14400 RPD | ✅ | ❔ نامشخص | 2026-07-14 |
-| [Hugging Face Inference Providers](https://huggingface.co/inference-providers) | اعتبار ماهانه | $0.1/month | ✅ | ❔ نامشخص | 2026-07-14 |
-| [Mistral AI](https://mistral.ai/) | سهمیه دائمی | وابسته به حساب/مدل | ✅ | ❔ نامشخص | 2026-07-14 |
-| [NVIDIA NIM API Catalog](https://build.nvidia.com/) | سهمیه دائمی | وابسته به حساب/مدل | ✅ | ❔ نامشخص | 2026-07-14 |
-| [OpenRouter](https://openrouter.ai/) | مدل‌های رایگان | 20 RPM · 50 RPD | ✅ | ❔ نامشخص | 2026-07-14 |
-| [SambaNova Cloud](https://cloud.sambanova.ai/) | سهمیه دائمی | 20 RPM · 20 RPD | ✅ | ❔ نامشخص | 2026-07-14 |
+| سرویس | نوع | رایگان | محدودیت نمونه | OpenAI-compatible | دسترسی ایران | آخرین بررسی |
+|---|---|---|---|:---:|---|---|
+| [Aion Labs](https://www.aionlabs.ai/) | Provider رسمی | سهمیه دائمی | 15 RPM · 20,000 TPM | ✅ | ❔ نامشخص | 2026-07-15 |
+| [Cerebras Inference](https://cloud.cerebras.ai/) | Gateway رسمی | آزمایشی | 5 RPM · 30,000 TPM | ✅ | ❔ نامشخص | 2026-07-14 |
+| [Cloudflare Workers AI](https://developers.cloudflare.com/workers-ai/) | Gateway رسمی | سهمیه دائمی | 10,000 neurons/day | ✅ | ❔ نامشخص | 2026-07-14 |
+| [Cohere](https://cohere.com/) | Provider رسمی | آزمایشی | 20 RPM · 1,000 requests/month | — | ❔ نامشخص | 2026-07-14 |
+| [FreeTheAI](https://freetheai.xyz/) | Gateway اجتماعی | مدل‌های رایگان | 10 RPM · 250 RPD | ✅ | ❔ نامشخص | 2026-07-15 |
+| [GitHub Models](https://github.com/marketplace/models) | Gateway رسمی | سهمیه دائمی | 15 RPM · 150 RPD | ✅ | ❔ نامشخص | 2026-07-14 |
+| [Google Gemini API](https://ai.google.dev/) | Provider رسمی | سهمیه دائمی | وابسته به حساب/مدل | ✅ | 🚫 پشتیبانی‌نشده رسمی | 2026-07-14 |
+| [Groq](https://groq.com/) | Gateway رسمی | سهمیه دائمی | 30 RPM · 14400 RPD | ✅ | ❔ نامشخص | 2026-07-14 |
+| [Hugging Face Inference Providers](https://huggingface.co/inference-providers) | Gateway رسمی | اعتبار ماهانه | $0.1/month | ✅ | ❔ نامشخص | 2026-07-14 |
+| [Kilo Gateway](https://kilo.ai/) | Gateway رسمی | مدل‌های رایگان | 200 RPH | ✅ | ❔ نامشخص | 2026-07-15 |
+| [Mistral AI](https://mistral.ai/) | Provider رسمی | سهمیه دائمی | وابسته به حساب/مدل | ✅ | ❔ نامشخص | 2026-07-14 |
+| [NVIDIA NIM API Catalog](https://build.nvidia.com/) | Gateway رسمی | سهمیه دائمی | وابسته به حساب/مدل | ✅ | ❔ نامشخص | 2026-07-14 |
+| [OpenRouter](https://openrouter.ai/) | Gateway رسمی | مدل‌های رایگان | 20 RPM · 50 RPD | ✅ | ❔ نامشخص | 2026-07-14 |
+| [SambaNova Cloud](https://cloud.sambanova.ai/) | Gateway رسمی | سهمیه دائمی | 20 RPM · 20 RPD | ✅ | ❔ نامشخص | 2026-07-14 |
+| [Vercel AI Gateway](https://vercel.com/ai) | Gateway رسمی | اعتبار ماهانه | $5/month | ✅ | ❔ نامشخص | 2026-07-15 |
 <!-- PROVIDERS_TABLE_END -->
 
 ## معنی وضعیت دسترسی ایران
@@ -54,7 +59,7 @@
 | 🧾 ثبت‌نام مسدود | خود API ممکن است در دسترس باشد اما ساخت حساب با مانع روبه‌رو است |
 | ❔ نامشخص | تست معتبر و تازه‌ای ثبت نشده است |
 
-جزئیات روش ارزیابی در [روش‌شناسی](docs/METHODOLOGY.fa.md) و [سطوح اعتبارسنجی](docs/VERIFICATION.fa.md) آمده است.
+جزئیات روش ارزیابی در [روش‌شناسی](docs/METHODOLOGY.fa.md)، [نوع سرویس‌ها](docs/SERVICE_TYPES.fa.md) و [سطوح اعتبارسنجی](docs/VERIFICATION.fa.md) آمده است.
 
 ## چه چیزهایی ثبت می‌شوند؟
 

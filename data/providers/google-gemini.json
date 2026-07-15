@@ -1,5 +1,6 @@
 {
-  "schema_version": "1.0.0",
+  "schema_version": "1.1.0",
+  "service_type": "official_provider",
   "id": "google-gemini",
   "name": "Google Gemini API",
   "website": "https://ai.google.dev/",
@@ -48,4 +49,3 @@
   "notes_fa": "به دلیل وضعیت رسمی منطقه‌ای، در گروه گزینه‌های قابل استفادهٔ مستقیم از ایران قرار نمی‌گیرد.",
   "sources": ["https://ai.google.dev/gemini-api/docs/rate-limits", "https://ai.google.dev/gemini-api/docs/available-regions"]
 }
-

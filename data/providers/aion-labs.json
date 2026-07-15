@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.1.0",
+  "service_type": "official_provider",
+  "id": "aion-labs",
+  "name": "Aion Labs",
+  "website": "https://www.aionlabs.ai/",
+  "docs": "https://www.aionlabs.ai/docs/",
+  "signup": "https://www.aionlabs.ai/",
+  "api": {
+    "base_url": "https://api.aionlabs.ai/v1",
+    "openai_compatible": true,
+    "auth": "api_key"
+  },
+  "capabilities": ["chat", "text_generation", "reasoning"],
+  "free_tier": {
+    "status": "active",
+    "type": "permanent_allowance",
+    "requires_payment_method": false,
+    "limits": [
+      {
+        "scope": "account",
+        "model": null,
+        "condition": "Free tier",
+        "rpm": 15,
+        "tpm": 20000,
+        "tpd": 20000,
+        "notes_fa": "محدودیت روزانه در ساعت ۰۰:۰۰ UTC بازنشانی می‌شود."
+      }
+    ],
+    "notes_fa": "پلن رایگان روزانه است و طبق صفحهٔ قیمت‌گذاری به کارت بانکی نیاز ندارد."
+  },
+  "iran_access": {
+    "status": "unknown",
+    "official_policy": "not_documented",
+    "tested_from_iran": false,
+    "tested_at": null,
+    "test_method": "not_tested",
+    "network": null,
+    "evidence": []
+  },
+  "models": {
+    "dynamic": true,
+    "source": "https://www.aionlabs.ai/docs/models/",
+    "notable": ["aion-2.0", "aion-2.5", "aion-3.0", "aion-3.0-mini", "aion-rp-llama-3.1-8b"]
+  },
+  "verification": {
+    "level": "docs_verified",
+    "last_checked": "2026-07-15",
+    "checked_by": "maintainers",
+    "stale_after_days": 30
+  },
+  "notes_fa": "ثبت‌نام، دریافت کلید و درخواست API از شبکهٔ ایران هنوز به‌صورت زنده آزمایش نشده است.",
+  "sources": [
+    "https://www.aionlabs.ai/pricing/",
+    "https://www.aionlabs.ai/docs/",
+    "https://www.aionlabs.ai/docs/rate-limits/",
+    "https://www.aionlabs.ai/docs/models/"
+  ]
+}

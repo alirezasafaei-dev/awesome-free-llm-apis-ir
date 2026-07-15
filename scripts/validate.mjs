@@ -8,10 +8,12 @@ const allowed = {
   capabilities: new Set(["chat", "text_generation", "reasoning", "embeddings", "tool_calling", "structured_output"]),
   freeStatus: new Set(["active", "limited", "trial", "none", "unknown"]),
   freeType: new Set(["permanent_allowance", "free_models", "monthly_credit", "trial", "unknown"]),
+  serviceType: new Set(["official_provider", "official_gateway", "community_gateway", "session_bridge", "self_hosted"]),
   iranStatus: new Set(["verified_working", "verified_working_vpn", "direct_blocked_vpn_working", "verified_blocked", "officially_unsupported", "intermittent", "signup_blocked", "unknown"]),
   officialPolicy: new Set(["supported", "unsupported", "not_documented", "unknown"]),
   verification: new Set(["docs_verified", "live_verified", "community_report", "unverified"])
 };
+const hostedServiceTypes = new Set(["official_provider", "official_gateway", "community_gateway"]);
 
 const errors = [];
 const warnings = [];
@@ -46,8 +48,10 @@ function validDate(value) {
 }
 
 function validateProvider(p, file) {
-  requireFields(p, ["schema_version", "id", "name", "website", "docs", "api", "capabilities", "free_tier", "iran_access", "verification", "sources"], file);
-  if (p.schema_version !== "1.0.0") fail(file, "schema_version must be 1.0.0");
+  requireFields(p, ["schema_version", "service_type", "id", "name", "website", "docs", "api", "capabilities", "free_tier", "iran_access", "verification", "sources"], file);
+  if (p.schema_version !== "1.1.0") fail(file, "schema_version must be 1.1.0");
+  if (!allowed.serviceType.has(p.service_type)) fail(file, "invalid service_type");
+  if (!hostedServiceTypes.has(p.service_type)) fail(file, "session_bridge and self_hosted entries belong in the separate tools catalog");
   if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(p.id ?? "")) fail(file, "invalid id");
   if (ids.has(p.id)) fail(file, `duplicate id ${p.id}`);
   ids.add(p.id);
