@@ -172,6 +172,8 @@ function usecaseCapabilities(usecase) {
   return map[usecase] ?? map.chat;
 }
 
+const iranScorePenalties = ["officially_unsupported", "verified_blocked", "signup_blocked"];
+
 function recommendationScore(provider, usecase, priority) {
   const capabilities = usecaseCapabilities(usecase);
   let score = 0;
@@ -181,8 +183,16 @@ function recommendationScore(provider, usecase, priority) {
   if (provider.free_tier.type === "free_models") score += 14;
   if (provider.free_tier.requires_payment_method === false) score += priority === "low-friction" ? 20 : 8;
   if (!isStale(provider)) score += priority === "fresh" ? 20 : 8;
-  if (provider.iran_access.status !== "unknown") score += priority === "iran-aware" ? 22 : 5;
-  if (["officially_unsupported", "verified_blocked"].includes(provider.iran_access.status)) score -= 12;
+  if (priority === "iran-aware") {
+    if (provider.iran_access.status === "verified_working") score += 30;
+    else if (provider.iran_access.status === "verified_working_vpn") score += 12;
+    else if (iranScorePenalties.includes(provider.iran_access.status)) score -= 30;
+  } else {
+    if (provider.iran_access.status !== "unknown") score += 5;
+    if (iranScorePenalties.includes(provider.iran_access.status)) score -= 12;
+  }
+  if (provider.service_type === "community_gateway") score -= 20;
+  if (provider.service_type === "session_bridge") score -= 30;
   return score;
 }
 
@@ -199,9 +209,9 @@ function renderAdvisor() {
     const title = document.createElement("strong");
     title.textContent = provider.name;
     const meta = document.createElement("span");
-    meta.textContent = `${freeLabels[provider.free_tier.type] ?? provider.free_tier.type} · ${provider.api.openai_compatible ? "OpenAI-compatible" : "API اختصاصی"} · امتیاز ${score.toLocaleString("fa-IR")}`;
+    meta.textContent = `${freeLabels[provider.free_tier.type] ?? provider.free_tier.type} · ${serviceLabels[provider.service_type] ?? provider.service_type} · امتیاز ${score.toLocaleString("fa-IR")}`;
     const reason = document.createElement("small");
-    reason.textContent = `${limitText(provider)} · ${accessLabels[provider.iran_access.status] ?? provider.iran_access.status}`;
+    reason.textContent = `${limitText(provider)} · ${accessLabels[provider.iran_access.status] ?? provider.iran_access.status}${provider.service_type === "community_gateway" ? " ⚠️ سرویس غیررسمی" : ""}`;
     item.append(title, meta, reason);
     return item;
   }));
