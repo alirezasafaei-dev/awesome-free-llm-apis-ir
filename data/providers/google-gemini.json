@@ -22,16 +22,29 @@
   "iran_access": {
     "status": "officially_unsupported",
     "official_policy": "unsupported",
-    "tested_from_iran": false,
-    "tested_at": null,
-    "test_method": "official_docs",
-    "network": null,
+    "tested_from_iran": true,
+    "tested_at": "2026-07-15",
+    "test_method": "live_request",
+    "network": {
+      "country": "IR",
+      "route": "direct"
+    },
     "evidence": [
       {
         "type": "official_docs",
         "url": "https://ai.google.dev/gemini-api/docs/available-regions",
         "checked_at": "2026-07-14",
         "notes_fa": "ایران در فهرست رسمی مناطق قابل استفادهٔ Google AI Studio و Gemini API قرار ندارد."
+      },
+      {
+        "type": "live_test",
+        "timestamp": "2026-07-15T18:06:55Z",
+        "http_status": 403,
+        "latency_ms": 691,
+        "model_tested": "gemini-2.5-flash-lite",
+        "endpoint": "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions",
+        "response_body_fingerprint": "standard Google 403 Forbidden page",
+        "source": "LOCAL_PC — Iran fixed network"
       }
     ]
   },

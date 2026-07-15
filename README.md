@@ -28,16 +28,16 @@
 <!-- PROVIDERS_TABLE_START -->
 <!-- This section is generated. Run: npm run generate -->
 | سرویس | نوع | رایگان | محدودیت نمونه | OpenAI-compatible | دسترسی ایران | آخرین بررسی |
-|---|---|---|---|---|:---:|---|---|
+|---|---|---|---|---|---|:---:|---|---|
 | [Aion Labs](https://www.aionlabs.ai/) | Provider رسمی | سهمیه دائمی | 15 RPM · 20,000 TPM | ✅ | ❔ نامشخص | 2026-07-15 |
 | [Cerebras Inference](https://cloud.cerebras.ai/) | Gateway رسمی | آزمایشی | 5 RPM · 30,000 TPM | ✅ | ❔ نامشخص | 2026-07-15 |
 | [Cloudflare Workers AI](https://developers.cloudflare.com/workers-ai/) | Gateway رسمی | سهمیه دائمی | 10,000 neurons/day | ✅ | ✅ مستقیم تست‌شده | 2026-07-15 |
 | [Cohere](https://cohere.com/) | Provider رسمی | آزمایشی | 20 RPM · 1,000 requests/month | — | ❔ نامشخص | 2026-07-15 |
 | [FreeTheAI](https://freetheai.xyz/) | Gateway اجتماعی | مدل‌های رایگان | 10 RPM · 250 RPD | ✅ | ❔ نامشخص | 2026-07-15 |
-| [GitHub Models](https://github.com/marketplace/models) | Gateway رسمی | سهمیه دائمی | 15 RPM · 150 RPD | ✅ | ❔ نامشخص | 2026-07-14 |
-| [Google Gemini API](https://ai.google.dev/) | Provider رسمی | سهمیه دائمی | وابسته به حساب/مدل | ✅ | 🚫 پشتیبانی‌نشده رسمی | 2026-07-14 |
+| [GitHub Models](https://github.com/marketplace/models) | Gateway رسمی | سهمیه دائمی | 15 RPM · 150 RPD | ✅ | ✅ مستقیم تست‌شده | 2026-07-15 |
+| [Google Gemini API](https://ai.google.dev/) | Provider رسمی | سهمیه دائمی | وابسته به حساب/مدل | ✅ | 🚫 پشتیبانی‌نشده رسمی | 2026-07-15 |
 | [Groq](https://groq.com/) | Gateway رسمی | سهمیه دائمی | 30 RPM · 14400 RPD | ✅ | ❔ نامشخص | 2026-07-14 |
-| [Hugging Face Inference Providers](https://huggingface.co/inference-providers) | Gateway رسمی | اعتبار ماهانه | $0.1/month | ✅ | ❔ نامشخص | 2026-07-14 |
+| [Hugging Face Inference Providers](https://huggingface.co/inference-providers) | Gateway رسمی | اعتبار ماهانه | $0.1/month | ✅ | ✅ مستقیم تست‌شده | 2026-07-15 |
 | [Kilo Gateway](https://kilo.ai/) | Gateway رسمی | مدل‌های رایگان | 200 RPH | ✅ | ❔ نامشخص | 2026-07-15 |
 | [Mistral AI](https://mistral.ai/) | Provider رسمی | سهمیه دائمی | وابسته به حساب/مدل | ✅ | ✅ مستقیم تست‌شده | 2026-07-15 |
 | [NVIDIA NIM API Catalog](https://build.nvidia.com/) | Gateway رسمی | سهمیه دائمی | وابسته به حساب/مدل | ✅ | ❔ نامشخص | 2026-07-14 |

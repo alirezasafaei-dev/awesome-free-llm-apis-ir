@@ -24,13 +24,27 @@
     "notes_fa": "استفادهٔ رایگان API در Public Preview است؛ بعضی مدل‌ها محدودیت اختصاصی پایین‌تری دارند."
   },
   "iran_access": {
-    "status": "unknown",
+    "status": "verified_working",
     "official_policy": "not_documented",
-    "tested_from_iran": false,
-    "tested_at": null,
-    "test_method": "not_tested",
-    "network": null,
-    "evidence": []
+    "tested_from_iran": true,
+    "tested_at": "2026-07-15",
+    "test_method": "live_request",
+    "network": {
+      "country": "IR",
+      "route": "direct"
+    },
+    "evidence": [
+      {
+        "type": "live_test",
+        "timestamp": "2026-07-15T18:06:55Z",
+        "http_status": 200,
+        "latency_ms": 1418,
+        "model_tested": "gpt-4.1-mini",
+        "endpoint": "https://models.github.ai/inference/chat/completions",
+        "source": "LOCAL_PC — Iran fixed network (curl)"
+      }
+    ],
+    "notes_fa": "⚠️ GitHub Models در تاریخ ۳۰ جولای ۲۰۲۶ (حدود ۱۵ روز دیگر) بازنشسته می‌شود. Node.js fetch در ایران به دلیل محدودیت TLS stack به این دامنه متصل نمی‌شود، اما curl و ابزارهای مبتنی بر libcurl کار می‌کنند."
   },
   "models": {
     "dynamic": true,
