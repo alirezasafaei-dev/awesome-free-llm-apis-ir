@@ -147,6 +147,17 @@ curl -fsSI https://DOMAIN/
 
 پس از دو اجرای دستی موفق، می‌توان Trigger انتشار VPS را از `workflow_dispatch` به Push روی `main` گسترش داد. این تغییر باید در PR جدا انجام شود تا انتشار Production بدون اثبات اولیه خودکار نشود.
 
+## ۸. مانیتور هفتگی سلامت
+
+یک systemd timer روی سرور ایران (`ubuntu@193.93.169.32`) نصب شده که هر دوشنبه ساعت ۰۶:۰۰ تهران موارد زیر را بررسی می‌کند:
+
+- وضعیت nginx و fail2ban
+- وجود فایل‌های `build-meta.json` و `catalog.json`
+- آمار مسدودیت‌های fail2ban
+- مصرف دیسک و RAM
+
+جزئیات کامل در [WEEKLY_MONITOR.fa.md](WEEKLY_MONITOR.fa.md).
+
 ## قواعد ایمنی
 
 - Private Key، Password، Token و محتوای `.env` هرگز در Git قرار نمی‌گیرد.
