@@ -17,6 +17,14 @@ const freeLabels = {
   unknown: "نامشخص"
 };
 
+const serviceLabels = {
+  official_provider: "Provider رسمی",
+  official_gateway: "Gateway رسمی",
+  community_gateway: "Gateway اجتماعی",
+  session_bridge: "Session bridge",
+  self_hosted: "Self-hosted"
+};
+
 const capabilityLabels = {
   chat: "چت",
   text_generation: "تولید متن",
@@ -48,6 +56,7 @@ function limitText(provider) {
   if (!first) return "وابسته به مدل/حساب";
   const values = [];
   if (first.rpm != null) values.push(`${first.rpm.toLocaleString("en-US")} RPM`);
+  if (first.rph != null) values.push(`${first.rph.toLocaleString("en-US")} RPH`);
   if (first.rpd != null) values.push(`${first.rpd.toLocaleString("en-US")} RPD`);
   if (first.tpm != null) values.push(`${first.tpm.toLocaleString("en-US")} TPM`);
   if (first.daily_units != null) values.push(`${first.daily_units.toLocaleString("en-US")} ${first.unit_name ?? "unit"}/day`);
@@ -58,7 +67,7 @@ function limitText(provider) {
 
 function searchText(provider) {
   return normalize([
-    provider.name, provider.id, provider.notes_fa, provider.free_tier.notes_fa,
+    provider.name, provider.id, provider.service_type, serviceLabels[provider.service_type], provider.notes_fa, provider.free_tier.notes_fa,
     ...provider.capabilities, ...(provider.models?.notable ?? [])
   ].join(" "));
 }
@@ -119,7 +128,7 @@ function createCard(provider) {
   freshness.classList.toggle("stale", stale);
   setText(card, ".provider-avatar", provider.name.slice(0, 2).toUpperCase());
   setText(card, "h3", provider.name);
-  setText(card, ".provider-id", provider.id);
+  setText(card, ".provider-id", `${provider.id} · ${serviceLabels[provider.service_type] ?? provider.service_type}`);
   setText(card, ".provider-note", provider.notes_fa || provider.free_tier.notes_fa);
   setText(card, ".free-label", freeLabels[provider.free_tier.type] ?? provider.free_tier.type);
   setText(card, ".limit-label", limitText(provider));
@@ -212,4 +221,3 @@ async function init() {
 }
 
 init();
-

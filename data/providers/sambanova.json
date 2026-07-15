@@ -1,5 +1,6 @@
 {
-  "schema_version": "1.0.0",
+  "schema_version": "1.1.0",
+  "service_type": "official_gateway",
   "id": "sambanova",
   "name": "SambaNova Cloud",
   "website": "https://cloud.sambanova.ai/",
@@ -45,4 +46,3 @@
   "notes_fa": "وضعیت ثبت‌نام و API از ایران هنوز تست نشده است.",
   "sources": ["https://docs.sambanova.ai/docs/en/models/rate-limits", "https://docs.sambanova.ai/docs/en/features/openai-compatibility"]
 }
-

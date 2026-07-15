@@ -22,6 +22,18 @@ body:
     validations:
       required: true
   - type: dropdown
+    id: service_type
+    attributes:
+      label: نوع سرویس
+      options:
+        - Provider رسمی
+        - Gateway رسمی
+        - Gateway اجتماعی
+        - Session bridge / ابزار مبتنی بر Cookie
+        - Self-hosted
+    validations:
+      required: true
+  - type: dropdown
     id: free_type
     attributes:
       label: نوع دسترسی رایگان

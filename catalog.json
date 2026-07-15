@@ -1,10 +1,80 @@
 {
-  "schema_version": "1.0.0",
-  "last_updated": "2026-07-14",
-  "provider_count": 11,
+  "schema_version": "1.1.0",
+  "last_updated": "2026-07-15",
+  "provider_count": 15,
   "providers": [
     {
-      "schema_version": "1.0.0",
+      "schema_version": "1.1.0",
+      "service_type": "official_provider",
+      "id": "aion-labs",
+      "name": "Aion Labs",
+      "website": "https://www.aionlabs.ai/",
+      "docs": "https://www.aionlabs.ai/docs/",
+      "signup": "https://www.aionlabs.ai/",
+      "api": {
+        "base_url": "https://api.aionlabs.ai/v1",
+        "openai_compatible": true,
+        "auth": "api_key"
+      },
+      "capabilities": [
+        "chat",
+        "text_generation",
+        "reasoning"
+      ],
+      "free_tier": {
+        "status": "active",
+        "type": "permanent_allowance",
+        "requires_payment_method": false,
+        "limits": [
+          {
+            "scope": "account",
+            "model": null,
+            "condition": "Free tier",
+            "rpm": 15,
+            "tpm": 20000,
+            "tpd": 20000,
+            "notes_fa": "محدودیت روزانه در ساعت ۰۰:۰۰ UTC بازنشانی می‌شود."
+          }
+        ],
+        "notes_fa": "پلن رایگان روزانه است و طبق صفحهٔ قیمت‌گذاری به کارت بانکی نیاز ندارد."
+      },
+      "iran_access": {
+        "status": "unknown",
+        "official_policy": "not_documented",
+        "tested_from_iran": false,
+        "tested_at": null,
+        "test_method": "not_tested",
+        "network": null,
+        "evidence": []
+      },
+      "models": {
+        "dynamic": true,
+        "source": "https://www.aionlabs.ai/docs/models/",
+        "notable": [
+          "aion-2.0",
+          "aion-2.5",
+          "aion-3.0",
+          "aion-3.0-mini",
+          "aion-rp-llama-3.1-8b"
+        ]
+      },
+      "verification": {
+        "level": "docs_verified",
+        "last_checked": "2026-07-15",
+        "checked_by": "maintainers",
+        "stale_after_days": 30
+      },
+      "notes_fa": "ثبت‌نام، دریافت کلید و درخواست API از شبکهٔ ایران هنوز به‌صورت زنده آزمایش نشده است.",
+      "sources": [
+        "https://www.aionlabs.ai/pricing/",
+        "https://www.aionlabs.ai/docs/",
+        "https://www.aionlabs.ai/docs/rate-limits/",
+        "https://www.aionlabs.ai/docs/models/"
+      ]
+    },
+    {
+      "schema_version": "1.1.0",
+      "service_type": "official_gateway",
       "id": "cerebras",
       "name": "Cerebras Inference",
       "website": "https://cloud.cerebras.ai/",
@@ -91,7 +161,8 @@
       ]
     },
     {
-      "schema_version": "1.0.0",
+      "schema_version": "1.1.0",
+      "service_type": "official_gateway",
       "id": "cloudflare-workers-ai",
       "name": "Cloudflare Workers AI",
       "website": "https://developers.cloudflare.com/workers-ai/",
@@ -152,7 +223,8 @@
       ]
     },
     {
-      "schema_version": "1.0.0",
+      "schema_version": "1.1.0",
+      "service_type": "official_provider",
       "id": "cohere",
       "name": "Cohere",
       "website": "https://cohere.com/",
@@ -216,7 +288,72 @@
       ]
     },
     {
-      "schema_version": "1.0.0",
+      "schema_version": "1.1.0",
+      "service_type": "community_gateway",
+      "id": "freetheai",
+      "name": "FreeTheAI",
+      "website": "https://freetheai.xyz/",
+      "docs": "https://freetheai.xyz/docs",
+      "signup": "https://freetheai.xyz/",
+      "api": {
+        "base_url": "https://api.freetheai.xyz/v1",
+        "openai_compatible": true,
+        "auth": "api_key"
+      },
+      "capabilities": [
+        "chat",
+        "text_generation",
+        "reasoning",
+        "tool_calling",
+        "structured_output"
+      ],
+      "free_tier": {
+        "status": "active",
+        "type": "free_models",
+        "requires_payment_method": false,
+        "limits": [
+          {
+            "scope": "account",
+            "model": null,
+            "condition": "Tier 1 after Discord signup",
+            "rpm": 10,
+            "rpd": 250,
+            "concurrent_requests": 1,
+            "notes_fa": "سقف روزانه پیش‌فرض برای پاسخ‌های موفق است؛ Tierهای بالاتر با فعالیت اجتماعی تا ۳۵ RPM و concurrency برابر ۳ می‌رسند."
+          }
+        ],
+        "notes_fa": "ثبت‌نام و check-in روزانه به Discord وابسته است. فهرست مدل‌ها و ظرفیت سرویس پویا است."
+      },
+      "iran_access": {
+        "status": "unknown",
+        "official_policy": "not_documented",
+        "tested_from_iran": false,
+        "tested_at": null,
+        "test_method": "not_tested",
+        "network": null,
+        "evidence": []
+      },
+      "models": {
+        "dynamic": true,
+        "source": "https://freetheai.xyz/models",
+        "notable": []
+      },
+      "verification": {
+        "level": "docs_verified",
+        "last_checked": "2026-07-15",
+        "checked_by": "maintainers",
+        "stale_after_days": 14
+      },
+      "notes_fa": "این سرویس یک Gateway اجتماعی است، نه Provider اصلی مدل. پایداری، قوانین و ظرفیت آن باید مستقل از Providerهای رسمی پایش شود.",
+      "sources": [
+        "https://github.com/Free-The-Ai/free-ai/blob/master/README.md",
+        "https://freetheai.xyz/docs",
+        "https://freetheai.xyz/models"
+      ]
+    },
+    {
+      "schema_version": "1.1.0",
+      "service_type": "official_gateway",
       "id": "github-models",
       "name": "GitHub Models",
       "website": "https://github.com/marketplace/models",
@@ -303,7 +440,8 @@
       ]
     },
     {
-      "schema_version": "1.0.0",
+      "schema_version": "1.1.0",
+      "service_type": "official_provider",
       "id": "google-gemini",
       "name": "Google Gemini API",
       "website": "https://ai.google.dev/",
@@ -363,7 +501,8 @@
       ]
     },
     {
-      "schema_version": "1.0.0",
+      "schema_version": "1.1.0",
+      "service_type": "official_gateway",
       "id": "groq",
       "name": "Groq",
       "website": "https://groq.com/",
@@ -450,7 +589,8 @@
       ]
     },
     {
-      "schema_version": "1.0.0",
+      "schema_version": "1.1.0",
+      "service_type": "official_gateway",
       "id": "hugging-face-inference",
       "name": "Hugging Face Inference Providers",
       "website": "https://huggingface.co/inference-providers",
@@ -511,7 +651,73 @@
       ]
     },
     {
-      "schema_version": "1.0.0",
+      "schema_version": "1.1.0",
+      "service_type": "official_gateway",
+      "id": "kilo-gateway",
+      "name": "Kilo Gateway",
+      "website": "https://kilo.ai/",
+      "docs": "https://kilo.ai/docs/gateway",
+      "signup": "https://app.kilo.ai/",
+      "api": {
+        "base_url": "https://api.kilo.ai/api/gateway",
+        "openai_compatible": true,
+        "auth": "none_or_api_key"
+      },
+      "capabilities": [
+        "chat",
+        "text_generation",
+        "reasoning",
+        "tool_calling",
+        "structured_output"
+      ],
+      "free_tier": {
+        "status": "active",
+        "type": "free_models",
+        "requires_payment_method": false,
+        "limits": [
+          {
+            "scope": "IP",
+            "model": "kilo-auto/free",
+            "condition": "Anonymous or authenticated free-model access",
+            "rph": 200,
+            "notes_fa": "مدل‌های رایگان و محدودیت‌های بالادستی می‌توانند تغییر کنند."
+          }
+        ],
+        "notes_fa": "برای مدل‌های رایگان دسترسی ناشناس هم مستند شده است؛ کلید API برای استفادهٔ پایدار و سایر مدل‌ها قابل استفاده است."
+      },
+      "iran_access": {
+        "status": "unknown",
+        "official_policy": "not_documented",
+        "tested_from_iran": false,
+        "tested_at": null,
+        "test_method": "not_tested",
+        "network": null,
+        "evidence": []
+      },
+      "models": {
+        "dynamic": true,
+        "source": "https://kilo.ai/docs/gateway/models-and-providers",
+        "notable": [
+          "kilo-auto/free"
+        ]
+      },
+      "verification": {
+        "level": "docs_verified",
+        "last_checked": "2026-07-15",
+        "checked_by": "maintainers",
+        "stale_after_days": 14
+      },
+      "notes_fa": "دسترسی مستقیم و VPN از ایران هنوز تست زنده نشده است. به‌دلیل فهرست پویا، مدل انتخاب‌شده در مسیر رایگان ممکن است تغییر کند.",
+      "sources": [
+        "https://kilo.ai/docs/gateway",
+        "https://kilo.ai/docs/gateway/authentication",
+        "https://kilo.ai/docs/getting-started/rate-limits-and-costs",
+        "https://kilo.ai/docs/gateway/models-and-providers"
+      ]
+    },
+    {
+      "schema_version": "1.1.0",
+      "service_type": "official_provider",
       "id": "mistral",
       "name": "Mistral AI",
       "website": "https://mistral.ai/",
@@ -566,7 +772,8 @@
       ]
     },
     {
-      "schema_version": "1.0.0",
+      "schema_version": "1.1.0",
+      "service_type": "official_gateway",
       "id": "nvidia-nim",
       "name": "NVIDIA NIM API Catalog",
       "website": "https://build.nvidia.com/",
@@ -619,7 +826,8 @@
       ]
     },
     {
-      "schema_version": "1.0.0",
+      "schema_version": "1.1.0",
+      "service_type": "official_gateway",
       "id": "openrouter",
       "name": "OpenRouter",
       "website": "https://openrouter.ai/",
@@ -688,7 +896,8 @@
       ]
     },
     {
-      "schema_version": "1.0.0",
+      "schema_version": "1.1.0",
+      "service_type": "official_gateway",
       "id": "sambanova",
       "name": "SambaNova Cloud",
       "website": "https://cloud.sambanova.ai/",
@@ -770,6 +979,68 @@
       "sources": [
         "https://docs.sambanova.ai/docs/en/models/rate-limits",
         "https://docs.sambanova.ai/docs/en/features/openai-compatibility"
+      ]
+    },
+    {
+      "schema_version": "1.1.0",
+      "service_type": "official_gateway",
+      "id": "vercel-ai-gateway",
+      "name": "Vercel AI Gateway",
+      "website": "https://vercel.com/ai",
+      "docs": "https://vercel.com/docs/ai-gateway",
+      "signup": "https://vercel.com/signup",
+      "api": {
+        "base_url": "https://ai-gateway.vercel.sh/v1",
+        "openai_compatible": true,
+        "auth": "api_key"
+      },
+      "capabilities": [
+        "chat",
+        "text_generation",
+        "reasoning",
+        "embeddings",
+        "tool_calling",
+        "structured_output"
+      ],
+      "free_tier": {
+        "status": "active",
+        "type": "monthly_credit",
+        "requires_payment_method": null,
+        "limits": [
+          {
+            "scope": "team",
+            "model": null,
+            "condition": "Free credit on eligible models",
+            "monthly_credit_usd": 5,
+            "notes_fa": "فقط زیرمجموعه‌ای از مدل‌ها واجد اعتبار رایگان‌اند و محدودیت هر مدل می‌تواند پایین‌تر باشد."
+          }
+        ],
+        "notes_fa": "اعتبار رایگان ماهانه ۵ دلار است؛ الزام روش پرداخت برای همهٔ مسیرهای ثبت‌نام در مستندات بررسی‌شده صریح نبود."
+      },
+      "iran_access": {
+        "status": "unknown",
+        "official_policy": "not_documented",
+        "tested_from_iran": false,
+        "tested_at": null,
+        "test_method": "not_tested",
+        "network": null,
+        "evidence": []
+      },
+      "models": {
+        "dynamic": true,
+        "source": "https://vercel.com/ai-gateway/models",
+        "notable": []
+      },
+      "verification": {
+        "level": "docs_verified",
+        "last_checked": "2026-07-15",
+        "checked_by": "maintainers",
+        "stale_after_days": 30
+      },
+      "notes_fa": "ثبت‌نام، صدور کلید و مصرف اعتبار از شبکهٔ ایران هنوز به‌صورت زنده آزمایش نشده است.",
+      "sources": [
+        "https://vercel.com/docs/ai-gateway/pricing",
+        "https://vercel.com/docs/ai-gateway/sdks-and-apis/openai-chat-completions"
       ]
     }
   ]

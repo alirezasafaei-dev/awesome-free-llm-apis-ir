@@ -27,12 +27,21 @@ const iranLabels = {
   unknown: "❔ نامشخص"
 };
 
+const serviceLabels = {
+  official_provider: "Provider رسمی",
+  official_gateway: "Gateway رسمی",
+  community_gateway: "Gateway اجتماعی",
+  session_bridge: "Session bridge",
+  self_hosted: "Self-hosted"
+};
+
 function compactLimit(provider) {
   const limits = provider.free_tier.limits;
   if (!limits.length) return "وابسته به حساب/مدل";
   const first = limits[0];
   const bits = [];
   if (first.rpm != null) bits.push(`${first.rpm} RPM`);
+  if (first.rph != null) bits.push(`${first.rph} RPH`);
   if (first.rpd != null) bits.push(`${first.rpd} RPD`);
   if (first.tpm != null) bits.push(`${first.tpm.toLocaleString("en-US")} TPM`);
   if (first.daily_units != null) bits.push(`${first.daily_units.toLocaleString("en-US")} ${first.unit_name ?? "unit"}/day`);
@@ -48,9 +57,9 @@ for (const file of (await readdir(dir)).filter((f) => f.endsWith(".json")).sort(
 providers.sort((a, b) => a.name.localeCompare(b.name, "en"));
 
 const rows = [
-  "| سرویس | رایگان | محدودیت نمونه | OpenAI-compatible | دسترسی ایران | آخرین بررسی |",
-  "|---|---|---|:---:|---|---|",
-  ...providers.map((p) => `| [${p.name}](${p.website}) | ${labels[p.free_tier.type]} | ${compactLimit(p)} | ${p.api.openai_compatible ? "✅" : "—"} | ${iranLabels[p.iran_access.status]} | ${p.verification.last_checked} |`)
+  "| سرویس | نوع | رایگان | محدودیت نمونه | OpenAI-compatible | دسترسی ایران | آخرین بررسی |",
+  "|---|---|---|---|:---:|---|---|",
+  ...providers.map((p) => `| [${p.name}](${p.website}) | ${serviceLabels[p.service_type] ?? p.service_type} | ${labels[p.free_tier.type]} | ${compactLimit(p)} | ${p.api.openai_compatible ? "✅" : "—"} | ${iranLabels[p.iran_access.status]} | ${p.verification.last_checked} |`)
 ];
 
 const generated = `${start}\n<!-- This section is generated. Run: npm run generate -->\n${rows.join("\n")}\n${end}`;

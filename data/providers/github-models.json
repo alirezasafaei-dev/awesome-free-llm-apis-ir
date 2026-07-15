@@ -1,5 +1,6 @@
 {
-  "schema_version": "1.0.0",
+  "schema_version": "1.1.0",
+  "service_type": "official_gateway",
   "id": "github-models",
   "name": "GitHub Models",
   "website": "https://github.com/marketplace/models",
@@ -45,4 +46,3 @@
   "notes_fa": "برای API به توکن GitHub با مجوز models:read نیاز است.",
   "sources": ["https://docs.github.com/github-models/prototyping-with-ai-models", "https://docs.github.com/billing/managing-billing-for-your-products/about-billing-for-github-models"]
 }
-

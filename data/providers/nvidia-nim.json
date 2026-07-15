@@ -1,5 +1,6 @@
 {
-  "schema_version": "1.0.0",
+  "schema_version": "1.1.0",
+  "service_type": "official_gateway",
   "id": "nvidia-nim",
   "name": "NVIDIA NIM API Catalog",
   "website": "https://build.nvidia.com/",
@@ -41,4 +42,3 @@
   "notes_fa": "این دسترسی برای Production رایگان نیست و سقف عددی ثابت عمومی در منبع بررسی‌شده اعلام نشده است.",
   "sources": ["https://docs.api.nvidia.com/nim/docs/product", "https://build.nvidia.com/explore/discover"]
 }
-

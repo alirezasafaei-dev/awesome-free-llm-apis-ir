@@ -1,5 +1,6 @@
 {
-  "schema_version": "1.0.0",
+  "schema_version": "1.1.0",
+  "service_type": "official_provider",
   "id": "cohere",
   "name": "Cohere",
   "website": "https://cohere.com/",
@@ -43,4 +44,3 @@
   "notes_fa": "Trial برای Production در نظر گرفته نشده و باید جدا از Free Tier دائمی نمایش داده شود.",
   "sources": ["https://docs.cohere.com/docs/rate-limits", "https://docs.cohere.com/docs/how-does-cohere-pricing-work"]
 }
-

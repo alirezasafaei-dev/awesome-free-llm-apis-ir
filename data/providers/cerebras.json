@@ -1,5 +1,6 @@
 {
-  "schema_version": "1.0.0",
+  "schema_version": "1.1.0",
+  "service_type": "official_gateway",
   "id": "cerebras",
   "name": "Cerebras Inference",
   "website": "https://cloud.cerebras.ai/",
@@ -45,4 +46,3 @@
   "notes_fa": "محدودیت دقیق حساب در بخش Limits کنسول مرجع نهایی است.",
   "sources": ["https://inference-docs.cerebras.ai/support/rate-limits", "https://inference-docs.cerebras.ai/models/overview"]
 }
-

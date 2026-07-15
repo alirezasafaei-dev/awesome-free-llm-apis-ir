@@ -36,6 +36,10 @@ if (syntax.status !== 0) throw new Error(syntax.stderr || "site/app.js syntax ch
 const catalog = JSON.parse(await readFile(path.join(root, "catalog.json"), "utf8"));
 if (catalog.provider_count !== catalog.providers.length || catalog.providers.length === 0) throw new Error("Catalog provider count is invalid");
 if (new Set(catalog.providers.map((provider) => provider.id)).size !== catalog.providers.length) throw new Error("Catalog has duplicate provider IDs");
+const hostedServiceTypes = new Set(["official_provider", "official_gateway", "community_gateway"]);
+if (catalog.schema_version !== "1.1.0") throw new Error("Catalog schema version is not 1.1.0");
+if (catalog.providers.some((provider) => !hostedServiceTypes.has(provider.service_type))) throw new Error("Main catalog contains a non-hosted tool entry");
+if (!appSource.includes("serviceLabels")) throw new Error("Site does not render service type labels");
 
 const build = spawnSync(process.execPath, [path.join(root, "scripts/build-site.mjs")], { cwd: root, encoding: "utf8" });
 if (build.status !== 0) throw new Error(build.stderr || "Site build failed");
