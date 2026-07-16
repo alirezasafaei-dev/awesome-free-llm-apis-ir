@@ -115,5 +115,5 @@ Required operator steps:
   2. Keep GitHub access read-only during the first observation runs.
   3. Review: $HERMES_HOME/config.yaml
   4. After a successful read-only trial, run:
-       $PROJECT_DIR/ops/hermes/enable-readonly-drift-cron.sh
+       bash $PROJECT_DIR/ops/hermes/enable-readonly-drift-cron.sh
 EOF
