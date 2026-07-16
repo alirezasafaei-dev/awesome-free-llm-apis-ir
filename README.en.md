@@ -18,6 +18,7 @@ Live counts are intentionally not duplicated in this document because static cou
 - [`catalog-tools.json`](catalog-tools.json) — independent tools count and records
 - [`data/upstreams.json`](data/upstreams.json) — watched upstream repositories
 - [`data/repository-audits.json`](data/repository-audits.json) — Add / Watch / Reject audit decisions
+- [`data/verification-backlog.json`](data/verification-backlog.json) — remaining unknown providers, blockers, execution tracks, and tracking issues
 - [`docs/ROADMAP.en.md`](docs/ROADMAP.en.md) — current phases, gaps, and acceptance criteria
 
 ## Principles
@@ -38,12 +39,14 @@ npm test
 npm run validate
 npm run providers:normalize
 npm run privacy:test
+npm run verification:backlog:test
 npm run generate
 ```
 
 ## Related
 
 - [`docs/ROADMAP.en.md`](docs/ROADMAP.en.md) — canonical roadmap
+- [`docs/VERIFICATION_BACKLOG.fa.md`](docs/VERIFICATION_BACKLOG.fa.md) — executable remaining-work backlog (Persian)
 - [`catalog-tools.json`](catalog-tools.json) — separate tools/proxies/bridges catalog
 - [`data/upstreams.json`](data/upstreams.json) — watched upstream repositories
 - [`docs/TOOLS_CATALOG.fa.md`](docs/TOOLS_CATALOG.fa.md) — tools catalog documentation (Persian)
