@@ -1,0 +1,218 @@
+{
+  "schema_version": "1.0.0",
+  "last_updated": "2026-07-16",
+  "audits": [
+    {
+      "repository": "AgnesAI-Labs/AgnesAI-Models",
+      "repository_url": "https://github.com/AgnesAI-Labs/AgnesAI-Models",
+      "decision": "add_provider",
+      "classification": "official_gateway",
+      "scope": "provider_catalog",
+      "maintenance_status": "active",
+      "archived": false,
+      "last_activity_at": "2026-06-29",
+      "openai_compatible": "yes",
+      "auth_surface": ["api_key"],
+      "free_api_evidence": "verified",
+      "license": "unknown",
+      "risk": "low",
+      "reason_fa": "مخزن رسمی Agnes AI است و Base URL، سازگاری OpenAI، مدل‌ها و پلن Free/default را مستند می‌کند. اعداد محدودیت باید بر اساس Actual Executable RPM ثبت شوند، نه فقط Public Request RPM.",
+      "follow_up_fa": "نیاز به کارت بانکی و وضعیت ثبت‌نام از ایران هنوز در منبع رسمی بررسی‌شده تصریح نشده و باید جداگانه راستی‌آزمایی شود.",
+      "evidence": [
+        {
+          "type": "readme",
+          "url": "https://github.com/AgnesAI-Labs/AgnesAI-Models/blob/main/README.md",
+          "checked_at": "2026-07-16",
+          "notes_fa": "مخزن خود را Official gateway معرفی می‌کند و OpenAI-compatible API و Free/default plan را مستند کرده است."
+        },
+        {
+          "type": "official_docs",
+          "url": "https://github.com/AgnesAI-Labs/AgnesAI-Models/blob/main/MODEL_CATALOG.md",
+          "checked_at": "2026-07-16",
+          "notes_fa": "Actual Executable RPM برای متن ۲۰، تصویر بسته به رزولوشن ۲۰/۱۰/۱/۱ و ویدئو ۱ است."
+        }
+      ]
+    },
+    {
+      "repository": "Free-The-Ai/free-ai",
+      "repository_url": "https://github.com/Free-The-Ai/free-ai",
+      "decision": "watch",
+      "classification": "community_gateway",
+      "scope": "provider_catalog",
+      "maintenance_status": "active",
+      "archived": false,
+      "last_activity_at": "2026-07-16",
+      "openai_compatible": "yes",
+      "auth_surface": ["api_key"],
+      "free_api_evidence": "claimed",
+      "license": "unknown",
+      "risk": "medium",
+      "reason_fa": "Gateway فعال و مستند با مسیرهای OpenAI، Anthropic و Responses است، اما مخزن عمدتاً سایت و مستندات است و Backend عملیاتی به‌طور کامل در همان مخزن قابل ممیزی نیست.",
+      "follow_up_fa": "Provider موجود حفظ شود، اما محدودیت‌ها، Check-in روزانه، شفافیت Backend و سلامت API به‌صورت دوره‌ای پایش شوند.",
+      "evidence": [
+        {
+          "type": "readme",
+          "url": "https://github.com/Free-The-Ai/free-ai/blob/master/README.md",
+          "checked_at": "2026-07-16",
+          "notes_fa": "Repo ادعای ۶۰+ مدل، zero billing، دریافت کلید از Discord و Check-in روزانه را مستند می‌کند."
+        },
+        {
+          "type": "github_metadata",
+          "url": "https://github.com/Free-The-Ai/free-ai",
+          "checked_at": "2026-07-16",
+          "notes_fa": "مخزن بایگانی نیست و در روز ممیزی Commitهای متعدد داشته است."
+        }
+      ]
+    },
+    {
+      "repository": "dsdanielpark/Bard-API",
+      "repository_url": "https://github.com/dsdanielpark/Bard-API",
+      "decision": "reject",
+      "classification": "session_bridge",
+      "scope": "out_of_scope",
+      "maintenance_status": "archived",
+      "archived": true,
+      "last_activity_at": null,
+      "openai_compatible": "no",
+      "auth_surface": ["cookie", "browser_session"],
+      "free_api_evidence": "not_applicable",
+      "license": "MIT",
+      "risk": "high",
+      "reason_fa": "پروژه صریحاً Inactive، Unofficial و مبتنی بر Reverse Engineering و Cookie حساب Google است؛ Provider رسمی یا API رایگان مستقل نیست.",
+      "evidence": [
+        {
+          "type": "github_metadata",
+          "url": "https://github.com/dsdanielpark/Bard-API",
+          "checked_at": "2026-07-16",
+          "notes_fa": "Repository در GitHub Archived است."
+        },
+        {
+          "type": "readme",
+          "url": "https://github.com/dsdanielpark/Bard-API/blob/main/README.md",
+          "checked_at": "2026-07-16",
+          "notes_fa": "README وضعیت Inactive، استفاده از __Secure-1PSID و ماهیت reverse-engineered را صریحاً اعلام می‌کند."
+        }
+      ]
+    },
+    {
+      "repository": "SamurAIGPT/muapi-cli",
+      "repository_url": "https://github.com/SamurAIGPT/muapi-cli",
+      "decision": "reject",
+      "classification": "client_tool",
+      "scope": "out_of_scope",
+      "maintenance_status": "active",
+      "archived": false,
+      "last_activity_at": "2026-07-16",
+      "openai_compatible": "not_applicable",
+      "auth_surface": ["api_key", "account_balance"],
+      "free_api_evidence": "none",
+      "license": "MIT",
+      "risk": "low",
+      "reason_fa": "این مخزن CLI رسمی یک سرویس تولید رسانه مبتنی بر اعتبار و Top-up است؛ خودش Provider رایگان LLM یا Gateway رایگان نیست.",
+      "evidence": [
+        {
+          "type": "readme",
+          "url": "https://github.com/SamurAIGPT/muapi-cli/blob/main/README.md",
+          "checked_at": "2026-07-16",
+          "notes_fa": "README موجودی حساب، Top-up با Stripe و API key را مستند می‌کند."
+        },
+        {
+          "type": "package_manifest",
+          "url": "https://github.com/SamurAIGPT/muapi-cli/blob/main/pyproject.toml",
+          "checked_at": "2026-07-16",
+          "notes_fa": "Manifest پروژه را Official CLI معرفی می‌کند و License را MIT ثبت کرده است."
+        }
+      ]
+    },
+    {
+      "repository": "SamurAIGPT/Text-To-Video-AI",
+      "repository_url": "https://github.com/SamurAIGPT/Text-To-Video-AI",
+      "decision": "reject",
+      "classification": "self_hosted",
+      "scope": "out_of_scope",
+      "maintenance_status": "active",
+      "archived": false,
+      "last_activity_at": "2026-07-16",
+      "openai_compatible": "not_applicable",
+      "auth_surface": ["third_party_keys", "api_key"],
+      "free_api_evidence": "none",
+      "license": "unknown",
+      "risk": "low",
+      "reason_fa": "یک برنامه محلی ساخت ویدئو است که به کلیدهای Pexels، OpenAI/Groq/Gemini، MuAPI و سرویس‌های اختیاری وابسته است؛ API رایگان مستقل ارائه نمی‌کند.",
+      "evidence": [
+        {
+          "type": "readme",
+          "url": "https://github.com/SamurAIGPT/Text-To-Video-AI/blob/main/README.md",
+          "checked_at": "2026-07-16",
+          "notes_fa": "README فهرست API keyهای لازم و Premium API را صریحاً ارائه می‌کند."
+        },
+        {
+          "type": "commit",
+          "url": "https://github.com/SamurAIGPT/Text-To-Video-AI/commit/ebc9b17fd395e425386a378e64e2b1e564f1f8ed",
+          "checked_at": "2026-07-16",
+          "notes_fa": "فعالیت همان روز ممیزی مشاهده شد؛ Reject به‌دلیل Scope است، نه رهاشدگی."
+        }
+      ]
+    },
+    {
+      "repository": "openbestof/awesome-ai",
+      "repository_url": "https://github.com/openbestof/awesome-ai",
+      "decision": "reject",
+      "classification": "catalog_tooling",
+      "scope": "out_of_scope",
+      "maintenance_status": "inactive",
+      "archived": false,
+      "last_activity_at": "2024-05-04",
+      "openai_compatible": "not_applicable",
+      "auth_surface": ["none"],
+      "free_api_evidence": "not_applicable",
+      "license": "unknown",
+      "risk": "low",
+      "reason_fa": "یک Awesome List عمومی از ابزارها و سرویس‌های AI است و Free Tier، محدودیت مصرف یا وضعیت ایران را به‌صورت قابل اتکا مدل نمی‌کند.",
+      "evidence": [
+        {
+          "type": "readme",
+          "url": "https://github.com/openbestof/awesome-ai/blob/main/readme.md",
+          "checked_at": "2026-07-16",
+          "notes_fa": "README خود را curated list از ابزارها، Frameworkها و APIها معرفی می‌کند."
+        },
+        {
+          "type": "commit",
+          "url": "https://github.com/openbestof/awesome-ai/commit/f6ac565464d75d3828370b26e912fb769cb02896",
+          "checked_at": "2026-07-16",
+          "notes_fa": "آخرین فعالیت قابل مشاهده در ممیزی مربوط به ۲۰۲۴-۰۵-۰۴ بود."
+        }
+      ]
+    },
+    {
+      "repository": "flatkey-ai/awesome-images",
+      "repository_url": "https://github.com/flatkey-ai/awesome-images",
+      "decision": "reject",
+      "classification": "prompt_library",
+      "scope": "out_of_scope",
+      "maintenance_status": "active",
+      "archived": false,
+      "last_activity_at": "2026-06-19",
+      "openai_compatible": "partial",
+      "auth_surface": ["api_key"],
+      "free_api_evidence": "none",
+      "license": "unknown",
+      "risk": "low",
+      "reason_fa": "کتابخانه تجاری Prompt و CLI برای Flatkey است و کاربر را به دریافت کلید API پولی هدایت می‌کند؛ منبع Free LLM API نیست.",
+      "evidence": [
+        {
+          "type": "readme",
+          "url": "https://github.com/flatkey-ai/awesome-images/blob/main/README.md",
+          "checked_at": "2026-07-16",
+          "notes_fa": "README پروژه را commercial prompt library معرفی می‌کند و ثبت Flatkey API key را لازم می‌داند."
+        },
+        {
+          "type": "commit",
+          "url": "https://github.com/flatkey-ai/awesome-images/commit/dfa91e7418aa6e6c2772387a1556326b4a737255",
+          "checked_at": "2026-07-16",
+          "notes_fa": "آخرین فعالیت قابل مشاهده در ممیزی ۲۰۲۶-۰۶-۱۹ بود."
+        }
+      ]
+    }
+  ]
+}
