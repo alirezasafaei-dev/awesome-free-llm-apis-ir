@@ -1095,29 +1095,43 @@
         "notes_fa": "دروازه API با اصطکاک صفر. بدون نیاز به ثبت‌نام برای دسترسی پایه. ۳۰+ مدل شامل DeepSeek، Gemini، GPT-4o-mini، Mistral، Qwen."
       },
       "iran_access": {
-        "status": "unknown",
+        "status": "verified_working",
         "official_policy": "not_documented",
-        "tested_from_iran": false,
-        "tested_at": null,
-        "test_method": "not_tested",
-        "network": null,
-        "evidence": [],
-        "notes_fa": "از ایران تست نشده. بدون ثبت‌نام و بدون کلید API — احتمال دسترسی بالا است."
+        "tested_from_iran": true,
+        "tested_at": "2026-07-16",
+        "test_method": "live_request",
+        "network": {
+          "country": "IR",
+          "route": "direct"
+        },
+        "evidence": [
+          {
+            "type": "live_test",
+            "timestamp": "2026-07-16T10:15:00Z",
+            "http_status": 200,
+            "latency_ms": 560,
+            "model_tested": "codestral-latest",
+            "endpoint": "https://api.llm7.io/v1/chat/completions",
+            "auth_method": "anonymous",
+            "source": "LOCAL_PC — Iran direct",
+            "notes_fa": "دسترسی ناشناس با مدل codestral-latest موفق بود. برخی مدل‌ها (deepseek-v4-flash, gpt-5.4-mini) نیاز به API Key دارند."
+          }
+        ],
+        "notes_fa": "دسترسی ناشناس از ایران با مدل codestral-latest تأیید شد. برخی مدل‌ها نیاز به API Key دارند."
       },
       "models": {
         "dynamic": true,
         "source": "https://token.llm7.io",
         "notable": [
-          "deepseek-r1-0528",
-          "deepseek-v3-0324",
-          "gemini-2.5-flash-lite",
-          "gpt-4o-mini",
-          "mistral-small-3.1-24b",
-          "qwen2.5-coder-32b"
+          "codestral-latest",
+          "deepseek-v4-flash",
+          "gpt-5.4-mini",
+          "gpt-5.5",
+          "gpt-5.6-luna"
         ]
       },
       "verification": {
-        "level": "docs_verified",
+        "level": "live_verified",
         "last_checked": "2026-07-16",
         "checked_by": "maintainers",
         "stale_after_days": 30

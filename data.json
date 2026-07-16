@@ -564,24 +564,26 @@
         "reasoning"
       ],
       "iranAccess": {
-        "status": "unknown",
-        "label": "❔ نامشخص",
-        "tested": false,
-        "testedAt": null,
-        "network": null,
-        "evidenceCount": 0,
-        "notesFa": "از ایران تست نشده. بدون ثبت‌نام و بدون کلید API — احتمال دسترسی بالا است."
+        "status": "verified_working",
+        "label": "✅ مستقیم تست‌شده",
+        "tested": true,
+        "testedAt": "2026-07-16",
+        "network": {
+          "country": "IR",
+          "route": "direct"
+        },
+        "evidenceCount": 1,
+        "notesFa": "دسترسی ناشناس از ایران با مدل codestral-latest تأیید شد. برخی مدل‌ها نیاز به API Key دارند."
       },
       "models": [
-        "deepseek-r1-0528",
-        "deepseek-v3-0324",
-        "gemini-2.5-flash-lite",
-        "gpt-4o-mini",
-        "mistral-small-3.1-24b",
-        "qwen2.5-coder-32b"
+        "codestral-latest",
+        "deepseek-v4-flash",
+        "gpt-5.4-mini",
+        "gpt-5.5",
+        "gpt-5.6-luna"
       ],
       "verification": {
-        "level": "docs_verified",
+        "level": "live_verified",
         "lastChecked": "2026-07-16",
         "staleAfterDays": 30
       }
