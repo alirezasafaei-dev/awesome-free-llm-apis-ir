@@ -73,12 +73,12 @@
     "notable": []
   },
   "verification": {
-    "level": "docs_verified",
-    "last_checked": "2026-07-14",
+    "level": "live_verified",
+    "last_checked": "2026-07-16",
     "checked_by": "maintainers",
     "stale_after_days": 30
   },
-  "notes_fa": "برای ادعای دسترسی مستقیم با IP ایران هنوز تست تاریخ‌دار ثبت نشده است.",
+  "notes_fa": "دسترسی مستقیم از ایران در ۲۰۲۶-۰۷-۱۶ با همان کلیدی که از آلمان پاسخ ۲۰۰ داشت، پاسخ ۴۰۳ داد؛ مسدودیت جغرافیایی در همان آزمون تأیید شد.",
   "sources": [
     "https://openrouter.ai/docs/api/reference/limits",
     "https://openrouter.ai/docs/guides/routing/model-variants/free"

@@ -11,15 +11,52 @@
     "openai_compatible": true,
     "auth": "token"
   },
-  "capabilities": ["chat", "text_generation", "reasoning", "embeddings", "tool_calling", "structured_output"],
+  "capabilities": [
+    "chat",
+    "text_generation",
+    "reasoning",
+    "embeddings",
+    "tool_calling",
+    "structured_output"
+  ],
   "free_tier": {
     "status": "active",
     "type": "permanent_allowance",
     "requires_payment_method": false,
     "limits": [
-      { "scope": "low models / Copilot Free", "model": null, "condition": "free API preview", "rpm": 15, "rpd": 150, "input_tokens": 8000, "output_tokens": 4000, "concurrent_requests": 5, "notes_fa": null },
-      { "scope": "high models / Copilot Free", "model": null, "condition": "free API preview", "rpm": 10, "rpd": 50, "input_tokens": 8000, "output_tokens": 4000, "concurrent_requests": 2, "notes_fa": null },
-      { "scope": "embedding models / Copilot Free", "model": null, "condition": "free API preview", "rpm": 15, "rpd": 150, "input_tokens": 64000, "output_tokens": null, "concurrent_requests": 5, "notes_fa": null }
+      {
+        "scope": "low models / Copilot Free",
+        "model": null,
+        "condition": "free API preview",
+        "rpm": 15,
+        "rpd": 150,
+        "input_tokens": 8000,
+        "output_tokens": 4000,
+        "concurrent_requests": 5,
+        "notes_fa": null
+      },
+      {
+        "scope": "high models / Copilot Free",
+        "model": null,
+        "condition": "free API preview",
+        "rpm": 10,
+        "rpd": 50,
+        "input_tokens": 8000,
+        "output_tokens": 4000,
+        "concurrent_requests": 2,
+        "notes_fa": null
+      },
+      {
+        "scope": "embedding models / Copilot Free",
+        "model": null,
+        "condition": "free API preview",
+        "rpm": 15,
+        "rpd": 150,
+        "input_tokens": 64000,
+        "output_tokens": null,
+        "concurrent_requests": 5,
+        "notes_fa": null
+      }
     ],
     "notes_fa": "استفادهٔ رایگان API در Public Preview است؛ بعضی مدل‌ها محدودیت اختصاصی پایین‌تری دارند."
   },
@@ -44,7 +81,7 @@
         "source": "LOCAL_PC — Iran fixed network (curl)"
       }
     ],
-    "notes_fa": "⚠️ GitHub Models در تاریخ ۳۰ جولای ۲۰۲۶ (حدود ۱۵ روز دیگر) بازنشسته می‌شود. Node.js fetch در ایران به دلیل محدودیت TLS stack به این دامنه متصل نمی‌شود، اما curl و ابزارهای مبتنی بر libcurl کار می‌کنند."
+    "notes_fa": "درخواست زنده با curl از شبکهٔ ثابت ایران موفق بود. تفاوت رفتار Node.js fetch و curl فقط در شبکهٔ آزمون مشاهده شد و به‌عنوان محدودیت عمومی سرویس تعمیم داده نمی‌شود."
   },
   "models": {
     "dynamic": true,
@@ -52,11 +89,14 @@
     "notable": []
   },
   "verification": {
-    "level": "docs_verified",
-    "last_checked": "2026-07-14",
+    "level": "live_verified",
+    "last_checked": "2026-07-15",
     "checked_by": "maintainers",
     "stale_after_days": 30
   },
   "notes_fa": "برای API به توکن GitHub با مجوز models:read نیاز است.",
-  "sources": ["https://docs.github.com/github-models/prototyping-with-ai-models", "https://docs.github.com/billing/managing-billing-for-your-products/about-billing-for-github-models"]
+  "sources": [
+    "https://docs.github.com/github-models/prototyping-with-ai-models",
+    "https://docs.github.com/billing/managing-billing-for-your-products/about-billing-for-github-models"
+  ]
 }

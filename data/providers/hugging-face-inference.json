@@ -61,7 +61,6 @@
         "model_tested": "openai/gpt-oss-20b:fastest",
         "endpoint": "https://router.huggingface.co/v1/chat/completions",
         "source": "LOCAL_PC — Iran mobile network (MCI AS44244)",
-        "network": "mobile (MCI AS44244, Rasht)",
         "notes_fa": "تأیید مجدد روی اینترنت موبایل ایران — ۲۰۲۶-۰۷-۱۶",
         "latency_ms": 826
       }
@@ -73,8 +72,8 @@
     "notable": []
   },
   "verification": {
-    "level": "docs_verified",
-    "last_checked": "2026-07-14",
+    "level": "live_verified",
+    "last_checked": "2026-07-16",
     "checked_by": "maintainers",
     "stale_after_days": 30
   },

@@ -89,12 +89,12 @@
     ]
   },
   "verification": {
-    "level": "docs_verified",
-    "last_checked": "2026-07-14",
+    "level": "live_verified",
+    "last_checked": "2026-07-16",
     "checked_by": "maintainers",
     "stale_after_days": 30
   },
-  "notes_fa": "دسترسی ایران نیازمند تست جداگانهٔ ثبت‌نام و درخواست API است.",
+  "notes_fa": "درخواست زنده از ایران پاسخ ۴۰۳ داد، اما اعتبار همان کلید از منطقهٔ مجاز تأیید نشده است؛ بنابراین وضعیت دسترسی همچنان نامشخص است.",
   "sources": [
     "https://console.groq.com/docs/rate-limits",
     "https://console.groq.com/docs/models"

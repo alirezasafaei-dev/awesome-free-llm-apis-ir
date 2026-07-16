@@ -134,8 +134,8 @@
         "gemma-4-31b"
       ],
       "verification": {
-        "level": "docs_verified",
-        "lastChecked": "2026-07-14",
+        "level": "live_verified",
+        "lastChecked": "2026-07-16",
         "staleAfterDays": 30
       }
     },
@@ -179,8 +179,8 @@
         "@cf/meta/llama-3.2-3b-instruct"
       ],
       "verification": {
-        "level": "docs_verified",
-        "lastChecked": "2026-07-14",
+        "level": "live_verified",
+        "lastChecked": "2026-07-16",
         "staleAfterDays": 30
       }
     },
@@ -225,8 +225,8 @@
         "command-a-03-2025"
       ],
       "verification": {
-        "level": "docs_verified",
-        "lastChecked": "2026-07-14",
+        "level": "live_verified",
+        "lastChecked": "2026-07-16",
         "staleAfterDays": 30
       }
     },
@@ -352,12 +352,12 @@
           "route": "direct"
         },
         "evidenceCount": 1,
-        "notesFa": "⚠️ GitHub Models در تاریخ ۳۰ جولای ۲۰۲۶ (حدود ۱۵ روز دیگر) بازنشسته می‌شود. Node.js fetch در ایران به دلیل محدودیت TLS stack به این دامنه متصل نمی‌شود، اما curl و ابزارهای مبتنی بر libcurl کار می‌کنند."
+        "notesFa": "درخواست زنده با curl از شبکهٔ ثابت ایران موفق بود. تفاوت رفتار Node.js fetch و curl فقط در شبکهٔ آزمون مشاهده شد و به‌عنوان محدودیت عمومی سرویس تعمیم داده نمی‌شود."
       },
       "models": [],
       "verification": {
-        "level": "docs_verified",
-        "lastChecked": "2026-07-14",
+        "level": "live_verified",
+        "lastChecked": "2026-07-15",
         "staleAfterDays": 30
       }
     },
@@ -400,8 +400,8 @@
       },
       "models": [],
       "verification": {
-        "level": "docs_verified",
-        "lastChecked": "2026-07-14",
+        "level": "live_verified",
+        "lastChecked": "2026-07-16",
         "staleAfterDays": 30
       }
     },
@@ -447,8 +447,8 @@
         "qwen/qwen3-32b"
       ],
       "verification": {
-        "level": "docs_verified",
-        "lastChecked": "2026-07-14",
+        "level": "live_verified",
+        "lastChecked": "2026-07-16",
         "staleAfterDays": 30
       }
     },
@@ -491,8 +491,8 @@
       },
       "models": [],
       "verification": {
-        "level": "docs_verified",
-        "lastChecked": "2026-07-14",
+        "level": "live_verified",
+        "lastChecked": "2026-07-16",
         "staleAfterDays": 30
       }
     },
@@ -536,8 +536,8 @@
         "kilo-auto/free"
       ],
       "verification": {
-        "level": "docs_verified",
-        "lastChecked": "2026-07-15",
+        "level": "live_verified",
+        "lastChecked": "2026-07-16",
         "staleAfterDays": 14
       }
     },
@@ -627,8 +627,8 @@
         "mistral-small-latest"
       ],
       "verification": {
-        "level": "docs_verified",
-        "lastChecked": "2026-07-14",
+        "level": "live_verified",
+        "lastChecked": "2026-07-16",
         "staleAfterDays": 30
       }
     },
@@ -807,8 +807,8 @@
       },
       "models": [],
       "verification": {
-        "level": "docs_verified",
-        "lastChecked": "2026-07-14",
+        "level": "live_verified",
+        "lastChecked": "2026-07-16",
         "staleAfterDays": 30
       }
     },
@@ -903,8 +903,8 @@
         "gpt-oss-120b"
       ],
       "verification": {
-        "level": "docs_verified",
-        "lastChecked": "2026-07-14",
+        "level": "live_verified",
+        "lastChecked": "2026-07-16",
         "staleAfterDays": 30
       }
     },
