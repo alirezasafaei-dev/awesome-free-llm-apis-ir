@@ -1,0 +1,73 @@
+name: Finalize audit fix branch once
+
+on:
+  push:
+    branches:
+      - fix/agnes-limits-and-repository-audits-20260716
+
+permissions:
+  contents: write
+
+concurrency:
+  group: finalize-audit-fix-once
+  cancel-in-progress: false
+
+jobs:
+  finalize:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Regenerate derived files
+        run: |
+          npm run generate
+          npm run generate:tools
+
+      - name: Update README audit section and unknown payment label
+        run: |
+          node --input-type=module <<'NODE'
+          import { readFileSync, writeFileSync } from "node:fs";
+
+          const path = "README.md";
+          let readme = readFileSync(path, "utf8");
+          const oldAgnes = "| [Agnes AI](https://agnes-ai.com/) | `https://apihub.agnes-ai.com/v1` | API Key | ❌ ثبت‌نام |";
+          const newAgnes = "| [Agnes AI](https://agnes-ai.com/) | `https://apihub.agnes-ai.com/v1` | API Key | ❔ نامشخص |";
+          if (!readme.includes(oldAgnes) && !readme.includes(newAgnes)) {
+            throw new Error("Agnes quick-reference row was not found");
+          }
+          readme = readme.replace(oldAgnes, newAgnes);
+
+          const heading = "## ممیزی Repositoryهای کاندید";
+          if (!readme.includes(heading)) {
+            const anchor = "## تست واقعی از ایران";
+            const section = `${heading}\n\nتصمیم Add/Watch/Reject برای Repositoryهای کشف‌شده در [Registry ماشین‌خوان ممیزی](data/repository-audits.json) ثبت می‌شود و CI مرز آن‌ها را با Provider و Tools Catalog کنترل می‌کند.\n\n\`\`\`bash\nnpm run validate:repo-audits\n\`\`\`\n\nروش، Evidence و نتیجهٔ ممیزی‌های جاری در [راهنمای ممیزی Repositoryهای GitHub](docs/GITHUB_REPOSITORY_AUDITS.fa.md) آمده است.\n\n`;
+            if (!readme.includes(anchor)) throw new Error("README insertion anchor was not found");
+            readme = readme.replace(anchor, `${section}${anchor}`);
+          }
+
+          writeFileSync(path, readme);
+          NODE
+
+      - name: Run complete test suite
+        run: npm test
+
+      - name: Remove one-shot workflow and commit outputs
+        run: |
+          rm .github/workflows/finalize-audit-fix-once.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+            exit 0
+          fi
+          git commit -m "chore: finalize repository audit outputs"
+          git push origin "HEAD:${GITHUB_REF_NAME}"
