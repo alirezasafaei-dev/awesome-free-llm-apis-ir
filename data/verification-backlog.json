@@ -1,0 +1,114 @@
+{
+  "schema_version": "1.0.0",
+  "last_updated": "2026-07-16",
+  "parent_issue": 29,
+  "summary": {
+    "provider_count": 22,
+    "unknown_count": 7
+  },
+  "tracks": [
+    {
+      "id": "security_rotation",
+      "issue": 32,
+      "priority": "P0",
+      "execution": "local",
+      "status": "open",
+      "providers": [],
+      "blocker_type": "security_review"
+    },
+    {
+      "id": "account_access",
+      "issue": 33,
+      "priority": "P0",
+      "execution": "local",
+      "status": "open",
+      "providers": [
+        "agnes-ai",
+        "fireworks-ai",
+        "nvidia-nim",
+        "vercel-ai-gateway"
+      ],
+      "blocker_type": "account_access"
+    },
+    {
+      "id": "signup_identity",
+      "issue": 34,
+      "priority": "P1",
+      "execution": "research_and_local",
+      "status": "open",
+      "providers": [
+        "freetheai",
+        "modelscope",
+        "siliconflow"
+      ],
+      "blocker_type": "signup_or_identity"
+    },
+    {
+      "id": "network_matrix",
+      "issue": 35,
+      "priority": "P0",
+      "execution": "local",
+      "status": "open",
+      "providers": [],
+      "blocker_type": "independent_asn_and_vpn"
+    }
+  ],
+  "providers": [
+    {
+      "provider_id": "agnes-ai",
+      "track_issue": 33,
+      "blocker_type": "account_access",
+      "next_action": "Complete authorized signup, obtain API access, and run a minimal direct request from Iran.",
+      "requires_local_execution": true,
+      "automatable": false
+    },
+    {
+      "provider_id": "fireworks-ai",
+      "track_issue": 33,
+      "blocker_type": "inactive_account",
+      "next_action": "Repeat the direct and supported-route comparison with an active authorized account.",
+      "requires_local_execution": true,
+      "automatable": false
+    },
+    {
+      "provider_id": "freetheai",
+      "track_issue": 34,
+      "blocker_type": "community_signup",
+      "next_action": "Document the current Discord signup requirement and test only through the normal authorized flow.",
+      "requires_local_execution": true,
+      "automatable": false
+    },
+    {
+      "provider_id": "modelscope",
+      "track_issue": 34,
+      "blocker_type": "identity_verification",
+      "next_action": "Verify the current first-party identity requirement and preserve unknown unless authorized access is available.",
+      "requires_local_execution": true,
+      "automatable": false
+    },
+    {
+      "provider_id": "nvidia-nim",
+      "track_issue": 33,
+      "blocker_type": "account_access",
+      "next_action": "Complete the standard developer access flow and run a minimal direct request from Iran.",
+      "requires_local_execution": true,
+      "automatable": false
+    },
+    {
+      "provider_id": "siliconflow",
+      "track_issue": 34,
+      "blocker_type": "phone_verification",
+      "next_action": "Confirm the current first-party phone requirement without bypassing platform controls.",
+      "requires_local_execution": true,
+      "automatable": false
+    },
+    {
+      "provider_id": "vercel-ai-gateway",
+      "track_issue": 33,
+      "blocker_type": "account_access",
+      "next_action": "Create an authorized gateway configuration and run a minimal direct request from Iran.",
+      "requires_local_execution": true,
+      "automatable": false
+    }
+  ]
+}
