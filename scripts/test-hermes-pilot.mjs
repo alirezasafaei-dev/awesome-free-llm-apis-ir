@@ -58,7 +58,7 @@ if (enabled("files")) {
 
 if (enabled("context")) {
   requireMatch("AGENTS.md", /draft PR/i, "must require draft pull requests");
-  requireMatch("AGENTS.md", /VPN result is not a direct result/i, "must separate VPN and direct-Iran evidence");
+  requireMatch("AGENTS.md", /VPN (?:observation|result)[^\n]*(?:not|never)[^\n]*direct/i, "must separate VPN and direct-Iran evidence");
   requireMatch("AGENTS.md", /npm ci[\s\S]*npm test/i, "must define the full repository gate");
   requireMatch("AGENTS.md", /must not:[\s\S]*deploy/i, "must prohibit autonomous deployment");
   requireMatch(".hermes.md", /Never use YOLO mode/i, "must explicitly prohibit YOLO mode");
