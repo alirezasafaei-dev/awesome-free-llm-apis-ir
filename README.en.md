@@ -13,7 +13,7 @@ The canonical catalog is in [`data/providers`](data/providers), validated agains
 
 | Metric | Count |
 |---|---|
-| Providers | 21 (7 verified_working from Iran, 3 verified_blocked, 10 unknown, 1 docs_verified) |
+| Providers | 22 (7 verified_working from Iran, 3 verified_blocked, 11 unknown, 1 docs_verified) |
 | Tools (proxies/routers/bridges) | 9 (in separate catalog) |
 | Upstream repositories watched | 14 |
 | Persian benchmark prompts | 15 |

@@ -1,8 +1,75 @@
 {
   "schema_version": "1.1.0",
   "last_updated": "2026-07-16",
-  "provider_count": 21,
+  "provider_count": 22,
   "providers": [
+    {
+      "schema_version": "1.1.0",
+      "service_type": "official_gateway",
+      "id": "agnes-ai",
+      "name": "Agnes AI",
+      "website": "https://agnes-ai.com/",
+      "docs": "https://platform.agnes-ai.com/",
+      "signup": "https://platform.agnes-ai.com/settings/apiKeys",
+      "api": {
+        "base_url": "https://apihub.agnes-ai.com/v1",
+        "openai_compatible": true,
+        "auth": "api_key"
+      },
+      "capabilities": [
+        "chat",
+        "text_generation",
+        "reasoning",
+        "tool_calling",
+        "structured_output"
+      ],
+      "free_tier": {
+        "status": "active",
+        "type": "free_models",
+        "requires_payment_method": false,
+        "limits": [
+          {
+            "scope": "account",
+            "condition": "registration, no credit card",
+            "rpm": 30,
+            "notes_fa": "۳۰ RPM متن، ۳۰ RPM تصویر. ۵ مدل رایگان. بدون نیاز به کارت بانکی یا تأیید تلفن."
+          }
+        ],
+        "notes_fa": "پلتفرم Sapiens AI (سنگاپور) با ۵ مدل رایگان: Agnes 2.0 Flash (۲۵۶K context)، Agnes 1.5 Flash، و مدل‌های تصویر/ویدئو. API Key رایگان از platform.agnes-ai.com. مناسب کاربران ایران چون ثبت‌نام ساده بدون تحریم."
+      },
+      "iran_access": {
+        "status": "unknown",
+        "official_policy": "not_documented",
+        "tested_from_iran": false,
+        "tested_at": null,
+        "test_method": "not_tested",
+        "network": null,
+        "evidence": [],
+        "notes_fa": "از ایران تست نشده. مستقر در سنگاپور — احتمال دسترسی بالا است."
+      },
+      "models": {
+        "dynamic": true,
+        "source": "https://platform.agnes-ai.com/models",
+        "notable": [
+          "agnes-2.0-flash",
+          "agnes-1.5-flash",
+          "agnes-image-2.0-flash",
+          "agnes-image-2.1-flash",
+          "agnes-video-v2.0"
+        ]
+      },
+      "verification": {
+        "level": "docs_verified",
+        "last_checked": "2026-07-16",
+        "checked_by": "maintainers",
+        "stale_after_days": 30
+      },
+      "sources": [
+        "https://freellm.net/providers/agnes-ai",
+        "https://agnes-ai.com/",
+        "https://platform.agnes-ai.com/"
+      ]
+    },
     {
       "schema_version": "1.1.0",
       "service_type": "official_provider",

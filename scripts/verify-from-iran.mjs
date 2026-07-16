@@ -192,6 +192,14 @@ const providers = [
     defaultModel: "deepseek-v4-flash-free",
     validatedEnv: "OPENCODE_ZEN_CREDENTIAL_VALIDATED",
     endpoint: () => "https://opencode.ai/zen/v1/chat/completions"
+  },
+  {
+    id: "agnes-ai",
+    keyEnv: "AGNES_AI_API_KEY",
+    modelEnv: "AGNES_AI_MODEL",
+    defaultModel: "agnes-2.0-flash",
+    validatedEnv: "AGNES_AI_CREDENTIAL_VALIDATED",
+    endpoint: () => "https://apihub.agnes-ai.com/v1/chat/completions"
   }
 ];
 

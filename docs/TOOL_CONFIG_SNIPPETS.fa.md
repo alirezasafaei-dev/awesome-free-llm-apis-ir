@@ -18,6 +18,7 @@
 | Mistral AI | `https://api.mistral.ai/v1` | API Key | متغیر | ثبت‌نام رایگان |
 | SambaNova Cloud | `https://api.sambanova.ai/v1` | API Key | ۲۰ RPM | ثبت‌نام |
 | Cloudflare Workers AI | `https://api.cloudflare.com/client/v4/accounts/{id}/ai/v1` | API Token | ۱۰K neurons/day | ثبت‌نام |
+| Agnes AI | `https://apihub.agnes-ai.com/v1` | API Key | ۳۰ RPM | ثبت‌نام |
 | Groq | `https://api.groq.com/openai/v1` | API Key | ۳۰ RPM | ثبت‌نام |
 
 ---
@@ -39,6 +40,12 @@ claude
 ### هر Provider OpenAI-compatible
 
 ```bash
+# Agnes AI (ثبت‌نام رایگان، بدون کارت بانکی)
+export ANTHROPIC_BASE_URL="https://apihub.agnes-ai.com/v1"
+export ANTHROPIC_AUTH_TOKEN="<کلید API از platform.agnes-ai.com>"
+export ANTHROPIC_API_KEY=""
+claude
+
 # OVHcloud AI Endpoints (ناشناس، نیازی به کلید ندارد)
 export ANTHROPIC_BASE_URL="https://oai.endpoints.kepler.ai.cloud.ovh.net/v1"
 export ANTHROPIC_AUTH_TOKEN="sk-no-key-required"

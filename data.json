@@ -1,7 +1,53 @@
 {
   "lastUpdated": "2026-07-16",
-  "providerCount": 21,
+  "providerCount": 22,
   "providers": [
+    {
+      "id": "agnes-ai",
+      "name": "Agnes AI",
+      "serviceType": "official_gateway",
+      "website": "https://agnes-ai.com/",
+      "api": {
+        "baseUrl": "https://apihub.agnes-ai.com/v1",
+        "openaiCompatible": true,
+        "auth": "api_key"
+      },
+      "freeTier": {
+        "status": "active",
+        "type": "free_models",
+        "requiresPaymentMethod": false,
+        "limitExample": "30 RPM",
+        "notesFa": "پلتفرم Sapiens AI (سنگاپور) با ۵ مدل رایگان: Agnes 2.0 Flash (۲۵۶K context)، Agnes 1.5 Flash، و مدل‌های تصویر/ویدئو. API Key رایگان از platform.agnes-ai.com. مناسب کاربران ایران چون ثبت‌نام ساده بدون تحریم."
+      },
+      "capabilities": [
+        "chat",
+        "text_generation",
+        "reasoning",
+        "tool_calling",
+        "structured_output"
+      ],
+      "iranAccess": {
+        "status": "unknown",
+        "label": "❔ نامشخص",
+        "tested": false,
+        "testedAt": null,
+        "network": null,
+        "evidenceCount": 0,
+        "notesFa": "از ایران تست نشده. مستقر در سنگاپور — احتمال دسترسی بالا است."
+      },
+      "models": [
+        "agnes-2.0-flash",
+        "agnes-1.5-flash",
+        "agnes-image-2.0-flash",
+        "agnes-image-2.1-flash",
+        "agnes-video-v2.0"
+      ],
+      "verification": {
+        "level": "docs_verified",
+        "lastChecked": "2026-07-16",
+        "staleAfterDays": 30
+      }
+    },
     {
       "id": "aion-labs",
       "name": "Aion Labs",

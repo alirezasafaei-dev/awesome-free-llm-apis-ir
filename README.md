@@ -30,6 +30,7 @@
 <!-- This section is generated. Run: npm run generate -->
 | سرویس | نوع | رایگان | محدودیت نمونه | OpenAI-compatible | دسترسی ایران | آخرین بررسی |
 |---|---|---|---|:---:|---|---|
+| [Agnes AI](https://agnes-ai.com/) | Gateway رسمی | مدل‌های رایگان | 30 RPM | ✅ | ❔ نامشخص | 2026-07-16 |
 | [Aion Labs](https://www.aionlabs.ai/) | Provider رسمی | سهمیه دائمی | 15 RPM · 20,000 TPM | ✅ | ❔ نامشخص | 2026-07-15 |
 | [Cerebras Inference](https://cloud.cerebras.ai/) | Gateway رسمی | آزمایشی | 5 RPM · 30,000 TPM | ✅ | ⛔ مسدود | 2026-07-14 |
 | [Cloudflare Workers AI](https://developers.cloudflare.com/workers-ai/) | Gateway رسمی | سهمیه دائمی | 10,000 neurons/day | ✅ | ✅ مستقیم تست‌شده | 2026-07-14 |
@@ -57,6 +58,7 @@
 
 | سرویس | Base URL | Auth | نیاز به کارت بانکی |
 |---|---|---|---|
+| [Agnes AI](https://agnes-ai.com/) | `https://apihub.agnes-ai.com/v1` | API Key | ❌ ثبت‌نام |
 | [Aion Labs](https://www.aionlabs.ai/) | `https://api.aionlabs.ai/v1` | API Key | ❌ خیر |
 | [Cerebras](https://cloud.cerebras.ai/) | `https://api.cerebras.ai/v1` | API Key | ✅ ثبت‌نام |
 | [Cloudflare Workers AI](https://developers.cloudflare.com/workers-ai/) | `https://api.cloudflare.com/client/v4/accounts/{id}/ai/v1` | API Token | ❌ سهمیه رایگان |
@@ -186,7 +188,7 @@ npm run benchmark:run
 
 ## نقشهٔ راه
 
-1. **دادهٔ جهانی:** ✅ تکمیل ۲۱ سرویس با سهمیه، مدل‌ها و محدودیت‌ها
+1. **دادهٔ جهانی:** ✅ تکمیل ۲۲ سرویس با سهمیه، مدل‌ها و محدودیت‌ها
 2. **راستی‌آزمایی ایران:** ✅ تست مستقیم و VPN روی دو شبکهٔ مستقل (ثابت + موبایل MCI)
 3. **منابع ایرانی:** ممیزی APIهای بومی NLP، OCR و مدل‌های فارسی با همان استاندارد سخت‌گیرانه
 4. **کیفیت فارسی:** ✅ بنچمارک پایهٔ نسخه‌دار؛ مرحلهٔ بعد گسترش Dataset و اجرای مدل‌های بیشتر
