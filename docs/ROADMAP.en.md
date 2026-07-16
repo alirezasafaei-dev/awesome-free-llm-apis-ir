@@ -10,10 +10,10 @@ This document is the canonical roadmap. A phase is marked complete only when its
 - 8 proxies, routers, session bridges, and related tools in the separate tools catalog
 - 14 repositories in the upstream monitor
 - 7 machine-readable repository audits with Add / Watch / Reject decisions
-- 7 providers with a successful direct request from Iran
+- 8 providers with a successful direct request from Iran
 - 3 providers with credential-validated geographic blocking
 - 1 provider with official lack of Iran support
-- 11 providers whose Iran-access status remains unknown
+- 10 providers whose Iran-access status remains unknown (need API keys)
 
 ## P0 — Data-contract integrity
 
@@ -43,10 +43,12 @@ Completed:
 - Direct testing on an Iranian fixed network.
 - Direct testing on an MCI mobile network.
 - Credential validation through a German exit for selected providers, separating invalid credentials from geographic blocking.
+- Tested 3 anonymous providers from Iran (kilo-gateway, ovhcloud-ai-endpoints, llm7-io).
+- Updated documentation with actual test results.
 
 Remaining:
 
-- Obtain authorized credentials for providers that remain unknown.
+- Obtain authorized credentials for 10 remaining providers.
 - Run a separate VPN matrix where it provides practical value.
 - Record `route=vpn` and `exit_country` independently.
 - Avoid generalizing one ISP, account, or route to all users in Iran.
