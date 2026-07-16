@@ -10,10 +10,10 @@ This document is the canonical roadmap. A phase is marked complete only when its
 - 8 proxies, routers, session bridges, and related tools in the separate tools catalog
 - 14 repositories in the upstream monitor
 - 7 machine-readable repository audits with Add / Watch / Reject decisions
-- 8 providers with a successful direct request from Iran
-- 3 providers with credential-validated geographic blocking
+- 9 providers with a successful direct request from Iran
+- 5 providers with credential-validated geographic blocking
 - 1 provider with official lack of Iran support
-- 10 providers whose Iran-access status remains unknown (need API keys)
+- 7 providers whose Iran-access status remains unknown
 
 ## P0 — Data-contract integrity
 

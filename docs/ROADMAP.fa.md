@@ -10,10 +10,10 @@
 - ۸ ابزار، Proxy، Router و Session Bridge در Catalog مستقل
 - ۱۴ Repository در Upstream Monitor
 - ۷ ممیزی Repository با تصمیم ماشین‌خوان Add / Watch / Reject
-- ۸ Provider با درخواست مستقیم موفق از ایران
-- ۳ Provider با مسدودیت جغرافیایی تأییدشده
+- ۹ Provider با درخواست مستقیم موفق از ایران
+- ۵ Provider با مسدودیت جغرافیایی تأییدشده
 - ۱ Provider با عدم پشتیبانی رسمی ایران
-- ۱۰ Provider با وضعیت دسترسی ایران نامشخص (نیاز به API Key)
+- ۷ Provider با وضعیت دسترسی ایران نامشخص
 
 ## P0 — یکپارچگی قرارداد داده
 
