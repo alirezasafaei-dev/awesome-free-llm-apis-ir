@@ -150,6 +150,48 @@ const providers = [
     defaultModel: "gpt-oss-120b",
     validatedEnv: "FIREWORKS_CREDENTIAL_VALIDATED",
     endpoint: () => "https://api.fireworks.ai/inference/v1/chat/completions"
+  },
+  {
+    id: "ovhcloud-ai-endpoints",
+    keyEnv: "OVHCLOUD_API_KEY",
+    modelEnv: "OVHCLOUD_MODEL",
+    defaultModel: "gpt-oss-20b",
+    validatedEnv: "OVHCLOUD_CREDENTIAL_VALIDATED",
+    allowAnonymous: true,
+    endpoint: () => "https://oai.endpoints.kepler.ai.cloud.ovh.net/v1/chat/completions"
+  },
+  {
+    id: "llm7-io",
+    keyEnv: "LLM7_API_KEY",
+    modelEnv: "LLM7_MODEL",
+    defaultModel: "gpt-4o-mini",
+    validatedEnv: "LLM7_CREDENTIAL_VALIDATED",
+    allowAnonymous: true,
+    endpoint: () => "https://api.llm7.io/v1/chat/completions"
+  },
+  {
+    id: "siliconflow",
+    keyEnv: "SILICONFLOW_API_KEY",
+    modelEnv: "SILICONFLOW_MODEL",
+    defaultModel: "deepseek-ai/DeepSeek-R1-Distill-Qwen-7B",
+    validatedEnv: "SILICONFLOW_CREDENTIAL_VALIDATED",
+    endpoint: () => "https://api.siliconflow.cn/v1/chat/completions"
+  },
+  {
+    id: "modelscope",
+    keyEnv: "MODELSCOPE_API_KEY",
+    modelEnv: "MODELSCOPE_MODEL",
+    defaultModel: "Qwen/Qwen3.5-35B-A3B",
+    validatedEnv: "MODELSCOPE_CREDENTIAL_VALIDATED",
+    endpoint: () => "https://api-inference.modelscope.cn/v1/chat/completions"
+  },
+  {
+    id: "opencode-zen",
+    keyEnv: "OPENCODE_ZEN_API_KEY",
+    modelEnv: "OPENCODE_ZEN_MODEL",
+    defaultModel: "deepseek-v4-flash-free",
+    validatedEnv: "OPENCODE_ZEN_CREDENTIAL_VALIDATED",
+    endpoint: () => "https://opencode.ai/zen/v1/chat/completions"
   }
 ];
 

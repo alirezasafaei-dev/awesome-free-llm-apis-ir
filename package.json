@@ -6,8 +6,10 @@
   "description": "Verified, machine-readable catalog of free LLM APIs for Persian speakers and users in Iran.",
   "scripts": {
     "validate": "node scripts/validate.mjs",
-    "generate": "node scripts/generate-readme.mjs && node scripts/generate-catalog.mjs",
-    "generate:check": "node scripts/generate-readme.mjs --check",
+    "generate:data": "node scripts/generate-data-json.mjs",
+    "generate:data:check": "node scripts/generate-data-json.mjs --check",
+    "generate": "node scripts/generate-readme.mjs && node scripts/generate-catalog.mjs && node scripts/generate-data-json.mjs",
+    "generate:check": "node scripts/generate-readme.mjs --check && node scripts/generate-data-json.mjs --check",
     "catalog:check": "node scripts/generate-catalog.mjs --check",
     "check:freshness": "node scripts/check-freshness.mjs --strict",
     "site:build": "node scripts/build-site.mjs",

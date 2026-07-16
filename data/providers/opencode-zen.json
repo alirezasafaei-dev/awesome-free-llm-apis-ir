@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.1.0",
+  "service_type": "official_gateway",
+  "id": "opencode-zen",
+  "name": "OpenCode Zen",
+  "website": "https://opencode.ai/zen",
+  "docs": "https://opencode.ai/docs/zen",
+  "signup": "https://opencode.ai",
+  "api": {
+    "base_url": "https://opencode.ai/zen/v1",
+    "openai_compatible": true,
+    "auth": "api_key"
+  },
+  "capabilities": [
+    "chat",
+    "text_generation",
+    "reasoning",
+    "tool_calling",
+    "structured_output"
+  ],
+  "free_tier": {
+    "status": "active",
+    "type": "free_models",
+    "requires_payment_method": false,
+    "limits": [
+      {
+        "scope": "account",
+        "condition": "free signup, no credit card",
+        "notes_fa": "۵ مدل رایگان بدون نیاز به کارت بانکی. API Key رایگان. مدل‌های رایگان ممکن است داده را برای بهبود جمع‌آوری کنند."
+      }
+    ],
+    "notes_fa": "پلتفرم OpenCode با ۵ مدل رایگان (مدت محدود): Big Pickle، DeepSeek V4 Flash، MiMo-V2.5، North Mini Code، Nemotron 3 Ultra. API Key رایگان بدون کارت بانکی."
+  },
+  "iran_access": {
+    "status": "unknown",
+    "official_policy": "not_documented",
+    "tested_from_iran": false,
+    "tested_at": null,
+    "test_method": "not_tested",
+    "network": null,
+    "evidence": [],
+    "notes_fa": "از ایران تست نشده. نیاز به API Key رایگان — احتمال دسترسی وجود دارد."
+  },
+  "models": {
+    "dynamic": true,
+    "source": "https://opencode.ai/zen/v1/models",
+    "notable": [
+      "deepseek-v4-flash-free",
+      "mimo-v2.5-free",
+      "north-mini-code-free",
+      "nemotron-3-ultra-free",
+      "big-pickle-stealth"
+    ]
+  },
+  "verification": {
+    "level": "docs_verified",
+    "last_checked": "2026-07-16",
+    "checked_by": "maintainers",
+    "stale_after_days": 30
+  },
+  "sources": [
+    "https://opencode.ai/docs/zen",
+    "https://github.com/cheahjs/free-llm-api-resources",
+    "https://freellm.net/"
+  ]
+}

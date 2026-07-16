@@ -1,7 +1,7 @@
 {
   "schema_version": "1.1.0",
   "last_updated": "2026-07-16",
-  "provider_count": 16,
+  "provider_count": 21,
   "providers": [
     {
       "schema_version": "1.1.0",
@@ -961,6 +961,71 @@
     },
     {
       "schema_version": "1.1.0",
+      "service_type": "community_gateway",
+      "id": "llm7-io",
+      "name": "LLM7.io",
+      "website": "https://llm7.io/",
+      "docs": "https://token.llm7.io",
+      "signup": "https://token.llm7.io",
+      "api": {
+        "base_url": "https://api.llm7.io/v1",
+        "openai_compatible": true,
+        "auth": "none_or_api_key"
+      },
+      "capabilities": [
+        "chat",
+        "text_generation",
+        "reasoning"
+      ],
+      "free_tier": {
+        "status": "active",
+        "type": "free_models",
+        "requires_payment_method": false,
+        "limits": [
+          {
+            "scope": "anonymous",
+            "condition": "no registration",
+            "rpm": 30,
+            "notes_fa": "۳۰ RPM بدون ثبت‌نام (با توکن: ۱۲۰ RPM). ۳۰+ مدل. سازگار با GDPR، مستقر در UK"
+          }
+        ],
+        "notes_fa": "دروازه API با اصطکاک صفر. بدون نیاز به ثبت‌نام برای دسترسی پایه. ۳۰+ مدل شامل DeepSeek، Gemini، GPT-4o-mini، Mistral، Qwen."
+      },
+      "iran_access": {
+        "status": "unknown",
+        "official_policy": "not_documented",
+        "tested_from_iran": false,
+        "tested_at": null,
+        "test_method": "not_tested",
+        "network": null,
+        "evidence": [],
+        "notes_fa": "از ایران تست نشده. بدون ثبت‌نام و بدون کلید API — احتمال دسترسی بالا است."
+      },
+      "models": {
+        "dynamic": true,
+        "source": "https://token.llm7.io",
+        "notable": [
+          "deepseek-r1-0528",
+          "deepseek-v3-0324",
+          "gemini-2.5-flash-lite",
+          "gpt-4o-mini",
+          "mistral-small-3.1-24b",
+          "qwen2.5-coder-32b"
+        ]
+      },
+      "verification": {
+        "level": "docs_verified",
+        "last_checked": "2026-07-16",
+        "checked_by": "maintainers",
+        "stale_after_days": 30
+      },
+      "sources": [
+        "https://token.llm7.io",
+        "https://github.com/mnfst/awesome-free-llm-apis"
+      ]
+    },
+    {
+      "schema_version": "1.1.0",
       "service_type": "official_provider",
       "id": "mistral",
       "name": "Mistral AI",
@@ -1042,6 +1107,76 @@
     {
       "schema_version": "1.1.0",
       "service_type": "official_gateway",
+      "id": "modelscope",
+      "name": "ModelScope (Alibaba)",
+      "website": "https://modelscope.cn/",
+      "docs": "https://modelscope.cn/my/myaccesstoken",
+      "signup": "https://modelscope.cn/my/myaccesstoken",
+      "api": {
+        "base_url": "https://api-inference.modelscope.cn/v1",
+        "openai_compatible": true,
+        "auth": "api_key"
+      },
+      "capabilities": [
+        "chat",
+        "text_generation",
+        "reasoning",
+        "tool_calling",
+        "structured_output"
+      ],
+      "free_tier": {
+        "status": "active",
+        "type": "free_models",
+        "requires_payment_method": false,
+        "limits": [
+          {
+            "scope": "account",
+            "condition": "Alibaba Cloud account + real-name verification",
+            "rpd": 2000,
+            "notes_fa": "۲,۰۰۰ RPD کل (حداکثر ۵۰۰ RPD per model). نیاز به حساب Alibaba Cloud + احراز هویت واقعی."
+          }
+        ],
+        "notes_fa": "پلتفرم چینی API-Inference رایگان. ۵۴+ مدل: DeepSeek-V4، Qwen3.5-397B، GLM-5.2، Kimi-K2.5 و غیره. نیاز به ثبت‌نام و احراز هویت."
+      },
+      "iran_access": {
+        "status": "unknown",
+        "official_policy": "not_documented",
+        "tested_from_iran": false,
+        "tested_at": null,
+        "test_method": "not_tested",
+        "network": null,
+        "evidence": [],
+        "notes_fa": "از ایران تست نشده. Provider چینی با احراز هویت سطح بالا — دسترسی نامشخص."
+      },
+      "models": {
+        "dynamic": true,
+        "source": "https://modelscope.cn/models",
+        "notable": [
+          "Qwen/Qwen3.5-397B-A17B",
+          "Qwen/Qwen3.5-35B-A3B",
+          "deepseek-ai/DeepSeek-V4-Flash",
+          "deepseek-ai/DeepSeek-V4-Pro",
+          "MiniMax-M2.5",
+          "MiniMax-M3",
+          "GLM-4.7-Flash",
+          "GLM-5.2",
+          "Kimi-K2.5"
+        ]
+      },
+      "verification": {
+        "level": "docs_verified",
+        "last_checked": "2026-07-16",
+        "checked_by": "maintainers",
+        "stale_after_days": 30
+      },
+      "sources": [
+        "https://modelscope.cn/",
+        "https://github.com/mnfst/awesome-free-llm-apis"
+      ]
+    },
+    {
+      "schema_version": "1.1.0",
+      "service_type": "official_gateway",
       "id": "nvidia-nim",
       "name": "NVIDIA NIM API Catalog",
       "website": "https://build.nvidia.com/",
@@ -1091,6 +1226,72 @@
       "sources": [
         "https://docs.api.nvidia.com/nim/docs/product",
         "https://build.nvidia.com/explore/discover"
+      ]
+    },
+    {
+      "schema_version": "1.1.0",
+      "service_type": "official_gateway",
+      "id": "opencode-zen",
+      "name": "OpenCode Zen",
+      "website": "https://opencode.ai/zen",
+      "docs": "https://opencode.ai/docs/zen",
+      "signup": "https://opencode.ai",
+      "api": {
+        "base_url": "https://opencode.ai/zen/v1",
+        "openai_compatible": true,
+        "auth": "api_key"
+      },
+      "capabilities": [
+        "chat",
+        "text_generation",
+        "reasoning",
+        "tool_calling",
+        "structured_output"
+      ],
+      "free_tier": {
+        "status": "active",
+        "type": "free_models",
+        "requires_payment_method": false,
+        "limits": [
+          {
+            "scope": "account",
+            "condition": "free signup, no credit card",
+            "notes_fa": "۵ مدل رایگان بدون نیاز به کارت بانکی. API Key رایگان. مدل‌های رایگان ممکن است داده را برای بهبود جمع‌آوری کنند."
+          }
+        ],
+        "notes_fa": "پلتفرم OpenCode با ۵ مدل رایگان (مدت محدود): Big Pickle، DeepSeek V4 Flash، MiMo-V2.5، North Mini Code، Nemotron 3 Ultra. API Key رایگان بدون کارت بانکی."
+      },
+      "iran_access": {
+        "status": "unknown",
+        "official_policy": "not_documented",
+        "tested_from_iran": false,
+        "tested_at": null,
+        "test_method": "not_tested",
+        "network": null,
+        "evidence": [],
+        "notes_fa": "از ایران تست نشده. نیاز به API Key رایگان — احتمال دسترسی وجود دارد."
+      },
+      "models": {
+        "dynamic": true,
+        "source": "https://opencode.ai/zen/v1/models",
+        "notable": [
+          "deepseek-v4-flash-free",
+          "mimo-v2.5-free",
+          "north-mini-code-free",
+          "nemotron-3-ultra-free",
+          "big-pickle-stealth"
+        ]
+      },
+      "verification": {
+        "level": "docs_verified",
+        "last_checked": "2026-07-16",
+        "checked_by": "maintainers",
+        "stale_after_days": 30
+      },
+      "sources": [
+        "https://opencode.ai/docs/zen",
+        "https://github.com/cheahjs/free-llm-api-resources",
+        "https://freellm.net/"
       ]
     },
     {
@@ -1177,6 +1378,86 @@
       "sources": [
         "https://openrouter.ai/docs/api/reference/limits",
         "https://openrouter.ai/docs/guides/routing/model-variants/free"
+      ]
+    },
+    {
+      "schema_version": "1.1.0",
+      "service_type": "official_gateway",
+      "id": "ovhcloud-ai-endpoints",
+      "name": "OVHcloud AI Endpoints",
+      "website": "https://www.ovhcloud.com/en/public-cloud/ai-endpoints/",
+      "docs": "https://www.ovhcloud.com/en/public-cloud/ai-endpoints/catalog/",
+      "signup": null,
+      "api": {
+        "base_url": "https://oai.endpoints.kepler.ai.cloud.ovh.net/v1",
+        "openai_compatible": true,
+        "auth": "none_or_api_key"
+      },
+      "capabilities": [
+        "chat",
+        "text_generation",
+        "reasoning"
+      ],
+      "free_tier": {
+        "status": "active",
+        "type": "free_models",
+        "requires_payment_method": false,
+        "limits": [
+          {
+            "scope": "anonymous",
+            "condition": "no signup, no API key",
+            "rpm": 2,
+            "notes_fa": "۲ RPM در هر مدل، بدون نیاز به ثبت‌نام یا کلید API. ۲۰+ مدل اوپن‌وزن میزبان‌شده در مراکز داده اروپا"
+          }
+        ],
+        "notes_fa": "تنها Provider با دسترسی ناشناس دائمی (بدون کلید API، بدون ثبت‌نام). ۲ RPM/IP/model. برای افزایش Rate Limit نیاز به API Key و حساب Public Cloud دارد."
+      },
+      "iran_access": {
+        "status": "verified_working",
+        "official_policy": "not_documented",
+        "tested_from_iran": true,
+        "tested_at": "2026-07-16",
+        "test_method": "live_request",
+        "network": {
+          "country": "IR",
+          "route": "direct",
+          "exit_country": null
+        },
+        "evidence": [
+          {
+            "type": "live_test",
+            "timestamp": "2026-07-16T13:30:00Z",
+            "http_status": 200,
+            "latency_ms": 1200,
+            "model_tested": "gpt-oss-20b",
+            "endpoint": "https://oai.endpoints.kepler.ai.cloud.ovh.net/v1/chat/completions",
+            "auth_method": "anonymous",
+            "source": "LOCAL_PC — Iran mobile network (MCI AS44244)",
+            "notes_fa": "دسترسی ناشناس (بدون کلید API) از ایران موفق بود. مدل gpt-oss-20b پاسخ ۲۰۰ برگرداند."
+          }
+        ],
+        "notes_fa": "دسترسی ناشناس بدون نیاز به کلید API. تست مستقیم از ایران موفق."
+      },
+      "models": {
+        "dynamic": true,
+        "source": "https://www.ovhcloud.com/en/public-cloud/ai-endpoints/catalog/",
+        "notable": [
+          "Qwen3.5-397B-A17B",
+          "gpt-oss-120b",
+          "Meta-Llama-3.3-70B-Instruct",
+          "Mistral-Small-3.2-24B-Instruct",
+          "Qwen3-32B"
+        ]
+      },
+      "verification": {
+        "level": "live_verified",
+        "last_checked": "2026-07-16",
+        "checked_by": "maintainers",
+        "stale_after_days": 30
+      },
+      "sources": [
+        "https://www.ovhcloud.com/en/public-cloud/ai-endpoints/catalog/",
+        "https://github.com/mnfst/awesome-free-llm-apis"
       ]
     },
     {
@@ -1287,6 +1568,72 @@
       "sources": [
         "https://docs.sambanova.ai/docs/en/models/rate-limits",
         "https://docs.sambanova.ai/docs/en/features/openai-compatibility"
+      ]
+    },
+    {
+      "schema_version": "1.1.0",
+      "service_type": "official_gateway",
+      "id": "siliconflow",
+      "name": "SiliconFlow",
+      "website": "https://cloud.siliconflow.cn/",
+      "docs": "https://cloud.siliconflow.cn/account/ak",
+      "signup": "https://cloud.siliconflow.cn/account/ak",
+      "api": {
+        "base_url": "https://api.siliconflow.cn/v1",
+        "openai_compatible": true,
+        "auth": "api_key"
+      },
+      "capabilities": [
+        "chat",
+        "text_generation",
+        "reasoning",
+        "tool_calling",
+        "structured_output"
+      ],
+      "free_tier": {
+        "status": "active",
+        "type": "free_models",
+        "requires_payment_method": false,
+        "limits": [
+          {
+            "scope": "account",
+            "condition": "phone verification (Chinese number)",
+            "rpm": 30,
+            "tpm": 60000,
+            "notes_fa": "۳۰ RPM · ۶۰K TPM. نیاز به تأیید شماره تلفن چینی. ۲۰۰+ مدل پولی نیز موجود است."
+          }
+        ],
+        "notes_fa": "Provider چینی با مدل‌های رایگان دائمی. Qwen3-8B و DeepSeek-R1-Distill-Qwen-7B رایگان. نیاز به API Key و تأیید شماره تلفن چینی دارد."
+      },
+      "iran_access": {
+        "status": "unknown",
+        "official_policy": "not_documented",
+        "tested_from_iran": false,
+        "tested_at": null,
+        "test_method": "not_tested",
+        "network": null,
+        "evidence": [],
+        "notes_fa": "از ایران تست نشده. Provider چینی — احتمال دسترسی بدون تحریم بالا است."
+      },
+      "models": {
+        "dynamic": true,
+        "source": "https://cloud.siliconflow.cn/models",
+        "notable": [
+          "Qwen/Qwen3-8B",
+          "deepseek-ai/DeepSeek-R1-Distill-Qwen-7B",
+          "Qwen/Qwen3.5-35B-A3B",
+          "Pro/deepseek-ai/DeepSeek-V4-Flash"
+        ]
+      },
+      "verification": {
+        "level": "docs_verified",
+        "last_checked": "2026-07-16",
+        "checked_by": "maintainers",
+        "stale_after_days": 30
+      },
+      "sources": [
+        "https://cloud.siliconflow.cn/",
+        "https://github.com/mnfst/awesome-free-llm-apis"
       ]
     },
     {

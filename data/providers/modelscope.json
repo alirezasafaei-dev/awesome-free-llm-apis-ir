@@ -1,0 +1,70 @@
+{
+  "schema_version": "1.1.0",
+  "service_type": "official_gateway",
+  "id": "modelscope",
+  "name": "ModelScope (Alibaba)",
+  "website": "https://modelscope.cn/",
+  "docs": "https://modelscope.cn/my/myaccesstoken",
+  "signup": "https://modelscope.cn/my/myaccesstoken",
+  "api": {
+    "base_url": "https://api-inference.modelscope.cn/v1",
+    "openai_compatible": true,
+    "auth": "api_key"
+  },
+  "capabilities": [
+    "chat",
+    "text_generation",
+    "reasoning",
+    "tool_calling",
+    "structured_output"
+  ],
+  "free_tier": {
+    "status": "active",
+    "type": "free_models",
+    "requires_payment_method": false,
+    "limits": [
+      {
+        "scope": "account",
+        "condition": "Alibaba Cloud account + real-name verification",
+        "rpd": 2000,
+        "notes_fa": "۲,۰۰۰ RPD کل (حداکثر ۵۰۰ RPD per model). نیاز به حساب Alibaba Cloud + احراز هویت واقعی."
+      }
+    ],
+    "notes_fa": "پلتفرم چینی API-Inference رایگان. ۵۴+ مدل: DeepSeek-V4، Qwen3.5-397B، GLM-5.2، Kimi-K2.5 و غیره. نیاز به ثبت‌نام و احراز هویت."
+  },
+  "iran_access": {
+    "status": "unknown",
+    "official_policy": "not_documented",
+    "tested_from_iran": false,
+    "tested_at": null,
+    "test_method": "not_tested",
+    "network": null,
+    "evidence": [],
+    "notes_fa": "از ایران تست نشده. Provider چینی با احراز هویت سطح بالا — دسترسی نامشخص."
+  },
+  "models": {
+    "dynamic": true,
+    "source": "https://modelscope.cn/models",
+    "notable": [
+      "Qwen/Qwen3.5-397B-A17B",
+      "Qwen/Qwen3.5-35B-A3B",
+      "deepseek-ai/DeepSeek-V4-Flash",
+      "deepseek-ai/DeepSeek-V4-Pro",
+      "MiniMax-M2.5",
+      "MiniMax-M3",
+      "GLM-4.7-Flash",
+      "GLM-5.2",
+      "Kimi-K2.5"
+    ]
+  },
+  "verification": {
+    "level": "docs_verified",
+    "last_checked": "2026-07-16",
+    "checked_by": "maintainers",
+    "stale_after_days": 30
+  },
+  "sources": [
+    "https://modelscope.cn/",
+    "https://github.com/mnfst/awesome-free-llm-apis"
+  ]
+}

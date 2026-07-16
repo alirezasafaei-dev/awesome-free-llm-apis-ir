@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.1.0",
+  "service_type": "community_gateway",
+  "id": "llm7-io",
+  "name": "LLM7.io",
+  "website": "https://llm7.io/",
+  "docs": "https://token.llm7.io",
+  "signup": "https://token.llm7.io",
+  "api": {
+    "base_url": "https://api.llm7.io/v1",
+    "openai_compatible": true,
+    "auth": "none_or_api_key"
+  },
+  "capabilities": [
+    "chat",
+    "text_generation",
+    "reasoning"
+  ],
+  "free_tier": {
+    "status": "active",
+    "type": "free_models",
+    "requires_payment_method": false,
+    "limits": [
+      {
+        "scope": "anonymous",
+        "condition": "no registration",
+        "rpm": 30,
+        "notes_fa": "۳۰ RPM بدون ثبت‌نام (با توکن: ۱۲۰ RPM). ۳۰+ مدل. سازگار با GDPR، مستقر در UK"
+      }
+    ],
+    "notes_fa": "دروازه API با اصطکاک صفر. بدون نیاز به ثبت‌نام برای دسترسی پایه. ۳۰+ مدل شامل DeepSeek، Gemini، GPT-4o-mini، Mistral، Qwen."
+  },
+  "iran_access": {
+    "status": "unknown",
+    "official_policy": "not_documented",
+    "tested_from_iran": false,
+    "tested_at": null,
+    "test_method": "not_tested",
+    "network": null,
+    "evidence": [],
+    "notes_fa": "از ایران تست نشده. بدون ثبت‌نام و بدون کلید API — احتمال دسترسی بالا است."
+  },
+  "models": {
+    "dynamic": true,
+    "source": "https://token.llm7.io",
+    "notable": [
+      "deepseek-r1-0528",
+      "deepseek-v3-0324",
+      "gemini-2.5-flash-lite",
+      "gpt-4o-mini",
+      "mistral-small-3.1-24b",
+      "qwen2.5-coder-32b"
+    ]
+  },
+  "verification": {
+    "level": "docs_verified",
+    "last_checked": "2026-07-16",
+    "checked_by": "maintainers",
+    "stale_after_days": 30
+  },
+  "sources": [
+    "https://token.llm7.io",
+    "https://github.com/mnfst/awesome-free-llm-apis"
+  ]
+}

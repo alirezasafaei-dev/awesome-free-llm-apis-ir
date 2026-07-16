@@ -41,12 +41,43 @@
 | [Groq](https://groq.com/) | Gateway رسمی | سهمیه دائمی | 30 RPM · 14400 RPD | ✅ | ❔ نامشخص | 2026-07-14 |
 | [Hugging Face Inference Providers](https://huggingface.co/inference-providers) | Gateway رسمی | اعتبار ماهانه | $0.1/month | ✅ | ✅ مستقیم تست‌شده | 2026-07-14 |
 | [Kilo Gateway](https://kilo.ai/) | Gateway رسمی | مدل‌های رایگان | 200 RPH | ✅ | ✅ مستقیم تست‌شده | 2026-07-15 |
+| [LLM7.io](https://llm7.io/) | Gateway اجتماعی | مدل‌های رایگان | 30 RPM | ✅ | ❔ نامشخص | 2026-07-16 |
 | [Mistral AI](https://mistral.ai/) | Provider رسمی | سهمیه دائمی | وابسته به حساب/مدل | ✅ | ✅ مستقیم تست‌شده | 2026-07-14 |
+| [ModelScope (Alibaba)](https://modelscope.cn/) | Gateway رسمی | مدل‌های رایگان | 2000 RPD | ✅ | ❔ نامشخص | 2026-07-16 |
 | [NVIDIA NIM API Catalog](https://build.nvidia.com/) | Gateway رسمی | سهمیه دائمی | وابسته به حساب/مدل | ✅ | ❔ نامشخص | 2026-07-14 |
+| [OpenCode Zen](https://opencode.ai/zen) | Gateway رسمی | مدل‌های رایگان | مدل‌محور | ✅ | ❔ نامشخص | 2026-07-16 |
 | [OpenRouter](https://openrouter.ai/) | Gateway رسمی | مدل‌های رایگان | 20 RPM · 50 RPD | ✅ | ⛔ مسدود | 2026-07-14 |
+| [OVHcloud AI Endpoints](https://www.ovhcloud.com/en/public-cloud/ai-endpoints/) | Gateway رسمی | مدل‌های رایگان | 2 RPM | ✅ | ✅ مستقیم تست‌شده | 2026-07-16 |
 | [SambaNova Cloud](https://cloud.sambanova.ai/) | Gateway رسمی | سهمیه دائمی | 20 RPM · 20 RPD | ✅ | ✅ مستقیم تست‌شده | 2026-07-14 |
+| [SiliconFlow](https://cloud.siliconflow.cn/) | Gateway رسمی | مدل‌های رایگان | 30 RPM · 60,000 TPM | ✅ | ❔ نامشخص | 2026-07-16 |
 | [Vercel AI Gateway](https://vercel.com/ai) | Gateway رسمی | اعتبار ماهانه | $5/month | ✅ | ❔ نامشخص | 2026-07-15 |
 <!-- PROVIDERS_TABLE_END -->
+
+## مرجع سریع API
+
+| سرویس | Base URL | Auth | نیاز به کارت بانکی |
+|---|---|---|---|
+| [Aion Labs](https://www.aionlabs.ai/) | `https://api.aionlabs.ai/v1` | API Key | ❌ خیر |
+| [Cerebras](https://cloud.cerebras.ai/) | `https://api.cerebras.ai/v1` | API Key | ✅ ثبت‌نام |
+| [Cloudflare Workers AI](https://developers.cloudflare.com/workers-ai/) | `https://api.cloudflare.com/client/v4/accounts/{id}/ai/v1` | API Token | ❌ سهمیه رایگان |
+| [Cohere](https://cohere.com/) | `https://api.cohere.com/v2` | API Key | ✅ ثبت‌نام |
+| [Fireworks AI](https://fireworks.ai/) | `https://api.fireworks.ai/inference/v1` | API Key | ✅ ثبت‌نام |
+| [FreeTheAI](https://freetheai.xyz/) | `https://api.freetheai.xyz/v1` | API Key | ❌ ناشناس |
+| [GitHub Models](https://github.com/marketplace/models) | `https://models.inference.ai.azure.com` | Token | ❌ با GitHub |
+| [Google Gemini](https://ai.google.dev/) | `https://generativelanguage.googleapis.com/v1beta` | API Key | ❌ سهمیه رایگان |
+| [Groq](https://groq.com/) | `https://api.groq.com/openai/v1` | API Key | ❌ ثبت‌نام رایگان |
+| [Hugging Face](https://huggingface.co/inference-providers) | `https://router.huggingface.co/hf-inference/v1` | HF Token | ❌ سهمیه ماهانه |
+| [Kilo Gateway](https://kilo.ai/) | `https://api.kilo.ai/v1` | API Key / ناشناس | ❌ ناشناس |
+| [LLM7.io](https://llm7.io/) | `https://api.llm7.io/v1` | API Key / ناشناس | ❌ ناشناس |
+| [Mistral AI](https://mistral.ai/) | `https://api.mistral.ai/v1` | API Key | ❌ ثبت‌نام |
+| [ModelScope (Alibaba)](https://modelscope.cn/) | `https://api-inference.modelscope.cn/v1` | API Key | ❌ ثبت‌نام |
+| [NVIDIA NIM](https://build.nvidia.com/) | `https://integrate.api.nvidia.com/v1` | API Key | ❌ ثبت‌نام |
+| [OpenRouter](https://openrouter.ai/) | `https://openrouter.ai/api/v1` | API Key | ✅ ثبت‌نام |
+| [OpenCode Zen](https://opencode.ai/zen) | `https://opencode.ai/zen/v1` | API Key | ❌ ثبت‌نام |
+| [OVHcloud AI Endpoints](https://www.ovhcloud.com/en/public-cloud/ai-endpoints/) | `https://oai.endpoints.kepler.ai.cloud.ovh.net/v1` | API Key / ناشناس | ❌ ناشناس |
+| [SambaNova Cloud](https://cloud.sambanova.ai/) | `https://api.sambanova.ai/v1` | API Key | ❌ ثبت‌نام |
+| [SiliconFlow](https://cloud.siliconflow.cn/) | `https://api.siliconflow.cn/v1` | API Key | ❌ ثبت‌نام |
+| [Vercel AI Gateway](https://vercel.com/ai) | `https://ai-gateway.vercel.sh/v1` | API Key | ❌ با حساب Vercel |
 
 ## معنی وضعیت دسترسی ایران
 
@@ -75,7 +106,7 @@
 
 ## استفادهٔ ماشینی
 
-هر سرویس یک فایل مستقل در [`data/providers`](data/providers) دارد و ساختار آن با [`schema/provider.schema.json`](schema/provider.schema.json) تعریف شده است. وب‌سایت‌ها می‌توانند فایل یکپارچهٔ [`catalog.json`](catalog.json) را مستقیماً مصرف کنند.
+هر سرویس یک فایل مستقل در [`data/providers`](data/providers) دارد و ساختار آن با [`schema/provider.schema.json`](schema/provider.schema.json) تعریف شده است. وب‌سایت‌ها می‌توانند فایل یکپارچهٔ [`catalog.json`](catalog.json) یا [`data.json`](data.json) را مستقیماً مصرف کنند.
 
 ```bash
 git clone https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir.git
@@ -122,6 +153,8 @@ npm run verify:iran -- --providers=openrouter,groq
 
 ابزارهایی مثل OpenCode، MiMo Code و Hermes معمولاً **مصرف‌کنندهٔ Provider** هستند، نه الزاماً API رایگان مستقل. برای جلوگیری از قاطی‌شدن CLI با Provider، معیار ورود این موارد در [راهنمای ثبت ابزارهای کدنویسی CLI](docs/CODING_AGENT_INTAKE.fa.md) آمده است. اگر یک Gateway مثل OpenCode Zen یا MiMo API، endpoint عمومی، مدل رایگان و محدودیت قابل بررسی داشته باشد، می‌تواند به‌عنوان Provider جداگانه پیشنهاد شود؛ در غیر این صورت در بخش ابزارهای سازگار معرفی می‌شود.
 
+برای کانفیگ سریع ابزارها با Providerهای این مخزن، [راهنمای کانفیگ ابزارهای کدنویسی](docs/TOOL_CONFIG_SNIPPETS.fa.md) را ببینید.
+
 ## بنچمارک فارسی
 
 نسخهٔ اول بنچمارک پایهٔ فارسی شامل ۱۵ آزمون قطعی در ۵ دسته است: پیروی از دستور، درک متن، استدلال عددی، JSON و نگارش فارسی. امتیازدهی محلی و بدون مدل داور انجام می‌شود:
@@ -153,7 +186,7 @@ npm run benchmark:run
 
 ## نقشهٔ راه
 
-1. **دادهٔ جهانی:** ✅ تکمیل ۱۵ سرویس با سهمیه، مدل‌ها و محدودیت‌ها
+1. **دادهٔ جهانی:** ✅ تکمیل ۲۱ سرویس با سهمیه، مدل‌ها و محدودیت‌ها
 2. **راستی‌آزمایی ایران:** ✅ تست مستقیم و VPN روی دو شبکهٔ مستقل (ثابت + موبایل MCI)
 3. **منابع ایرانی:** ممیزی APIهای بومی NLP، OCR و مدل‌های فارسی با همان استاندارد سخت‌گیرانه
 4. **کیفیت فارسی:** ✅ بنچمارک پایهٔ نسخه‌دار؛ مرحلهٔ بعد گسترش Dataset و اجرای مدل‌های بیشتر

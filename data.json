@@ -1,0 +1,952 @@
+{
+  "lastUpdated": "2026-07-16",
+  "providerCount": 21,
+  "providers": [
+    {
+      "id": "aion-labs",
+      "name": "Aion Labs",
+      "serviceType": "official_provider",
+      "website": "https://www.aionlabs.ai/",
+      "api": {
+        "baseUrl": "https://api.aionlabs.ai/v1",
+        "openaiCompatible": true,
+        "auth": "api_key"
+      },
+      "freeTier": {
+        "status": "active",
+        "type": "permanent_allowance",
+        "requiresPaymentMethod": false,
+        "limitExample": "15 RPM",
+        "notesFa": "پلن رایگان روزانه است و طبق صفحهٔ قیمت‌گذاری به کارت بانکی نیاز ندارد."
+      },
+      "capabilities": [
+        "chat",
+        "text_generation",
+        "reasoning"
+      ],
+      "iranAccess": {
+        "status": "unknown",
+        "label": "❔ نامشخص",
+        "tested": false,
+        "testedAt": null,
+        "network": null,
+        "evidenceCount": 0,
+        "notesFa": null
+      },
+      "models": [
+        "aion-2.0",
+        "aion-2.5",
+        "aion-3.0",
+        "aion-3.0-mini",
+        "aion-rp-llama-3.1-8b"
+      ],
+      "verification": {
+        "level": "docs_verified",
+        "lastChecked": "2026-07-15",
+        "staleAfterDays": 30
+      }
+    },
+    {
+      "id": "cerebras",
+      "name": "Cerebras Inference",
+      "serviceType": "official_gateway",
+      "website": "https://cloud.cerebras.ai/",
+      "api": {
+        "baseUrl": "https://api.cerebras.ai/v1",
+        "openaiCompatible": true,
+        "auth": "api_key"
+      },
+      "freeTier": {
+        "status": "trial",
+        "type": "trial",
+        "requiresPaymentMethod": true,
+        "limitExample": "5 RPM",
+        "notesFa": "مستندات نرخ، این سطح را Free Trial می‌نامند؛ بنابراین به‌عنوان رایگان دائمی برچسب نخورده است."
+      },
+      "capabilities": [
+        "chat",
+        "text_generation",
+        "reasoning",
+        "tool_calling",
+        "structured_output"
+      ],
+      "iranAccess": {
+        "status": "verified_blocked",
+        "label": "⛔ مستقیم مسدود",
+        "tested": true,
+        "testedAt": "2026-07-16",
+        "network": {
+          "country": "IR",
+          "route": "direct"
+        },
+        "evidenceCount": 2,
+        "notesFa": null
+      },
+      "models": [
+        "gpt-oss-120b",
+        "zai-glm-4.7",
+        "gemma-4-31b"
+      ],
+      "verification": {
+        "level": "docs_verified",
+        "lastChecked": "2026-07-14",
+        "staleAfterDays": 30
+      }
+    },
+    {
+      "id": "cloudflare-workers-ai",
+      "name": "Cloudflare Workers AI",
+      "serviceType": "official_gateway",
+      "website": "https://developers.cloudflare.com/workers-ai/",
+      "api": {
+        "baseUrl": "https://api.cloudflare.com/client/v4/accounts/{account_id}/ai/v1",
+        "openaiCompatible": true,
+        "auth": "account_id_and_token"
+      },
+      "freeTier": {
+        "status": "active",
+        "type": "permanent_allowance",
+        "requiresPaymentMethod": false,
+        "limitExample": "مصرف واقعی هر درخواست به مدل و تعداد توکن وابسته است.",
+        "notesFa": "۱۰٬۰۰۰ Neuron در روز رایگان است؛ برای مصرف بیشتر باید Workers Paid فعال شود."
+      },
+      "capabilities": [
+        "chat",
+        "text_generation",
+        "embeddings",
+        "tool_calling",
+        "structured_output"
+      ],
+      "iranAccess": {
+        "status": "verified_working",
+        "label": "✅ مستقیم تست‌شده",
+        "tested": true,
+        "testedAt": "2026-07-16",
+        "network": {
+          "country": "IR",
+          "route": "direct"
+        },
+        "evidenceCount": 2,
+        "notesFa": "⚠️ مدل پیش‌فرض از @cf/meta/llama-3.1-8b-instruct به @cf/meta/llama-3.2-3b-instruct تغییر یافت."
+      },
+      "models": [
+        "@cf/meta/llama-3.2-3b-instruct"
+      ],
+      "verification": {
+        "level": "docs_verified",
+        "lastChecked": "2026-07-14",
+        "staleAfterDays": 30
+      }
+    },
+    {
+      "id": "cohere",
+      "name": "Cohere",
+      "serviceType": "official_provider",
+      "website": "https://cohere.com/",
+      "api": {
+        "baseUrl": "https://api.cohere.com/v2",
+        "openaiCompatible": false,
+        "auth": "api_key"
+      },
+      "freeTier": {
+        "status": "trial",
+        "type": "trial",
+        "requiresPaymentMethod": false,
+        "limitExample": "20 RPM",
+        "notesFa": "کلید Trial رایگان و محدود به ارزیابی است؛ سقف کلی ۱۰۰۰ فراخوانی در ماه اعلام شده است."
+      },
+      "capabilities": [
+        "chat",
+        "text_generation",
+        "reasoning",
+        "embeddings",
+        "tool_calling",
+        "structured_output"
+      ],
+      "iranAccess": {
+        "status": "verified_blocked",
+        "label": "⛔ مستقیم مسدود",
+        "tested": true,
+        "testedAt": "2026-07-16",
+        "network": {
+          "country": "IR",
+          "route": "direct"
+        },
+        "evidenceCount": 2,
+        "notesFa": null
+      },
+      "models": [
+        "command-a-03-2025"
+      ],
+      "verification": {
+        "level": "docs_verified",
+        "lastChecked": "2026-07-14",
+        "staleAfterDays": 30
+      }
+    },
+    {
+      "id": "fireworks-ai",
+      "name": "Fireworks AI",
+      "serviceType": "official_gateway",
+      "website": "https://fireworks.ai/",
+      "api": {
+        "baseUrl": "https://api.fireworks.ai/inference/v1",
+        "openaiCompatible": true,
+        "auth": "api_key"
+      },
+      "freeTier": {
+        "status": "active",
+        "type": "monthly_credit",
+        "requiresPaymentMethod": false,
+        "limitExample": "10 RPM",
+        "notesFa": "$۱ اعتبار رایگان در شروع کار. بدون نیاز به کارت بانکی. پس از اتمام اعتبار، حساب متوقف می‌شود مگر کارت اضافه کنید."
+      },
+      "capabilities": [
+        "chat",
+        "text_generation",
+        "reasoning",
+        "embeddings",
+        "tool_calling",
+        "structured_output"
+      ],
+      "iranAccess": {
+        "status": "unknown",
+        "label": "❔ نامشخص",
+        "tested": false,
+        "testedAt": null,
+        "network": null,
+        "evidenceCount": 0,
+        "notesFa": "از ایران تست نشده. $۱ اعتبار بدون کارت ممکن است نیاز به VPN برای ثبت‌نام داشته باشد."
+      },
+      "models": [
+        "llama-3.3-70b",
+        "gpt-oss-120b",
+        "deepseek-v4-flash",
+        "qwen3-7b-plus",
+        "gemma-3n-4b"
+      ],
+      "verification": {
+        "level": "docs_verified",
+        "lastChecked": "2026-07-16",
+        "staleAfterDays": 30
+      }
+    },
+    {
+      "id": "freetheai",
+      "name": "FreeTheAI",
+      "serviceType": "community_gateway",
+      "website": "https://freetheai.xyz/",
+      "api": {
+        "baseUrl": "https://api.freetheai.xyz/v1",
+        "openaiCompatible": true,
+        "auth": "api_key"
+      },
+      "freeTier": {
+        "status": "active",
+        "type": "free_models",
+        "requiresPaymentMethod": false,
+        "limitExample": "10 RPM",
+        "notesFa": "ثبت‌نام و check-in روزانه به Discord وابسته است. فهرست مدل‌ها و ظرفیت سرویس پویا است."
+      },
+      "capabilities": [
+        "chat",
+        "text_generation",
+        "reasoning",
+        "tool_calling",
+        "structured_output"
+      ],
+      "iranAccess": {
+        "status": "unknown",
+        "label": "❔ نامشخص",
+        "tested": false,
+        "testedAt": null,
+        "network": null,
+        "evidenceCount": 0,
+        "notesFa": null
+      },
+      "models": [],
+      "verification": {
+        "level": "docs_verified",
+        "lastChecked": "2026-07-15",
+        "staleAfterDays": 14
+      }
+    },
+    {
+      "id": "github-models",
+      "name": "GitHub Models",
+      "serviceType": "official_gateway",
+      "website": "https://github.com/marketplace/models",
+      "api": {
+        "baseUrl": "https://models.github.ai/inference",
+        "openaiCompatible": true,
+        "auth": "token"
+      },
+      "freeTier": {
+        "status": "active",
+        "type": "permanent_allowance",
+        "requiresPaymentMethod": false,
+        "limitExample": "15 RPM",
+        "notesFa": "استفادهٔ رایگان API در Public Preview است؛ بعضی مدل‌ها محدودیت اختصاصی پایین‌تری دارند."
+      },
+      "capabilities": [
+        "chat",
+        "text_generation",
+        "reasoning",
+        "embeddings",
+        "tool_calling",
+        "structured_output"
+      ],
+      "iranAccess": {
+        "status": "verified_working",
+        "label": "✅ مستقیم تست‌شده",
+        "tested": true,
+        "testedAt": "2026-07-15",
+        "network": {
+          "country": "IR",
+          "route": "direct"
+        },
+        "evidenceCount": 1,
+        "notesFa": "⚠️ GitHub Models در تاریخ ۳۰ جولای ۲۰۲۶ (حدود ۱۵ روز دیگر) بازنشسته می‌شود. Node.js fetch در ایران به دلیل محدودیت TLS stack به این دامنه متصل نمی‌شود، اما curl و ابزارهای مبتنی بر libcurl کار می‌کنند."
+      },
+      "models": [],
+      "verification": {
+        "level": "docs_verified",
+        "lastChecked": "2026-07-14",
+        "staleAfterDays": 30
+      }
+    },
+    {
+      "id": "google-gemini",
+      "name": "Google Gemini API",
+      "serviceType": "official_provider",
+      "website": "https://ai.google.dev/",
+      "api": {
+        "baseUrl": "https://generativelanguage.googleapis.com/v1beta",
+        "openaiCompatible": true,
+        "auth": "api_key"
+      },
+      "freeTier": {
+        "status": "active",
+        "type": "permanent_allowance",
+        "requiresPaymentMethod": false,
+        "limitExample": null,
+        "notesFa": "Free Tier وجود دارد، اما محدودیت دقیق به مدل و وضعیت حساب وابسته است و در AI Studio نمایش داده می‌شود."
+      },
+      "capabilities": [
+        "chat",
+        "text_generation",
+        "reasoning",
+        "embeddings",
+        "tool_calling",
+        "structured_output"
+      ],
+      "iranAccess": {
+        "status": "officially_unsupported",
+        "label": "🚫 پشتیبانی‌نشده رسمی",
+        "tested": true,
+        "testedAt": "2026-07-16",
+        "network": {
+          "country": "IR",
+          "route": "direct"
+        },
+        "evidenceCount": 3,
+        "notesFa": null
+      },
+      "models": [],
+      "verification": {
+        "level": "docs_verified",
+        "lastChecked": "2026-07-14",
+        "staleAfterDays": 30
+      }
+    },
+    {
+      "id": "groq",
+      "name": "Groq",
+      "serviceType": "official_gateway",
+      "website": "https://groq.com/",
+      "api": {
+        "baseUrl": "https://api.groq.com/openai/v1",
+        "openaiCompatible": true,
+        "auth": "api_key"
+      },
+      "freeTier": {
+        "status": "active",
+        "type": "permanent_allowance",
+        "requiresPaymentMethod": false,
+        "limitExample": "30 RPM",
+        "notesFa": "سهمیه‌ها در سطح Organization اعمال می‌شوند و مدل‌به‌مدل متفاوت‌اند. صفحه Limits حساب مرجع نهایی است."
+      },
+      "capabilities": [
+        "chat",
+        "text_generation",
+        "reasoning",
+        "tool_calling",
+        "structured_output"
+      ],
+      "iranAccess": {
+        "status": "unknown",
+        "label": "❔ نامشخص",
+        "tested": true,
+        "testedAt": "2026-07-16",
+        "network": {
+          "country": "IR",
+          "route": "direct"
+        },
+        "evidenceCount": 1,
+        "notesFa": null
+      },
+      "models": [
+        "llama-3.1-8b-instant",
+        "llama-3.3-70b-versatile",
+        "qwen/qwen3-32b"
+      ],
+      "verification": {
+        "level": "docs_verified",
+        "lastChecked": "2026-07-14",
+        "staleAfterDays": 30
+      }
+    },
+    {
+      "id": "hugging-face-inference",
+      "name": "Hugging Face Inference Providers",
+      "serviceType": "official_gateway",
+      "website": "https://huggingface.co/inference-providers",
+      "api": {
+        "baseUrl": "https://router.huggingface.co/v1",
+        "openaiCompatible": true,
+        "auth": "token"
+      },
+      "freeTier": {
+        "status": "limited",
+        "type": "monthly_credit",
+        "requiresPaymentMethod": false,
+        "limitExample": "مقدار قابل استفاده به قیمت ارائه‌دهنده و مدل انتخابی وابسته است.",
+        "notesFa": "کاربر رایگان در حال حاضر ماهانه ۰٫۱۰ دلار اعتبار Inference Providers دریافت می‌کند."
+      },
+      "capabilities": [
+        "chat",
+        "text_generation",
+        "reasoning",
+        "embeddings",
+        "tool_calling",
+        "structured_output"
+      ],
+      "iranAccess": {
+        "status": "verified_working",
+        "label": "✅ مستقیم تست‌شده",
+        "tested": true,
+        "testedAt": "2026-07-16",
+        "network": {
+          "country": "IR",
+          "route": "direct"
+        },
+        "evidenceCount": 2,
+        "notesFa": null
+      },
+      "models": [],
+      "verification": {
+        "level": "docs_verified",
+        "lastChecked": "2026-07-14",
+        "staleAfterDays": 30
+      }
+    },
+    {
+      "id": "kilo-gateway",
+      "name": "Kilo Gateway",
+      "serviceType": "official_gateway",
+      "website": "https://kilo.ai/",
+      "api": {
+        "baseUrl": "https://api.kilo.ai/api/gateway",
+        "openaiCompatible": true,
+        "auth": "none_or_api_key"
+      },
+      "freeTier": {
+        "status": "active",
+        "type": "free_models",
+        "requiresPaymentMethod": false,
+        "limitExample": "مدل‌های رایگان و محدودیت‌های بالادستی می‌توانند تغییر کنند.",
+        "notesFa": "برای مدل‌های رایگان دسترسی ناشناس هم مستند شده است؛ کلید API برای استفادهٔ پایدار و سایر مدل‌ها قابل استفاده است."
+      },
+      "capabilities": [
+        "chat",
+        "text_generation",
+        "reasoning",
+        "tool_calling",
+        "structured_output"
+      ],
+      "iranAccess": {
+        "status": "verified_working",
+        "label": "✅ مستقیم تست‌شده",
+        "tested": true,
+        "testedAt": "2026-07-16",
+        "network": {
+          "country": "IR",
+          "route": "direct"
+        },
+        "evidenceCount": 1,
+        "notesFa": null
+      },
+      "models": [
+        "kilo-auto/free"
+      ],
+      "verification": {
+        "level": "docs_verified",
+        "lastChecked": "2026-07-15",
+        "staleAfterDays": 14
+      }
+    },
+    {
+      "id": "llm7-io",
+      "name": "LLM7.io",
+      "serviceType": "community_gateway",
+      "website": "https://llm7.io/",
+      "api": {
+        "baseUrl": "https://api.llm7.io/v1",
+        "openaiCompatible": true,
+        "auth": "none_or_api_key"
+      },
+      "freeTier": {
+        "status": "active",
+        "type": "free_models",
+        "requiresPaymentMethod": false,
+        "limitExample": "30 RPM",
+        "notesFa": "دروازه API با اصطکاک صفر. بدون نیاز به ثبت‌نام برای دسترسی پایه. ۳۰+ مدل شامل DeepSeek، Gemini، GPT-4o-mini، Mistral، Qwen."
+      },
+      "capabilities": [
+        "chat",
+        "text_generation",
+        "reasoning"
+      ],
+      "iranAccess": {
+        "status": "unknown",
+        "label": "❔ نامشخص",
+        "tested": false,
+        "testedAt": null,
+        "network": null,
+        "evidenceCount": 0,
+        "notesFa": "از ایران تست نشده. بدون ثبت‌نام و بدون کلید API — احتمال دسترسی بالا است."
+      },
+      "models": [
+        "deepseek-r1-0528",
+        "deepseek-v3-0324",
+        "gemini-2.5-flash-lite",
+        "gpt-4o-mini",
+        "mistral-small-3.1-24b",
+        "qwen2.5-coder-32b"
+      ],
+      "verification": {
+        "level": "docs_verified",
+        "lastChecked": "2026-07-16",
+        "staleAfterDays": 30
+      }
+    },
+    {
+      "id": "mistral",
+      "name": "Mistral AI",
+      "serviceType": "official_provider",
+      "website": "https://mistral.ai/",
+      "api": {
+        "baseUrl": "https://api.mistral.ai/v1",
+        "openaiCompatible": true,
+        "auth": "api_key"
+      },
+      "freeTier": {
+        "status": "active",
+        "type": "permanent_allowance",
+        "requiresPaymentMethod": false,
+        "limitExample": null,
+        "notesFa": "Free mode بدون کارت بانکی API Key می‌دهد. محدودیت دقیق حساب و مدل در صفحه Limits کنسول نمایش داده می‌شود."
+      },
+      "capabilities": [
+        "chat",
+        "text_generation",
+        "reasoning",
+        "embeddings",
+        "tool_calling",
+        "structured_output"
+      ],
+      "iranAccess": {
+        "status": "verified_working",
+        "label": "✅ مستقیم تست‌شده",
+        "tested": true,
+        "testedAt": "2026-07-16",
+        "network": {
+          "country": "IR",
+          "route": "direct"
+        },
+        "evidenceCount": 2,
+        "notesFa": null
+      },
+      "models": [
+        "mistral-small-latest"
+      ],
+      "verification": {
+        "level": "docs_verified",
+        "lastChecked": "2026-07-14",
+        "staleAfterDays": 30
+      }
+    },
+    {
+      "id": "modelscope",
+      "name": "ModelScope (Alibaba)",
+      "serviceType": "official_gateway",
+      "website": "https://modelscope.cn/",
+      "api": {
+        "baseUrl": "https://api-inference.modelscope.cn/v1",
+        "openaiCompatible": true,
+        "auth": "api_key"
+      },
+      "freeTier": {
+        "status": "active",
+        "type": "free_models",
+        "requiresPaymentMethod": false,
+        "limitExample": "۲,۰۰۰ RPD کل (حداکثر ۵۰۰ RPD per model). نیاز به حساب Alibaba Cloud + احراز هویت واقعی.",
+        "notesFa": "پلتفرم چینی API-Inference رایگان. ۵۴+ مدل: DeepSeek-V4، Qwen3.5-397B، GLM-5.2، Kimi-K2.5 و غیره. نیاز به ثبت‌نام و احراز هویت."
+      },
+      "capabilities": [
+        "chat",
+        "text_generation",
+        "reasoning",
+        "tool_calling",
+        "structured_output"
+      ],
+      "iranAccess": {
+        "status": "unknown",
+        "label": "❔ نامشخص",
+        "tested": false,
+        "testedAt": null,
+        "network": null,
+        "evidenceCount": 0,
+        "notesFa": "از ایران تست نشده. Provider چینی با احراز هویت سطح بالا — دسترسی نامشخص."
+      },
+      "models": [
+        "Qwen/Qwen3.5-397B-A17B",
+        "Qwen/Qwen3.5-35B-A3B",
+        "deepseek-ai/DeepSeek-V4-Flash",
+        "deepseek-ai/DeepSeek-V4-Pro",
+        "MiniMax-M2.5",
+        "MiniMax-M3",
+        "GLM-4.7-Flash",
+        "GLM-5.2",
+        "Kimi-K2.5"
+      ],
+      "verification": {
+        "level": "docs_verified",
+        "lastChecked": "2026-07-16",
+        "staleAfterDays": 30
+      }
+    },
+    {
+      "id": "nvidia-nim",
+      "name": "NVIDIA NIM API Catalog",
+      "serviceType": "official_gateway",
+      "website": "https://build.nvidia.com/",
+      "api": {
+        "baseUrl": "https://integrate.api.nvidia.com/v1",
+        "openaiCompatible": true,
+        "auth": "api_key"
+      },
+      "freeTier": {
+        "status": "limited",
+        "type": "permanent_allowance",
+        "requiresPaymentMethod": false,
+        "limitExample": null,
+        "notesFa": "اعضای رایگان NVIDIA Developer Program برای Prototype، تحقیق، توسعه و آزمایش به Endpointهای میزبانی‌شده دسترسی دارند؛ استفاده Production نیازمند مجوز تجاری است."
+      },
+      "capabilities": [
+        "chat",
+        "text_generation",
+        "reasoning",
+        "embeddings",
+        "tool_calling",
+        "structured_output"
+      ],
+      "iranAccess": {
+        "status": "unknown",
+        "label": "❔ نامشخص",
+        "tested": false,
+        "testedAt": null,
+        "network": null,
+        "evidenceCount": 0,
+        "notesFa": null
+      },
+      "models": [],
+      "verification": {
+        "level": "docs_verified",
+        "lastChecked": "2026-07-14",
+        "staleAfterDays": 30
+      }
+    },
+    {
+      "id": "opencode-zen",
+      "name": "OpenCode Zen",
+      "serviceType": "official_gateway",
+      "website": "https://opencode.ai/zen",
+      "api": {
+        "baseUrl": "https://opencode.ai/zen/v1",
+        "openaiCompatible": true,
+        "auth": "api_key"
+      },
+      "freeTier": {
+        "status": "active",
+        "type": "free_models",
+        "requiresPaymentMethod": false,
+        "limitExample": "۵ مدل رایگان بدون نیاز به کارت بانکی. API Key رایگان. مدل‌های رایگان ممکن است داده را برای بهبود جمع‌آوری کنند.",
+        "notesFa": "پلتفرم OpenCode با ۵ مدل رایگان (مدت محدود): Big Pickle، DeepSeek V4 Flash، MiMo-V2.5، North Mini Code، Nemotron 3 Ultra. API Key رایگان بدون کارت بانکی."
+      },
+      "capabilities": [
+        "chat",
+        "text_generation",
+        "reasoning",
+        "tool_calling",
+        "structured_output"
+      ],
+      "iranAccess": {
+        "status": "unknown",
+        "label": "❔ نامشخص",
+        "tested": false,
+        "testedAt": null,
+        "network": null,
+        "evidenceCount": 0,
+        "notesFa": "از ایران تست نشده. نیاز به API Key رایگان — احتمال دسترسی وجود دارد."
+      },
+      "models": [
+        "deepseek-v4-flash-free",
+        "mimo-v2.5-free",
+        "north-mini-code-free",
+        "nemotron-3-ultra-free",
+        "big-pickle-stealth"
+      ],
+      "verification": {
+        "level": "docs_verified",
+        "lastChecked": "2026-07-16",
+        "staleAfterDays": 30
+      }
+    },
+    {
+      "id": "openrouter",
+      "name": "OpenRouter",
+      "serviceType": "official_gateway",
+      "website": "https://openrouter.ai/",
+      "api": {
+        "baseUrl": "https://openrouter.ai/api/v1",
+        "openaiCompatible": true,
+        "auth": "api_key"
+      },
+      "freeTier": {
+        "status": "active",
+        "type": "free_models",
+        "requiresPaymentMethod": false,
+        "limitExample": "20 RPM",
+        "notesFa": "شناسهٔ مدل رایگان با پسوند :free مشخص می‌شود. موجودی و مدل‌ها ممکن است تغییر کنند."
+      },
+      "capabilities": [
+        "chat",
+        "text_generation",
+        "reasoning",
+        "tool_calling",
+        "structured_output"
+      ],
+      "iranAccess": {
+        "status": "verified_blocked",
+        "label": "⛔ مستقیم مسدود",
+        "tested": true,
+        "testedAt": "2026-07-16",
+        "network": {
+          "country": "IR",
+          "route": "direct"
+        },
+        "evidenceCount": 1,
+        "notesFa": null
+      },
+      "models": [],
+      "verification": {
+        "level": "docs_verified",
+        "lastChecked": "2026-07-14",
+        "staleAfterDays": 30
+      }
+    },
+    {
+      "id": "ovhcloud-ai-endpoints",
+      "name": "OVHcloud AI Endpoints",
+      "serviceType": "official_gateway",
+      "website": "https://www.ovhcloud.com/en/public-cloud/ai-endpoints/",
+      "api": {
+        "baseUrl": "https://oai.endpoints.kepler.ai.cloud.ovh.net/v1",
+        "openaiCompatible": true,
+        "auth": "none_or_api_key"
+      },
+      "freeTier": {
+        "status": "active",
+        "type": "free_models",
+        "requiresPaymentMethod": false,
+        "limitExample": "2 RPM",
+        "notesFa": "تنها Provider با دسترسی ناشناس دائمی (بدون کلید API، بدون ثبت‌نام). ۲ RPM/IP/model. برای افزایش Rate Limit نیاز به API Key و حساب Public Cloud دارد."
+      },
+      "capabilities": [
+        "chat",
+        "text_generation",
+        "reasoning"
+      ],
+      "iranAccess": {
+        "status": "verified_working",
+        "label": "✅ مستقیم تست‌شده",
+        "tested": true,
+        "testedAt": "2026-07-16",
+        "network": {
+          "country": "IR",
+          "route": "direct",
+          "exit_country": null
+        },
+        "evidenceCount": 1,
+        "notesFa": "دسترسی ناشناس بدون نیاز به کلید API. تست مستقیم از ایران موفق."
+      },
+      "models": [
+        "Qwen3.5-397B-A17B",
+        "gpt-oss-120b",
+        "Meta-Llama-3.3-70B-Instruct",
+        "Mistral-Small-3.2-24B-Instruct",
+        "Qwen3-32B"
+      ],
+      "verification": {
+        "level": "live_verified",
+        "lastChecked": "2026-07-16",
+        "staleAfterDays": 30
+      }
+    },
+    {
+      "id": "sambanova",
+      "name": "SambaNova Cloud",
+      "serviceType": "official_gateway",
+      "website": "https://cloud.sambanova.ai/",
+      "api": {
+        "baseUrl": "https://api.sambanova.ai/v1",
+        "openaiCompatible": true,
+        "auth": "api_key"
+      },
+      "freeTier": {
+        "status": "active",
+        "type": "permanent_allowance",
+        "requiresPaymentMethod": false,
+        "limitExample": "20 RPM",
+        "notesFa": "Free Tier وقتی اعمال می‌شود که روش پرداخت به حساب متصل نباشد. محدودیت‌های Preview جدا و قابل تغییرند."
+      },
+      "capabilities": [
+        "chat",
+        "text_generation",
+        "reasoning",
+        "embeddings",
+        "tool_calling",
+        "structured_output"
+      ],
+      "iranAccess": {
+        "status": "verified_working",
+        "label": "✅ مستقیم تست‌شده",
+        "tested": true,
+        "testedAt": "2026-07-16",
+        "network": {
+          "country": "IR",
+          "route": "direct"
+        },
+        "evidenceCount": 2,
+        "notesFa": null
+      },
+      "models": [
+        "DeepSeek-V3.1",
+        "Meta-Llama-3.3-70B-Instruct",
+        "gpt-oss-120b"
+      ],
+      "verification": {
+        "level": "docs_verified",
+        "lastChecked": "2026-07-14",
+        "staleAfterDays": 30
+      }
+    },
+    {
+      "id": "siliconflow",
+      "name": "SiliconFlow",
+      "serviceType": "official_gateway",
+      "website": "https://cloud.siliconflow.cn/",
+      "api": {
+        "baseUrl": "https://api.siliconflow.cn/v1",
+        "openaiCompatible": true,
+        "auth": "api_key"
+      },
+      "freeTier": {
+        "status": "active",
+        "type": "free_models",
+        "requiresPaymentMethod": false,
+        "limitExample": "30 RPM",
+        "notesFa": "Provider چینی با مدل‌های رایگان دائمی. Qwen3-8B و DeepSeek-R1-Distill-Qwen-7B رایگان. نیاز به API Key و تأیید شماره تلفن چینی دارد."
+      },
+      "capabilities": [
+        "chat",
+        "text_generation",
+        "reasoning",
+        "tool_calling",
+        "structured_output"
+      ],
+      "iranAccess": {
+        "status": "unknown",
+        "label": "❔ نامشخص",
+        "tested": false,
+        "testedAt": null,
+        "network": null,
+        "evidenceCount": 0,
+        "notesFa": "از ایران تست نشده. Provider چینی — احتمال دسترسی بدون تحریم بالا است."
+      },
+      "models": [
+        "Qwen/Qwen3-8B",
+        "deepseek-ai/DeepSeek-R1-Distill-Qwen-7B",
+        "Qwen/Qwen3.5-35B-A3B",
+        "Pro/deepseek-ai/DeepSeek-V4-Flash"
+      ],
+      "verification": {
+        "level": "docs_verified",
+        "lastChecked": "2026-07-16",
+        "staleAfterDays": 30
+      }
+    },
+    {
+      "id": "vercel-ai-gateway",
+      "name": "Vercel AI Gateway",
+      "serviceType": "official_gateway",
+      "website": "https://vercel.com/ai",
+      "api": {
+        "baseUrl": "https://ai-gateway.vercel.sh/v1",
+        "openaiCompatible": true,
+        "auth": "api_key"
+      },
+      "freeTier": {
+        "status": "active",
+        "type": "monthly_credit",
+        "requiresPaymentMethod": true,
+        "limitExample": "فقط زیرمجموعه‌ای از مدل‌ها واجد اعتبار رایگان‌اند و محدودیت هر مدل می‌تواند پایین‌تر باشد.",
+        "notesFa": "اعتبار رایگان ماهانه ۵ دلار است؛ الزام روش پرداخت برای همهٔ مسیرهای ثبت‌نام در مستندات بررسی‌شده صریح نبود."
+      },
+      "capabilities": [
+        "chat",
+        "text_generation",
+        "reasoning",
+        "embeddings",
+        "tool_calling",
+        "structured_output"
+      ],
+      "iranAccess": {
+        "status": "unknown",
+        "label": "❔ نامشخص",
+        "tested": false,
+        "testedAt": null,
+        "network": null,
+        "evidenceCount": 0,
+        "notesFa": null
+      },
+      "models": [],
+      "verification": {
+        "level": "docs_verified",
+        "lastChecked": "2026-07-15",
+        "staleAfterDays": 30
+      }
+    }
+  ]
+}

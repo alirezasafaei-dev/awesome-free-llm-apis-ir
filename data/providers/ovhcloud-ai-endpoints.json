@@ -1,0 +1,80 @@
+{
+  "schema_version": "1.1.0",
+  "service_type": "official_gateway",
+  "id": "ovhcloud-ai-endpoints",
+  "name": "OVHcloud AI Endpoints",
+  "website": "https://www.ovhcloud.com/en/public-cloud/ai-endpoints/",
+  "docs": "https://www.ovhcloud.com/en/public-cloud/ai-endpoints/catalog/",
+  "signup": null,
+  "api": {
+    "base_url": "https://oai.endpoints.kepler.ai.cloud.ovh.net/v1",
+    "openai_compatible": true,
+    "auth": "none_or_api_key"
+  },
+  "capabilities": [
+    "chat",
+    "text_generation",
+    "reasoning"
+  ],
+  "free_tier": {
+    "status": "active",
+    "type": "free_models",
+    "requires_payment_method": false,
+    "limits": [
+      {
+        "scope": "anonymous",
+        "condition": "no signup, no API key",
+        "rpm": 2,
+        "notes_fa": "۲ RPM در هر مدل، بدون نیاز به ثبت‌نام یا کلید API. ۲۰+ مدل اوپن‌وزن میزبان‌شده در مراکز داده اروپا"
+      }
+    ],
+    "notes_fa": "تنها Provider با دسترسی ناشناس دائمی (بدون کلید API، بدون ثبت‌نام). ۲ RPM/IP/model. برای افزایش Rate Limit نیاز به API Key و حساب Public Cloud دارد."
+  },
+  "iran_access": {
+    "status": "verified_working",
+    "official_policy": "not_documented",
+    "tested_from_iran": true,
+    "tested_at": "2026-07-16",
+    "test_method": "live_request",
+    "network": {
+      "country": "IR",
+      "route": "direct",
+      "exit_country": null
+    },
+    "evidence": [
+      {
+        "type": "live_test",
+        "timestamp": "2026-07-16T13:30:00Z",
+        "http_status": 200,
+        "latency_ms": 1200,
+        "model_tested": "gpt-oss-20b",
+        "endpoint": "https://oai.endpoints.kepler.ai.cloud.ovh.net/v1/chat/completions",
+        "auth_method": "anonymous",
+        "source": "LOCAL_PC — Iran mobile network (MCI AS44244)",
+        "notes_fa": "دسترسی ناشناس (بدون کلید API) از ایران موفق بود. مدل gpt-oss-20b پاسخ ۲۰۰ برگرداند."
+      }
+    ],
+    "notes_fa": "دسترسی ناشناس بدون نیاز به کلید API. تست مستقیم از ایران موفق."
+  },
+  "models": {
+    "dynamic": true,
+    "source": "https://www.ovhcloud.com/en/public-cloud/ai-endpoints/catalog/",
+    "notable": [
+      "Qwen3.5-397B-A17B",
+      "gpt-oss-120b",
+      "Meta-Llama-3.3-70B-Instruct",
+      "Mistral-Small-3.2-24B-Instruct",
+      "Qwen3-32B"
+    ]
+  },
+  "verification": {
+    "level": "live_verified",
+    "last_checked": "2026-07-16",
+    "checked_by": "maintainers",
+    "stale_after_days": 30
+  },
+  "sources": [
+    "https://www.ovhcloud.com/en/public-cloud/ai-endpoints/catalog/",
+    "https://github.com/mnfst/awesome-free-llm-apis"
+  ]
+}
