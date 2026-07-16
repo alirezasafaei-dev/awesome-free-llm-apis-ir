@@ -17,6 +17,14 @@ function currentPathValue(segment) {
   return pathValue(window.location.href, segment);
 }
 
+function providerIdFromCard(target) {
+  const card = target.closest("[data-provider-id], .provider-card");
+  if (!card) return null;
+  if (card.dataset.providerId) return card.dataset.providerId;
+  const label = card.querySelector(".provider-id")?.textContent ?? "";
+  return label.split("·")[0]?.trim() || null;
+}
+
 function sendEvent(name, props = {}) {
   const safeProps = Object.fromEntries(
     Object.entries(props)
@@ -44,8 +52,7 @@ document.addEventListener("click", (event) => {
   if (!target) return;
 
   const href = target instanceof HTMLAnchorElement ? target.href : "";
-  const cardProviderId = target.closest("[data-provider-id]")?.dataset.providerId ?? null;
-  const providerId = cardProviderId || pathValue(href, "providers") || currentPathValue("providers");
+  const providerId = providerIdFromCard(target) || pathValue(href, "providers") || currentPathValue("providers");
   const guideSlug = pathValue(href, "guides") || currentPathValue("guides");
 
   if (target.classList.contains("copy-button")) {
@@ -75,7 +82,5 @@ document.addEventListener("click", (event) => {
     return;
   }
   const linkedGuideSlug = pathValue(href, "guides");
-  if (linkedGuideSlug) {
-    sendEvent("guide_page_click", { guide_slug: linkedGuideSlug });
-  }
+  if (linkedGuideSlug) sendEvent("guide_page_click", { guide_slug: linkedGuideSlug });
 });
