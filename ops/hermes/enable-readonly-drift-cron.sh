@@ -18,7 +18,7 @@ command -v hermes >/dev/null 2>&1 || die "Hermes is not installed or not on PATH
 [[ -f "$CONFIG_FILE" ]] || die "Hermes config not found: $CONFIG_FILE"
 
 # Fail closed if the hardened unattended-command policy is not visible.
-grep -Eq '^[[:space:]]*cron_mode:[[:space:]]*["'"']?deny["'"']?[[:space:]]*$' "$CONFIG_FILE" \
+grep -Eq "^[[:space:]]*cron_mode:[[:space:]]*['\"]?deny['\"]?[[:space:]]*$" "$CONFIG_FILE" \
   || die "config.yaml must set approvals.cron_mode to deny before enabling unattended work."
 
 [[ -z "$(git -C "$PROJECT_DIR" status --porcelain)" ]] \
