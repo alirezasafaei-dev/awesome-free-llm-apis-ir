@@ -9,7 +9,7 @@
       "id": "agnes-ai",
       "name": "Agnes AI",
       "website": "https://agnes-ai.com/",
-      "docs": "https://platform.agnes-ai.com/",
+      "docs": "https://agnes-ai.com/doc/overview",
       "signup": "https://platform.agnes-ai.com/settings/apiKeys",
       "api": {
         "base_url": "https://apihub.agnes-ai.com/v1",
@@ -26,16 +26,52 @@
       "free_tier": {
         "status": "active",
         "type": "free_models",
-        "requires_payment_method": false,
+        "requires_payment_method": null,
         "limits": [
           {
-            "scope": "account",
-            "condition": "registration, no credit card",
-            "rpm": 30,
-            "notes_fa": "۳۰ RPM متن، ۳۰ RPM تصویر. ۵ مدل رایگان. بدون نیاز به کارت بانکی یا تأیید تلفن."
+            "scope": "free/default text models",
+            "model": null,
+            "condition": "Actual Executable RPM; Public Request RPM is 30",
+            "rpm": 20,
+            "notes_fa": "ظرفیت قابل اجرای واقعی ۲۰ RPM است؛ سقف پذیرش درخواست عمومی ۳۰ RPM اعلام شده است."
+          },
+          {
+            "scope": "free/default image models",
+            "model": null,
+            "condition": "1K resolution; Actual Executable RPM; Public Request RPM is 30",
+            "rpm": 20,
+            "notes_fa": "برای تصویر 1K ظرفیت قابل اجرای واقعی ۲۰ RPM است."
+          },
+          {
+            "scope": "free/default image models",
+            "model": null,
+            "condition": "2K resolution; Actual Executable RPM; Public Request RPM is 20",
+            "rpm": 10,
+            "notes_fa": "برای تصویر 2K ظرفیت قابل اجرای واقعی ۱۰ RPM است."
+          },
+          {
+            "scope": "free/default image models",
+            "model": null,
+            "condition": "3K resolution; Actual Executable RPM; Public Request RPM is 2",
+            "rpm": 1,
+            "notes_fa": "برای تصویر 3K ظرفیت قابل اجرای واقعی ۱ RPM است."
+          },
+          {
+            "scope": "free/default image models",
+            "model": null,
+            "condition": "4K resolution; Actual Executable RPM; Public Request RPM is 1",
+            "rpm": 1,
+            "notes_fa": "برای تصویر 4K ظرفیت قابل اجرای واقعی ۱ RPM است."
+          },
+          {
+            "scope": "free/default video models",
+            "model": "agnes-video-v2.0",
+            "condition": "Actual Executable RPM; Public Request RPM is 2",
+            "rpm": 1,
+            "notes_fa": "برای ویدئو ظرفیت قابل اجرای واقعی ۱ RPM است."
           }
         ],
-        "notes_fa": "پلتفرم Sapiens AI (سنگاپور) با ۵ مدل رایگان: Agnes 2.0 Flash (۲۵۶K context)، Agnes 1.5 Flash، و مدل‌های تصویر/ویدئو. API Key رایگان از platform.agnes-ai.com. مناسب کاربران ایران چون ثبت‌نام ساده بدون تحریم."
+        "notes_fa": "پنج مدل عمومی در خانواده‌های متن، تصویر و ویدئو مستند شده‌اند. محدودیت‌ها مقادیر مرجع جاری‌اند و تضمین دائمی نیستند. نیاز به کارت بانکی در منابع رسمی بررسی‌شده صریحاً مشخص نشده است."
       },
       "iran_access": {
         "status": "unknown",
@@ -45,11 +81,11 @@
         "test_method": "not_tested",
         "network": null,
         "evidence": [],
-        "notes_fa": "از ایران تست نشده. مستقر در سنگاپور — احتمال دسترسی بالا است."
+        "notes_fa": "ثبت‌نام، دریافت کلید و درخواست API از شبکه ایران هنوز به‌صورت زنده آزمایش نشده است؛ از محل استقرار سرویس درباره دسترسی ایران نتیجه‌گیری نمی‌شود."
       },
       "models": {
         "dynamic": true,
-        "source": "https://platform.agnes-ai.com/models",
+        "source": "https://github.com/AgnesAI-Labs/AgnesAI-Models/blob/main/MODEL_CATALOG.md",
         "notable": [
           "agnes-2.0-flash",
           "agnes-1.5-flash",
@@ -64,11 +100,12 @@
         "checked_by": "maintainers",
         "stale_after_days": 30
       },
+      "notes_fa": "اسناد رسمی Agnes میان Public Request RPM و Actual Executable RPM تفاوت می‌گذارند؛ Catalog مقدار قابل اجرای واقعی را ثبت می‌کند. Context window در اسناد رسمی بررسی‌شده ناسازگار است و تا رفع drift به‌صورت عدد ثابت خلاصه نشده است.",
       "sources": [
-        "https://freellm.net/providers/agnes-ai",
-        "https://agnes-ai.com/",
-        "https://platform.agnes-ai.com/",
-        "https://github.com/AgnesAI-Labs/AgnesAI-Models"
+        "https://agnes-ai.com/doc/overview",
+        "https://github.com/AgnesAI-Labs/AgnesAI-Models/blob/main/README.md",
+        "https://github.com/AgnesAI-Labs/AgnesAI-Models/blob/main/MODEL_CATALOG.md",
+        "https://github.com/AgnesAI-Labs/AgnesAI-Models/blob/main/docs/FAQ.md"
       ]
     },
     {
