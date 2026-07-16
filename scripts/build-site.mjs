@@ -8,6 +8,7 @@ const source = path.join(root, "site");
 const destination = path.join(root, ".site-dist");
 const catalogPath = path.join(root, "catalog.json");
 const canonicalOrigin = "https://llm.persiantoolbox.ir";
+const plausibleScript = "https://plausible.alirezasafaei.dev/js/script.js";
 
 const accessLabels = {
   verified_working: "دسترسی مستقیم از ایران تأیید شده",
@@ -52,6 +53,10 @@ function escapeXml(value) {
 
 function jsonLd(value) {
   return JSON.stringify(value).replaceAll("<", "\\u003c");
+}
+
+function analyticsTags(prefix) {
+  return `<script defer src="${prefix}analytics.js"></script>\n  <script defer data-domain="llm.persiantoolbox.ir" src="${plausibleScript}"></script>`;
 }
 
 function limitText(provider) {
@@ -123,11 +128,11 @@ function providerPage(provider, relatedProviders) {
 <body>
   <header class="topbar">
     <a class="brand" href="../../"><span class="brand-mark" aria-hidden="true">AI</span><span>Awesome Free LLM APIs IR</span></a>
-    <nav aria-label="پیوندهای اصلی"><a href="../../#catalog">همه APIها</a><a href="${escapeHtml(provider.docs)}" rel="nofollow noopener" target="_blank">مستندات رسمی</a><a href="https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir">GitHub</a></nav>
+    <nav aria-label="پیوندهای اصلی"><a href="../../#catalog">همه APIها</a><a class="docs-link" href="${escapeHtml(provider.docs)}" rel="nofollow noopener" target="_blank">مستندات رسمی</a><a href="https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir">GitHub</a></nav>
   </header>
   <main class="provider-page">
     <nav class="breadcrumbs" aria-label="مسیر صفحه"><a href="../../">APIهای رایگان LLM</a><span>←</span><span>${escapeHtml(provider.name)}</span></nav>
-    <article class="provider-detail">
+    <article class="provider-detail" data-provider-id="${escapeHtml(provider.id)}">
       <p class="eyebrow">صفحه اختصاصی Provider</p>
       <h1>${escapeHtml(provider.name)} API رایگان</h1>
       <p class="provider-lead">${escapeHtml(description)}</p>
@@ -139,7 +144,7 @@ function providerPage(provider, relatedProviders) {
           <div><dt>محدودیت نمونه</dt><dd>${escapeHtml(limitText(provider))}</dd></div>
           <div><dt>سازگار با OpenAI</dt><dd>${provider.api.openai_compatible ? "بله" : "خیر"}</dd></div>
           <div><dt>نیاز به روش پرداخت</dt><dd>${provider.free_tier.requires_payment_method === true ? "بله" : provider.free_tier.requires_payment_method === false ? "خیر" : "در منابع رسمی مشخص نیست"}</dd></div>
-          <div><dt>Base URL</dt><dd><code>${escapeHtml(provider.api.base_url)}</code></dd></div>
+          <div><dt>Base URL</dt><dd><code>${escapeHtml(provider.api.base_url)}</code> <button class="copy-button" type="button" data-copy-text="${escapeHtml(provider.api.base_url)}">کپی</button></dd></div>
           <div><dt>وضعیت ایران</dt><dd>${escapeHtml(accessLabels[provider.iran_access.status] ?? provider.iran_access.status)}</dd></div>
         </dl>
       </section>
@@ -148,10 +153,11 @@ function providerPage(provider, relatedProviders) {
       <section><h2>نکات مهم</h2><p>${escapeHtml(provider.free_tier.notes_fa)}</p>${provider.notes_fa ? `<p>${escapeHtml(provider.notes_fa)}</p>` : ""}${provider.iran_access.notes_fa ? `<p>${escapeHtml(provider.iran_access.notes_fa)}</p>` : ""}</section>
       <section class="provider-sources"><h2>منابع بررسی</h2><ul>${sources.map((url) => `<li><a href="${escapeHtml(url)}" rel="nofollow noopener" target="_blank">${escapeHtml(url)}</a></li>`).join("")}</ul></section>
       <section><h2>APIهای مرتبط</h2><ul class="related-provider-links">${relatedProviders.map((item) => `<li><a href="../${item.id}/">${escapeHtml(item.name)}</a></li>`).join("")}</ul></section>
-      <div class="hero-actions"><a class="button primary" href="${escapeHtml(provider.docs)}" rel="nofollow noopener" target="_blank">مشاهده مستندات</a><a class="button detail-secondary" href="../../#catalog">مقایسه با سایر APIها</a></div>
+      <div class="hero-actions"><a class="button primary docs-link" href="${escapeHtml(provider.docs)}" rel="nofollow noopener" target="_blank">مشاهده مستندات</a><a class="button detail-secondary" href="../../#catalog">مقایسه با سایر APIها</a></div>
     </article>
   </main>
   <footer><p>داده‌های این صفحه از Catalog ماشین‌خوان پروژه تولید شده‌اند.</p><a href="../../catalog.json">دریافت Catalog JSON</a></footer>
+  ${analyticsTags("../../")}
 </body>
 </html>`;
 }
@@ -174,6 +180,10 @@ indexHtml = indexHtml.replace(
   /<!-- SEO_PROVIDER_LINKS_START -->[\s\S]*?<!-- SEO_PROVIDER_LINKS_END -->/,
   `<!-- SEO_PROVIDER_LINKS_START -->\n          ${linksHtml}\n          <!-- SEO_PROVIDER_LINKS_END -->`
 );
+indexHtml = indexHtml.replace(
+  `<script defer data-domain="llm.persiantoolbox.ir" src="${plausibleScript}"></script>`,
+  `${analyticsTags("./")}`
+);
 await writeFile(indexPath, indexHtml);
 
 const providersRoot = path.join(destination, "providers");
@@ -187,13 +197,13 @@ for (const [index, provider] of providers.entries()) {
 
 const guideCount = await buildGuides(catalog);
 const guides = [
-  { slug: "best-free-llm-api-iran", title: "بهترین API رایگان LLM برای ایران", lastmod: new Date().toISOString().split('T')[0] },
-  { slug: "openai-compatible-api-without-card", title: "API سازگار با OpenAI بدون نیاز به کارت", lastmod: new Date().toISOString().split('T')[0] },
-  { slug: "free-coding-api", title: "API رایگان برای برنامه‌نویسی", lastmod: new Date().toISOString().split('T')[0] },
-  { slug: "free-embedding-api", title: "API رایگان Embedding", lastmod: new Date().toISOString().split('T')[0] },
-  { slug: "free-tier-vs-trial-vs-credit", title: "تفاوت Free Tier با Trial و Credit", lastmod: new Date().toISOString().split('T')[0] },
-  { slug: "openai-sdk-custom-base-url", title: "آموزش SDK OpenAI با Base URL سفارشی", lastmod: new Date().toISOString().split('T')[0] }
-];
+  { slug: "best-free-llm-api-iran", title: "بهترین API رایگان LLM برای ایران" },
+  { slug: "openai-compatible-api-without-card", title: "API سازگار با OpenAI بدون نیاز به کارت" },
+  { slug: "free-coding-api", title: "API رایگان برای برنامه‌نویسی" },
+  { slug: "free-embedding-api", title: "API رایگان Embedding" },
+  { slug: "free-tier-vs-trial-vs-credit", title: "تفاوت Free Tier با Trial و Credit" },
+  { slug: "openai-sdk-custom-base-url", title: "آموزش SDK OpenAI با Base URL سفارشی" }
+].map((guide) => ({ ...guide, lastmod: catalog.last_updated }));
 
 const sitemapUrls = [
   { loc: `${canonicalOrigin}/`, lastmod: catalog.last_updated, priority: "1.0" },
