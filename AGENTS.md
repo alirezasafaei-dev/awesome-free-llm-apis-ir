@@ -18,6 +18,8 @@ Maintain this repository as an evidence-backed, machine-readable catalog of free
 5. Preserve `null` or `unknown` when evidence is incomplete. Never replace uncertainty with a plausible guess.
 6. Every factual catalog change must include a dated source or a sanitized, dated test result allowed by the repository schema.
 
+An authorized VPN observation is never direct Iran evidence. A successful result from the foreign automation host is also never a direct-Iran result.
+
 ## Allowed autonomous workflow
 
 The default autonomous workflow is:
