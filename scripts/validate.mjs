@@ -12,9 +12,10 @@ const allowed = {
   auth: new Set(["api_key", "oauth", "token", "account_id_and_token", "none_or_api_key", "other"]),
   iranStatus: new Set(["verified_working", "verified_working_vpn", "direct_blocked_vpn_working", "verified_blocked", "officially_unsupported", "intermittent", "signup_blocked", "unknown"]),
   officialPolicy: new Set(["supported", "unsupported", "not_documented", "unknown"]),
-  testMethod: new Set(["live_request", "signup_only", "community_report", "official_docs", "not_tested"]),
+  testMethod: new Set(["live_request", "connectivity_probe", "signup_only", "community_report", "official_docs", "not_tested"]),
   route: new Set(["direct", "vpn"]),
-  evidenceType: new Set(["official_docs", "live_test", "community_report"]),
+  evidenceType: new Set(["official_docs", "live_test", "connectivity_test", "community_report"]),
+  connectivityResult: new Set(["http_response", "connection_refused", "timeout", "dns_failure", "tls_failure", "network_error"]),
   verification: new Set(["docs_verified", "live_verified", "community_report", "unverified"])
 };
 const hostedServiceTypes = new Set(["official_provider", "official_gateway", "community_gateway"]);
@@ -29,7 +30,7 @@ const allowedKeys = {
   limit: new Set(["scope", "model", "condition", "rpm", "rpd", "rph", "tpm", "tph", "tpd", "input_tokens", "output_tokens", "concurrent_requests", "daily_units", "unit_name", "monthly_credit_usd", "monthly_requests", "notes_fa"]),
   iranAccess: new Set(["status", "official_policy", "tested_from_iran", "tested_at", "test_method", "network", "evidence", "notes_fa"]),
   network: new Set(["country", "isp", "asn", "city", "route", "exit_country", "vpn_provider"]),
-  evidence: new Set(["type", "url", "checked_at", "timestamp", "http_status", "latency_ms", "model_tested", "endpoint", "source", "auth_method", "credential_validated_from", "credential_validated_status", "response_fingerprint", "response_body_fingerprint", "notes_fa"]),
+  evidence: new Set(["type", "url", "checked_at", "timestamp", "http_status", "latency_ms", "model_tested", "endpoint", "source", "connectivity_result", "auth_method", "credential_validated_from", "credential_validated_status", "response_fingerprint", "response_body_fingerprint", "notes_fa"]),
   models: new Set(["dynamic", "source", "notable"]),
   verification: new Set(["level", "last_checked", "checked_by", "stale_after_days"])
 };
@@ -138,6 +139,24 @@ function validateEvidence(evidence, file, index) {
     }
   }
 
+  if (evidence.type === "connectivity_test") {
+    if (!validDate(evidence.checked_at ?? "")) fail(file, `${prefix}.checked_at must be a date`);
+    if (!validHttpsTemplate(evidence.endpoint)) fail(file, `${prefix}.endpoint must be an HTTPS URL`);
+    if (typeof evidence.source !== "string" || !evidence.source.trim()) fail(file, `${prefix}.source must be non-empty`);
+    if (!allowed.connectivityResult.has(evidence.connectivity_result)) fail(file, `${prefix}.connectivity_result is invalid`);
+    if (typeof evidence.notes_fa !== "string" || !evidence.notes_fa.trim()) fail(file, `${prefix}.notes_fa must be non-empty`);
+    if (evidence.connectivity_result === "http_response") {
+      if (!Number.isInteger(evidence.http_status) || evidence.http_status < 100 || evidence.http_status > 599) {
+        fail(file, `${prefix}.http_status must be present for an HTTP response`);
+      }
+    } else if (evidence.http_status != null) {
+      fail(file, `${prefix}.http_status must be omitted when no HTTP response was received`);
+    }
+    if (evidence.latency_ms != null && (!Number.isInteger(evidence.latency_ms) || evidence.latency_ms < 0)) {
+      fail(file, `${prefix}.latency_ms must be a non-negative integer or null`);
+    }
+  }
+
   const hasCredentialSource = evidence.credential_validated_from != null;
   const hasCredentialStatus = evidence.credential_validated_status != null;
   if (hasCredentialSource !== hasCredentialStatus) {
@@ -202,6 +221,7 @@ function validateProvider(p, file) {
   if (!Array.isArray(evidence)) fail(file, "iran_access.evidence must be an array");
   for (const [index, item] of (evidence ?? []).entries()) validateEvidence(item, file, index);
   const liveEvidence = (evidence ?? []).filter((item) => item?.type === "live_test");
+  const connectivityEvidence = (evidence ?? []).filter((item) => item?.type === "connectivity_test");
 
   if (claimsLiveResult && !p.iran_access?.tested_from_iran) fail(file, "verified Iran status requires tested_from_iran=true");
   if (p.iran_access?.tested_from_iran && !validDate(p.iran_access?.tested_at ?? "")) fail(file, "Iran test requires tested_at date");
@@ -225,6 +245,9 @@ function validateProvider(p, file) {
   if (p.iran_access?.test_method === "live_request" && p.iran_access?.tested_from_iran && liveEvidence.length === 0) {
     fail(file, "live_request requires live_test evidence");
   }
+  if (p.iran_access?.test_method === "connectivity_probe" && p.iran_access?.tested_from_iran && connectivityEvidence.length === 0) {
+    fail(file, "connectivity_probe requires connectivity_test evidence");
+  }
   if (claimsVpnResult && p.iran_access?.network?.route !== "vpn") fail(file, "VPN status requires network.route=vpn");
   if (claimsVpnResult && !p.iran_access?.network?.exit_country) fail(file, "VPN status requires network.exit_country");
 
@@ -243,8 +266,8 @@ function validateProvider(p, file) {
   const ageDays = Math.floor((today - checked) / 86_400_000);
   if (ageDays > (p.verification?.stale_after_days ?? 0)) warn(file, `data is stale (${ageDays} days old)`);
 
-  if (liveEvidence.length > 0 && p.verification?.level !== "live_verified") {
-    fail(file, "live_test evidence requires verification.level=live_verified");
+  if ((liveEvidence.length > 0 || connectivityEvidence.length > 0) && p.verification?.level !== "live_verified") {
+    fail(file, "live or connectivity evidence requires verification.level=live_verified");
   }
   if (p.iran_access?.tested_at && p.verification?.last_checked < p.iran_access.tested_at) {
     fail(file, "verification.last_checked cannot predate iran_access.tested_at");

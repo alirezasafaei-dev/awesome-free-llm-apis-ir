@@ -60,16 +60,18 @@
         "source": "LOCAL_PC — Iran direct",
         "credential_validated_from": "AUTOMATION_SERVER",
         "credential_validated_status": 412,
-        "notes_fa": "کلید از ایران ۴۰۳ و از سرور خارج ۴۱۲ (اکانت معلق). نیاز به کلید معتبر جدید."
+        "notes_fa": "کلید از ایران ۴۰۳ و از مسیر غیرایرانی ۴۱۲ برگرداند؛ به‌دلیل تعلیق حساب، اعتبار Credential و Geo-block قابل تفکیک نیست."
       },
       {
-        "type": "official_docs",
-        "url": "https://api.fireworks.ai/inference/v1/models",
+        "type": "connectivity_test",
         "checked_at": "2026-07-16",
-        "notes_fa": "اتصال از ایران ناموفق (connection refused/timeout). Fireworks احتمالاً ایران را مسدود کرده یا اتصال قطع است."
+        "endpoint": "https://api.fireworks.ai/inference/v1/models",
+        "source": "IRAN_SERVER — direct connectivity probe",
+        "connectivity_result": "connection_refused",
+        "notes_fa": "یک Probe از مسیر مستقیم ایران پیش از دریافت پاسخ HTTP با Connection refused شکست خورد؛ این نتیجه می‌تواند ناشی از Routing، Firewall یا وضعیت موقت سرویس باشد و به‌تنهایی اثبات انسداد جغرافیایی نیست."
       }
     ],
-    "notes_fa": "کلید ارائه‌شده دارای اکانت معلق است. تست با کلید معتبر جدید ضروری است."
+    "notes_fa": "وضعیت نامشخص می‌ماند: حساب فعلی معلق است و یک Probe دیگر نیز بدون پاسخ HTTP شکست خورده است. تست با حساب فعال و مقایسه همان Credential از مسیر پشتیبانی‌شده ضروری است."
   },
   "models": {
     "dynamic": true,

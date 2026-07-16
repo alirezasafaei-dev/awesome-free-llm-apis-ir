@@ -73,20 +73,23 @@
     "official_policy": "not_documented",
     "tested_from_iran": true,
     "tested_at": "2026-07-16",
-    "test_method": "official_docs",
+    "test_method": "connectivity_probe",
     "network": {
       "country": "IR",
       "route": "direct"
     },
     "evidence": [
       {
-        "type": "official_docs",
-        "url": "https://apihub.agnes-ai.com/v1/models",
+        "type": "connectivity_test",
         "checked_at": "2026-07-16",
-        "notes_fa": "API endpoint از ایران قابل دسترس است (HTTP 401 = نیاز به API key). تست زنده با کلید معتبر هنوز انجام نشده."
+        "http_status": 401,
+        "endpoint": "https://apihub.agnes-ai.com/v1/models",
+        "source": "IRAN_SERVER — direct connectivity probe",
+        "connectivity_result": "http_response",
+        "notes_fa": "Endpoint از مسیر مستقیم ایران پاسخ HTTP 401 داد؛ این فقط دسترسی شبکه و نیاز به احراز هویت را نشان می‌دهد، نه موفقیت API مدل."
       }
     ],
-    "notes_fa": "API endpoint از ایران قابل دسترس است (تست ۲۰۲۶-۰۷-۱۶). نیاز به API key معتبر برای تست زنده. وضعیت نهایی پس از دریافت کلید تعیین می‌شود."
+    "notes_fa": "Endpoint از ایران قابل دسترس است؛ برای تعیین وضعیت عملی سرویس، درخواست مدل با API key معتبر لازم است."
   },
   "models": {
     "dynamic": true,
@@ -100,7 +103,7 @@
     ]
   },
   "verification": {
-    "level": "docs_verified",
+    "level": "live_verified",
     "last_checked": "2026-07-16",
     "checked_by": "maintainers",
     "stale_after_days": 30

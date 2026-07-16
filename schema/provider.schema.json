@@ -89,7 +89,7 @@
         "official_policy": { "enum": ["supported", "unsupported", "not_documented", "unknown"] },
         "tested_from_iran": { "type": "boolean" },
         "tested_at": { "type": ["string", "null"], "format": "date" },
-        "test_method": { "enum": ["live_request", "signup_only", "community_report", "official_docs", "not_tested"] },
+        "test_method": { "enum": ["live_request", "connectivity_probe", "signup_only", "community_report", "official_docs", "not_tested"] },
         "network": {
           "type": ["object", "null"],
           "additionalProperties": false,
@@ -110,7 +110,7 @@
             "additionalProperties": false,
             "required": ["type"],
             "properties": {
-              "type": { "enum": ["official_docs", "live_test", "community_report"] },
+              "type": { "enum": ["official_docs", "live_test", "connectivity_test", "community_report"] },
               "url": { "type": ["string", "null"], "format": "uri" },
               "checked_at": { "type": ["string", "null"], "format": "date" },
               "timestamp": { "type": ["string", "null"], "format": "date-time" },
@@ -119,6 +119,7 @@
               "model_tested": { "type": ["string", "null"] },
               "endpoint": { "type": ["string", "null"] },
               "source": { "type": ["string", "null"] },
+              "connectivity_result": { "enum": ["http_response", "connection_refused", "timeout", "dns_failure", "tls_failure", "network_error", null] },
               "auth_method": { "type": ["string", "null"] },
               "credential_validated_from": { "type": ["string", "null"] },
               "credential_validated_status": { "type": ["integer", "null"], "minimum": 100, "maximum": 599 },
@@ -138,6 +139,20 @@
               {
                 "if": { "properties": { "type": { "const": "live_test" } } },
                 "then": { "required": ["timestamp", "http_status", "latency_ms", "model_tested", "endpoint", "source"] }
+              },
+              {
+                "if": { "properties": { "type": { "const": "connectivity_test" } } },
+                "then": { "required": ["checked_at", "endpoint", "source", "connectivity_result", "notes_fa"] }
+              },
+              {
+                "if": {
+                  "properties": {
+                    "type": { "const": "connectivity_test" },
+                    "connectivity_result": { "const": "http_response" }
+                  },
+                  "required": ["type", "connectivity_result"]
+                },
+                "then": { "required": ["http_status"] }
               },
               {
                 "if": { "required": ["credential_validated_from"] },
