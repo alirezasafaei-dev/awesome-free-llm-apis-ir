@@ -11,7 +11,14 @@
     "openai_compatible": true,
     "auth": "api_key"
   },
-  "capabilities": ["chat", "text_generation", "reasoning", "embeddings", "tool_calling", "structured_output"],
+  "capabilities": [
+    "chat",
+    "text_generation",
+    "reasoning",
+    "embeddings",
+    "tool_calling",
+    "structured_output"
+  ],
   "free_tier": {
     "status": "active",
     "type": "permanent_allowance",
@@ -23,7 +30,7 @@
     "status": "verified_working",
     "official_policy": "not_documented",
     "tested_from_iran": true,
-    "tested_at": "2026-07-15",
+    "tested_at": "2026-07-16",
     "test_method": "live_request",
     "network": {
       "country": "IR",
@@ -38,13 +45,26 @@
         "model_tested": "mistral-small-latest",
         "endpoint": "https://api.mistral.ai/v1/chat/completions",
         "source": "LOCAL_PC — Iran fixed network"
+      },
+      {
+        "type": "live_test",
+        "timestamp": "2026-07-16T06:01:19Z",
+        "http_status": 200,
+        "latency_ms": 914,
+        "model_tested": "mistral-small-latest",
+        "endpoint": "https://api.mistral.ai/v1/chat/completions",
+        "source": "LOCAL_PC — Iran mobile network (MCI AS44244)",
+        "network": "mobile (MCI AS44244, Rasht)",
+        "notes_fa": "تأیید مجدد روی اینترنت موبایل ایران — ۲۰۲۶-۰۷-۱۶"
       }
     ]
   },
   "models": {
     "dynamic": true,
     "source": "https://docs.mistral.ai/models/overview",
-    "notable": ["mistral-small-latest"]
+    "notable": [
+      "mistral-small-latest"
+    ]
   },
   "verification": {
     "level": "docs_verified",

@@ -11,7 +11,13 @@
     "openai_compatible": true,
     "auth": "none_or_api_key"
   },
-  "capabilities": ["chat", "text_generation", "reasoning", "tool_calling", "structured_output"],
+  "capabilities": [
+    "chat",
+    "text_generation",
+    "reasoning",
+    "tool_calling",
+    "structured_output"
+  ],
   "free_tier": {
     "status": "active",
     "type": "free_models",
@@ -28,18 +34,35 @@
     "notes_fa": "برای مدل‌های رایگان دسترسی ناشناس هم مستند شده است؛ کلید API برای استفادهٔ پایدار و سایر مدل‌ها قابل استفاده است."
   },
   "iran_access": {
-    "status": "unknown",
+    "status": "verified_working",
     "official_policy": "not_documented",
-    "tested_from_iran": false,
-    "tested_at": null,
-    "test_method": "not_tested",
-    "network": null,
-    "evidence": []
+    "tested_from_iran": true,
+    "tested_at": "2026-07-16",
+    "test_method": "live_request",
+    "network": {
+      "country": "IR",
+      "route": "direct"
+    },
+    "evidence": [
+      {
+        "type": "live_test",
+        "timestamp": "2026-07-16T06:01:19Z",
+        "http_status": 200,
+        "latency_ms": 2881,
+        "model_tested": "kilo-auto/free",
+        "endpoint": "https://api.kilo.ai/api/gateway/chat/completions",
+        "auth_method": "anonymous",
+        "source": "LOCAL_PC — Iran mobile network (MCI AS44244)",
+        "notes_fa": "دسترسی ناشناس (بدون کلید API) از ایران موفق بود."
+      }
+    ]
   },
   "models": {
     "dynamic": true,
     "source": "https://kilo.ai/docs/gateway/models-and-providers",
-    "notable": ["kilo-auto/free"]
+    "notable": [
+      "kilo-auto/free"
+    ]
   },
   "verification": {
     "level": "docs_verified",

@@ -11,7 +11,13 @@
     "openai_compatible": true,
     "auth": "api_key"
   },
-  "capabilities": ["chat", "text_generation", "reasoning", "tool_calling", "structured_output"],
+  "capabilities": [
+    "chat",
+    "text_generation",
+    "reasoning",
+    "tool_calling",
+    "structured_output"
+  ],
   "free_tier": {
     "status": "active",
     "type": "free_models",
@@ -37,13 +43,29 @@
     "notes_fa": "شناسهٔ مدل رایگان با پسوند :free مشخص می‌شود. موجودی و مدل‌ها ممکن است تغییر کنند."
   },
   "iran_access": {
-    "status": "unknown",
+    "status": "verified_blocked",
     "official_policy": "not_documented",
-    "tested_from_iran": false,
-    "tested_at": null,
-    "test_method": "not_tested",
-    "network": null,
-    "evidence": []
+    "tested_from_iran": true,
+    "tested_at": "2026-07-16",
+    "test_method": "live_request",
+    "network": {
+      "country": "IR",
+      "route": "direct"
+    },
+    "evidence": [
+      {
+        "type": "live_test",
+        "timestamp": "2026-07-16T06:01:19Z",
+        "http_status": 403,
+        "latency_ms": 539,
+        "model_tested": "openrouter/free",
+        "endpoint": "https://openrouter.ai/api/v1/chat/completions",
+        "credential_validated_from": "DE (v2rayN proxy)",
+        "credential_validated_status": 200,
+        "source": "LOCAL_PC — Iran mobile network (MCI AS44244)",
+        "notes_fa": "همان کلید API از ایران 403 و از آلمان (پروکسی) 200 برگرداند. مسدودیت جغرافیایی تأیید شد."
+      }
+    ]
   },
   "models": {
     "dynamic": true,

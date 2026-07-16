@@ -11,31 +11,82 @@
     "openai_compatible": true,
     "auth": "api_key"
   },
-  "capabilities": ["chat", "text_generation", "reasoning", "tool_calling", "structured_output"],
+  "capabilities": [
+    "chat",
+    "text_generation",
+    "reasoning",
+    "tool_calling",
+    "structured_output"
+  ],
   "free_tier": {
     "status": "active",
     "type": "permanent_allowance",
     "requires_payment_method": false,
     "limits": [
-      { "scope": "model", "model": "llama-3.1-8b-instant", "condition": "Free Plan", "rpm": 30, "rpd": 14400, "tpm": 6000, "tpd": 500000, "notes_fa": null },
-      { "scope": "model", "model": "llama-3.3-70b-versatile", "condition": "Free Plan", "rpm": 30, "rpd": 1000, "tpm": 12000, "tpd": 100000, "notes_fa": null },
-      { "scope": "model", "model": "qwen/qwen3-32b", "condition": "Free Plan", "rpm": 60, "rpd": 1000, "tpm": 6000, "tpd": 500000, "notes_fa": null }
+      {
+        "scope": "model",
+        "model": "llama-3.1-8b-instant",
+        "condition": "Free Plan",
+        "rpm": 30,
+        "rpd": 14400,
+        "tpm": 6000,
+        "tpd": 500000,
+        "notes_fa": null
+      },
+      {
+        "scope": "model",
+        "model": "llama-3.3-70b-versatile",
+        "condition": "Free Plan",
+        "rpm": 30,
+        "rpd": 1000,
+        "tpm": 12000,
+        "tpd": 100000,
+        "notes_fa": null
+      },
+      {
+        "scope": "model",
+        "model": "qwen/qwen3-32b",
+        "condition": "Free Plan",
+        "rpm": 60,
+        "rpd": 1000,
+        "tpm": 6000,
+        "tpd": 500000,
+        "notes_fa": null
+      }
     ],
     "notes_fa": "سهمیه‌ها در سطح Organization اعمال می‌شوند و مدل‌به‌مدل متفاوت‌اند. صفحه Limits حساب مرجع نهایی است."
   },
   "iran_access": {
     "status": "unknown",
     "official_policy": "not_documented",
-    "tested_from_iran": false,
-    "tested_at": null,
-    "test_method": "not_tested",
-    "network": null,
-    "evidence": []
+    "tested_from_iran": true,
+    "tested_at": "2026-07-16",
+    "test_method": "live_request",
+    "network": {
+      "country": "IR",
+      "route": "direct"
+    },
+    "evidence": [
+      {
+        "type": "live_test",
+        "timestamp": "2026-07-16T06:01:19Z",
+        "http_status": 403,
+        "latency_ms": 491,
+        "model_tested": "llama-3.1-8b-instant",
+        "endpoint": "https://api.groq.com/openai/v1/chat/completions",
+        "source": "LOCAL_PC — Iran mobile network (MCI AS44244)",
+        "notes_fa": "403 از ایران. کلید API در دسترس برای اعتبارسنجی از منطقه مجاز نیست. وضعیت نامشخص باقی می‌ماند."
+      }
+    ]
   },
   "models": {
     "dynamic": true,
     "source": "https://console.groq.com/docs/models",
-    "notable": ["llama-3.1-8b-instant", "llama-3.3-70b-versatile", "qwen/qwen3-32b"]
+    "notable": [
+      "llama-3.1-8b-instant",
+      "llama-3.3-70b-versatile",
+      "qwen/qwen3-32b"
+    ]
   },
   "verification": {
     "level": "docs_verified",
@@ -44,5 +95,8 @@
     "stale_after_days": 30
   },
   "notes_fa": "دسترسی ایران نیازمند تست جداگانهٔ ثبت‌نام و درخواست API است.",
-  "sources": ["https://console.groq.com/docs/rate-limits", "https://console.groq.com/docs/models"]
+  "sources": [
+    "https://console.groq.com/docs/rate-limits",
+    "https://console.groq.com/docs/models"
+  ]
 }

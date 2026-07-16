@@ -11,23 +11,56 @@
     "openai_compatible": true,
     "auth": "api_key"
   },
-  "capabilities": ["chat", "text_generation", "reasoning", "tool_calling", "structured_output"],
+  "capabilities": [
+    "chat",
+    "text_generation",
+    "reasoning",
+    "tool_calling",
+    "structured_output"
+  ],
   "free_tier": {
     "status": "trial",
     "type": "trial",
     "requires_payment_method": null,
     "limits": [
-      { "scope": "free trial", "model": "gpt-oss-120b", "condition": null, "rpm": 5, "tpm": 30000, "tph": 1000000, "tpd": 1000000, "notes_fa": null },
-      { "scope": "free trial", "model": "zai-glm-4.7", "condition": null, "rpm": 5, "tpm": 30000, "tph": 1000000, "tpd": 1000000, "notes_fa": null },
-      { "scope": "free trial", "model": "gemma-4-31b", "condition": null, "rpm": 5, "tpm": 30000, "tph": 1000000, "tpd": 1000000, "notes_fa": "مدل Preview است و محدودیت تصویر هم دارد." }
+      {
+        "scope": "free trial",
+        "model": "gpt-oss-120b",
+        "condition": null,
+        "rpm": 5,
+        "tpm": 30000,
+        "tph": 1000000,
+        "tpd": 1000000,
+        "notes_fa": null
+      },
+      {
+        "scope": "free trial",
+        "model": "zai-glm-4.7",
+        "condition": null,
+        "rpm": 5,
+        "tpm": 30000,
+        "tph": 1000000,
+        "tpd": 1000000,
+        "notes_fa": null
+      },
+      {
+        "scope": "free trial",
+        "model": "gemma-4-31b",
+        "condition": null,
+        "rpm": 5,
+        "tpm": 30000,
+        "tph": 1000000,
+        "tpd": 1000000,
+        "notes_fa": "مدل Preview است و محدودیت تصویر هم دارد."
+      }
     ],
     "notes_fa": "مستندات نرخ، این سطح را Free Trial می‌نامند؛ بنابراین به‌عنوان رایگان دائمی برچسب نخورده است."
   },
   "iran_access": {
-    "status": "unknown",
+    "status": "verified_blocked",
     "official_policy": "not_documented",
     "tested_from_iran": true,
-    "tested_at": "2026-07-15",
+    "tested_at": "2026-07-16",
     "test_method": "live_request",
     "network": {
       "country": "IR",
@@ -43,13 +76,29 @@
         "endpoint": "https://api.cerebras.ai/v1/chat/completions",
         "source": "LOCAL_PC — Iran fixed network",
         "notes_fa": "403 بدون کلمه کلیدی منطقه‌ای. برای تأیید Geo-block نیاز به اعتبارسنجی همان کلید از منطقه مجاز است."
+      },
+      {
+        "type": "live_test",
+        "timestamp": "2026-07-16T06:01:19Z",
+        "http_status": 403,
+        "latency_ms": 699,
+        "model_tested": "gpt-oss-120b",
+        "endpoint": "https://api.cerebras.ai/v1/chat/completions",
+        "credential_validated_from": "DE (v2rayN proxy)",
+        "credential_validated_status": 200,
+        "source": "LOCAL_PC — Iran mobile network (MCI AS44244)",
+        "notes_fa": "همان کلید API از ایران 403 و از آلمان (پروکسی) 200 برگرداند. مسدودیت جغرافیایی تأیید شد."
       }
     ]
   },
   "models": {
     "dynamic": true,
     "source": "https://inference-docs.cerebras.ai/models/overview",
-    "notable": ["gpt-oss-120b", "zai-glm-4.7", "gemma-4-31b"]
+    "notable": [
+      "gpt-oss-120b",
+      "zai-glm-4.7",
+      "gemma-4-31b"
+    ]
   },
   "verification": {
     "level": "docs_verified",
@@ -58,5 +107,8 @@
     "stale_after_days": 30
   },
   "notes_fa": "محدودیت دقیق حساب در بخش Limits کنسول مرجع نهایی است.",
-  "sources": ["https://inference-docs.cerebras.ai/support/rate-limits", "https://inference-docs.cerebras.ai/models/overview"]
+  "sources": [
+    "https://inference-docs.cerebras.ai/support/rate-limits",
+    "https://inference-docs.cerebras.ai/models/overview"
+  ]
 }

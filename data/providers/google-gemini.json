@@ -11,7 +11,14 @@
     "openai_compatible": true,
     "auth": "api_key"
   },
-  "capabilities": ["chat", "text_generation", "reasoning", "embeddings", "tool_calling", "structured_output"],
+  "capabilities": [
+    "chat",
+    "text_generation",
+    "reasoning",
+    "embeddings",
+    "tool_calling",
+    "structured_output"
+  ],
   "free_tier": {
     "status": "active",
     "type": "permanent_allowance",
@@ -23,7 +30,7 @@
     "status": "officially_unsupported",
     "official_policy": "unsupported",
     "tested_from_iran": true,
-    "tested_at": "2026-07-15",
+    "tested_at": "2026-07-16",
     "test_method": "live_request",
     "network": {
       "country": "IR",
@@ -45,6 +52,16 @@
         "endpoint": "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions",
         "response_body_fingerprint": "standard Google 403 Forbidden page",
         "source": "LOCAL_PC — Iran fixed network"
+      },
+      {
+        "type": "live_test",
+        "timestamp": "2026-07-16T06:01:19Z",
+        "http_status": 403,
+        "latency_ms": 642,
+        "model_tested": "gemini-2.5-flash-lite",
+        "endpoint": "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions",
+        "source": "LOCAL_PC — Iran mobile network (MCI AS44244)",
+        "notes_fa": "403 even via proxy (DE) — account-level restriction (user location not supported)"
       }
     ]
   },
@@ -60,5 +77,8 @@
     "stale_after_days": 30
   },
   "notes_fa": "به دلیل وضعیت رسمی منطقه‌ای، در گروه گزینه‌های قابل استفادهٔ مستقیم از ایران قرار نمی‌گیرد.",
-  "sources": ["https://ai.google.dev/gemini-api/docs/rate-limits", "https://ai.google.dev/gemini-api/docs/available-regions"]
+  "sources": [
+    "https://ai.google.dev/gemini-api/docs/rate-limits",
+    "https://ai.google.dev/gemini-api/docs/available-regions"
+  ]
 }

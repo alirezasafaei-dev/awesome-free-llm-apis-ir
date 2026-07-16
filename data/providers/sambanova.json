@@ -11,15 +11,46 @@
     "openai_compatible": true,
     "auth": "api_key"
   },
-  "capabilities": ["chat", "text_generation", "reasoning", "embeddings", "tool_calling", "structured_output"],
+  "capabilities": [
+    "chat",
+    "text_generation",
+    "reasoning",
+    "embeddings",
+    "tool_calling",
+    "structured_output"
+  ],
   "free_tier": {
     "status": "active",
     "type": "permanent_allowance",
     "requires_payment_method": false,
     "limits": [
-      { "scope": "free tier model", "model": "DeepSeek-V3.1", "condition": "no payment method linked", "rpm": 20, "rpd": 20, "tpd": 200000, "notes_fa": null },
-      { "scope": "free tier model", "model": "Meta-Llama-3.3-70B-Instruct", "condition": "no payment method linked", "rpm": 20, "rpd": 20, "tpd": 200000, "notes_fa": null },
-      { "scope": "free tier model", "model": "gpt-oss-120b", "condition": "no payment method linked", "rpm": 20, "rpd": 20, "tpd": 200000, "notes_fa": null }
+      {
+        "scope": "free tier model",
+        "model": "DeepSeek-V3.1",
+        "condition": "no payment method linked",
+        "rpm": 20,
+        "rpd": 20,
+        "tpd": 200000,
+        "notes_fa": null
+      },
+      {
+        "scope": "free tier model",
+        "model": "Meta-Llama-3.3-70B-Instruct",
+        "condition": "no payment method linked",
+        "rpm": 20,
+        "rpd": 20,
+        "tpd": 200000,
+        "notes_fa": null
+      },
+      {
+        "scope": "free tier model",
+        "model": "gpt-oss-120b",
+        "condition": "no payment method linked",
+        "rpm": 20,
+        "rpd": 20,
+        "tpd": 200000,
+        "notes_fa": null
+      }
     ],
     "notes_fa": "Free Tier وقتی اعمال می‌شود که روش پرداخت به حساب متصل نباشد. محدودیت‌های Preview جدا و قابل تغییرند."
   },
@@ -27,7 +58,7 @@
     "status": "verified_working",
     "official_policy": "not_documented",
     "tested_from_iran": true,
-    "tested_at": "2026-07-15",
+    "tested_at": "2026-07-16",
     "test_method": "live_request",
     "network": {
       "country": "IR",
@@ -42,13 +73,28 @@
         "model_tested": "gpt-oss-120b",
         "endpoint": "https://api.sambanova.ai/v1/chat/completions",
         "source": "LOCAL_PC — Iran fixed network"
+      },
+      {
+        "type": "live_test",
+        "timestamp": "2026-07-16T06:01:19Z",
+        "http_status": 200,
+        "latency_ms": 8366,
+        "model_tested": "deepseek-v3.1",
+        "endpoint": "https://api.sambanova.ai/v1/chat/completions",
+        "source": "LOCAL_PC — Iran mobile network (MCI AS44244)",
+        "network": "mobile (MCI AS44244, Rasht)",
+        "notes_fa": "تأیید مجدد روی اینترنت موبایل ایران — ۲۰۲۶-۰۷-۱۶"
       }
     ]
   },
   "models": {
     "dynamic": true,
     "source": "https://docs.sambanova.ai/docs/en/models/sambacloud-models",
-    "notable": ["DeepSeek-V3.1", "Meta-Llama-3.3-70B-Instruct", "gpt-oss-120b"]
+    "notable": [
+      "DeepSeek-V3.1",
+      "Meta-Llama-3.3-70B-Instruct",
+      "gpt-oss-120b"
+    ]
   },
   "verification": {
     "level": "docs_verified",
@@ -57,5 +103,8 @@
     "stale_after_days": 30
   },
   "notes_fa": "وضعیت ثبت‌نام و API از ایران هنوز تست نشده است.",
-  "sources": ["https://docs.sambanova.ai/docs/en/models/rate-limits", "https://docs.sambanova.ai/docs/en/features/openai-compatibility"]
+  "sources": [
+    "https://docs.sambanova.ai/docs/en/models/rate-limits",
+    "https://docs.sambanova.ai/docs/en/features/openai-compatibility"
+  ]
 }

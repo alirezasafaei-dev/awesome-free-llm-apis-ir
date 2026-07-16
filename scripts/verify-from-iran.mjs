@@ -109,6 +109,39 @@ const providers = [
     defaultModel: "meta/llama-3.1-8b-instruct",
     validatedEnv: "NVIDIA_CREDENTIAL_VALIDATED",
     endpoint: () => "https://integrate.api.nvidia.com/v1/chat/completions"
+  },
+  {
+    id: "aion-labs",
+    keyEnv: "AIONLABS_API_KEY",
+    modelEnv: "AIONLABS_MODEL",
+    defaultModel: "aion-3.0-mini",
+    validatedEnv: "AIONLABS_CREDENTIAL_VALIDATED",
+    endpoint: () => "https://api.aionlabs.ai/v1/chat/completions"
+  },
+  {
+    id: "freetheai",
+    keyEnv: "FREETHEAI_API_KEY",
+    modelEnv: "FREETHEAI_MODEL",
+    defaultModel: "gpt-4o-mini",
+    validatedEnv: "FREETHEAI_CREDENTIAL_VALIDATED",
+    endpoint: () => "https://api.freetheai.xyz/v1/chat/completions"
+  },
+  {
+    id: "kilo-gateway",
+    keyEnv: "KILO_API_KEY",
+    modelEnv: "KILO_MODEL",
+    defaultModel: "kilo-auto/free",
+    validatedEnv: "KILO_CREDENTIAL_VALIDATED",
+    allowAnonymous: true,
+    endpoint: () => "https://api.kilo.ai/api/gateway/chat/completions"
+  },
+  {
+    id: "vercel-ai-gateway",
+    keyEnv: "VERCEL_AI_GATEWAY_API_KEY",
+    modelEnv: "VERCEL_AI_GATEWAY_MODEL",
+    defaultModel: "gpt-4o-mini",
+    validatedEnv: "VERCEL_AI_GATEWAY_CREDENTIAL_VALIDATED",
+    endpoint: () => "https://ai-gateway.vercel.sh/v1/chat/completions"
   }
 ];
 
@@ -133,7 +166,9 @@ if (dryRun) {
   for (const provider of chosen) {
     const hasKey = Boolean(process.env[provider.keyEnv]);
     const hasExtras = (provider.requiredEnv ?? []).every((name) => Boolean(process.env[name]));
-    console.log(`${provider.id}: ${hasKey && hasExtras ? "configured" : "skipped (missing credentials)"}`);
+    const anonymous = provider.allowAnonymous && !hasKey;
+    const status = hasKey && hasExtras ? "configured" : anonymous ? "anonymous (no key needed)" : "skipped (missing credentials)";
+    console.log(`${provider.id}: ${status}`);
   }
   process.exit(0);
 }
@@ -163,16 +198,19 @@ async function testProvider(provider) {
   const credentialValidated = bool(provider.validatedEnv);
   const key = process.env[provider.keyEnv];
   const missingExtra = (provider.requiredEnv ?? []).some((name) => !process.env[name]);
-  if (!key || missingExtra) {
+  const anonymous = provider.allowAnonymous && !key;
+  if ((!key && !anonymous) || missingExtra) {
     return { provider_id: provider.id, model, tested: false, credential_validated_elsewhere: credentialValidated, outcome: "skipped", http_status: null, latency_ms: null, response_fingerprint: null, publishable_claim: false };
   }
 
   const started = Date.now();
   try {
+    const headers = { "content-type": "application/json", "user-agent": "awesome-free-llm-apis-ir-verifier/1.0" };
+    if (!anonymous) headers["authorization"] = `Bearer ${key}`;
     const response = await fetch(provider.endpoint(), {
       method: "POST",
       signal: AbortSignal.timeout(30_000),
-      headers: { "authorization": `Bearer ${key}`, "content-type": "application/json", "user-agent": "awesome-free-llm-apis-ir-verifier/1.0" },
+      headers,
       body: JSON.stringify({
         model,
         messages: [{ role: "user", content: "فقط کلمه موفق را بنویس." }],

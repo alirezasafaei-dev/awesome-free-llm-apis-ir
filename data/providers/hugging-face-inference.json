@@ -11,13 +11,26 @@
     "openai_compatible": true,
     "auth": "token"
   },
-  "capabilities": ["chat", "text_generation", "reasoning", "embeddings", "tool_calling", "structured_output"],
+  "capabilities": [
+    "chat",
+    "text_generation",
+    "reasoning",
+    "embeddings",
+    "tool_calling",
+    "structured_output"
+  ],
   "free_tier": {
     "status": "limited",
     "type": "monthly_credit",
     "requires_payment_method": false,
     "limits": [
-      { "scope": "free user", "model": null, "condition": "monthly reset; subject to change", "monthly_credit_usd": 0.1, "notes_fa": "مقدار قابل استفاده به قیمت ارائه‌دهنده و مدل انتخابی وابسته است." }
+      {
+        "scope": "free user",
+        "model": null,
+        "condition": "monthly reset; subject to change",
+        "monthly_credit_usd": 0.1,
+        "notes_fa": "مقدار قابل استفاده به قیمت ارائه‌دهنده و مدل انتخابی وابسته است."
+      }
     ],
     "notes_fa": "کاربر رایگان در حال حاضر ماهانه ۰٫۱۰ دلار اعتبار Inference Providers دریافت می‌کند."
   },
@@ -25,7 +38,7 @@
     "status": "verified_working",
     "official_policy": "not_documented",
     "tested_from_iran": true,
-    "tested_at": "2026-07-15",
+    "tested_at": "2026-07-16",
     "test_method": "live_request",
     "network": {
       "country": "IR",
@@ -40,6 +53,17 @@
         "model_tested": "openai/gpt-oss-20b:fastest",
         "endpoint": "https://router.huggingface.co/v1/chat/completions",
         "source": "LOCAL_PC — Iran fixed network"
+      },
+      {
+        "type": "live_test",
+        "timestamp": "2026-07-16T06:01:19Z",
+        "http_status": 200,
+        "model_tested": "openai/gpt-oss-20b:fastest",
+        "endpoint": "https://router.huggingface.co/v1/chat/completions",
+        "source": "LOCAL_PC — Iran mobile network (MCI AS44244)",
+        "network": "mobile (MCI AS44244, Rasht)",
+        "notes_fa": "تأیید مجدد روی اینترنت موبایل ایران — ۲۰۲۶-۰۷-۱۶",
+        "latency_ms": 826
       }
     ]
   },
@@ -55,5 +79,8 @@
     "stale_after_days": 30
   },
   "notes_fa": "این سهمیه اعتبار دلاری است، نه تعداد ثابت درخواست یا توکن.",
-  "sources": ["https://huggingface.co/docs/inference-providers/en/pricing", "https://huggingface.co/docs/inference-providers/en/index"]
+  "sources": [
+    "https://huggingface.co/docs/inference-providers/en/pricing",
+    "https://huggingface.co/docs/inference-providers/en/index"
+  ]
 }

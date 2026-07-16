@@ -131,10 +131,10 @@
         "notes_fa": "مستندات نرخ، این سطح را Free Trial می‌نامند؛ بنابراین به‌عنوان رایگان دائمی برچسب نخورده است."
       },
       "iran_access": {
-        "status": "unknown",
+        "status": "verified_blocked",
         "official_policy": "not_documented",
         "tested_from_iran": true,
-        "tested_at": "2026-07-15",
+        "tested_at": "2026-07-16",
         "test_method": "live_request",
         "network": {
           "country": "IR",
@@ -150,6 +150,18 @@
             "endpoint": "https://api.cerebras.ai/v1/chat/completions",
             "source": "LOCAL_PC — Iran fixed network",
             "notes_fa": "403 بدون کلمه کلیدی منطقه‌ای. برای تأیید Geo-block نیاز به اعتبارسنجی همان کلید از منطقه مجاز است."
+          },
+          {
+            "type": "live_test",
+            "timestamp": "2026-07-16T06:01:19Z",
+            "http_status": 403,
+            "latency_ms": 699,
+            "model_tested": "gpt-oss-120b",
+            "endpoint": "https://api.cerebras.ai/v1/chat/completions",
+            "credential_validated_from": "DE (v2rayN proxy)",
+            "credential_validated_status": 200,
+            "source": "LOCAL_PC — Iran mobile network (MCI AS44244)",
+            "notes_fa": "همان کلید API از ایران 403 و از آلمان (پروکسی) 200 برگرداند. مسدودیت جغرافیایی تأیید شد."
           }
         ]
       },
@@ -214,7 +226,7 @@
         "status": "verified_working",
         "official_policy": "not_documented",
         "tested_from_iran": true,
-        "tested_at": "2026-07-15",
+        "tested_at": "2026-07-16",
         "test_method": "live_request",
         "network": {
           "country": "IR",
@@ -230,6 +242,17 @@
             "endpoint": "https://api.cloudflare.com/client/v4/accounts/{account_id}/ai/v1/chat/completions",
             "source": "LOCAL_PC — Iran fixed network",
             "notes_fa": "مدل پیش‌فرض قبلی (@cf/meta/llama-3.1-8b-instruct) در 2026-05-30 منسوخ شده است. تست با @cf/meta/llama-3.2-3b-instruct موفق بود."
+          },
+          {
+            "type": "live_test",
+            "timestamp": "2026-07-16T06:01:19Z",
+            "http_status": 200,
+            "model_tested": "@cf/meta/llama-3.2-3b-instruct",
+            "endpoint": "https://api.cloudflare.com/client/v4/accounts/{account_id}/ai/v1/chat/completions",
+            "source": "LOCAL_PC — Iran mobile network (MCI AS44244)",
+            "network": "mobile (MCI AS44244, Rasht)",
+            "notes_fa": "تأیید مجدد روی اینترنت موبایل ایران — ۲۰۲۶-۰۷-۱۶",
+            "latency_ms": 888
           }
         ],
         "notes_fa": "⚠️ مدل پیش‌فرض از @cf/meta/llama-3.1-8b-instruct به @cf/meta/llama-3.2-3b-instruct تغییر یافت."
@@ -291,10 +314,10 @@
         "notes_fa": "کلید Trial رایگان و محدود به ارزیابی است؛ سقف کلی ۱۰۰۰ فراخوانی در ماه اعلام شده است."
       },
       "iran_access": {
-        "status": "unknown",
+        "status": "verified_blocked",
         "official_policy": "not_documented",
         "tested_from_iran": true,
-        "tested_at": "2026-07-15",
+        "tested_at": "2026-07-16",
         "test_method": "live_request",
         "network": {
           "country": "IR",
@@ -310,6 +333,18 @@
             "endpoint": "https://api.cohere.com/v2/chat",
             "source": "LOCAL_PC — Iran fixed network",
             "notes_fa": "403 بدون کلمه کلیدی منطقه‌ای. برای تأیید Geo-block نیاز به اعتبارسنجی همان کلید از منطقه مجاز است."
+          },
+          {
+            "type": "live_test",
+            "timestamp": "2026-07-16T06:01:19Z",
+            "http_status": 403,
+            "latency_ms": 1243,
+            "model_tested": "command-a-03-2025",
+            "endpoint": "https://api.cohere.com/v2/chat",
+            "credential_validated_from": "DE (v2rayN proxy)",
+            "credential_validated_status": 200,
+            "source": "LOCAL_PC — Iran mobile network (MCI AS44244)",
+            "notes_fa": "همان کلید API از ایران 403 و از آلمان (پروکسی) 200 برگرداند. مسدودیت جغرافیایی تأیید شد."
           }
         ]
       },
@@ -530,7 +565,7 @@
         "status": "officially_unsupported",
         "official_policy": "unsupported",
         "tested_from_iran": true,
-        "tested_at": "2026-07-15",
+        "tested_at": "2026-07-16",
         "test_method": "live_request",
         "network": {
           "country": "IR",
@@ -552,6 +587,16 @@
             "endpoint": "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions",
             "response_body_fingerprint": "standard Google 403 Forbidden page",
             "source": "LOCAL_PC — Iran fixed network"
+          },
+          {
+            "type": "live_test",
+            "timestamp": "2026-07-16T06:01:19Z",
+            "http_status": 403,
+            "latency_ms": 642,
+            "model_tested": "gemini-2.5-flash-lite",
+            "endpoint": "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions",
+            "source": "LOCAL_PC — Iran mobile network (MCI AS44244)",
+            "notes_fa": "403 even via proxy (DE) — account-level restriction (user location not supported)"
           }
         ]
       },
@@ -633,11 +678,25 @@
       "iran_access": {
         "status": "unknown",
         "official_policy": "not_documented",
-        "tested_from_iran": false,
-        "tested_at": null,
-        "test_method": "not_tested",
-        "network": null,
-        "evidence": []
+        "tested_from_iran": true,
+        "tested_at": "2026-07-16",
+        "test_method": "live_request",
+        "network": {
+          "country": "IR",
+          "route": "direct"
+        },
+        "evidence": [
+          {
+            "type": "live_test",
+            "timestamp": "2026-07-16T06:01:19Z",
+            "http_status": 403,
+            "latency_ms": 491,
+            "model_tested": "llama-3.1-8b-instant",
+            "endpoint": "https://api.groq.com/openai/v1/chat/completions",
+            "source": "LOCAL_PC — Iran mobile network (MCI AS44244)",
+            "notes_fa": "403 از ایران. کلید API در دسترس برای اعتبارسنجی از منطقه مجاز نیست. وضعیت نامشخص باقی می‌ماند."
+          }
+        ]
       },
       "models": {
         "dynamic": true,
@@ -700,7 +759,7 @@
         "status": "verified_working",
         "official_policy": "not_documented",
         "tested_from_iran": true,
-        "tested_at": "2026-07-15",
+        "tested_at": "2026-07-16",
         "test_method": "live_request",
         "network": {
           "country": "IR",
@@ -715,6 +774,17 @@
             "model_tested": "openai/gpt-oss-20b:fastest",
             "endpoint": "https://router.huggingface.co/v1/chat/completions",
             "source": "LOCAL_PC — Iran fixed network"
+          },
+          {
+            "type": "live_test",
+            "timestamp": "2026-07-16T06:01:19Z",
+            "http_status": 200,
+            "model_tested": "openai/gpt-oss-20b:fastest",
+            "endpoint": "https://router.huggingface.co/v1/chat/completions",
+            "source": "LOCAL_PC — Iran mobile network (MCI AS44244)",
+            "network": "mobile (MCI AS44244, Rasht)",
+            "notes_fa": "تأیید مجدد روی اینترنت موبایل ایران — ۲۰۲۶-۰۷-۱۶",
+            "latency_ms": 826
           }
         ]
       },
@@ -771,13 +841,28 @@
         "notes_fa": "برای مدل‌های رایگان دسترسی ناشناس هم مستند شده است؛ کلید API برای استفادهٔ پایدار و سایر مدل‌ها قابل استفاده است."
       },
       "iran_access": {
-        "status": "unknown",
+        "status": "verified_working",
         "official_policy": "not_documented",
-        "tested_from_iran": false,
-        "tested_at": null,
-        "test_method": "not_tested",
-        "network": null,
-        "evidence": []
+        "tested_from_iran": true,
+        "tested_at": "2026-07-16",
+        "test_method": "live_request",
+        "network": {
+          "country": "IR",
+          "route": "direct"
+        },
+        "evidence": [
+          {
+            "type": "live_test",
+            "timestamp": "2026-07-16T06:01:19Z",
+            "http_status": 200,
+            "latency_ms": 2881,
+            "model_tested": "kilo-auto/free",
+            "endpoint": "https://api.kilo.ai/api/gateway/chat/completions",
+            "auth_method": "anonymous",
+            "source": "LOCAL_PC — Iran mobile network (MCI AS44244)",
+            "notes_fa": "دسترسی ناشناس (بدون کلید API) از ایران موفق بود."
+          }
+        ]
       },
       "models": {
         "dynamic": true,
@@ -832,7 +917,7 @@
         "status": "verified_working",
         "official_policy": "not_documented",
         "tested_from_iran": true,
-        "tested_at": "2026-07-15",
+        "tested_at": "2026-07-16",
         "test_method": "live_request",
         "network": {
           "country": "IR",
@@ -847,6 +932,17 @@
             "model_tested": "mistral-small-latest",
             "endpoint": "https://api.mistral.ai/v1/chat/completions",
             "source": "LOCAL_PC — Iran fixed network"
+          },
+          {
+            "type": "live_test",
+            "timestamp": "2026-07-16T06:01:19Z",
+            "http_status": 200,
+            "latency_ms": 914,
+            "model_tested": "mistral-small-latest",
+            "endpoint": "https://api.mistral.ai/v1/chat/completions",
+            "source": "LOCAL_PC — Iran mobile network (MCI AS44244)",
+            "network": "mobile (MCI AS44244, Rasht)",
+            "notes_fa": "تأیید مجدد روی اینترنت موبایل ایران — ۲۰۲۶-۰۷-۱۶"
           }
         ]
       },
@@ -968,13 +1064,29 @@
         "notes_fa": "شناسهٔ مدل رایگان با پسوند :free مشخص می‌شود. موجودی و مدل‌ها ممکن است تغییر کنند."
       },
       "iran_access": {
-        "status": "unknown",
+        "status": "verified_blocked",
         "official_policy": "not_documented",
-        "tested_from_iran": false,
-        "tested_at": null,
-        "test_method": "not_tested",
-        "network": null,
-        "evidence": []
+        "tested_from_iran": true,
+        "tested_at": "2026-07-16",
+        "test_method": "live_request",
+        "network": {
+          "country": "IR",
+          "route": "direct"
+        },
+        "evidence": [
+          {
+            "type": "live_test",
+            "timestamp": "2026-07-16T06:01:19Z",
+            "http_status": 403,
+            "latency_ms": 539,
+            "model_tested": "openrouter/free",
+            "endpoint": "https://openrouter.ai/api/v1/chat/completions",
+            "credential_validated_from": "DE (v2rayN proxy)",
+            "credential_validated_status": 200,
+            "source": "LOCAL_PC — Iran mobile network (MCI AS44244)",
+            "notes_fa": "همان کلید API از ایران 403 و از آلمان (پروکسی) 200 برگرداند. مسدودیت جغرافیایی تأیید شد."
+          }
+        ]
       },
       "models": {
         "dynamic": true,
@@ -1053,7 +1165,7 @@
         "status": "verified_working",
         "official_policy": "not_documented",
         "tested_from_iran": true,
-        "tested_at": "2026-07-15",
+        "tested_at": "2026-07-16",
         "test_method": "live_request",
         "network": {
           "country": "IR",
@@ -1068,6 +1180,17 @@
             "model_tested": "gpt-oss-120b",
             "endpoint": "https://api.sambanova.ai/v1/chat/completions",
             "source": "LOCAL_PC — Iran fixed network"
+          },
+          {
+            "type": "live_test",
+            "timestamp": "2026-07-16T06:01:19Z",
+            "http_status": 200,
+            "latency_ms": 8366,
+            "model_tested": "deepseek-v3.1",
+            "endpoint": "https://api.sambanova.ai/v1/chat/completions",
+            "source": "LOCAL_PC — Iran mobile network (MCI AS44244)",
+            "network": "mobile (MCI AS44244, Rasht)",
+            "notes_fa": "تأیید مجدد روی اینترنت موبایل ایران — ۲۰۲۶-۰۷-۱۶"
           }
         ]
       },
