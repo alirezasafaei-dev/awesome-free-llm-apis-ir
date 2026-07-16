@@ -17,7 +17,7 @@
     "type": "permanent_allowance",
     "requires_payment_method": false,
     "limits": [],
-    "notes_fa": "اعضای رایگان NVIDIA Developer Program برای Prototype، تحقیق، توسعه و آزمایش به Endpointهای میزبانی‌شده دسترسی دارند؛ استفاده Production نیازمند مجوز تجاری است."
+    "notes_fa": "اعضای رایگان NVIDIA Developer Program برای Prototype، تحقیق، توسعه و آزمایش به Endpointهای میزبانی‌شده دسترسی دارند؛ استفاده Production نیازمند مجوز تجاری است. صفحه اصلی build.nvidia.com اعلام 'Free inference with leading models' می‌کند."
   },
   "iran_access": {
     "status": "unknown",

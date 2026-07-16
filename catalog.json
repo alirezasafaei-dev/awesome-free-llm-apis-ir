@@ -1379,7 +1379,7 @@
         "type": "permanent_allowance",
         "requires_payment_method": false,
         "limits": [],
-        "notes_fa": "اعضای رایگان NVIDIA Developer Program برای Prototype، تحقیق، توسعه و آزمایش به Endpointهای میزبانی‌شده دسترسی دارند؛ استفاده Production نیازمند مجوز تجاری است."
+        "notes_fa": "اعضای رایگان NVIDIA Developer Program برای Prototype، تحقیق، توسعه و آزمایش به Endpointهای میزبانی‌شده دسترسی دارند؛ استفاده Production نیازمند مجوز تجاری است. صفحه اصلی build.nvidia.com اعلام 'Free inference with leading models' می‌کند."
       },
       "iran_access": {
         "status": "unknown",
@@ -1869,10 +1869,10 @@
             "model": null,
             "condition": "Free credit on eligible models",
             "monthly_credit_usd": 5,
-            "notes_fa": "فقط زیرمجموعه‌ای از مدل‌ها واجد اعتبار رایگان‌اند و محدودیت هر مدل می‌تواند پایین‌تر باشد."
+            "notes_fa": "فقط زیرمجموعه‌ای از مدل‌ها واجد اعتبار رایگان‌اند و محدودیت هر مدل می‌تواند پایین‌تر باشد. BYOK در پلن پولی موجود است."
           }
         ],
-        "notes_fa": "اعتبار رایگان ماهانه ۵ دلار است؛ الزام روش پرداخت برای همهٔ مسیرهای ثبت‌نام در مستندات بررسی‌شده صریح نبود."
+        "notes_fa": "اعتبار رایگان ماهانه ۵ دلار روی مدل‌های واجد شرایط. پس از اولین درخواست، حساب به پلن پولی ارتقا می‌یابد. ثبت‌نام نیاز به حساب Vercel دارد."
       },
       "iran_access": {
         "status": "unknown",
