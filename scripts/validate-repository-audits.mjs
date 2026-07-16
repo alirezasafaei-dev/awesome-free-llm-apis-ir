@@ -42,13 +42,19 @@ const providers = readJsonFiles(PROVIDERS_DIR);
 const tools = readJsonFiles(TOOLS_DIR);
 const upstreams = JSON.parse(readFileSync(UPSTREAMS_PATH, "utf8"));
 
-const providerSources = new Set(
-  providers.flatMap((provider) => Array.isArray(provider.sources) ? provider.sources : [])
+const providerSources = providers.flatMap((provider) =>
+  Array.isArray(provider.sources) ? provider.sources : []
 );
 const toolRepositories = new Set(tools.map((tool) => tool.repository));
 const upstreamRepositories = new Set(
   upstreams.sources.map((source) => `https://github.com/${source.repository}`)
 );
+
+function providerReferences(repositoryUrl) {
+  return providerSources.some(
+    (source) => source === repositoryUrl || source.startsWith(`${repositoryUrl}/`)
+  );
+}
 
 if (data.schema_version !== "1.0.0") fail("registry", "schema_version must be 1.0.0");
 if (!ISO_DATE.test(data.last_updated)) fail("registry", "last_updated must be YYYY-MM-DD");
@@ -94,7 +100,7 @@ for (const audit of data.audits ?? []) {
 
   if (audit.decision === "add_provider") {
     if (audit.scope !== "provider_catalog") fail(subject, "add_provider requires scope=provider_catalog");
-    if (!providerSources.has(expectedUrl)) fail(subject, "add_provider repository must be referenced by a provider source");
+    if (!providerReferences(expectedUrl)) fail(subject, "add_provider repository must be referenced by a provider source");
     if (!upstreamRepositories.has(expectedUrl)) fail(subject, "add_provider repository must also be monitored as an upstream");
     if (!new Set(["verified", "claimed"]).has(audit.free_api_evidence)) fail(subject, "add_provider requires free API evidence");
   }
@@ -105,12 +111,12 @@ for (const audit of data.audits ?? []) {
 
   if (audit.decision === "watch") {
     if (!upstreamRepositories.has(expectedUrl)) fail(subject, "watch decision requires an upstream entry");
-    if (audit.scope === "provider_catalog" && !providerSources.has(expectedUrl)) fail(subject, "provider watch must be referenced by provider sources");
+    if (audit.scope === "provider_catalog" && !providerReferences(expectedUrl)) fail(subject, "provider watch must be referenced by provider sources");
   }
 
   if (audit.decision === "reject") {
     if (audit.scope !== "out_of_scope") fail(subject, "reject decisions must use scope=out_of_scope");
-    if (providerSources.has(expectedUrl)) fail(subject, "rejected repository must not be referenced by provider sources");
+    if (providerReferences(expectedUrl)) fail(subject, "rejected repository must not be referenced by provider sources");
     if (toolRepositories.has(expectedUrl)) fail(subject, "rejected repository must not exist in the tools catalog");
   }
 
