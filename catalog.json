@@ -78,20 +78,23 @@
         "official_policy": "not_documented",
         "tested_from_iran": true,
         "tested_at": "2026-07-16",
-        "test_method": "official_docs",
+        "test_method": "connectivity_probe",
         "network": {
           "country": "IR",
           "route": "direct"
         },
         "evidence": [
           {
-            "type": "official_docs",
-            "url": "https://apihub.agnes-ai.com/v1/models",
+            "type": "connectivity_test",
             "checked_at": "2026-07-16",
-            "notes_fa": "API endpoint از ایران قابل دسترس است (HTTP 401 = نیاز به API key). تست زنده با کلید معتبر هنوز انجام نشده."
+            "http_status": 401,
+            "endpoint": "https://apihub.agnes-ai.com/v1/models",
+            "source": "IRAN_SERVER — direct connectivity probe",
+            "connectivity_result": "http_response",
+            "notes_fa": "Endpoint از مسیر مستقیم ایران پاسخ HTTP 401 داد؛ این فقط دسترسی شبکه و نیاز به احراز هویت را نشان می‌دهد، نه موفقیت API مدل."
           }
         ],
-        "notes_fa": "API endpoint از ایران قابل دسترس است (تست ۲۰۲۶-۰۷-۱۶). نیاز به API key معتبر برای تست زنده. وضعیت نهایی پس از دریافت کلید تعیین می‌شود."
+        "notes_fa": "Endpoint از ایران قابل دسترس است؛ برای تعیین وضعیت عملی سرویس، درخواست مدل با API key معتبر لازم است."
       },
       "models": {
         "dynamic": true,
@@ -105,7 +108,7 @@
         ]
       },
       "verification": {
-        "level": "docs_verified",
+        "level": "live_verified",
         "last_checked": "2026-07-16",
         "checked_by": "maintainers",
         "stale_after_days": 30
@@ -560,16 +563,18 @@
             "source": "LOCAL_PC — Iran direct",
             "credential_validated_from": "AUTOMATION_SERVER",
             "credential_validated_status": 412,
-            "notes_fa": "کلید از ایران ۴۰۳ و از سرور خارج ۴۱۲ (اکانت معلق). نیاز به کلید معتبر جدید."
+            "notes_fa": "کلید از ایران ۴۰۳ و از مسیر غیرایرانی ۴۱۲ برگرداند؛ به‌دلیل تعلیق حساب، اعتبار Credential و Geo-block قابل تفکیک نیست."
           },
           {
-            "type": "official_docs",
-            "url": "https://api.fireworks.ai/inference/v1/models",
+            "type": "connectivity_test",
             "checked_at": "2026-07-16",
-            "notes_fa": "اتصال از ایران ناموفق (connection refused/timeout). Fireworks احتمالاً ایران را مسدود کرده یا اتصال قطع است."
+            "endpoint": "https://api.fireworks.ai/inference/v1/models",
+            "source": "IRAN_SERVER — direct connectivity probe",
+            "connectivity_result": "connection_refused",
+            "notes_fa": "یک Probe از مسیر مستقیم ایران پیش از دریافت پاسخ HTTP با Connection refused شکست خورد؛ این نتیجه می‌تواند ناشی از Routing، Firewall یا وضعیت موقت سرویس باشد و به‌تنهایی اثبات انسداد جغرافیایی نیست."
           }
         ],
-        "notes_fa": "کلید ارائه‌شده دارای اکانت معلق است. تست با کلید معتبر جدید ضروری است."
+        "notes_fa": "وضعیت نامشخص می‌ماند: حساب فعلی معلق است و یک Probe دیگر نیز بدون پاسخ HTTP شکست خورده است. تست با حساب فعال و مقایسه همان Credential از مسیر پشتیبانی‌شده ضروری است."
       },
       "models": {
         "dynamic": true,
@@ -636,20 +641,23 @@
         "official_policy": "not_documented",
         "tested_from_iran": true,
         "tested_at": "2026-07-16",
-        "test_method": "official_docs",
+        "test_method": "connectivity_probe",
         "network": {
           "country": "IR",
           "route": "direct"
         },
         "evidence": [
           {
-            "type": "official_docs",
-            "url": "https://api.freetheai.xyz/v1/health",
+            "type": "connectivity_test",
             "checked_at": "2026-07-16",
-            "notes_fa": "Health endpoint از ایران قابل دسترس است (HTTP 200). نیاز به API key (از طریق Discord) برای تست زنده."
+            "http_status": 200,
+            "endpoint": "https://api.freetheai.xyz/v1/health",
+            "source": "IRAN_SERVER — direct connectivity probe",
+            "connectivity_result": "http_response",
+            "notes_fa": "Health endpoint از مسیر مستقیم ایران پاسخ HTTP 200 داد؛ این نتیجه فقط Reachability را ثابت می‌کند و جای درخواست مدل با کلید Discord را نمی‌گیرد."
           }
         ],
-        "notes_fa": "API endpoint از ایران قابل دسترس است (تست ۲۰۲۶-۰۷-۱۶). نیاز به API key از طریق Discord برای تست زنده. وضعیت نهایی پس از دریافت کلید تعیین می‌شود."
+        "notes_fa": "Endpoint از ایران قابل دسترس است؛ برای تعیین وضعیت عملی سرویس، درخواست مدل با کلید مجاز دریافت‌شده از Discord لازم است."
       },
       "models": {
         "dynamic": true,
@@ -657,12 +665,12 @@
         "notable": []
       },
       "verification": {
-        "level": "docs_verified",
+        "level": "live_verified",
         "last_checked": "2026-07-16",
         "checked_by": "maintainers",
         "stale_after_days": 14
       },
-      "notes_fa": "این سرویس یک Gateway اجتماعی است، نه Provider اصلی مدل. پایداری، قوانین و ظرفیت آن باید مستقل از Providerهای رسمی پایش شود. ثبت‌نام از طریق Discord (/signup) امکان‌پذیر است و Discord در ایران فعال است. مانع اصلی نیاز به /checkin روزانه است.",
+      "notes_fa": "این سرویس یک Gateway اجتماعی است، نه Provider اصلی مدل. پایداری، قوانین و ظرفیت آن باید مستقل از Providerهای رسمی پایش شود. ثبت‌نام از طریق Discord (/signup) امکان‌پذیر است و مانع باقی‌مانده دریافت کلید و اجرای درخواست مدل است.",
       "sources": [
         "https://github.com/Free-The-Ai/free-ai/blob/master/README.md",
         "https://freetheai.xyz/docs",
@@ -1342,7 +1350,7 @@
         "official_policy": "not_documented",
         "tested_from_iran": true,
         "tested_at": "2026-07-16",
-        "test_method": "official_docs",
+        "test_method": "connectivity_probe",
         "network": {
           "country": "IR",
           "route": "direct"
@@ -1355,13 +1363,16 @@
             "notes_fa": "ثبت‌نام نیاز به حساب Alibaba Cloud و احراز هویت واقعی (شماره ملی چین یا پاسپورت) دارد."
           },
           {
-            "type": "official_docs",
-            "url": "https://api-inference.modelscope.cn/v1/models",
+            "type": "connectivity_test",
             "checked_at": "2026-07-16",
-            "notes_fa": "API endpoint از ایران قابل دسترس است (HTTP 200). مانع ثبت‌نام هویتی است نه مسدودیت شبکه."
+            "http_status": 200,
+            "endpoint": "https://api-inference.modelscope.cn/v1/models",
+            "source": "IRAN_SERVER — direct connectivity probe",
+            "connectivity_result": "http_response",
+            "notes_fa": "Endpoint از مسیر مستقیم ایران پاسخ HTTP 200 داد؛ مانع ثبت‌نام هویتی مستقل از Reachability شبکه است."
           }
         ],
-        "notes_fa": "API از ایران قابل دسترس است (تست ۲۰۲۶-۰۷-۱۶). مانع، احراز هویت هویتی چینی است. کاربران ایرانی بدون اسناد هویتی چینی قادر به ثبت‌نام نیستند."
+        "notes_fa": "Endpoint از ایران قابل دسترس است، اما دریافت Credential به احراز هویت موردنیاز سرویس وابسته است؛ این محدودیت بدون دورزدن کنترل هویت ثبت شده است."
       },
       "models": {
         "dynamic": true,
@@ -1379,7 +1390,7 @@
         ]
       },
       "verification": {
-        "level": "docs_verified",
+        "level": "live_verified",
         "last_checked": "2026-07-16",
         "checked_by": "maintainers",
         "stale_after_days": 30
@@ -1422,20 +1433,23 @@
         "official_policy": "not_documented",
         "tested_from_iran": true,
         "tested_at": "2026-07-16",
-        "test_method": "official_docs",
+        "test_method": "connectivity_probe",
         "network": {
           "country": "IR",
           "route": "direct"
         },
         "evidence": [
           {
-            "type": "official_docs",
-            "url": "https://integrate.api.nvidia.com/v1/models",
+            "type": "connectivity_test",
             "checked_at": "2026-07-16",
-            "notes_fa": "API endpoint از ایران قابل دسترس است (HTTP 200). نیاز به NVIDIA Developer Program key برای تست زنده."
+            "http_status": 200,
+            "endpoint": "https://integrate.api.nvidia.com/v1/models",
+            "source": "IRAN_SERVER — direct connectivity probe",
+            "connectivity_result": "http_response",
+            "notes_fa": "Endpoint مدل‌ها از مسیر مستقیم ایران پاسخ HTTP 200 داد؛ این نتیجه Reachability را نشان می‌دهد و جای درخواست استنتاج با کلید Developer Program را نمی‌گیرد."
           }
         ],
-        "notes_fa": "API endpoint از ایران قابل دسترس است (تست ۲۰۲۶-۰۷-۱۶). نیاز به NVIDIA Developer Program key برای تست زنده. وضعیت نهایی پس از دریافت کلید تعیین می‌شود."
+        "notes_fa": "Endpoint از ایران قابل دسترس است؛ برای تعیین وضعیت عملی سرویس، درخواست مدل با کلید مجاز NVIDIA Developer Program لازم است."
       },
       "models": {
         "dynamic": true,
@@ -1443,7 +1457,7 @@
         "notable": []
       },
       "verification": {
-        "level": "docs_verified",
+        "level": "live_verified",
         "last_checked": "2026-07-16",
         "checked_by": "maintainers",
         "stale_after_days": 30
@@ -1852,7 +1866,7 @@
         "official_policy": "not_documented",
         "tested_from_iran": true,
         "tested_at": "2026-07-16",
-        "test_method": "official_docs",
+        "test_method": "connectivity_probe",
         "network": {
           "country": "IR",
           "route": "direct"
@@ -1865,13 +1879,16 @@
             "notes_fa": "ثبت‌نام نیاز به تأیید شماره تلفن چینی (+86) دارد."
           },
           {
-            "type": "official_docs",
-            "url": "https://api.siliconflow.cn/v1/models",
+            "type": "connectivity_test",
             "checked_at": "2026-07-16",
-            "notes_fa": "API endpoint از ایران قابل دسترس است (HTTP 401 = نیاز به auth). مانع ثبت‌نام تلفنی است نه مسدودیت شبکه."
+            "http_status": 401,
+            "endpoint": "https://api.siliconflow.cn/v1/models",
+            "source": "IRAN_SERVER — direct connectivity probe",
+            "connectivity_result": "http_response",
+            "notes_fa": "Endpoint از مسیر مستقیم ایران پاسخ HTTP 401 داد؛ مانع تأیید حساب مستقل از Reachability شبکه است."
           }
         ],
-        "notes_fa": "API از ایران قابل دسترس است (تست ۲۰۲۶-۰۷-۱۶). مانع، تأیید شماره تلفن چینی (+86) است. کاربران ایرانی بدون شماره تلفن چینی قادر به تکمیل ثبت‌نام نیستند."
+        "notes_fa": "Endpoint از ایران قابل دسترس است، اما دریافت Credential به تأیید حساب موردنیاز سرویس وابسته است؛ این محدودیت بدون دورزدن کنترل پلتفرم ثبت شده است."
       },
       "models": {
         "dynamic": true,
@@ -1884,7 +1901,7 @@
         ]
       },
       "verification": {
-        "level": "docs_verified",
+        "level": "live_verified",
         "last_checked": "2026-07-16",
         "checked_by": "maintainers",
         "stale_after_days": 30
@@ -1935,20 +1952,23 @@
         "official_policy": "not_documented",
         "tested_from_iran": true,
         "tested_at": "2026-07-16",
-        "test_method": "official_docs",
+        "test_method": "connectivity_probe",
         "network": {
           "country": "IR",
           "route": "direct"
         },
         "evidence": [
           {
-            "type": "official_docs",
-            "url": "https://ai-gateway.vercel.sh/v1/models",
+            "type": "connectivity_test",
             "checked_at": "2026-07-16",
-            "notes_fa": "API endpoint از ایران قابل دسترس است (HTTP 200). نیاز به Vercel API key برای تست زنده."
+            "http_status": 200,
+            "endpoint": "https://ai-gateway.vercel.sh/v1/models",
+            "source": "IRAN_SERVER — direct connectivity probe",
+            "connectivity_result": "http_response",
+            "notes_fa": "Endpoint مدل‌ها از مسیر مستقیم ایران پاسخ HTTP 200 داد؛ این نتیجه Reachability را نشان می‌دهد و جای درخواست مدل با Gateway key را نمی‌گیرد."
           }
         ],
-        "notes_fa": "API endpoint از ایران قابل دسترس است (تست ۲۰۲۶-۰۷-۱۶). نیاز به Vercel API key برای تست زنده. وضعیت نهایی پس از دریافت کلید تعیین می‌شود."
+        "notes_fa": "Endpoint از ایران قابل دسترس است؛ برای تعیین وضعیت عملی سرویس، ساخت Gateway مجاز و اجرای درخواست مدل لازم است."
       },
       "models": {
         "dynamic": true,
@@ -1956,12 +1976,12 @@
         "notable": []
       },
       "verification": {
-        "level": "docs_verified",
+        "level": "live_verified",
         "last_checked": "2026-07-16",
         "checked_by": "maintainers",
         "stale_after_days": 30
       },
-      "notes_fa": "ثبت‌نام، صدور کلید و مصرف اعتبار از شبکهٔ ایران هنوز به‌صورت زنده آزمایش نشده است.",
+      "notes_fa": "ثبت‌نام، صدور کلید و مصرف اعتبار از شبکهٔ ایران هنوز با درخواست مدل معتبر آزمایش نشده است.",
       "sources": [
         "https://vercel.com/docs/ai-gateway/pricing",
         "https://vercel.com/docs/ai-gateway/sdks-and-apis/openai-chat-completions"

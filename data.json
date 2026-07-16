@@ -36,7 +36,7 @@
           "route": "direct"
         },
         "evidenceCount": 1,
-        "notesFa": "API endpoint از ایران قابل دسترس است (تست ۲۰۲۶-۰۷-۱۶). نیاز به API key معتبر برای تست زنده. وضعیت نهایی پس از دریافت کلید تعیین می‌شود."
+        "notesFa": "Endpoint از ایران قابل دسترس است؛ برای تعیین وضعیت عملی سرویس، درخواست مدل با API key معتبر لازم است."
       },
       "models": [
         "agnes-2.0-flash",
@@ -46,7 +46,7 @@
         "agnes-video-v2.0"
       ],
       "verification": {
-        "level": "docs_verified",
+        "level": "live_verified",
         "lastChecked": "2026-07-16",
         "staleAfterDays": 30
       }
@@ -271,7 +271,7 @@
           "route": "direct"
         },
         "evidenceCount": 2,
-        "notesFa": "کلید ارائه‌شده دارای اکانت معلق است. تست با کلید معتبر جدید ضروری است."
+        "notesFa": "وضعیت نامشخص می‌ماند: حساب فعلی معلق است و یک Probe دیگر نیز بدون پاسخ HTTP شکست خورده است. تست با حساب فعال و مقایسه همان Credential از مسیر پشتیبانی‌شده ضروری است."
       },
       "models": [
         "llama-3.3-70b",
@@ -320,11 +320,11 @@
           "route": "direct"
         },
         "evidenceCount": 1,
-        "notesFa": "API endpoint از ایران قابل دسترس است (تست ۲۰۲۶-۰۷-۱۶). نیاز به API key از طریق Discord برای تست زنده. وضعیت نهایی پس از دریافت کلید تعیین می‌شود."
+        "notesFa": "Endpoint از ایران قابل دسترس است؛ برای تعیین وضعیت عملی سرویس، درخواست مدل با کلید مجاز دریافت‌شده از Discord لازم است."
       },
       "models": [],
       "verification": {
-        "level": "docs_verified",
+        "level": "live_verified",
         "lastChecked": "2026-07-16",
         "staleAfterDays": 14
       }
@@ -680,7 +680,7 @@
           "route": "direct"
         },
         "evidenceCount": 2,
-        "notesFa": "API از ایران قابل دسترس است (تست ۲۰۲۶-۰۷-۱۶). مانع، احراز هویت هویتی چینی است. کاربران ایرانی بدون اسناد هویتی چینی قادر به ثبت‌نام نیستند."
+        "notesFa": "Endpoint از ایران قابل دسترس است، اما دریافت Credential به احراز هویت موردنیاز سرویس وابسته است؛ این محدودیت بدون دورزدن کنترل هویت ثبت شده است."
       },
       "models": [
         "Qwen/Qwen3.5-397B-A17B",
@@ -694,7 +694,7 @@
         "Kimi-K2.5"
       ],
       "verification": {
-        "level": "docs_verified",
+        "level": "live_verified",
         "lastChecked": "2026-07-16",
         "staleAfterDays": 30
       }
@@ -734,11 +734,11 @@
           "route": "direct"
         },
         "evidenceCount": 1,
-        "notesFa": "API endpoint از ایران قابل دسترس است (تست ۲۰۲۶-۰۷-۱۶). نیاز به NVIDIA Developer Program key برای تست زنده. وضعیت نهایی پس از دریافت کلید تعیین می‌شود."
+        "notesFa": "Endpoint از ایران قابل دسترس است؛ برای تعیین وضعیت عملی سرویس، درخواست مدل با کلید مجاز NVIDIA Developer Program لازم است."
       },
       "models": [],
       "verification": {
-        "level": "docs_verified",
+        "level": "live_verified",
         "lastChecked": "2026-07-16",
         "staleAfterDays": 30
       }
@@ -965,7 +965,7 @@
           "route": "direct"
         },
         "evidenceCount": 2,
-        "notesFa": "API از ایران قابل دسترس است (تست ۲۰۲۶-۰۷-۱۶). مانع، تأیید شماره تلفن چینی (+86) است. کاربران ایرانی بدون شماره تلفن چینی قادر به تکمیل ثبت‌نام نیستند."
+        "notesFa": "Endpoint از ایران قابل دسترس است، اما دریافت Credential به تأیید حساب موردنیاز سرویس وابسته است؛ این محدودیت بدون دورزدن کنترل پلتفرم ثبت شده است."
       },
       "models": [
         "Qwen/Qwen3-8B",
@@ -974,7 +974,7 @@
         "Pro/deepseek-ai/DeepSeek-V4-Flash"
       ],
       "verification": {
-        "level": "docs_verified",
+        "level": "live_verified",
         "lastChecked": "2026-07-16",
         "staleAfterDays": 30
       }
@@ -1014,11 +1014,11 @@
           "route": "direct"
         },
         "evidenceCount": 1,
-        "notesFa": "API endpoint از ایران قابل دسترس است (تست ۲۰۲۶-۰۷-۱۶). نیاز به Vercel API key برای تست زنده. وضعیت نهایی پس از دریافت کلید تعیین می‌شود."
+        "notesFa": "Endpoint از ایران قابل دسترس است؛ برای تعیین وضعیت عملی سرویس، ساخت Gateway مجاز و اجرای درخواست مدل لازم است."
       },
       "models": [],
       "verification": {
-        "level": "docs_verified",
+        "level": "live_verified",
         "lastChecked": "2026-07-16",
         "staleAfterDays": 30
       }
