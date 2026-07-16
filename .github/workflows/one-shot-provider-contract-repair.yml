@@ -1,0 +1,102 @@
+name: One-shot provider contract repair
+
+on:
+  push:
+    branches:
+      - fix/provider-contract-roadmap-20260716
+
+permissions:
+  contents: write
+
+jobs:
+  repair:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: fix/provider-contract-roadmap-20260716
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Repair contradictory provider notes and roadmap summary
+        shell: bash
+        run: |
+          node --input-type=module <<'NODE'
+          import { readFile, writeFile } from "node:fs/promises";
+
+          const repairs = {
+            "data/providers/github-models.json": (provider) => {
+              provider.iran_access.notes_fa = "درخواست زنده با curl از شبکهٔ ثابت ایران موفق بود. تفاوت رفتار Node.js fetch و curl فقط در شبکهٔ آزمون مشاهده شد و به‌عنوان محدودیت عمومی سرویس تعمیم داده نمی‌شود.";
+            },
+            "data/providers/groq.json": (provider) => {
+              provider.notes_fa = "درخواست زنده از ایران پاسخ ۴۰۳ داد، اما اعتبار همان کلید از منطقهٔ مجاز تأیید نشده است؛ بنابراین وضعیت دسترسی همچنان نامشخص است.";
+            },
+            "data/providers/kilo-gateway.json": (provider) => {
+              provider.notes_fa = "دسترسی ناشناس مستقیم از ایران در ۲۰۲۶-۰۷-۱۶ با درخواست زنده تأیید شد. به‌دلیل فهرست پویا، مدل انتخاب‌شده در مسیر رایگان ممکن است تغییر کند.";
+            },
+            "data/providers/openrouter.json": (provider) => {
+              provider.notes_fa = "دسترسی مستقیم از ایران در ۲۰۲۶-۰۷-۱۶ با همان کلیدی که از آلمان پاسخ ۲۰۰ داشت، پاسخ ۴۰۳ داد؛ مسدودیت جغرافیایی در همان آزمون تأیید شد.";
+            },
+            "data/providers/sambanova.json": (provider) => {
+              provider.notes_fa = "درخواست API مستقیم از دو شبکهٔ ایران ثبت شده و در هر دو آزمون موفق بوده است؛ وضعیت ثبت‌نام حساب‌های جدید باید جداگانه و دوره‌ای بررسی شود.";
+            },
+            "data/providers/google-gemini.json": (provider) => {
+              const last = provider.iran_access.evidence.at(-1);
+              if (last?.type === "live_test") {
+                last.notes_fa = "پاسخ ۴۰۳ از مسیر مستقیم و خروجی آلمان مشاهده شد؛ همراه با فهرست رسمی مناطق، این نتیجه محدودیت سطح حساب/منطقه را تأیید می‌کند.";
+              }
+            }
+          };
+
+          for (const [file, repair] of Object.entries(repairs)) {
+            const provider = JSON.parse(await readFile(file, "utf8"));
+            repair(provider);
+            await writeFile(file, `${JSON.stringify(provider, null, 2)}\n`);
+          }
+
+          const readmePath = "README.md";
+          const readme = await readFile(readmePath, "utf8");
+          const replacement = `## نقشهٔ راه
+
+وضعیت پروژه بر اساس معیار پذیرش و Evidence نگهداری می‌شود؛ تکمیل زیرساخت به معنی تکمیل همهٔ تست‌های عملی نیست.
+
+- **P0 — قرارداد داده:** هم‌راستا کردن Schema و Validator، رد فیلد ناشناخته و نرمال‌سازی Metadata تست زنده
+- **P0 — ایران:** تست مستقیم روی شبکه ثابت و موبایل انجام شده؛ Credential validation از VPN با ماتریس کامل VPN تفاوت دارد
+- **P1 — Catalog:** تکمیل Evidence سرویس‌های نامشخص و بازبینی مستمر محدودیت‌ها و ثبت‌نام
+- **P1 — Tools/Audits:** جداسازی کامل ابزارها و ثبت تصمیم Add / Watch / Reject
+- **P2 — Benchmark/Website:** گسترش بنچمارک فارسی و نمایش مستقل Tools و Audits
+
+جزئیات، وضعیت هر فاز و معیار خروج در [نقشهٔ راه اصلی](docs/ROADMAP.fa.md) آمده است.
+
+## مشارکت`;
+          const nextReadme = readme.replace(/## نقشهٔ راه[\s\S]*?## مشارکت/, replacement);
+          if (nextReadme === readme) throw new Error("README roadmap section was not found");
+          await writeFile(readmePath, nextReadme);
+          NODE
+
+      - name: Normalize live-verification metadata
+        run: npm run providers:normalize:write
+
+      - name: Regenerate canonical outputs
+        run: npm run generate
+
+      - name: Run full quality suite
+        run: npm test
+
+      - name: Remove one-shot workflow and commit repaired state
+        shell: bash
+        run: |
+          rm .github/workflows/one-shot-provider-contract-repair.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+            exit 0
+          fi
+          git commit -m "fix(data): normalize live evidence and regenerate outputs"
+          git push origin HEAD:fix/provider-contract-roadmap-20260716
