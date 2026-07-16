@@ -18,8 +18,9 @@
     "generate:check": "node scripts/generate-readme.mjs --check && node scripts/generate-data-json.mjs --check",
     "catalog:check": "node scripts/generate-catalog.mjs --check",
     "check:freshness": "node scripts/check-freshness.mjs --strict",
-    "site:build": "node scripts/build-site.mjs",
+    "site:build": "node scripts/build-site-production.mjs",
     "site:check": "node scripts/check-site.mjs",
+    "analytics:production:test": "node scripts/test-analytics-production-contract.mjs",
     "deploy:check": "node scripts/check-deploy.mjs",
     "deploy:test": "node scripts/test-deploy-release.mjs",
     "benchmark:validate": "node scripts/validate-benchmark.mjs",
@@ -38,7 +39,7 @@
     "tools:test": "node scripts/test-tool-classification.mjs",
     "validate:repo-audits": "node scripts/validate-repository-audits.mjs",
     "hermes:pilot:test": "node scripts/test-hermes-pilot.mjs",
-    "test": "npm run validate && npm run providers:normalize && npm run roadmap:test && npm run privacy:test && npm run verification:backlog:test && npm run generate:check && npm run catalog:check && npm run data:test && npm run verify:iran:dry && npm run upstreams:test && npm run advisor:test && npm run benchmark:validate && npm run benchmark:dry && npm run benchmark:test && npm run site:check && npm run deploy:check && npm run deploy:test && npm run validate:tools && npm run generate:tools:check && npm run tools:test && npm run validate:repo-audits && npm run hermes:pilot:test"
+    "test": "npm run validate && npm run providers:normalize && npm run roadmap:test && npm run privacy:test && npm run verification:backlog:test && npm run generate:check && npm run catalog:check && npm run data:test && npm run verify:iran:dry && npm run upstreams:test && npm run advisor:test && npm run benchmark:validate && npm run benchmark:dry && npm run benchmark:test && npm run site:check && npm run analytics:production:test && npm run deploy:check && npm run deploy:test && npm run validate:tools && npm run generate:tools:check && npm run tools:test && npm run validate:repo-audits && npm run hermes:pilot:test"
   },
   "engines": {
     "node": ">=20"
