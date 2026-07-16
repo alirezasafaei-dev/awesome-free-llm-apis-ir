@@ -19,7 +19,8 @@ const allowedClassifications = new Set([
   "community_gateway",
   "session_bridge",
   "self_hosted",
-  "monitoring_companion"
+  "monitoring_companion",
+  "router"
 ]);
 
 function invariant(condition, message) {
