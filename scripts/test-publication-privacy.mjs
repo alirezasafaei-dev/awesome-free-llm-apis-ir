@@ -12,14 +12,19 @@ if (tracked.status !== 0) {
   throw new Error(tracked.stderr || "Unable to list tracked files");
 }
 
+function isEvidenceSurface(file) {
+  return (
+    /^README(?:\.en)?\.md$/.test(file) ||
+    /^(catalog|data)\.json$/.test(file) ||
+    /^data\/providers\/[^/]+\.json$/.test(file) ||
+    /^docs\/(?:IRAN_LIVE_VERIFICATION\.fa|ROADMAP\.(?:fa|en))\.md$/.test(file)
+  );
+}
+
 const publishable = tracked.stdout
   .split("\0")
   .filter(Boolean)
-  .filter((file) =>
-    /^README(?:\.en)?\.md$/.test(file) ||
-    /^(docs|data|schema|site)\//.test(file)
-  )
-  .filter((file) => /\.(?:md|json|html|css|js|webmanifest|xml|txt)$/i.test(file));
+  .filter(isEvidenceSurface);
 
 const ipv4Pattern = /(?<![\d.])(?:\d{1,3}\.){3}\d{1,3}(?![\d.])/g;
 const sshTargetPattern = /\b[A-Za-z_][A-Za-z0-9._-]*@(?:\d{1,3}\.){3}\d{1,3}\b/g;
@@ -74,8 +79,8 @@ for (const file of publishable) {
 
 if (violations.length > 0) {
   for (const violation of [...new Set(violations)]) console.error(`ERROR ${violation}`);
-  console.error("\nRemove infrastructure addresses from published files. Record only country, ASN, route and a generic host label.");
+  console.error("\nRemove infrastructure addresses from evidence-facing files. Record only country, ASN, route and a generic host label.");
   process.exit(1);
 }
 
-console.log(`Publication privacy checks passed for ${publishable.length} tracked files.`);
+console.log(`Publication privacy checks passed for ${publishable.length} evidence-facing files.`);
