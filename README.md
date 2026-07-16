@@ -14,6 +14,15 @@
 > [!IMPORTANT]
 > «رایگان» بودن یک سرویس به معنی «قابل استفاده بودن از ایران» نیست. وضعیت ایران فقط با مدرک رسمی یا تست تاریخ‌دار ثبت می‌شود. `نامشخص` یعنی هنوز مدرک کافی نداریم، نه اینکه سرویس حتماً کار می‌کند.
 
+## راهنماهای سریع
+
+- [بهترین API رایگان LLM برای ایران](https://llm.persiantoolbox.ir/guides/best-free-llm-api-iran/) — مقایسه ۲۲ سرویس
+- [API سازگار با OpenAI بدون نیاز به کارت](https://llm.persiantoolbox.ir/guides/openai-compatible-api-without-card/)
+- [API رایگان برای برنامه‌نویسی](https://llm.persiantoolbox.ir/guides/free-coding-api/)
+- [API رایگان Embedding](https://llm.persiantoolbox.ir/guides/free-embedding-api/)
+- [تفاوت Free Tier با Trial و Credit](https://llm.persiantoolbox.ir/guides/free-tier-vs-trial-vs-credit/)
+- [آموزش SDK OpenAI با Base URL سفارشی](https://llm.persiantoolbox.ir/guides/openai-sdk-custom-base-url/)
+
 ## اهداف پروژه
 
 - گردآوری APIهای رایگان واقعی بدون نیاز به کارت بانکی، یا با برچسب روشن Trial/Credit
