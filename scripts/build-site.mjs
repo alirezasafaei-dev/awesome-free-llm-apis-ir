@@ -115,6 +115,7 @@ function providerPage(provider, relatedProviders) {
   <meta name="twitter:card" content="summary">
   <link rel="canonical" href="${canonicalUrl}">
   <link rel="stylesheet" href="../../styles.css">
+  <link rel="stylesheet" href="../../seo.css">
   <title>${escapeHtml(title)}</title>
   <script type="application/ld+json">${jsonLd(structuredData)}</script>
 </head>
@@ -130,7 +131,6 @@ function providerPage(provider, relatedProviders) {
       <h1>${escapeHtml(provider.name)} API رایگان</h1>
       <p class="provider-lead">${escapeHtml(description)}</p>
       <div class="provider-status-row"><span class="access-badge">${escapeHtml(accessLabels[provider.iran_access.status] ?? provider.iran_access.status)}</span><span class="freshness-badge">آخرین بررسی: ${escapeHtml(provider.verification.last_checked)}</span></div>
-
       <section class="provider-facts" aria-labelledby="facts-title">
         <h2 id="facts-title">خلاصه فنی</h2>
         <dl>
@@ -142,7 +142,6 @@ function providerPage(provider, relatedProviders) {
           <div><dt>وضعیت ایران</dt><dd>${escapeHtml(accessLabels[provider.iran_access.status] ?? provider.iran_access.status)}</dd></div>
         </dl>
       </section>
-
       <section><h2>قابلیت‌ها</h2><div class="tag-list">${capabilities.map((item) => `<span>${escapeHtml(item)}</span>`).join("")}</div></section>
       <section><h2>مدل‌های شاخص</h2><p>${models.length ? escapeHtml(models.join("، ")) : "فهرست مدل‌ها پویا است؛ منبع رسمی را بررسی کنید."}</p></section>
       <section><h2>نکات مهم</h2><p>${escapeHtml(provider.free_tier.notes_fa)}</p>${provider.notes_fa ? `<p>${escapeHtml(provider.notes_fa)}</p>` : ""}${provider.iran_access.notes_fa ? `<p>${escapeHtml(provider.iran_access.notes_fa)}</p>` : ""}</section>
@@ -164,12 +163,12 @@ await cp(catalogPath, path.join(destination, "catalog.json"));
 const catalog = JSON.parse(await readFile(catalogPath, "utf8"));
 const providers = [...catalog.providers].sort((a, b) => a.name.localeCompare(b.name, "en"));
 const sourceRevision = process.env.SOURCE_REVISION?.trim() || null;
-
 const linksHtml = providers
   .map((provider) => `<li><a href="./providers/${provider.id}/">${escapeHtml(provider.name)} API</a><span>${escapeHtml(freeLabels[provider.free_tier.type] ?? provider.free_tier.type)}</span></li>`)
   .join("\n          ");
 const indexPath = path.join(destination, "index.html");
 let indexHtml = await readFile(indexPath, "utf8");
+indexHtml = indexHtml.replace('<link rel="stylesheet" href="./styles.css">', '<link rel="stylesheet" href="./styles.css">\n    <link rel="stylesheet" href="./seo.css">');
 indexHtml = indexHtml.replace(
   /<!-- SEO_PROVIDER_LINKS_START -->[\s\S]*?<!-- SEO_PROVIDER_LINKS_END -->/,
   `<!-- SEO_PROVIDER_LINKS_START -->\n          ${linksHtml}\n          <!-- SEO_PROVIDER_LINKS_END -->`
@@ -192,13 +191,10 @@ const sitemapUrls = [
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${sitemapUrls.map((item) => `  <url><loc>${escapeXml(item.loc)}</loc><lastmod>${item.lastmod}</lastmod><priority>${item.priority}</priority></url>`).join("\n")}\n</urlset>\n`;
 await writeFile(path.join(destination, "sitemap.xml"), sitemap);
 await writeFile(path.join(destination, "robots.txt"), `User-agent: *\nAllow: /\n\nSitemap: ${canonicalOrigin}/sitemap.xml\n`);
-
 const llmsText = `# Awesome Free LLM APIs IR\n\nPersian-first catalog of free LLM APIs with quotas, OpenAI compatibility, official sources and Iran-access evidence.\n\nCanonical website: ${canonicalOrigin}/\nMachine-readable catalog: ${canonicalOrigin}/catalog.json\nGitHub repository: https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir\nProvider pages: ${providers.map((provider) => `${canonicalOrigin}/providers/${provider.id}/`).join(" ")}\n`;
 await writeFile(path.join(destination, "llms.txt"), llmsText);
-
 await writeFile(
   path.join(destination, "build-meta.json"),
   `${JSON.stringify({ schema_version: "1.1.0", source_revision: sourceRevision, catalog_last_updated: catalog.last_updated, provider_count: catalog.provider_count, provider_page_count: providers.length }, null, 2)}\n`
 );
-
 console.log(`Built static site with ${catalog.provider_count} providers and ${providers.length} indexable provider pages in .site-dist/.`);
