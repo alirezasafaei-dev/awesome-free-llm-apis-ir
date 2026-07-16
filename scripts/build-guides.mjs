@@ -6,7 +6,7 @@ const root = process.cwd();
 const destination = path.join(root, ".site-dist");
 const guidesDir = path.join(destination, "guides");
 const canonicalOrigin = "https://llm.persiantoolbox.ir";
-const plausibleScript = "https://plausible.alirezasafaei.dev/js/script.js";
+const plausibleScript = "./plausible.js";
 
 const freeLabels = {
   permanent_allowance: "سهمیه رایگان دائمی",

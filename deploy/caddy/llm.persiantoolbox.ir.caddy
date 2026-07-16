@@ -2,6 +2,9 @@ llm.persiantoolbox.ir {
 	encode zstd gzip
 	root * /srv/awesome-free-llm-apis-ir/current
 
+	@plausible_api path /api/event
+	reverse_proxy @plausible_api 127.0.0.1:8001
+
 	@catalog path /catalog.json
 	header @catalog Cache-Control "public, max-age=300, must-revalidate"
 	@buildmeta path /build-meta.json
@@ -14,7 +17,7 @@ llm.persiantoolbox.ir {
 		X-Frame-Options "DENY"
 		Referrer-Policy "strict-origin-when-cross-origin"
 		Permissions-Policy "camera=(), microphone=(), geolocation=()"
-		Content-Security-Policy "default-src 'self'; script-src 'self' https://plausible.alirezasafaei.dev; style-src 'self'; img-src 'self' data:; connect-src 'self' https://plausible.alirezasafaei.dev; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'; upgrade-insecure-requests"
+		Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'; upgrade-insecure-requests"
 	}
 
 	try_files {path} {path}/ /index.html

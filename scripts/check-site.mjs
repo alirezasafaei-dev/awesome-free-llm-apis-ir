@@ -4,8 +4,7 @@ import path from "node:path";
 import process from "node:process";
 
 const root = process.cwd();
-const plausibleOrigin = "https://plausible.alirezasafaei.dev";
-const plausibleScript = `${plausibleOrigin}/js/script.js`;
+const plausibleScript = "./plausible.js";
 const required = [
   "site/index.html",
   "site/styles.css",
@@ -46,10 +45,9 @@ if (!analyticsSource.includes("window.plausible")) throw new Error("Analytics so
 if (analyticsSource.includes("_paq")) throw new Error("Matomo queue syntax must not be used for Plausible");
 if (analyticsSource.includes('createElement("script")')) throw new Error("Analytics source must not inject a duplicate remote tracker");
 
-const expectedConnectSrc = `connect-src 'self' ${plausibleOrigin}`;
 for (const [name, config] of [["Caddy", caddy], ["Nginx", nginx]]) {
-  if (!config.includes(`script-src 'self' ${plausibleOrigin}`)) throw new Error(`${name} CSP does not allow the Plausible script`);
-  if (!config.includes(expectedConnectSrc)) throw new Error(`${name} CSP does not allow Plausible event delivery`);
+  if (!config.includes("script-src 'self'")) throw new Error(`${name} CSP does not allow self-hosted scripts`);
+  if (!config.includes("connect-src 'self'")) throw new Error(`${name} CSP does not allow self-hosted connections`);
 }
 
 const canonicalOrigin = "https://llm.persiantoolbox.ir/";

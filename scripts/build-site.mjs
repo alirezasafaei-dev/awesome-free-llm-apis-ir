@@ -8,7 +8,7 @@ const source = path.join(root, "site");
 const destination = path.join(root, ".site-dist");
 const catalogPath = path.join(root, "catalog.json");
 const canonicalOrigin = "https://llm.persiantoolbox.ir";
-const plausibleScript = "https://plausible.alirezasafaei.dev/js/script.js";
+const plausibleScript = "./plausible.js";
 
 const accessLabels = {
   verified_working: "دسترسی مستقیم از ایران تأیید شده",
