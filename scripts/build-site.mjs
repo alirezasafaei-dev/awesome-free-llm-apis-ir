@@ -1,6 +1,7 @@
 import { cp, mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
+import { buildGuides } from "./build-guides.mjs";
 
 const root = process.cwd();
 const source = path.join(root, "site");
@@ -184,17 +185,28 @@ for (const [index, provider] of providers.entries()) {
   await writeFile(path.join(providerDir, "index.html"), providerPage(provider, related));
 }
 
+const guideCount = await buildGuides(catalog);
+const guides = [
+  { slug: "best-free-llm-api-iran", title: "بهترین API رایگان LLM برای ایران", lastmod: new Date().toISOString().split('T')[0] },
+  { slug: "openai-compatible-api-without-card", title: "API سازگار با OpenAI بدون نیاز به کارت", lastmod: new Date().toISOString().split('T')[0] },
+  { slug: "free-coding-api", title: "API رایگان برای برنامه‌نویسی", lastmod: new Date().toISOString().split('T')[0] },
+  { slug: "free-embedding-api", title: "API رایگان Embedding", lastmod: new Date().toISOString().split('T')[0] },
+  { slug: "free-tier-vs-trial-vs-credit", title: "تفاوت Free Tier با Trial و Credit", lastmod: new Date().toISOString().split('T')[0] },
+  { slug: "openai-sdk-custom-base-url", title: "آموزش SDK OpenAI با Base URL سفارشی", lastmod: new Date().toISOString().split('T')[0] }
+];
+
 const sitemapUrls = [
   { loc: `${canonicalOrigin}/`, lastmod: catalog.last_updated, priority: "1.0" },
-  ...providers.map((provider) => ({ loc: `${canonicalOrigin}/providers/${provider.id}/`, lastmod: provider.verification.last_checked, priority: "0.8" }))
+  ...providers.map((provider) => ({ loc: `${canonicalOrigin}/providers/${provider.id}/`, lastmod: provider.verification.last_checked, priority: "0.8" })),
+  ...guides.map((guide) => ({ loc: `${canonicalOrigin}/guides/${guide.slug}/`, lastmod: guide.lastmod, priority: "0.9" }))
 ];
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${sitemapUrls.map((item) => `  <url><loc>${escapeXml(item.loc)}</loc><lastmod>${item.lastmod}</lastmod><priority>${item.priority}</priority></url>`).join("\n")}\n</urlset>\n`;
 await writeFile(path.join(destination, "sitemap.xml"), sitemap);
 await writeFile(path.join(destination, "robots.txt"), `User-agent: *\nAllow: /\n\nSitemap: ${canonicalOrigin}/sitemap.xml\n`);
-const llmsText = `# Awesome Free LLM APIs IR\n\nPersian-first catalog of free LLM APIs with quotas, OpenAI compatibility, official sources and Iran-access evidence.\n\nCanonical website: ${canonicalOrigin}/\nMachine-readable catalog: ${canonicalOrigin}/catalog.json\nGitHub repository: https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir\nProvider pages: ${providers.map((provider) => `${canonicalOrigin}/providers/${provider.id}/`).join(" ")}\n`;
+const llmsText = `# Awesome Free LLM APIs IR\n\nPersian-first catalog of free LLM APIs with quotas, OpenAI compatibility, official sources and Iran-access evidence.\n\nCanonical website: ${canonicalOrigin}/\nMachine-readable catalog: ${canonicalOrigin}/catalog.json\nGitHub repository: https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir\nProvider pages: ${providers.map((provider) => `${canonicalOrigin}/providers/${provider.id}/`).join(" ")}\nGuide pages: ${guides.map((guide) => `${canonicalOrigin}/guides/${guide.slug}/`).join(" ")}\n`;
 await writeFile(path.join(destination, "llms.txt"), llmsText);
 await writeFile(
   path.join(destination, "build-meta.json"),
-  `${JSON.stringify({ schema_version: "1.1.0", source_revision: sourceRevision, catalog_last_updated: catalog.last_updated, provider_count: catalog.provider_count, provider_page_count: providers.length }, null, 2)}\n`
+  `${JSON.stringify({ schema_version: "1.1.0", source_revision: sourceRevision, catalog_last_updated: catalog.last_updated, provider_count: catalog.provider_count, provider_page_count: providers.length, guide_page_count: guideCount }, null, 2)}\n`
 );
-console.log(`Built static site with ${catalog.provider_count} providers and ${providers.length} indexable provider pages in .site-dist/.`);
+console.log(`Built static site with ${catalog.provider_count} providers, ${providers.length} provider pages, and ${guideCount} guide pages in .site-dist/.`);

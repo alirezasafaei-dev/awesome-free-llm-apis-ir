@@ -63,11 +63,30 @@ for (const provider of catalog.providers) {
 
 const providerDirectories = await readdir(path.join(root, ".site-dist", "providers"));
 if (providerDirectories.length !== catalog.providers.length) throw new Error("Generated provider page count does not match catalog");
+
+const guideCount = 6;
+const guideSlugs = ["best-free-llm-api-iran", "openai-compatible-api-without-card", "free-coding-api", "free-embedding-api", "free-tier-vs-trial-vs-credit", "openai-sdk-custom-base-url"];
+const guidesDir = path.join(root, ".site-dist", "guides");
+await access(guidesDir);
+const guideDirectories = await readdir(guidesDir);
+if (guideDirectories.length !== guideCount) throw new Error("Generated guide page count does not match expected");
+for (const slug of guideSlugs) {
+  const guidePath = path.join(guidesDir, slug, "index.html");
+  await access(guidePath);
+  const guideHtml = await readFile(guidePath, "utf8");
+  const canonical = `https://llm.persiantoolbox.ir/guides/${slug}/`;
+  if (!guideHtml.includes(canonical)) throw new Error(`Guide ${slug} is missing canonical`);
+  if (!guideHtml.includes("application/ld+json")) throw new Error(`Guide ${slug} is missing JSON-LD`);
+}
+
 const sitemap = await readFile(path.join(root, ".site-dist", "sitemap.xml"), "utf8");
 const sitemapUrlCount = (sitemap.match(/<url>/g) || []).length;
-if (sitemapUrlCount !== catalog.providers.length + 1) throw new Error(`Sitemap URL count ${sitemapUrlCount} does not match provider count + homepage`);
+if (sitemapUrlCount !== catalog.providers.length + 1 + guideCount) throw new Error(`Sitemap URL count ${sitemapUrlCount} does not match provider count + homepage + guide count`);
 for (const provider of catalog.providers) {
   if (!sitemap.includes(`<loc>https://llm.persiantoolbox.ir/providers/${provider.id}/</loc>`)) throw new Error(`Sitemap is missing ${provider.id}`);
+}
+for (const slug of guideSlugs) {
+  if (!sitemap.includes(`<loc>https://llm.persiantoolbox.ir/guides/${slug}/</loc>`)) throw new Error(`Sitemap is missing guide ${slug}`);
 }
 
 const buildMeta = JSON.parse(await readFile(path.join(root, ".site-dist", "build-meta.json"), "utf8"));
