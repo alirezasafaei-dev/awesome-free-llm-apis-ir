@@ -1,0 +1,69 @@
+# Copy to ~/.hermes/config.yaml only after reviewing it on AUTOMATION_HOST.
+# Secrets and provider credentials belong in the Hermes credential store or
+# ~/.hermes/.env with mode 0600; never put them in this file or the repository.
+
+worktree: true
+worktree_sync: true
+
+terminal:
+  backend: "docker"
+  cwd: "/workspace"
+  timeout: 300
+  lifetime_seconds: 900
+  docker_image: "nikolaik/python-nodejs:python3.11-nodejs22"
+  docker_mount_cwd_to_workspace: true
+  docker_run_as_host_user: true
+  # Intentionally empty for the pilot. In particular, do not forward provider
+  # API keys or the GitHub token into the command-execution container.
+  docker_forward_env: []
+  container_cpu: 2
+  container_memory: 4096
+  container_disk: 10240
+  container_persistent: false
+
+approvals:
+  mode: "smart"
+  timeout: 120
+  cron_mode: "deny"
+  mcp_reload_confirm: true
+  destructive_slash_confirm: true
+  deny:
+    - "git push --force*"
+    - "git push * main*"
+    - "git push * master*"
+    - "git reset --hard*"
+    - "git clean -f*"
+    - "rm -rf*"
+    - "*wrangler deploy*"
+    - "*npm run deploy*"
+    - "*docker compose down -v*"
+    - "*DROP DATABASE*"
+    - "*DROP TABLE*"
+    - "*TRUNCATE TABLE*"
+    - "*DELETE FROM*"
+    - "*authorized_keys*"
+    - "*~/.ssh/*"
+    - "*/etc/ssh/*"
+
+security:
+  tirith_enabled: false
+  tirith_fail_open: false
+
+tool_loop_guardrails:
+  warnings_enabled: true
+  hard_stop_enabled: true
+  warn_after:
+    exact_failure: 2
+    same_tool_failure: 3
+    idempotent_no_progress: 2
+  hard_stop_after:
+    exact_failure: 4
+    same_tool_failure: 6
+    idempotent_no_progress: 4
+
+compression:
+  enabled: true
+  threshold: 0.75
+
+browser:
+  inactivity_timeout: 120
