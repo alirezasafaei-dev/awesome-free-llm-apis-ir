@@ -19,6 +19,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
+      - run: npm run hermes:pilot:test
       - run: npm test
 
   links:
@@ -30,4 +31,3 @@ jobs:
         with:
           node-version: 22
       - run: npm run check:links
-
