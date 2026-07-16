@@ -10,8 +10,9 @@ This document is the canonical roadmap. A phase is marked complete only when its
 - 8 proxies, routers, session bridges, and related tools in the separate tools catalog
 - 14 repositories in the upstream monitor
 - 7 machine-readable repository audits with Add / Watch / Reject decisions
-- 9 providers with a successful direct request from Iran
-- 7 providers with credential-validated geographic blocking or signup barriers
+- 9 providers with a successful model request from Iran
+- 5 providers with credential-validated geographic blocking
+- 2 providers with signup or account-verification barriers
 - 1 provider with official lack of Iran support
 - 5 providers whose Iran-access status remains unknown
 - Machine-readable execution backlog in `data/verification-backlog.json`
@@ -25,7 +26,8 @@ Required work:
 - Keep `schema/provider.schema.json` and the executable validator aligned.
 - Reject unknown fields instead of silently accepting schema drift.
 - Require credential-validation source and HTTP status as a pair.
-- Require `live_verified` and a current verification date when live evidence exists.
+- Keep `live_test`, `connectivity_test`, and `official_docs` semantically separate.
+- Prevent endpoint reachability from being presented as model success or geographic blocking.
 - Prevent drift in `catalog.json`, `data.json`, and generated README content.
 - Preserve the three-state payment-method contract: `true / false / null`.
 - Keep the execution backlog aligned with the canonical `unknown` provider set.
@@ -43,22 +45,21 @@ Status: **partially complete**
 
 Completed:
 
-- Direct testing on recorded Iranian network routes.
+- Direct testing on recorded Iranian routes.
 - Direct testing on an MCI mobile network.
 - Validation of the same authorized access through a non-Iranian route to distinguish invalid access from regional blocking.
-- Direct tests for usable anonymous providers.
-- Direct verification of `llm7-io` and `opencode-zen`.
-- Credential-compared blocking verification for `groq` and `aion-labs`.
-- Documentation updated with observed results.
+- Real model requests recorded for verified providers.
+- Separate connectivity probes recorded without treating them as model execution.
+- Signup barriers documented for ModelScope and SiliconFlow.
+- The previously exposed host key was rotated and a replacement key was deployed.
 
 Remaining:
 
-- Issue #32: validation-host security and access review.
-- Issue #33: complete tests for four account-dependent providers.
-- Issue #34: document signup and identity barriers for three providers.
-- Issue #35: cover an independent direct ASN and run a separate VPN matrix.
-- Record `route=vpn` and `exit_country` independently.
-- Avoid generalizing one ISP, account, or route to all users in Iran.
+- Issue #32: complete host hardening and publish a sanitized confirmation.
+- Issue #33: complete model requests for five account-dependent providers.
+- Issue #35: record the second direct Iran route's ASN and run a separate network matrix.
+- Investigate the second-route timeouts for LLM7.io and OVHcloud.
+- Avoid generalizing one ISP, account, or probe to all users in Iran.
 
 Credential validation through a non-Iranian route does not mean that a complete VPN-access matrix has been executed.
 
@@ -68,7 +69,7 @@ Status: **active**
 
 - Periodically re-check limits, models, payment requirements, and signup constraints.
 - Prioritize providers with first-party documentation and public endpoints.
-- Review newly added providers and the 7 unknown Iran-access records.
+- Review newly added providers and the 5 unknown Iran-access records.
 - Keep Trial, Credit, and Free Models as separate concepts.
 - Remove time-sensitive or regional claims that lack a current official source.
 
@@ -111,9 +112,9 @@ Status: **active**
 
 ## Current execution order
 
-1. Complete the security review in Issue #32.
-2. Complete testable providers in Issue #33.
-3. Document signup barriers in Issue #34.
-4. Run the ASN/VPN matrix in Issue #35.
+1. Complete hardening in Issue #32.
+2. Complete the five providers in Issue #33.
+3. Record the ASN and finish the network matrix in Issue #35.
+4. Investigate the LLM7.io and OVHcloud timeout discrepancy.
 5. Review new provider candidates using first-party evidence.
 6. Expand the tools/audits interface and Persian benchmark.
