@@ -1,0 +1,17 @@
+.seo-intro,.seo-directory,.faq,.provider-detail{margin-top:64px;padding:clamp(24px,4vw,42px);border:1px solid var(--border);border-radius:var(--radius);background:var(--surface);box-shadow:var(--shadow)}
+.seo-intro h2,.seo-directory h2,.faq h2,.provider-detail h1,.provider-detail h2{margin-top:0;line-height:1.35}
+.seo-intro>p:not(.eyebrow),.seo-directory>p,.provider-lead,.provider-detail section>p{color:var(--muted)}
+.seo-guide-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:24px}
+.seo-guide-grid article{padding:18px;border-radius:16px;background:var(--surface-soft)}
+.seo-guide-grid h3{margin:0 0 8px}.seo-guide-grid p{margin:0;color:var(--muted);font-size:13px}
+.seo-provider-links{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;padding:0;list-style:none}
+.seo-provider-links li{display:flex;justify-content:space-between;gap:10px;padding:12px 14px;border:1px solid var(--border);border-radius:13px;background:var(--surface-soft)}
+.seo-provider-links a{color:var(--primary);font-weight:800;text-decoration:none}.seo-provider-links span{color:var(--muted);font-size:11px}
+.faq details{padding:14px 0;border-bottom:1px solid var(--border)}.faq details:last-child{border-bottom:0}.faq summary{font-size:15px}
+.provider-page{max-width:940px}.breadcrumbs{display:flex;gap:8px;margin:12px 0 20px;color:var(--muted);font-size:13px}.breadcrumbs a{color:var(--primary)}
+.provider-detail{margin-top:0}.provider-detail h1{font-size:clamp(34px,6vw,58px);margin-bottom:12px}.provider-lead{font-size:17px}
+.provider-status-row{display:flex;flex-wrap:wrap;gap:10px;margin:22px 0}.provider-detail section{margin-top:34px}
+.provider-facts dl{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.provider-facts dl div{padding:14px;border:1px solid var(--border);border-radius:14px;background:var(--surface-soft)}
+.provider-facts dt{color:var(--muted);font-size:12px}.provider-facts dd{margin:5px 0 0;font-weight:800;overflow-wrap:anywhere}.provider-facts code{direction:ltr;display:block;font-size:11px}
+.provider-sources ul,.related-provider-links{padding-right:20px}.provider-sources a,.related-provider-links a{color:var(--primary);overflow-wrap:anywhere}.detail-secondary{border:1px solid var(--border);color:var(--text)}
+@media(max-width:800px){.seo-guide-grid,.seo-provider-links,.provider-facts dl{grid-template-columns:1fr}.seo-provider-links li{flex-direction:column}.provider-detail{padding:24px 18px}}

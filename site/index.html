@@ -4,15 +4,52 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#111827">
-    <meta name="description" content="مرجع فارسی APIهای رایگان LLM با سهمیه، محدودیت توکن و وضعیت دسترسی مستقیم یا VPN برای کاربران ایران.">
-    <meta property="og:title" content="Awesome Free LLM APIs IR">
-    <meta property="og:description" content="APIهای رایگان مدل‌های زبانی برای توسعه‌دهندگان فارسی‌زبان؛ داده‌محور، تاریخ‌دار و قابل جست‌وجو.">
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+    <meta name="description" content="مقایسه APIهای رایگان LLM برای برنامه‌نویسان فارسی‌زبان: سهمیه، مدل‌ها، سازگاری OpenAI و وضعیت دسترسی مستقیم از ایران با شواهد تاریخ‌دار.">
+    <meta property="og:title" content="API رایگان LLM برای ایران | مقایسه سهمیه و دسترسی">
+    <meta property="og:description" content="مرجع فارسی و ماشین‌خوان APIهای رایگان هوش مصنوعی با وضعیت دسترسی ایران، محدودیت‌ها و منابع رسمی.">
     <meta property="og:type" content="website">
+    <meta property="og:locale" content="fa_IR">
+    <meta property="og:site_name" content="Awesome Free LLM APIs IR">
     <meta property="og:url" content="https://llm.persiantoolbox.ir/">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="API رایگان LLM برای ایران">
+    <meta name="twitter:description" content="مقایسه سهمیه، مدل‌ها، سازگاری OpenAI و دسترسی مستقیم از ایران.">
     <link rel="canonical" href="https://llm.persiantoolbox.ir/">
+    <link rel="alternate" type="application/json" href="./catalog.json" title="Machine-readable provider catalog">
+    <link rel="alternate" type="text/plain" href="./llms.txt" title="LLM-readable project summary">
     <link rel="manifest" href="./manifest.webmanifest">
     <link rel="stylesheet" href="./styles.css">
-    <title>Awesome Free LLM APIs IR</title>
+    <title>API رایگان LLM برای ایران | مقایسه سهمیه و دسترسی</title>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebSite",
+          "@id": "https://llm.persiantoolbox.ir/#website",
+          "url": "https://llm.persiantoolbox.ir/",
+          "name": "Awesome Free LLM APIs IR",
+          "inLanguage": "fa-IR",
+          "description": "مرجع فارسی APIهای رایگان LLM با سهمیه، مدل‌ها و وضعیت دسترسی ایران"
+        },
+        {
+          "@type": "Dataset",
+          "@id": "https://llm.persiantoolbox.ir/#dataset",
+          "name": "Free LLM API Catalog for Persian Developers",
+          "description": "Machine-readable catalog of free LLM APIs, quotas, models and Iran-access evidence.",
+          "url": "https://llm.persiantoolbox.ir/",
+          "license": "https://opensource.org/license/mit",
+          "inLanguage": ["fa", "en"],
+          "distribution": {
+            "@type": "DataDownload",
+            "encodingFormat": "application/json",
+            "contentUrl": "https://llm.persiantoolbox.ir/catalog.json"
+          }
+        }
+      ]
+    }
+    </script>
   </head>
   <body>
     <a class="skip-link" href="#catalog">رفتن به فهرست APIها</a>
@@ -23,8 +60,9 @@
         <span>Awesome Free LLM APIs IR</span>
       </a>
       <nav aria-label="پیوندهای اصلی">
+        <a href="#guide">راهنمای انتخاب</a>
         <a href="https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir">GitHub</a>
-        <a href="https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir/issues/new/choose">افزودن API</a>
+        <a href="https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir/issues/new/choose">ثبت گزارش</a>
         <button id="theme-toggle" class="icon-button" type="button" aria-label="تغییر پوسته">◐</button>
       </nav>
     </header>
@@ -34,16 +72,16 @@
         <div class="hero-copy">
           <p class="eyebrow">مرجع فارسی، آزاد و ماشین‌خوان</p>
           <h1 id="hero-title">API رایگان LLM را<br><span>دقیق انتخاب کن.</span></h1>
-          <p class="hero-description">سهمیه، محدودیت توکن، نیاز به پرداخت و وضعیت اتصال مستقیم یا VPN؛ همراه با منبع رسمی و تاریخ آخرین بررسی.</p>
+          <p class="hero-description">سهمیه رایگان، مدل‌ها، سازگاری با OpenAI API و وضعیت اتصال مستقیم از ایران؛ همراه با منبع رسمی و تاریخ آخرین بررسی.</p>
           <div class="hero-actions">
             <a class="button primary" href="#catalog">مشاهده APIها</a>
-            <a class="button secondary" href="https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir/blob/main/docs/IRAN_LIVE_VERIFICATION.fa.md">راهنمای تست ایران</a>
+            <a class="button secondary" href="#guide">راهنمای انتخاب API</a>
           </div>
         </div>
         <div class="hero-panel" aria-label="ویژگی‌های داده">
-          <div><strong>بدون تبلیغ</strong><span>فقط داده و مدرک</span></div>
+          <div><strong>داده‌محور</strong><span>بدون رتبه‌بندی تبلیغاتی</span></div>
           <div><strong>تاریخ‌دار</strong><span>هشدار دادهٔ قدیمی</span></div>
-          <div><strong>شفاف</strong><span>Direct و VPN جدا</span></div>
+          <div><strong>شفاف</strong><span>Direct، VPN و Signup جدا</span></div>
         </div>
       </section>
 
@@ -54,153 +92,89 @@
         <article><span id="stat-fresh">—</span><small>دادهٔ تازه</small></article>
       </section>
 
+      <section id="guide" class="seo-intro" aria-labelledby="guide-title">
+        <p class="eyebrow">راهنمای سریع</p>
+        <h2 id="guide-title">بهترین API رایگان هوش مصنوعی برای پروژه شما کدام است؟</h2>
+        <p>برای انتخاب درست فقط نام مدل مهم نیست. نوع سهمیه، محدودیت درخواست، نیاز به کارت بانکی، سازگاری با فرمت OpenAI و دسترسی واقعی از شبکه ایران را هم بررسی کنید. این کاتالوگ Trial، اعتبار هدیه و مدل رایگان دائمی را از یکدیگر جدا می‌کند.</p>
+        <div class="seo-guide-grid">
+          <article><h3>شروع سریع</h3><p>Providerهایی را انتخاب کنید که ثبت‌نام ساده، کارت بانکی غیرضروری و Endpoint سازگار با OpenAI دارند.</p></article>
+          <article><h3>کاربر داخل ایران</h3><p>برچسب «مستقیم تست‌شده» فقط برای درخواست واقعی موفق ثبت می‌شود؛ پاسخ ساده Endpoint به‌تنهایی کافی نیست.</p></article>
+          <article><h3>استفاده پایدار</h3><p>سهمیه دائمی یا مدل رایگان را بر Trial کوتاه‌مدت ترجیح دهید و تاریخ آخرین بررسی را کنترل کنید.</p></article>
+        </div>
+      </section>
+
       <section id="catalog" class="catalog-section" aria-labelledby="catalog-title">
         <div class="section-heading">
           <div>
             <p class="eyebrow">کاتالوگ زنده</p>
-            <h2 id="catalog-title">انتخاب بر اساس نیاز واقعی</h2>
+            <h2 id="catalog-title">مقایسه APIهای رایگان LLM</h2>
           </div>
           <p id="catalog-updated" class="updated">در حال دریافت داده…</p>
         </div>
 
         <form id="filters" class="filters" role="search">
-          <label class="search-field">
-            <span>جست‌وجو</span>
-            <input id="search" type="search" placeholder="نام سرویس، مدل یا قابلیت…" autocomplete="off">
-          </label>
-          <label>
-            <span>نوع رایگان</span>
-            <select id="free-type">
-              <option value="">همه</option>
-              <option value="permanent_allowance">سهمیه دائمی</option>
-              <option value="free_models">مدل‌های رایگان</option>
-              <option value="monthly_credit">اعتبار ماهانه</option>
-              <option value="trial">آزمایشی</option>
-            </select>
-          </label>
-          <label>
-            <span>دسترسی ایران</span>
-            <select id="access-status">
-              <option value="">همه وضعیت‌ها</option>
-              <option value="verified_working">مستقیم تست‌شده</option>
-              <option value="verified_working_vpn">با VPN تست‌شده</option>
-              <option value="direct_blocked_vpn_working">مستقیم مسدود / VPN موفق</option>
-              <option value="officially_unsupported">پشتیبانی‌نشده رسمی</option>
-              <option value="unknown">نامشخص</option>
-            </select>
-          </label>
-          <label>
-            <span>قابلیت</span>
-            <select id="capability">
-              <option value="">همه قابلیت‌ها</option>
-              <option value="chat">چت</option>
-              <option value="reasoning">Reasoning</option>
-              <option value="embeddings">Embedding</option>
-              <option value="tool_calling">Tool calling</option>
-              <option value="structured_output">خروجی ساخت‌یافته</option>
-            </select>
-          </label>
-          <label class="checkbox-field">
-            <input id="openai-only" type="checkbox">
-            <span>فقط OpenAI-compatible</span>
-          </label>
+          <label class="search-field"><span>جست‌وجو</span><input id="search" type="search" placeholder="نام سرویس، مدل یا قابلیت…" autocomplete="off"></label>
+          <label><span>نوع رایگان</span><select id="free-type"><option value="">همه</option><option value="permanent_allowance">سهمیه دائمی</option><option value="free_models">مدل‌های رایگان</option><option value="monthly_credit">اعتبار ماهانه</option><option value="trial">آزمایشی</option></select></label>
+          <label><span>دسترسی ایران</span><select id="access-status"><option value="">همه وضعیت‌ها</option><option value="verified_working">مستقیم تست‌شده</option><option value="verified_working_vpn">با VPN تست‌شده</option><option value="direct_blocked_vpn_working">مستقیم مسدود / VPN موفق</option><option value="verified_blocked">مسدودیت تأییدشده</option><option value="signup_blocked">مانع ثبت‌نام</option><option value="officially_unsupported">پشتیبانی‌نشده رسمی</option><option value="unknown">نامشخص</option></select></label>
+          <label><span>قابلیت</span><select id="capability"><option value="">همه قابلیت‌ها</option><option value="chat">چت</option><option value="reasoning">Reasoning</option><option value="embeddings">Embedding</option><option value="tool_calling">Tool calling</option><option value="structured_output">خروجی ساخت‌یافته</option></select></label>
+          <label class="checkbox-field"><input id="openai-only" type="checkbox"><span>فقط OpenAI-compatible</span></label>
           <button id="reset-filters" class="reset-button" type="reset">پاک‌کردن فیلترها</button>
         </form>
 
         <section class="advisor" aria-labelledby="advisor-title">
-          <div>
-            <p class="eyebrow">پیشنهاد سریع</p>
-            <h3 id="advisor-title">برای شروع کدام API مناسب‌تر است؟</h3>
-            <p>اولویت و کاربردت را انتخاب کن تا با همین داده‌های کاتالوگ، گزینه‌های کم‌ریسک‌تر و کاربردی‌تر برجسته شوند.</p>
-          </div>
+          <div><p class="eyebrow">پیشنهاد سریع</p><h3 id="advisor-title">برای شروع کدام API مناسب‌تر است؟</h3><p>اولویت و کاربردت را انتخاب کن تا گزینه‌های کم‌ریسک‌تر برجسته شوند.</p></div>
           <div class="advisor-controls">
-            <label>
-              <span>کاربرد</span>
-              <select id="advisor-usecase">
-                <option value="chat">چت و تولید متن</option>
-                <option value="coding">کدنویسی و Tool calling</option>
-                <option value="reasoning">استدلال و حل مسئله</option>
-                <option value="embeddings">Embedding و جست‌وجو</option>
-              </select>
-            </label>
-            <label>
-              <span>اولویت</span>
-              <select id="advisor-priority">
-                <option value="low-friction">شروع سریع و بدون دردسر</option>
-                <option value="iran-aware">شفافیت وضعیت ایران</option>
-                <option value="openai-compatible">سازگاری با OpenAI API</option>
-                <option value="fresh">دادهٔ تازه‌تر</option>
-              </select>
-            </label>
+            <label><span>کاربرد</span><select id="advisor-usecase"><option value="chat">چت و تولید متن</option><option value="coding">کدنویسی و Tool calling</option><option value="reasoning">استدلال و حل مسئله</option><option value="embeddings">Embedding و جست‌وجو</option></select></label>
+            <label><span>اولویت</span><select id="advisor-priority"><option value="low-friction">شروع سریع و بدون دردسر</option><option value="iran-aware">شفافیت وضعیت ایران</option><option value="openai-compatible">سازگاری با OpenAI API</option><option value="fresh">دادهٔ تازه‌تر</option></select></label>
           </div>
           <ol id="advisor-results" class="advisor-results" aria-live="polite"></ol>
         </section>
 
-        <div class="results-bar">
-          <p id="result-count" aria-live="polite">در حال بارگذاری…</p>
-          <label class="sort-field">
-            <span>مرتب‌سازی</span>
-            <select id="sort">
-              <option value="name">نام</option>
-              <option value="freshness">تازگی داده</option>
-              <option value="free">نوع سهمیه</option>
-            </select>
-          </label>
-        </div>
-
+        <div class="results-bar"><p id="result-count" aria-live="polite">در حال بارگذاری…</p><label class="sort-field"><span>مرتب‌سازی</span><select id="sort"><option value="name">نام</option><option value="freshness">تازگی داده</option><option value="free">نوع سهمیه</option></select></label></div>
         <div id="loading" class="message-card">در حال دریافت کاتالوگ…</div>
         <div id="error" class="message-card error" hidden>دریافت داده ناموفق بود. صفحه را دوباره بارگذاری کنید.</div>
         <div id="empty" class="message-card" hidden>موردی با این فیلترها پیدا نشد.</div>
         <div id="provider-grid" class="provider-grid" aria-live="polite"></div>
       </section>
 
-      <section class="contribute">
-        <div>
-          <p class="eyebrow">داده‌ای اشتباه یا قدیمی است؟</p>
-          <h2>این فهرست با مشارکت دقیق بهتر می‌شود.</h2>
-          <p>گزارش باید منبع رسمی، تاریخ و مسیر اتصال Direct یا VPN را مشخص کند؛ بدون IP کامل یا کلید API.</p>
-        </div>
-        <a class="button primary" href="https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir/issues/new/choose">ثبت گزارش</a>
+      <section class="seo-directory" aria-labelledby="directory-title">
+        <p class="eyebrow">صفحات قابل ایندکس</p>
+        <h2 id="directory-title">جزئیات فارسی هر Provider</h2>
+        <p>هر صفحه شامل نوع سهمیه، قابلیت‌ها، Endpoint، وضعیت ایران و منابع بررسی است.</p>
+        <ul class="seo-provider-links">
+          <!-- SEO_PROVIDER_LINKS_START -->
+          <li>فهرست صفحات هنگام Build تولید می‌شود.</li>
+          <!-- SEO_PROVIDER_LINKS_END -->
+        </ul>
       </section>
+
+      <section class="faq" aria-labelledby="faq-title">
+        <p class="eyebrow">پرسش‌های پرتکرار</p>
+        <h2 id="faq-title">سؤالات رایج درباره API رایگان LLM</h2>
+        <details><summary>API رایگان دائمی با Trial چه تفاوتی دارد؟</summary><p>Trial پس از زمان یا اعتبار مشخص تمام می‌شود؛ سهمیه دائمی یا مدل رایگان تا زمانی که سیاست سرویس تغییر نکند قابل استفاده است.</p></details>
+        <details><summary>آیا همه APIهای رایگان از ایران در دسترس‌اند؟</summary><p>خیر. وضعیت شبکه، ثبت‌نام و سیاست رسمی جداگانه بررسی می‌شوند و نتیجه هر Provider در صفحه اختصاصی آن درج شده است.</p></details>
+        <details><summary>OpenAI-compatible یعنی چه؟</summary><p>یعنی ساختار درخواست سرویس با API رایج OpenAI سازگار است و معمولاً با تغییر Base URL و کلید می‌توان از SDKهای مشابه استفاده کرد.</p></details>
+      </section>
+
+      <section class="contribute"><div><p class="eyebrow">داده‌ای اشتباه یا قدیمی است؟</p><h2>این فهرست با مشارکت دقیق بهتر می‌شود.</h2><p>گزارش باید منبع رسمی، تاریخ و مسیر اتصال را مشخص کند؛ بدون IP کامل یا کلید API.</p></div><a class="button primary" href="https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir/issues/new/choose">ثبت گزارش</a></section>
     </main>
 
     <footer>
       <p>داده‌ها تحت MIT License — هیچ وابستگی تجاری به سرویس‌های فهرست‌شده وجود ندارد.</p>
-      <p>ابزارها، Proxyها و Session Bridgeها در <a href="https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir/blob/main/catalog-tools.json">کاتالوگ مجزا</a> با هشدارهای امنیتی جداگانه نگهداری می‌شوند.</p>
+      <p><a href="./catalog.json">داده JSON</a> · <a href="./sitemap.xml">Sitemap</a> · <a href="./llms.txt">llms.txt</a></p>
       <a href="https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir">Source on GitHub</a>
     </footer>
 
     <template id="provider-template">
       <article class="provider-card">
-        <div class="card-topline">
-          <span class="access-badge"></span>
-          <span class="freshness-badge"></span>
-        </div>
-        <div class="provider-title">
-          <div class="provider-avatar" aria-hidden="true"></div>
-          <div><h3></h3><code class="provider-id"></code></div>
-        </div>
-        <p class="provider-note"></p>
-        <div class="tag-list"></div>
-        <dl class="facts">
-          <div><dt>نوع رایگان</dt><dd class="free-label"></dd></div>
-          <div><dt>محدودیت نمونه</dt><dd class="limit-label"></dd></div>
-          <div><dt>OpenAI API</dt><dd class="openai-label"></dd></div>
-          <div><dt>آخرین بررسی</dt><dd class="checked-label"></dd></div>
-        </dl>
-        <details>
-          <summary>جزئیات و مدل‌ها</summary>
-          <p class="free-note"></p>
-          <p class="models-note"></p>
-          <div class="api-base-row"><code class="api-base"></code><button class="copy-button" type="button">کپی</button></div>
-        </details>
-        <div class="card-actions">
-          <a class="docs-link" target="_blank" rel="noopener noreferrer">مستندات</a>
-          <a class="website-link" target="_blank" rel="noopener noreferrer">وب‌سایت</a>
-        </div>
+        <div class="card-topline"><span class="access-badge"></span><span class="freshness-badge"></span></div>
+        <div class="provider-title"><div class="provider-avatar" aria-hidden="true"></div><div><h3></h3><code class="provider-id"></code></div></div>
+        <p class="provider-note"></p><div class="tag-list"></div>
+        <dl class="facts"><div><dt>نوع رایگان</dt><dd class="free-label"></dd></div><div><dt>محدودیت نمونه</dt><dd class="limit-label"></dd></div><div><dt>OpenAI API</dt><dd class="openai-label"></dd></div><div><dt>آخرین بررسی</dt><dd class="checked-label"></dd></div></dl>
+        <details><summary>جزئیات و مدل‌ها</summary><p class="free-note"></p><p class="models-note"></p><div class="api-base-row"><code class="api-base"></code><button class="copy-button" type="button">کپی</button></div></details>
+        <div class="card-actions"><a class="docs-link" target="_blank" rel="noopener noreferrer">مستندات</a><a class="website-link" target="_blank" rel="noopener noreferrer">وب‌سایت</a></div>
       </article>
     </template>
-
     <script type="module" src="./app.js"></script>
   </body>
 </html>

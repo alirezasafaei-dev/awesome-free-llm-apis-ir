@@ -2,119 +2,112 @@
 
 آخرین بازبینی: ۲۰۲۶-۰۷-۱۶
 
-این سند منبع اصلی وضعیت و اولویت‌های پروژه است. علامت «تکمیل» فقط زمانی استفاده می‌شود که معیار پذیرش همان فاز در دادهٔ ماشین‌خوان، مستندات و CI برآورده شده باشد.
+این سند منبع اصلی اولویت‌های پروژه است. نقشه تخصصی رشد در [`docs/SEO_GROWTH_ROADMAP.fa.md`](SEO_GROWTH_ROADMAP.fa.md) نگهداری می‌شود.
 
 ## وضعیت پایه
 
 - ۲۲ Provider در Catalog اصلی
 - ۸ ابزار، Proxy، Router و Session Bridge در Catalog مستقل
-- ۱۴ Repository در Upstream Monitor
-- ۷ ممیزی Repository با تصمیم ماشین‌خوان Add / Watch / Reject
 - ۹ Provider با درخواست واقعی موفق از ایران
 - ۵ Provider با مسدودیت جغرافیایی تأییدشده
 - ۲ Provider با مانع ثبت‌نام یا تأیید حساب
 - ۱ Provider با عدم پشتیبانی رسمی ایران
 - ۵ Provider با وضعیت دسترسی ایران نامشخص
-- Backlog ماشین‌خوان در `data/verification-backlog.json`
+- قرارداد Schema، Validator، Privacy و Backlog در CI فعال است
 
-## P0 — یکپارچگی قرارداد داده
+## تصمیم راهبردی
 
-وضعیت: **در حال تثبیت**
+تعداد Providerهای موجود برای نسخهٔ اول کافی است. افزودن انبوه API متوقف می‌شود و تمرکز اصلی به این ترتیب تغییر می‌کند:
 
-کارهای لازم:
+1. سایت زنده پایدار و سریع
+2. ایندکس‌پذیری و SEO فنی
+3. صفحات و محتوای پاسخ‌دهنده به Intent فارسی
+4. اندازه‌گیری رشد و ترافیک ارگانیک
+5. معرفی حرفه‌ای سایت و Repository
 
-- هم‌راستا نگه‌داشتن `schema/provider.schema.json` و Validator اجرایی
-- رد کردن فیلدهای ناشناخته به‌جای عبور خاموش از CI
-- الزام هم‌زمان منبع و کد HTTP برای اعتبارسنجی Credential
-- تفکیک `live_test`، `connectivity_test` و `official_docs`
-- جلوگیری از طبقه‌بندی Reachability به‌عنوان موفقیت مدل یا Geo-block
-- جلوگیری از قدیمی‌شدن `catalog.json`، `data.json` و جدول Generated README
-- حفظ حالت سه‌گانهٔ نیاز به پرداخت: `true / false / null`
-- هم‌راستا نگه‌داشتن Backlog اجرایی با مجموعه Providerهای `unknown`
+Provider جدید فقط در صورت ارزش عملی متمایز، Free Tier اثبات‌شده و داده کامل پذیرفته می‌شود.
+
+## P0 — سایت زنده و SEO فنی
+
+وضعیت: **در حال اجرا**
+
+کارهای اصلی:
+
+- تولید صفحه HTML مستقل و Canonical برای هر Provider
+- Sitemap پویا و لینک داخلی Crawlable
+- Metadata یکتا، Open Graph و Structured Data
+- حفظ دامنه اصلی به‌عنوان تنها نسخه Indexable
+- حفظ `noindex` روی Mirror ایران
+- کنترل تعداد صفحات و Sitemap در CI
+- ثبت Google Search Console و Bing Webmaster Tools
+- اتصال Analytics حریم‌خصوصی‌محور و Eventهای اصلی
+- پایش Coverage، Canonical و Core Web Vitals
+
+Track اجرایی: Issue #42
 
 معیار خروج:
 
-- `npm test` سبز
-- صفر اختلاف میان Schema عمومی و دادهٔ Canonical
-- صفر Provider دارای Evidence زنده با Verification قدیمی
-- موفقیت `npm run verification:backlog:test`
+- صفحه اصلی و همه صفحات Provider در Build تولید شوند
+- URLهای Sitemap از دامنه اصلی پاسخ معتبر بگیرند
+- صفحات در Search Console Discover شوند
+- Duplicate indexable میان دامنه‌ها وجود نداشته باشد
+- Baseline داده‌های رشد ثبت شود
 
-## P0 — راستی‌آزمایی ایران
+## P1 — محتوای SEO فارسی
 
-وضعیت: **بخشی تکمیل شده**
+وضعیت: **برنامه‌ریزی‌شده**
 
-انجام‌شده:
+- راهنماهای انتخاب API بر اساس کاربرد و محدودیت
+- صفحات مقایسه تولیدشده از Catalog
+- راهنماهای OpenAI SDK، Base URL، Fallback و امنیت Key
+- لینک داخلی میان Guideها و صفحات Provider
+- استفاده از Queryهای Search Console برای اولویت‌بندی محتوا
+- جلوگیری از صفحات کم‌ارزش، تکراری یا Keyword stuffing
 
-- تست مستقیم روی مسیرهای ثبت‌شده ایران
-- تست مستقیم روی اینترنت موبایل MCI
-- اعتبارسنجی همان Credential از یک مسیر غیرایرانی برای تفکیک دسترسی نامعتبر از محدودیت منطقه‌ای
-- ثبت درخواست‌های واقعی مدل برای Providerهای تأییدشده
-- ثبت Connectivity probe مستقل برای چند Endpoint بدون تعمیم آن به موفقیت مدل
-- مستندسازی مانع ثبت‌نام ModelScope و SiliconFlow
-- Rotation کلید قدیمی میزبان اعتبارسنجی و استقرار کلید جایگزین
+Track اجرایی: Issue #43
 
-باقی‌مانده:
+## P1 — معرفی و رشد Repository
 
-- Issue #32: اجرای کامل Hardening میزبان و ثبت گزارش Sanitized
-- Issue #33: تکمیل درخواست مدل برای پنج Provider وابسته به دسترسی حساب
-- Issue #35: ثبت ASN مسیر مستقیم دوم ایران و اجرای ماتریس جداگانه مسیر واسط
-- بررسی Timeout مسیر دوم برای LLM7.io و OVHcloud
-- عدم تعمیم نتیجهٔ یک ISP، حساب یا Probe به همه کاربران ایران
+وضعیت: **برنامه‌ریزی‌شده**
 
-اعتبارسنجی Credential از مسیر غیرایرانی به معنی تکمیل ماتریس VPN نیست.
+- تکمیل پیام فارسی و انگلیسی پروژه
+- Screenshot، Social card و Demo کوتاه
+- بهینه‌سازی README، GitHub Topics و Release
+- معرفی در LinkedIn، X، ویرگول و جوامع فنی مرتبط
+- Outreach هدفمند برای Mention و Backlink معتبر
+- استفاده از UTM و Analytics برای سنجش هر کانال
+- ممنوعیت خرید Backlink و Spam
 
-## P1 — کیفیت Provider Catalog
+Track اجرایی: Issue #44
 
-وضعیت: **فعال**
+## نگهداری داده و امنیت
 
-- بازبینی دوره‌ای محدودیت‌ها، مدل‌ها، نیاز به کارت و شرایط ثبت‌نام
-- اولویت با Providerهای دارای مستند رسمی و Endpoint عمومی
-- بررسی ویژهٔ Providerهای جدید و ۵ وضعیت ایران نامشخص
-- نگه‌داشتن Trial، Credit و Free Models به‌عنوان مفاهیم جدا
-- حذف ادعاهای زمان‌دار یا منطقه‌ای بدون منبع رسمی تازه
+این Trackها ادامه دارند، اما مانع اجرای برنامه رشد نمی‌شوند مگر ریسک امنیتی یا خرابی داده ایجاد کنند:
 
-## P1 — Repository Audit و Upstream Watch
+- Issue #32: Hardening نهایی میزبان
+- Issue #33: تعیین تکلیف پنج Provider وابسته به حساب
+- Issue #35: تکمیل ماتریس شبکه
+- Issue #39: بررسی Timeout مسیر دوم LLM7.io و OVHcloud
+- بازبینی دوره‌ای سهمیه، مدل، کارت بانکی و شرایط ثبت‌نام
+- پایش Upstream و Repository Audit
 
-وضعیت: **زیرساخت تکمیل، عملیات مستمر**
+اعتبارسنجی Credential از مسیر غیرایرانی به معنی تکمیل ماتریس VPN نیست. Reachability نیز به معنی موفقیت مدل نیست.
 
-- پایش SHA فایل‌های حساس در Upstreamها
-- ثبت تصمیم Add / Watch / Reject در `data/repository-audits.json`
-- جلوگیری از ورود Catalog، Prompt Library، Client Tool و Session Bridge به Provider Catalog
-- بازبینی انسانی قبل از هر تغییر Canonical
+## P2 — توسعه محصول
 
-## P1 — Tools Catalog
+بعد از ایجاد Baseline ترافیک و Indexing:
 
-وضعیت: **نسخه اول تکمیل، توسعه ادامه دارد**
-
-- Schema و Validator مستقل
-- هشدار Credential، Cookie، OAuth، HAR و Browser Session
-- عدم نمایش Tools در Advisor پیش‌فرض Providerها
-- مرحله بعد: نمایش مستقل در وب‌سایت و افزودن دادهٔ نگهداری/Release قابل بازتولید
-
-## P2 — بنچمارک فارسی
-
-وضعیت: **نسخه پایه آماده**
-
-- گسترش Dataset نسخه‌دار
-- افزایش پوشش نگارش، Reasoning، JSON و درک متن فارسی
-- انتشار نتیجه فقط برای Run کامل و قابل بازتولید
-- جلوگیری از مقایسه مدل‌ها با تنظیمات یا مسیرهای شبکه متفاوت
-
-## P2 — وب‌سایت و جامعه
-
-وضعیت: **فعال**
-
-- نمایش واضح Source، تاریخ، نوع سرویس و وضعیت Evidence
 - صفحه مستقل Tools و Repository Audits
-- RSS/JSON برای تغییرات مهم Catalog
-- قالب مشارکت برای گزارش محدودیت و دسترسی ایران
-- مستند انگلیسی هم‌تراز با مستند فارسی
+- Feed تغییرات Catalog
+- مقایسه‌های تعاملی و URLهای Shareable
+- نسخه انگلیسی کامل صفحات اصلی
+- گسترش بنچمارک فارسی فقط در صورت داشتن تقاضای واقعی
 
 ## ترتیب اجرای فعلی
 
-1. تکمیل Hardening در Issue #32
-2. تکمیل پنج Provider در Issue #33
-3. ثبت ASN و تکمیل ماتریس شبکه در Issue #35
-4. بررسی ناسازگاری Timeout برای LLM7.io و OVHcloud
-5. بازبینی Providerهای جدید با First-party evidence
-6. توسعه رابط Tools/Audits و بنچمارک فارسی
+1. تکمیل و Deploy زیرساخت SEO صفحات Provider
+2. اجرای Issue #42 و ثبت Baseline Search/Analytics
+3. انتشار خوشه اول محتوای فارسی در Issue #43
+4. اجرای بسته معرفی و توزیع در Issue #44
+5. تکمیل Trackهای امنیت و Verification باقی‌مانده
+6. توسعه قابلیت‌های محصول بر اساس دادهٔ استفاده واقعی

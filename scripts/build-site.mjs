@@ -6,6 +6,154 @@ const root = process.cwd();
 const source = path.join(root, "site");
 const destination = path.join(root, ".site-dist");
 const catalogPath = path.join(root, "catalog.json");
+const canonicalOrigin = "https://llm.persiantoolbox.ir";
+
+const accessLabels = {
+  verified_working: "دسترسی مستقیم از ایران تأیید شده",
+  verified_working_vpn: "دسترسی با VPN تأیید شده",
+  direct_blocked_vpn_working: "مستقیم مسدود و VPN موفق",
+  verified_blocked: "محدودیت جغرافیایی تأیید شده",
+  officially_unsupported: "ایران رسماً پشتیبانی نمی‌شود",
+  intermittent: "دسترسی ناپایدار",
+  signup_blocked: "مانع ثبت‌نام یا احراز حساب",
+  unknown: "وضعیت دسترسی نامشخص"
+};
+
+const freeLabels = {
+  permanent_allowance: "سهمیه رایگان دائمی",
+  free_models: "مدل‌های رایگان",
+  monthly_credit: "اعتبار رایگان ماهانه",
+  trial: "دوره آزمایشی",
+  unknown: "نوع سهمیه نامشخص"
+};
+
+const capabilityLabels = {
+  chat: "چت",
+  text_generation: "تولید متن",
+  reasoning: "استدلال",
+  embeddings: "Embedding",
+  tool_calling: "Tool calling",
+  structured_output: "خروجی ساخت‌یافته"
+};
+
+function escapeHtml(value) {
+  return String(value ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#39;");
+}
+
+function escapeXml(value) {
+  return escapeHtml(value);
+}
+
+function jsonLd(value) {
+  return JSON.stringify(value).replaceAll("<", "\\u003c");
+}
+
+function limitText(provider) {
+  const first = provider.free_tier?.limits?.[0];
+  if (!first) return "وابسته به مدل یا حساب";
+  const values = [];
+  if (first.rpm != null) values.push(`${first.rpm} RPM`);
+  if (first.rpd != null) values.push(`${first.rpd} RPD`);
+  if (first.rph != null) values.push(`${first.rph} RPH`);
+  if (first.tpm != null) values.push(`${first.tpm} TPM`);
+  if (first.monthly_credit_usd != null) values.push(`$${first.monthly_credit_usd} در ماه`);
+  if (first.monthly_requests != null) values.push(`${first.monthly_requests} درخواست در ماه`);
+  return values.slice(0, 3).join(" · ") || "وابسته به مدل یا حساب";
+}
+
+function providerDescription(provider) {
+  return `${provider.name}: ${freeLabels[provider.free_tier.type] ?? provider.free_tier.type}، ${limitText(provider)}، ${accessLabels[provider.iran_access.status] ?? provider.iran_access.status}. اطلاعات API و وضعیت ایران با منبع و تاریخ بررسی.`;
+}
+
+function providerPage(provider, relatedProviders) {
+  const canonicalUrl = `${canonicalOrigin}/providers/${provider.id}/`;
+  const title = `${provider.name} API رایگان | سهمیه و وضعیت دسترسی ایران`;
+  const description = providerDescription(provider);
+  const capabilities = provider.capabilities.map((item) => capabilityLabels[item] ?? item);
+  const models = provider.models?.notable ?? [];
+  const sources = [...new Set([provider.docs, provider.website, ...(provider.sources ?? [])])];
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "TechArticle",
+        "@id": `${canonicalUrl}#article`,
+        headline: title,
+        description,
+        inLanguage: "fa-IR",
+        dateModified: provider.verification.last_checked,
+        mainEntityOfPage: canonicalUrl,
+        author: { "@type": "Organization", name: "Awesome Free LLM APIs IR", url: canonicalOrigin }
+      },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "APIهای رایگان LLM", item: `${canonicalOrigin}/` },
+          { "@type": "ListItem", position: 2, name: provider.name, item: canonicalUrl }
+        ]
+      }
+    ]
+  };
+
+  return `<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1">
+  <meta name="description" content="${escapeHtml(description)}">
+  <meta property="og:title" content="${escapeHtml(title)}">
+  <meta property="og:description" content="${escapeHtml(description)}">
+  <meta property="og:type" content="article">
+  <meta property="og:locale" content="fa_IR">
+  <meta property="og:url" content="${canonicalUrl}">
+  <meta name="twitter:card" content="summary">
+  <link rel="canonical" href="${canonicalUrl}">
+  <link rel="stylesheet" href="../../styles.css">
+  <link rel="stylesheet" href="../../seo.css">
+  <title>${escapeHtml(title)}</title>
+  <script type="application/ld+json">${jsonLd(structuredData)}</script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="../../"><span class="brand-mark" aria-hidden="true">AI</span><span>Awesome Free LLM APIs IR</span></a>
+    <nav aria-label="پیوندهای اصلی"><a href="../../#catalog">همه APIها</a><a href="${escapeHtml(provider.docs)}" rel="nofollow noopener" target="_blank">مستندات رسمی</a><a href="https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir">GitHub</a></nav>
+  </header>
+  <main class="provider-page">
+    <nav class="breadcrumbs" aria-label="مسیر صفحه"><a href="../../">APIهای رایگان LLM</a><span>←</span><span>${escapeHtml(provider.name)}</span></nav>
+    <article class="provider-detail">
+      <p class="eyebrow">صفحه اختصاصی Provider</p>
+      <h1>${escapeHtml(provider.name)} API رایگان</h1>
+      <p class="provider-lead">${escapeHtml(description)}</p>
+      <div class="provider-status-row"><span class="access-badge">${escapeHtml(accessLabels[provider.iran_access.status] ?? provider.iran_access.status)}</span><span class="freshness-badge">آخرین بررسی: ${escapeHtml(provider.verification.last_checked)}</span></div>
+      <section class="provider-facts" aria-labelledby="facts-title">
+        <h2 id="facts-title">خلاصه فنی</h2>
+        <dl>
+          <div><dt>نوع سهمیه</dt><dd>${escapeHtml(freeLabels[provider.free_tier.type] ?? provider.free_tier.type)}</dd></div>
+          <div><dt>محدودیت نمونه</dt><dd>${escapeHtml(limitText(provider))}</dd></div>
+          <div><dt>سازگار با OpenAI</dt><dd>${provider.api.openai_compatible ? "بله" : "خیر"}</dd></div>
+          <div><dt>نیاز به روش پرداخت</dt><dd>${provider.free_tier.requires_payment_method === true ? "بله" : provider.free_tier.requires_payment_method === false ? "خیر" : "در منابع رسمی مشخص نیست"}</dd></div>
+          <div><dt>Base URL</dt><dd><code>${escapeHtml(provider.api.base_url)}</code></dd></div>
+          <div><dt>وضعیت ایران</dt><dd>${escapeHtml(accessLabels[provider.iran_access.status] ?? provider.iran_access.status)}</dd></div>
+        </dl>
+      </section>
+      <section><h2>قابلیت‌ها</h2><div class="tag-list">${capabilities.map((item) => `<span>${escapeHtml(item)}</span>`).join("")}</div></section>
+      <section><h2>مدل‌های شاخص</h2><p>${models.length ? escapeHtml(models.join("، ")) : "فهرست مدل‌ها پویا است؛ منبع رسمی را بررسی کنید."}</p></section>
+      <section><h2>نکات مهم</h2><p>${escapeHtml(provider.free_tier.notes_fa)}</p>${provider.notes_fa ? `<p>${escapeHtml(provider.notes_fa)}</p>` : ""}${provider.iran_access.notes_fa ? `<p>${escapeHtml(provider.iran_access.notes_fa)}</p>` : ""}</section>
+      <section class="provider-sources"><h2>منابع بررسی</h2><ul>${sources.map((url) => `<li><a href="${escapeHtml(url)}" rel="nofollow noopener" target="_blank">${escapeHtml(url)}</a></li>`).join("")}</ul></section>
+      <section><h2>APIهای مرتبط</h2><ul class="related-provider-links">${relatedProviders.map((item) => `<li><a href="../${item.id}/">${escapeHtml(item.name)}</a></li>`).join("")}</ul></section>
+      <div class="hero-actions"><a class="button primary" href="${escapeHtml(provider.docs)}" rel="nofollow noopener" target="_blank">مشاهده مستندات</a><a class="button detail-secondary" href="../../#catalog">مقایسه با سایر APIها</a></div>
+    </article>
+  </main>
+  <footer><p>داده‌های این صفحه از Catalog ماشین‌خوان پروژه تولید شده‌اند.</p><a href="../../catalog.json">دریافت Catalog JSON</a></footer>
+</body>
+</html>`;
+}
 
 await rm(destination, { recursive: true, force: true });
 await mkdir(destination, { recursive: true });
@@ -13,10 +161,40 @@ await cp(source, destination, { recursive: true });
 await cp(catalogPath, path.join(destination, "catalog.json"));
 
 const catalog = JSON.parse(await readFile(catalogPath, "utf8"));
+const providers = [...catalog.providers].sort((a, b) => a.name.localeCompare(b.name, "en"));
 const sourceRevision = process.env.SOURCE_REVISION?.trim() || null;
+const linksHtml = providers
+  .map((provider) => `<li><a href="./providers/${provider.id}/">${escapeHtml(provider.name)} API</a><span>${escapeHtml(freeLabels[provider.free_tier.type] ?? provider.free_tier.type)}</span></li>`)
+  .join("\n          ");
+const indexPath = path.join(destination, "index.html");
+let indexHtml = await readFile(indexPath, "utf8");
+indexHtml = indexHtml.replace('<link rel="stylesheet" href="./styles.css">', '<link rel="stylesheet" href="./styles.css">\n    <link rel="stylesheet" href="./seo.css">');
+indexHtml = indexHtml.replace(
+  /<!-- SEO_PROVIDER_LINKS_START -->[\s\S]*?<!-- SEO_PROVIDER_LINKS_END -->/,
+  `<!-- SEO_PROVIDER_LINKS_START -->\n          ${linksHtml}\n          <!-- SEO_PROVIDER_LINKS_END -->`
+);
+await writeFile(indexPath, indexHtml);
+
+const providersRoot = path.join(destination, "providers");
+await mkdir(providersRoot, { recursive: true });
+for (const [index, provider] of providers.entries()) {
+  const related = [1, 2, 3].map((offset) => providers[(index + offset) % providers.length]);
+  const providerDir = path.join(providersRoot, provider.id);
+  await mkdir(providerDir, { recursive: true });
+  await writeFile(path.join(providerDir, "index.html"), providerPage(provider, related));
+}
+
+const sitemapUrls = [
+  { loc: `${canonicalOrigin}/`, lastmod: catalog.last_updated, priority: "1.0" },
+  ...providers.map((provider) => ({ loc: `${canonicalOrigin}/providers/${provider.id}/`, lastmod: provider.verification.last_checked, priority: "0.8" }))
+];
+const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${sitemapUrls.map((item) => `  <url><loc>${escapeXml(item.loc)}</loc><lastmod>${item.lastmod}</lastmod><priority>${item.priority}</priority></url>`).join("\n")}\n</urlset>\n`;
+await writeFile(path.join(destination, "sitemap.xml"), sitemap);
+await writeFile(path.join(destination, "robots.txt"), `User-agent: *\nAllow: /\n\nSitemap: ${canonicalOrigin}/sitemap.xml\n`);
+const llmsText = `# Awesome Free LLM APIs IR\n\nPersian-first catalog of free LLM APIs with quotas, OpenAI compatibility, official sources and Iran-access evidence.\n\nCanonical website: ${canonicalOrigin}/\nMachine-readable catalog: ${canonicalOrigin}/catalog.json\nGitHub repository: https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir\nProvider pages: ${providers.map((provider) => `${canonicalOrigin}/providers/${provider.id}/`).join(" ")}\n`;
+await writeFile(path.join(destination, "llms.txt"), llmsText);
 await writeFile(
   path.join(destination, "build-meta.json"),
-  `${JSON.stringify({ schema_version: "1.0.0", source_revision: sourceRevision, catalog_last_updated: catalog.last_updated, provider_count: catalog.provider_count }, null, 2)}\n`
+  `${JSON.stringify({ schema_version: "1.1.0", source_revision: sourceRevision, catalog_last_updated: catalog.last_updated, provider_count: catalog.provider_count, provider_page_count: providers.length }, null, 2)}\n`
 );
-
-console.log(`Built static site with ${catalog.provider_count} providers in .site-dist/.`);
+console.log(`Built static site with ${catalog.provider_count} providers and ${providers.length} indexable provider pages in .site-dist/.`);
