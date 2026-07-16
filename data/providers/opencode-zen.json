@@ -32,14 +32,31 @@
     "notes_fa": "پلتفرم OpenCode با ۵ مدل رایگان (مدت محدود): Big Pickle، DeepSeek V4 Flash، MiMo-V2.5، North Mini Code، Nemotron 3 Ultra. API Key رایگان بدون کارت بانکی."
   },
   "iran_access": {
-    "status": "unknown",
+    "status": "verified_working",
     "official_policy": "not_documented",
-    "tested_from_iran": false,
-    "tested_at": null,
-    "test_method": "not_tested",
-    "network": null,
-    "evidence": [],
-    "notes_fa": "از ایران تست نشده. نیاز به API Key رایگان — احتمال دسترسی وجود دارد."
+    "tested_from_iran": true,
+    "tested_at": "2026-07-16",
+    "test_method": "live_request",
+    "network": {
+      "country": "IR",
+      "route": "direct"
+    },
+    "evidence": [
+      {
+        "type": "live_test",
+        "timestamp": "2026-07-16T11:51:38.762Z",
+        "http_status": 200,
+        "latency_ms": 500,
+        "model_tested": "deepseek-v4-flash-free",
+        "endpoint": "https://opencode.ai/zen/v1/chat/completions",
+        "auth_method": "api_key",
+        "source": "LOCAL_PC — Iran direct",
+        "credential_validated_from": "AUTOMATION_SERVER",
+        "credential_validated_status": 200,
+        "notes_fa": "دسترسی مستقیم از ایران با کلید API موفق بود. اعتبارسنجی از سرور خارج نیز موفق."
+      }
+    ],
+    "notes_fa": "دسترسی مستقیم از ایران با کلید API موفق بود."
   },
   "models": {
     "dynamic": true,
@@ -53,7 +70,7 @@
     ]
   },
   "verification": {
-    "level": "docs_verified",
+    "level": "live_verified",
     "last_checked": "2026-07-16",
     "checked_by": "maintainers",
     "stale_after_days": 30

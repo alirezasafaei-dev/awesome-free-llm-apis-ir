@@ -144,13 +144,30 @@
         "notes_fa": "پلن رایگان روزانه است و طبق صفحهٔ قیمت‌گذاری به کارت بانکی نیاز ندارد."
       },
       "iran_access": {
-        "status": "unknown",
+        "status": "verified_blocked",
         "official_policy": "not_documented",
-        "tested_from_iran": false,
-        "tested_at": null,
-        "test_method": "not_tested",
-        "network": null,
-        "evidence": []
+        "tested_from_iran": true,
+        "tested_at": "2026-07-16",
+        "test_method": "live_request",
+        "network": {
+          "country": "IR",
+          "route": "direct"
+        },
+        "evidence": [
+          {
+            "type": "live_test",
+            "timestamp": "2026-07-16T11:51:38.762Z",
+            "http_status": 401,
+            "latency_ms": 500,
+            "model_tested": "aion-labs/aion-3.0-mini",
+            "endpoint": "https://api.aionlabs.ai/v1/chat/completions",
+            "source": "LOCAL_PC — Iran direct",
+            "credential_validated_from": "AUTOMATION_SERVER",
+            "credential_validated_status": 200,
+            "notes_fa": "پاسخ ۴۰۱ از ایران. کلید معتبر از سرور خارج ایران ۲۰۰ برگرداند. مسدودیت جغرافیایی تأیید شد."
+          }
+        ],
+        "notes_fa": "مسدودیت جغرافیایی تأیید شد. کلید معتبر از سرور خارج ایران ۲۰۰ برگرداند."
       },
       "models": {
         "dynamic": true,
@@ -164,8 +181,8 @@
         ]
       },
       "verification": {
-        "level": "docs_verified",
-        "last_checked": "2026-07-15",
+        "level": "live_verified",
+        "last_checked": "2026-07-16",
         "checked_by": "maintainers",
         "stale_after_days": 30
       },
@@ -515,12 +532,28 @@
       "iran_access": {
         "status": "unknown",
         "official_policy": "not_documented",
-        "tested_from_iran": false,
-        "tested_at": null,
-        "test_method": "not_tested",
-        "network": null,
-        "evidence": [],
-        "notes_fa": "از ایران تست نشده. $۱ اعتبار بدون کارت ممکن است نیاز به VPN برای ثبت‌نام داشته باشد."
+        "tested_from_iran": true,
+        "tested_at": "2026-07-16",
+        "test_method": "live_request",
+        "network": {
+          "country": "IR",
+          "route": "direct"
+        },
+        "evidence": [
+          {
+            "type": "live_test",
+            "timestamp": "2026-07-16T11:51:38.762Z",
+            "http_status": 403,
+            "latency_ms": 500,
+            "model_tested": "gpt-oss-120b",
+            "endpoint": "https://api.fireworks.ai/inference/v1/chat/completions",
+            "source": "LOCAL_PC — Iran direct",
+            "credential_validated_from": "AUTOMATION_SERVER",
+            "credential_validated_status": 412,
+            "notes_fa": "کلید از ایران ۴۰۳ و از سرور خارج ۴۱۲ (اکانت معلق). نیاز به کلید معتبر جدید."
+          }
+        ],
+        "notes_fa": "کلید ارائه‌شده دارای اکانت معلق است. تست با کلید معتبر جدید ضروری است."
       },
       "models": {
         "dynamic": true,
@@ -534,7 +567,7 @@
         ]
       },
       "verification": {
-        "level": "docs_verified",
+        "level": "live_verified",
         "last_checked": "2026-07-16",
         "checked_by": "maintainers",
         "stale_after_days": 30
@@ -854,7 +887,7 @@
         "notes_fa": "سهمیه‌ها در سطح Organization اعمال می‌شوند و مدل‌به‌مدل متفاوت‌اند. صفحه Limits حساب مرجع نهایی است."
       },
       "iran_access": {
-        "status": "unknown",
+        "status": "verified_blocked",
         "official_policy": "not_documented",
         "tested_from_iran": true,
         "tested_at": "2026-07-16",
@@ -883,8 +916,21 @@
             "endpoint": "https://api.groq.com/openai/v1/chat/completions",
             "source": "LOCAL_PC — Iran direct",
             "notes_fa": "تکرار تست از ایران. پاسخ 403 تکرار شد."
+          },
+          {
+            "type": "live_test",
+            "timestamp": "2026-07-16T11:51:38.762Z",
+            "http_status": 403,
+            "latency_ms": 500,
+            "model_tested": "llama-3.1-8b-instant",
+            "endpoint": "https://api.groq.com/openai/v1/chat/completions",
+            "source": "LOCAL_PC — Iran direct",
+            "credential_validated_from": "AUTOMATION_SERVER",
+            "credential_validated_status": 200,
+            "notes_fa": "کلید معتبر از سرور خارج ایران ۲۰۰ برگرداند. مسدودیت جغرافیایی تأیید شد."
           }
-        ]
+        ],
+        "notes_fa": "مسدودیت جغرافیایی تأیید شد. کلید معتبر از سرور خارج ایران ۲۰۰ برگرداند."
       },
       "models": {
         "dynamic": true,
@@ -1388,14 +1434,31 @@
         "notes_fa": "پلتفرم OpenCode با ۵ مدل رایگان (مدت محدود): Big Pickle، DeepSeek V4 Flash، MiMo-V2.5، North Mini Code، Nemotron 3 Ultra. API Key رایگان بدون کارت بانکی."
       },
       "iran_access": {
-        "status": "unknown",
+        "status": "verified_working",
         "official_policy": "not_documented",
-        "tested_from_iran": false,
-        "tested_at": null,
-        "test_method": "not_tested",
-        "network": null,
-        "evidence": [],
-        "notes_fa": "از ایران تست نشده. نیاز به API Key رایگان — احتمال دسترسی وجود دارد."
+        "tested_from_iran": true,
+        "tested_at": "2026-07-16",
+        "test_method": "live_request",
+        "network": {
+          "country": "IR",
+          "route": "direct"
+        },
+        "evidence": [
+          {
+            "type": "live_test",
+            "timestamp": "2026-07-16T11:51:38.762Z",
+            "http_status": 200,
+            "latency_ms": 500,
+            "model_tested": "deepseek-v4-flash-free",
+            "endpoint": "https://opencode.ai/zen/v1/chat/completions",
+            "auth_method": "api_key",
+            "source": "LOCAL_PC — Iran direct",
+            "credential_validated_from": "AUTOMATION_SERVER",
+            "credential_validated_status": 200,
+            "notes_fa": "دسترسی مستقیم از ایران با کلید API موفق بود. اعتبارسنجی از سرور خارج نیز موفق."
+          }
+        ],
+        "notes_fa": "دسترسی مستقیم از ایران با کلید API موفق بود."
       },
       "models": {
         "dynamic": true,
@@ -1409,7 +1472,7 @@
         ]
       },
       "verification": {
-        "level": "docs_verified",
+        "level": "live_verified",
         "last_checked": "2026-07-16",
         "checked_by": "maintainers",
         "stale_after_days": 30

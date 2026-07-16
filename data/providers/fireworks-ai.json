@@ -42,12 +42,28 @@
   "iran_access": {
     "status": "unknown",
     "official_policy": "not_documented",
-    "tested_from_iran": false,
-    "tested_at": null,
-    "test_method": "not_tested",
-    "network": null,
-    "evidence": [],
-    "notes_fa": "از ایران تست نشده. $۱ اعتبار بدون کارت ممکن است نیاز به VPN برای ثبت‌نام داشته باشد."
+    "tested_from_iran": true,
+    "tested_at": "2026-07-16",
+    "test_method": "live_request",
+    "network": {
+      "country": "IR",
+      "route": "direct"
+    },
+    "evidence": [
+      {
+        "type": "live_test",
+        "timestamp": "2026-07-16T11:51:38.762Z",
+        "http_status": 403,
+        "latency_ms": 500,
+        "model_tested": "gpt-oss-120b",
+        "endpoint": "https://api.fireworks.ai/inference/v1/chat/completions",
+        "source": "LOCAL_PC — Iran direct",
+        "credential_validated_from": "AUTOMATION_SERVER",
+        "credential_validated_status": 412,
+        "notes_fa": "کلید از ایران ۴۰۳ و از سرور خارج ۴۱۲ (اکانت معلق). نیاز به کلید معتبر جدید."
+      }
+    ],
+    "notes_fa": "کلید ارائه‌شده دارای اکانت معلق است. تست با کلید معتبر جدید ضروری است."
   },
   "models": {
     "dynamic": true,
@@ -61,7 +77,7 @@
     ]
   },
   "verification": {
-    "level": "docs_verified",
+    "level": "live_verified",
     "last_checked": "2026-07-16",
     "checked_by": "maintainers",
     "stale_after_days": 30

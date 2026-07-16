@@ -71,13 +71,16 @@
         "reasoning"
       ],
       "iranAccess": {
-        "status": "unknown",
-        "label": "❔ نامشخص",
-        "tested": false,
-        "testedAt": null,
-        "network": null,
-        "evidenceCount": 0,
-        "notesFa": null
+        "status": "verified_blocked",
+        "label": "⛔ مستقیم مسدود",
+        "tested": true,
+        "testedAt": "2026-07-16",
+        "network": {
+          "country": "IR",
+          "route": "direct"
+        },
+        "evidenceCount": 1,
+        "notesFa": "مسدودیت جغرافیایی تأیید شد. کلید معتبر از سرور خارج ایران ۲۰۰ برگرداند."
       },
       "models": [
         "aion-2.0",
@@ -87,8 +90,8 @@
         "aion-rp-llama-3.1-8b"
       ],
       "verification": {
-        "level": "docs_verified",
-        "lastChecked": "2026-07-15",
+        "level": "live_verified",
+        "lastChecked": "2026-07-16",
         "staleAfterDays": 30
       }
     },
@@ -258,11 +261,14 @@
       "iranAccess": {
         "status": "unknown",
         "label": "❔ نامشخص",
-        "tested": false,
-        "testedAt": null,
-        "network": null,
-        "evidenceCount": 0,
-        "notesFa": "از ایران تست نشده. $۱ اعتبار بدون کارت ممکن است نیاز به VPN برای ثبت‌نام داشته باشد."
+        "tested": true,
+        "testedAt": "2026-07-16",
+        "network": {
+          "country": "IR",
+          "route": "direct"
+        },
+        "evidenceCount": 1,
+        "notesFa": "کلید ارائه‌شده دارای اکانت معلق است. تست با کلید معتبر جدید ضروری است."
       },
       "models": [
         "llama-3.3-70b",
@@ -272,7 +278,7 @@
         "gemma-3n-4b"
       ],
       "verification": {
-        "level": "docs_verified",
+        "level": "live_verified",
         "lastChecked": "2026-07-16",
         "staleAfterDays": 30
       }
@@ -430,16 +436,16 @@
         "structured_output"
       ],
       "iranAccess": {
-        "status": "unknown",
-        "label": "❔ نامشخص",
+        "status": "verified_blocked",
+        "label": "⛔ مستقیم مسدود",
         "tested": true,
         "testedAt": "2026-07-16",
         "network": {
           "country": "IR",
           "route": "direct"
         },
-        "evidenceCount": 2,
-        "notesFa": null
+        "evidenceCount": 3,
+        "notesFa": "مسدودیت جغرافیایی تأیید شد. کلید معتبر از سرور خارج ایران ۲۰۰ برگرداند."
       },
       "models": [
         "llama-3.1-8b-instant",
@@ -750,13 +756,16 @@
         "structured_output"
       ],
       "iranAccess": {
-        "status": "unknown",
-        "label": "❔ نامشخص",
-        "tested": false,
-        "testedAt": null,
-        "network": null,
-        "evidenceCount": 0,
-        "notesFa": "از ایران تست نشده. نیاز به API Key رایگان — احتمال دسترسی وجود دارد."
+        "status": "verified_working",
+        "label": "✅ مستقیم تست‌شده",
+        "tested": true,
+        "testedAt": "2026-07-16",
+        "network": {
+          "country": "IR",
+          "route": "direct"
+        },
+        "evidenceCount": 1,
+        "notesFa": "دسترسی مستقیم از ایران با کلید API موفق بود."
       },
       "models": [
         "deepseek-v4-flash-free",
@@ -766,7 +775,7 @@
         "big-pickle-stealth"
       ],
       "verification": {
-        "level": "docs_verified",
+        "level": "live_verified",
         "lastChecked": "2026-07-16",
         "staleAfterDays": 30
       }

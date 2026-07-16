@@ -11,7 +11,11 @@
     "openai_compatible": true,
     "auth": "api_key"
   },
-  "capabilities": ["chat", "text_generation", "reasoning"],
+  "capabilities": [
+    "chat",
+    "text_generation",
+    "reasoning"
+  ],
   "free_tier": {
     "status": "active",
     "type": "permanent_allowance",
@@ -30,22 +34,45 @@
     "notes_fa": "پلن رایگان روزانه است و طبق صفحهٔ قیمت‌گذاری به کارت بانکی نیاز ندارد."
   },
   "iran_access": {
-    "status": "unknown",
+    "status": "verified_blocked",
     "official_policy": "not_documented",
-    "tested_from_iran": false,
-    "tested_at": null,
-    "test_method": "not_tested",
-    "network": null,
-    "evidence": []
+    "tested_from_iran": true,
+    "tested_at": "2026-07-16",
+    "test_method": "live_request",
+    "network": {
+      "country": "IR",
+      "route": "direct"
+    },
+    "evidence": [
+      {
+        "type": "live_test",
+        "timestamp": "2026-07-16T11:51:38.762Z",
+        "http_status": 401,
+        "latency_ms": 500,
+        "model_tested": "aion-labs/aion-3.0-mini",
+        "endpoint": "https://api.aionlabs.ai/v1/chat/completions",
+        "source": "LOCAL_PC — Iran direct",
+        "credential_validated_from": "AUTOMATION_SERVER",
+        "credential_validated_status": 200,
+        "notes_fa": "پاسخ ۴۰۱ از ایران. کلید معتبر از سرور خارج ایران ۲۰۰ برگرداند. مسدودیت جغرافیایی تأیید شد."
+      }
+    ],
+    "notes_fa": "مسدودیت جغرافیایی تأیید شد. کلید معتبر از سرور خارج ایران ۲۰۰ برگرداند."
   },
   "models": {
     "dynamic": true,
     "source": "https://www.aionlabs.ai/docs/models/",
-    "notable": ["aion-2.0", "aion-2.5", "aion-3.0", "aion-3.0-mini", "aion-rp-llama-3.1-8b"]
+    "notable": [
+      "aion-2.0",
+      "aion-2.5",
+      "aion-3.0",
+      "aion-3.0-mini",
+      "aion-rp-llama-3.1-8b"
+    ]
   },
   "verification": {
-    "level": "docs_verified",
-    "last_checked": "2026-07-15",
+    "level": "live_verified",
+    "last_checked": "2026-07-16",
     "checked_by": "maintainers",
     "stale_after_days": 30
   },

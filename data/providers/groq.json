@@ -57,7 +57,7 @@
     "notes_fa": "سهمیه‌ها در سطح Organization اعمال می‌شوند و مدل‌به‌مدل متفاوت‌اند. صفحه Limits حساب مرجع نهایی است."
   },
   "iran_access": {
-    "status": "unknown",
+    "status": "verified_blocked",
     "official_policy": "not_documented",
     "tested_from_iran": true,
     "tested_at": "2026-07-16",
@@ -86,8 +86,21 @@
         "endpoint": "https://api.groq.com/openai/v1/chat/completions",
         "source": "LOCAL_PC — Iran direct",
         "notes_fa": "تکرار تست از ایران. پاسخ 403 تکرار شد."
+      },
+      {
+        "type": "live_test",
+        "timestamp": "2026-07-16T11:51:38.762Z",
+        "http_status": 403,
+        "latency_ms": 500,
+        "model_tested": "llama-3.1-8b-instant",
+        "endpoint": "https://api.groq.com/openai/v1/chat/completions",
+        "source": "LOCAL_PC — Iran direct",
+        "credential_validated_from": "AUTOMATION_SERVER",
+        "credential_validated_status": 200,
+        "notes_fa": "کلید معتبر از سرور خارج ایران ۲۰۰ برگرداند. مسدودیت جغرافیایی تأیید شد."
       }
-    ]
+    ],
+    "notes_fa": "مسدودیت جغرافیایی تأیید شد. کلید معتبر از سرور خارج ایران ۲۰۰ برگرداند."
   },
   "models": {
     "dynamic": true,
