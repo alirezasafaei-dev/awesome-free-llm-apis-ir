@@ -19,7 +19,20 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - run: npm run hermes:pilot:test
+      - name: "Hermes contract: files"
+        run: node scripts/test-hermes-pilot.mjs files
+      - name: "Hermes contract: context"
+        run: node scripts/test-hermes-pilot.mjs context
+      - name: "Hermes contract: config"
+        run: node scripts/test-hermes-pilot.mjs config
+      - name: "Hermes contract: bootstrap"
+        run: node scripts/test-hermes-pilot.mjs bootstrap
+      - name: "Hermes contract: cron"
+        run: node scripts/test-hermes-pilot.mjs cron
+      - name: "Hermes contract: skill"
+        run: node scripts/test-hermes-pilot.mjs skill
+      - name: "Hermes contract: shell syntax"
+        run: node scripts/test-hermes-pilot.mjs shell
       - run: npm test
 
   links:
