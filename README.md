@@ -58,7 +58,7 @@
 
 | سرویس | Base URL | Auth | نیاز به کارت بانکی |
 |---|---|---|---|
-| [Agnes AI](https://agnes-ai.com/) | `https://apihub.agnes-ai.com/v1` | API Key | ❌ ثبت‌نام |
+| [Agnes AI](https://agnes-ai.com/) | `https://apihub.agnes-ai.com/v1` | API Key | ❔ نامشخص |
 | [Aion Labs](https://www.aionlabs.ai/) | `https://api.aionlabs.ai/v1` | API Key | ❌ خیر |
 | [Cerebras](https://cloud.cerebras.ai/) | `https://api.cerebras.ai/v1` | API Key | ✅ ثبت‌نام |
 | [Cloudflare Workers AI](https://developers.cloudflare.com/workers-ai/) | `https://api.cloudflare.com/client/v4/accounts/{id}/ai/v1` | API Token | ❌ سهمیه رایگان |
@@ -128,6 +128,16 @@ GITHUB_TOKEN=... npm run upstreams:check
 ```
 
 جزئیات معماری، Tierهای اعتماد، Artifact/Cache و روش پاسخ به هشدار در [راهنمای پایش Repositoryهای بالادستی](docs/UPSTREAM_REPOSITORY_WATCH.fa.md) آمده است.
+
+## ممیزی Repositoryهای کاندید
+
+تصمیم Add/Watch/Reject برای Repositoryهای کشف‌شده در [Registry ماشین‌خوان ممیزی](data/repository-audits.json) ثبت می‌شود و CI مرز آن‌ها را با Provider و Tools Catalog کنترل می‌کند.
+
+```bash
+npm run validate:repo-audits
+```
+
+روش، Evidence و نتیجهٔ ممیزی‌های جاری در [راهنمای ممیزی Repositoryهای GitHub](docs/GITHUB_REPOSITORY_AUDITS.fa.md) آمده است.
 
 ## تست واقعی از ایران
 
