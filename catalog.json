@@ -76,12 +76,22 @@
       "iran_access": {
         "status": "unknown",
         "official_policy": "not_documented",
-        "tested_from_iran": false,
-        "tested_at": null,
-        "test_method": "not_tested",
-        "network": null,
-        "evidence": [],
-        "notes_fa": "ثبت‌نام، دریافت کلید و درخواست API از شبکه ایران هنوز به‌صورت زنده آزمایش نشده است؛ از محل استقرار سرویس درباره دسترسی ایران نتیجه‌گیری نمی‌شود."
+        "tested_from_iran": true,
+        "tested_at": "2026-07-16",
+        "test_method": "official_docs",
+        "network": {
+          "country": "IR",
+          "route": "direct"
+        },
+        "evidence": [
+          {
+            "type": "official_docs",
+            "url": "https://apihub.agnes-ai.com/v1/models",
+            "checked_at": "2026-07-16",
+            "notes_fa": "API endpoint از ایران قابل دسترس است (HTTP 401 = نیاز به API key). تست زنده با کلید معتبر هنوز انجام نشده."
+          }
+        ],
+        "notes_fa": "API endpoint از ایران قابل دسترس است (تست ۲۰۲۶-۰۷-۱۶). نیاز به API key معتبر برای تست زنده. وضعیت نهایی پس از دریافت کلید تعیین می‌شود."
       },
       "models": {
         "dynamic": true,
@@ -551,6 +561,12 @@
             "credential_validated_from": "AUTOMATION_SERVER",
             "credential_validated_status": 412,
             "notes_fa": "کلید از ایران ۴۰۳ و از سرور خارج ۴۱۲ (اکانت معلق). نیاز به کلید معتبر جدید."
+          },
+          {
+            "type": "official_docs",
+            "url": "https://api.fireworks.ai/inference/v1/models",
+            "checked_at": "2026-07-16",
+            "notes_fa": "اتصال از ایران ناموفق (connection refused/timeout). Fireworks احتمالاً ایران را مسدود کرده یا اتصال قطع است."
           }
         ],
         "notes_fa": "کلید ارائه‌شده دارای اکانت معلق است. تست با کلید معتبر جدید ضروری است."
@@ -618,11 +634,22 @@
       "iran_access": {
         "status": "unknown",
         "official_policy": "not_documented",
-        "tested_from_iran": false,
-        "tested_at": null,
-        "test_method": "not_tested",
-        "network": null,
-        "evidence": []
+        "tested_from_iran": true,
+        "tested_at": "2026-07-16",
+        "test_method": "official_docs",
+        "network": {
+          "country": "IR",
+          "route": "direct"
+        },
+        "evidence": [
+          {
+            "type": "official_docs",
+            "url": "https://api.freetheai.xyz/v1/health",
+            "checked_at": "2026-07-16",
+            "notes_fa": "Health endpoint از ایران قابل دسترس است (HTTP 200). نیاز به API key (از طریق Discord) برای تست زنده."
+          }
+        ],
+        "notes_fa": "API endpoint از ایران قابل دسترس است (تست ۲۰۲۶-۰۷-۱۶). نیاز به API key از طریق Discord برای تست زنده. وضعیت نهایی پس از دریافت کلید تعیین می‌شود."
       },
       "models": {
         "dynamic": true,
@@ -631,7 +658,7 @@
       },
       "verification": {
         "level": "docs_verified",
-        "last_checked": "2026-07-15",
+        "last_checked": "2026-07-16",
         "checked_by": "maintainers",
         "stale_after_days": 14
       },
@@ -1313,19 +1340,28 @@
       "iran_access": {
         "status": "signup_blocked",
         "official_policy": "not_documented",
-        "tested_from_iran": false,
-        "tested_at": null,
+        "tested_from_iran": true,
+        "tested_at": "2026-07-16",
         "test_method": "official_docs",
-        "network": null,
+        "network": {
+          "country": "IR",
+          "route": "direct"
+        },
         "evidence": [
           {
             "type": "official_docs",
             "url": "https://modelscope.cn/my/myaccesstoken",
             "checked_at": "2026-07-16",
             "notes_fa": "ثبت‌نام نیاز به حساب Alibaba Cloud و احراز هویت واقعی (شماره ملی چین یا پاسپورت) دارد."
+          },
+          {
+            "type": "official_docs",
+            "url": "https://api-inference.modelscope.cn/v1/models",
+            "checked_at": "2026-07-16",
+            "notes_fa": "API endpoint از ایران قابل دسترس است (HTTP 200). مانع ثبت‌نام هویتی است نه مسدودیت شبکه."
           }
         ],
-        "notes_fa": "ثبت‌نام نیاز به احراز هویت هویتی چینی (شماره ملی یا پاسپورت) دارد. کاربران ایرانی بدون اسناد هویتی چینی قادر به ثبت‌نام نیستند."
+        "notes_fa": "API از ایران قابل دسترس است (تست ۲۰۲۶-۰۷-۱۶). مانع، احراز هویت هویتی چینی است. کاربران ایرانی بدون اسناد هویتی چینی قادر به ثبت‌نام نیستند."
       },
       "models": {
         "dynamic": true,
@@ -1384,11 +1420,22 @@
       "iran_access": {
         "status": "unknown",
         "official_policy": "not_documented",
-        "tested_from_iran": false,
-        "tested_at": null,
-        "test_method": "not_tested",
-        "network": null,
-        "evidence": []
+        "tested_from_iran": true,
+        "tested_at": "2026-07-16",
+        "test_method": "official_docs",
+        "network": {
+          "country": "IR",
+          "route": "direct"
+        },
+        "evidence": [
+          {
+            "type": "official_docs",
+            "url": "https://integrate.api.nvidia.com/v1/models",
+            "checked_at": "2026-07-16",
+            "notes_fa": "API endpoint از ایران قابل دسترس است (HTTP 200). نیاز به NVIDIA Developer Program key برای تست زنده."
+          }
+        ],
+        "notes_fa": "API endpoint از ایران قابل دسترس است (تست ۲۰۲۶-۰۷-۱۶). نیاز به NVIDIA Developer Program key برای تست زنده. وضعیت نهایی پس از دریافت کلید تعیین می‌شود."
       },
       "models": {
         "dynamic": true,
@@ -1397,7 +1444,7 @@
       },
       "verification": {
         "level": "docs_verified",
-        "last_checked": "2026-07-14",
+        "last_checked": "2026-07-16",
         "checked_by": "maintainers",
         "stale_after_days": 30
       },
@@ -1803,19 +1850,28 @@
       "iran_access": {
         "status": "signup_blocked",
         "official_policy": "not_documented",
-        "tested_from_iran": false,
-        "tested_at": null,
+        "tested_from_iran": true,
+        "tested_at": "2026-07-16",
         "test_method": "official_docs",
-        "network": null,
+        "network": {
+          "country": "IR",
+          "route": "direct"
+        },
         "evidence": [
           {
             "type": "official_docs",
             "url": "https://cloud.siliconflow.cn/account/ak",
             "checked_at": "2026-07-16",
             "notes_fa": "ثبت‌نام نیاز به تأیید شماره تلفن چینی (+86) دارد."
+          },
+          {
+            "type": "official_docs",
+            "url": "https://api.siliconflow.cn/v1/models",
+            "checked_at": "2026-07-16",
+            "notes_fa": "API endpoint از ایران قابل دسترس است (HTTP 401 = نیاز به auth). مانع ثبت‌نام تلفنی است نه مسدودیت شبکه."
           }
         ],
-        "notes_fa": "ثبت‌نام نیاز به تأیید شماره تلفن چینی (+86) دارد. کاربران ایرانی بدون شماره تلفن چینی قادر به تکمیل ثبت‌نام نیستند."
+        "notes_fa": "API از ایران قابل دسترس است (تست ۲۰۲۶-۰۷-۱۶). مانع، تأیید شماره تلفن چینی (+86) است. کاربران ایرانی بدون شماره تلفن چینی قادر به تکمیل ثبت‌نام نیستند."
       },
       "models": {
         "dynamic": true,
@@ -1877,11 +1933,22 @@
       "iran_access": {
         "status": "unknown",
         "official_policy": "not_documented",
-        "tested_from_iran": false,
-        "tested_at": null,
-        "test_method": "not_tested",
-        "network": null,
-        "evidence": []
+        "tested_from_iran": true,
+        "tested_at": "2026-07-16",
+        "test_method": "official_docs",
+        "network": {
+          "country": "IR",
+          "route": "direct"
+        },
+        "evidence": [
+          {
+            "type": "official_docs",
+            "url": "https://ai-gateway.vercel.sh/v1/models",
+            "checked_at": "2026-07-16",
+            "notes_fa": "API endpoint از ایران قابل دسترس است (HTTP 200). نیاز به Vercel API key برای تست زنده."
+          }
+        ],
+        "notes_fa": "API endpoint از ایران قابل دسترس است (تست ۲۰۲۶-۰۷-۱۶). نیاز به Vercel API key برای تست زنده. وضعیت نهایی پس از دریافت کلید تعیین می‌شود."
       },
       "models": {
         "dynamic": true,
@@ -1890,7 +1957,7 @@
       },
       "verification": {
         "level": "docs_verified",
-        "last_checked": "2026-07-15",
+        "last_checked": "2026-07-16",
         "checked_by": "maintainers",
         "stale_after_days": 30
       },

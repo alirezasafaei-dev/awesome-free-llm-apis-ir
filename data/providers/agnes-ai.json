@@ -71,12 +71,22 @@
   "iran_access": {
     "status": "unknown",
     "official_policy": "not_documented",
-    "tested_from_iran": false,
-    "tested_at": null,
-    "test_method": "not_tested",
-    "network": null,
-    "evidence": [],
-    "notes_fa": "ثبت‌نام، دریافت کلید و درخواست API از شبکه ایران هنوز به‌صورت زنده آزمایش نشده است؛ از محل استقرار سرویس درباره دسترسی ایران نتیجه‌گیری نمی‌شود."
+    "tested_from_iran": true,
+    "tested_at": "2026-07-16",
+    "test_method": "official_docs",
+    "network": {
+      "country": "IR",
+      "route": "direct"
+    },
+    "evidence": [
+      {
+        "type": "official_docs",
+        "url": "https://apihub.agnes-ai.com/v1/models",
+        "checked_at": "2026-07-16",
+        "notes_fa": "API endpoint از ایران قابل دسترس است (HTTP 401 = نیاز به API key). تست زنده با کلید معتبر هنوز انجام نشده."
+      }
+    ],
+    "notes_fa": "API endpoint از ایران قابل دسترس است (تست ۲۰۲۶-۰۷-۱۶). نیاز به API key معتبر برای تست زنده. وضعیت نهایی پس از دریافت کلید تعیین می‌شود."
   },
   "models": {
     "dynamic": true,

@@ -35,19 +35,28 @@
   "iran_access": {
     "status": "signup_blocked",
     "official_policy": "not_documented",
-    "tested_from_iran": false,
-    "tested_at": null,
+    "tested_from_iran": true,
+    "tested_at": "2026-07-16",
     "test_method": "official_docs",
-    "network": null,
+    "network": {
+      "country": "IR",
+      "route": "direct"
+    },
     "evidence": [
       {
         "type": "official_docs",
         "url": "https://modelscope.cn/my/myaccesstoken",
         "checked_at": "2026-07-16",
         "notes_fa": "ثبت‌نام نیاز به حساب Alibaba Cloud و احراز هویت واقعی (شماره ملی چین یا پاسپورت) دارد."
+      },
+      {
+        "type": "official_docs",
+        "url": "https://api-inference.modelscope.cn/v1/models",
+        "checked_at": "2026-07-16",
+        "notes_fa": "API endpoint از ایران قابل دسترس است (HTTP 200). مانع ثبت‌نام هویتی است نه مسدودیت شبکه."
       }
     ],
-    "notes_fa": "ثبت‌نام نیاز به احراز هویت هویتی چینی (شماره ملی یا پاسپورت) دارد. کاربران ایرانی بدون اسناد هویتی چینی قادر به ثبت‌نام نیستند."
+    "notes_fa": "API از ایران قابل دسترس است (تست ۲۰۲۶-۰۷-۱۶). مانع، احراز هویت هویتی چینی است. کاربران ایرانی بدون اسناد هویتی چینی قادر به ثبت‌نام نیستند."
   },
   "models": {
     "dynamic": true,

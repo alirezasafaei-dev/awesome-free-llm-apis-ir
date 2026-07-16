@@ -61,6 +61,12 @@
         "credential_validated_from": "AUTOMATION_SERVER",
         "credential_validated_status": 412,
         "notes_fa": "کلید از ایران ۴۰۳ و از سرور خارج ۴۱۲ (اکانت معلق). نیاز به کلید معتبر جدید."
+      },
+      {
+        "type": "official_docs",
+        "url": "https://api.fireworks.ai/inference/v1/models",
+        "checked_at": "2026-07-16",
+        "notes_fa": "اتصال از ایران ناموفق (connection refused/timeout). Fireworks احتمالاً ایران را مسدود کرده یا اتصال قطع است."
       }
     ],
     "notes_fa": "کلید ارائه‌شده دارای اکانت معلق است. تست با کلید معتبر جدید ضروری است."

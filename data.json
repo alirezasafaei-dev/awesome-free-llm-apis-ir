@@ -29,11 +29,14 @@
       "iranAccess": {
         "status": "unknown",
         "label": "❔ نامشخص",
-        "tested": false,
-        "testedAt": null,
-        "network": null,
-        "evidenceCount": 0,
-        "notesFa": "ثبت‌نام، دریافت کلید و درخواست API از شبکه ایران هنوز به‌صورت زنده آزمایش نشده است؛ از محل استقرار سرویس درباره دسترسی ایران نتیجه‌گیری نمی‌شود."
+        "tested": true,
+        "testedAt": "2026-07-16",
+        "network": {
+          "country": "IR",
+          "route": "direct"
+        },
+        "evidenceCount": 1,
+        "notesFa": "API endpoint از ایران قابل دسترس است (تست ۲۰۲۶-۰۷-۱۶). نیاز به API key معتبر برای تست زنده. وضعیت نهایی پس از دریافت کلید تعیین می‌شود."
       },
       "models": [
         "agnes-2.0-flash",
@@ -267,7 +270,7 @@
           "country": "IR",
           "route": "direct"
         },
-        "evidenceCount": 1,
+        "evidenceCount": 2,
         "notesFa": "کلید ارائه‌شده دارای اکانت معلق است. تست با کلید معتبر جدید ضروری است."
       },
       "models": [
@@ -310,16 +313,19 @@
       "iranAccess": {
         "status": "unknown",
         "label": "❔ نامشخص",
-        "tested": false,
-        "testedAt": null,
-        "network": null,
-        "evidenceCount": 0,
-        "notesFa": null
+        "tested": true,
+        "testedAt": "2026-07-16",
+        "network": {
+          "country": "IR",
+          "route": "direct"
+        },
+        "evidenceCount": 1,
+        "notesFa": "API endpoint از ایران قابل دسترس است (تست ۲۰۲۶-۰۷-۱۶). نیاز به API key از طریق Discord برای تست زنده. وضعیت نهایی پس از دریافت کلید تعیین می‌شود."
       },
       "models": [],
       "verification": {
         "level": "docs_verified",
-        "lastChecked": "2026-07-15",
+        "lastChecked": "2026-07-16",
         "staleAfterDays": 14
       }
     },
@@ -667,11 +673,14 @@
       "iranAccess": {
         "status": "signup_blocked",
         "label": "❔ نامشخص",
-        "tested": false,
-        "testedAt": null,
-        "network": null,
-        "evidenceCount": 1,
-        "notesFa": "ثبت‌نام نیاز به احراز هویت هویتی چینی (شماره ملی یا پاسپورت) دارد. کاربران ایرانی بدون اسناد هویتی چینی قادر به ثبت‌نام نیستند."
+        "tested": true,
+        "testedAt": "2026-07-16",
+        "network": {
+          "country": "IR",
+          "route": "direct"
+        },
+        "evidenceCount": 2,
+        "notesFa": "API از ایران قابل دسترس است (تست ۲۰۲۶-۰۷-۱۶). مانع، احراز هویت هویتی چینی است. کاربران ایرانی بدون اسناد هویتی چینی قادر به ثبت‌نام نیستند."
       },
       "models": [
         "Qwen/Qwen3.5-397B-A17B",
@@ -718,16 +727,19 @@
       "iranAccess": {
         "status": "unknown",
         "label": "❔ نامشخص",
-        "tested": false,
-        "testedAt": null,
-        "network": null,
-        "evidenceCount": 0,
-        "notesFa": null
+        "tested": true,
+        "testedAt": "2026-07-16",
+        "network": {
+          "country": "IR",
+          "route": "direct"
+        },
+        "evidenceCount": 1,
+        "notesFa": "API endpoint از ایران قابل دسترس است (تست ۲۰۲۶-۰۷-۱۶). نیاز به NVIDIA Developer Program key برای تست زنده. وضعیت نهایی پس از دریافت کلید تعیین می‌شود."
       },
       "models": [],
       "verification": {
         "level": "docs_verified",
-        "lastChecked": "2026-07-14",
+        "lastChecked": "2026-07-16",
         "staleAfterDays": 30
       }
     },
@@ -946,11 +958,14 @@
       "iranAccess": {
         "status": "signup_blocked",
         "label": "❔ نامشخص",
-        "tested": false,
-        "testedAt": null,
-        "network": null,
-        "evidenceCount": 1,
-        "notesFa": "ثبت‌نام نیاز به تأیید شماره تلفن چینی (+86) دارد. کاربران ایرانی بدون شماره تلفن چینی قادر به تکمیل ثبت‌نام نیستند."
+        "tested": true,
+        "testedAt": "2026-07-16",
+        "network": {
+          "country": "IR",
+          "route": "direct"
+        },
+        "evidenceCount": 2,
+        "notesFa": "API از ایران قابل دسترس است (تست ۲۰۲۶-۰۷-۱۶). مانع، تأیید شماره تلفن چینی (+86) است. کاربران ایرانی بدون شماره تلفن چینی قادر به تکمیل ثبت‌نام نیستند."
       },
       "models": [
         "Qwen/Qwen3-8B",
@@ -992,16 +1007,19 @@
       "iranAccess": {
         "status": "unknown",
         "label": "❔ نامشخص",
-        "tested": false,
-        "testedAt": null,
-        "network": null,
-        "evidenceCount": 0,
-        "notesFa": null
+        "tested": true,
+        "testedAt": "2026-07-16",
+        "network": {
+          "country": "IR",
+          "route": "direct"
+        },
+        "evidenceCount": 1,
+        "notesFa": "API endpoint از ایران قابل دسترس است (تست ۲۰۲۶-۰۷-۱۶). نیاز به Vercel API key برای تست زنده. وضعیت نهایی پس از دریافت کلید تعیین می‌شود."
       },
       "models": [],
       "verification": {
         "level": "docs_verified",
-        "lastChecked": "2026-07-15",
+        "lastChecked": "2026-07-16",
         "staleAfterDays": 30
       }
     }

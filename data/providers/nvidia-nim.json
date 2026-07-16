@@ -22,11 +22,22 @@
   "iran_access": {
     "status": "unknown",
     "official_policy": "not_documented",
-    "tested_from_iran": false,
-    "tested_at": null,
-    "test_method": "not_tested",
-    "network": null,
-    "evidence": []
+    "tested_from_iran": true,
+    "tested_at": "2026-07-16",
+    "test_method": "official_docs",
+    "network": {
+      "country": "IR",
+      "route": "direct"
+    },
+    "evidence": [
+      {
+        "type": "official_docs",
+        "url": "https://integrate.api.nvidia.com/v1/models",
+        "checked_at": "2026-07-16",
+        "notes_fa": "API endpoint از ایران قابل دسترس است (HTTP 200). نیاز به NVIDIA Developer Program key برای تست زنده."
+      }
+    ],
+    "notes_fa": "API endpoint از ایران قابل دسترس است (تست ۲۰۲۶-۰۷-۱۶). نیاز به NVIDIA Developer Program key برای تست زنده. وضعیت نهایی پس از دریافت کلید تعیین می‌شود."
   },
   "models": {
     "dynamic": true,
@@ -35,7 +46,7 @@
   },
   "verification": {
     "level": "docs_verified",
-    "last_checked": "2026-07-14",
+    "last_checked": "2026-07-16",
     "checked_by": "maintainers",
     "stale_after_days": 30
   },

@@ -36,19 +36,28 @@
   "iran_access": {
     "status": "signup_blocked",
     "official_policy": "not_documented",
-    "tested_from_iran": false,
-    "tested_at": null,
+    "tested_from_iran": true,
+    "tested_at": "2026-07-16",
     "test_method": "official_docs",
-    "network": null,
+    "network": {
+      "country": "IR",
+      "route": "direct"
+    },
     "evidence": [
       {
         "type": "official_docs",
         "url": "https://cloud.siliconflow.cn/account/ak",
         "checked_at": "2026-07-16",
         "notes_fa": "ثبت‌نام نیاز به تأیید شماره تلفن چینی (+86) دارد."
+      },
+      {
+        "type": "official_docs",
+        "url": "https://api.siliconflow.cn/v1/models",
+        "checked_at": "2026-07-16",
+        "notes_fa": "API endpoint از ایران قابل دسترس است (HTTP 401 = نیاز به auth). مانع ثبت‌نام تلفنی است نه مسدودیت شبکه."
       }
     ],
-    "notes_fa": "ثبت‌نام نیاز به تأیید شماره تلفن چینی (+86) دارد. کاربران ایرانی بدون شماره تلفن چینی قادر به تکمیل ثبت‌نام نیستند."
+    "notes_fa": "API از ایران قابل دسترس است (تست ۲۰۲۶-۰۷-۱۶). مانع، تأیید شماره تلفن چینی (+86) است. کاربران ایرانی بدون شماره تلفن چینی قادر به تکمیل ثبت‌نام نیستند."
   },
   "models": {
     "dynamic": true,
