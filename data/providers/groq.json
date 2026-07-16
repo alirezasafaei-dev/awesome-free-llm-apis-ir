@@ -75,7 +75,17 @@
         "model_tested": "llama-3.1-8b-instant",
         "endpoint": "https://api.groq.com/openai/v1/chat/completions",
         "source": "LOCAL_PC — Iran mobile network (MCI AS44244)",
-        "notes_fa": "403 از ایران. کلید API در دسترس برای اعتبارسنجی از منطقه مجاز نیست. وضعیت نامشخص باقی می‌ماند."
+        "notes_fa": "403 از ایران. کلید API موجود در دسترس از سرور خارج از ایران 401 برگرداند (کلید نامعتبر). نیاز به کلید معتبر جدید."
+      },
+      {
+        "type": "live_test",
+        "timestamp": "2026-07-16T10:43:00Z",
+        "http_status": 403,
+        "latency_ms": 500,
+        "model_tested": "llama-3.1-8b-instant",
+        "endpoint": "https://api.groq.com/openai/v1/chat/completions",
+        "source": "LOCAL_PC — Iran direct",
+        "notes_fa": "تکرار تست از ایران. پاسخ 403 تکرار شد."
       }
     ]
   },
@@ -94,7 +104,7 @@
     "checked_by": "maintainers",
     "stale_after_days": 30
   },
-  "notes_fa": "درخواست زنده از ایران پاسخ ۴۰۳ داد، اما اعتبار همان کلید از منطقهٔ مجاز تأیید نشده است؛ بنابراین وضعیت دسترسی همچنان نامشخص است.",
+  "notes_fa": "درخواست زنده از ایران پاسخ ۴۰۳ داد. کلید موجود از سرور خارج از ایران ۴۰۱ برگرداند (نامعتبر). برای تعیین وضعیت واقعی، نیاز به کلید معتبر جدید و اعتبارسنجی آن از منطقهٔ پشتیبانی‌شده است.",
   "sources": [
     "https://console.groq.com/docs/rate-limits",
     "https://console.groq.com/docs/models"
