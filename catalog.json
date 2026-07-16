@@ -635,7 +635,7 @@
         "checked_by": "maintainers",
         "stale_after_days": 14
       },
-      "notes_fa": "این سرویس یک Gateway اجتماعی است، نه Provider اصلی مدل. پایداری، قوانین و ظرفیت آن باید مستقل از Providerهای رسمی پایش شود.",
+      "notes_fa": "این سرویس یک Gateway اجتماعی است، نه Provider اصلی مدل. پایداری، قوانین و ظرفیت آن باید مستقل از Providerهای رسمی پایش شود. ثبت‌نام از طریق Discord (/signup) امکان‌پذیر است و Discord در ایران فعال است. مانع اصلی نیاز به /checkin روزانه است.",
       "sources": [
         "https://github.com/Free-The-Ai/free-ai/blob/master/README.md",
         "https://freetheai.xyz/docs",
@@ -1311,14 +1311,21 @@
         "notes_fa": "پلتفرم چینی API-Inference رایگان. ۵۴+ مدل: DeepSeek-V4، Qwen3.5-397B، GLM-5.2، Kimi-K2.5 و غیره. نیاز به ثبت‌نام و احراز هویت."
       },
       "iran_access": {
-        "status": "unknown",
+        "status": "signup_blocked",
         "official_policy": "not_documented",
         "tested_from_iran": false,
         "tested_at": null,
-        "test_method": "not_tested",
+        "test_method": "official_docs",
         "network": null,
-        "evidence": [],
-        "notes_fa": "از ایران تست نشده. Provider چینی با احراز هویت سطح بالا — دسترسی نامشخص."
+        "evidence": [
+          {
+            "type": "official_docs",
+            "url": "https://modelscope.cn/my/myaccesstoken",
+            "checked_at": "2026-07-16",
+            "notes_fa": "ثبت‌نام نیاز به حساب Alibaba Cloud و احراز هویت واقعی (شماره ملی چین یا پاسپورت) دارد."
+          }
+        ],
+        "notes_fa": "ثبت‌نام نیاز به احراز هویت هویتی چینی (شماره ملی یا پاسپورت) دارد. کاربران ایرانی بدون اسناد هویتی چینی قادر به ثبت‌نام نیستند."
       },
       "models": {
         "dynamic": true,
@@ -1794,14 +1801,21 @@
         "notes_fa": "Provider چینی با مدل‌های رایگان دائمی. Qwen3-8B و DeepSeek-R1-Distill-Qwen-7B رایگان. نیاز به API Key و تأیید شماره تلفن چینی دارد."
       },
       "iran_access": {
-        "status": "unknown",
+        "status": "signup_blocked",
         "official_policy": "not_documented",
         "tested_from_iran": false,
         "tested_at": null,
-        "test_method": "not_tested",
+        "test_method": "official_docs",
         "network": null,
-        "evidence": [],
-        "notes_fa": "از ایران تست نشده. Provider چینی — احتمال دسترسی بدون تحریم بالا است."
+        "evidence": [
+          {
+            "type": "official_docs",
+            "url": "https://cloud.siliconflow.cn/account/ak",
+            "checked_at": "2026-07-16",
+            "notes_fa": "ثبت‌نام نیاز به تأیید شماره تلفن چینی (+86) دارد."
+          }
+        ],
+        "notes_fa": "ثبت‌نام نیاز به تأیید شماره تلفن چینی (+86) دارد. کاربران ایرانی بدون شماره تلفن چینی قادر به تکمیل ثبت‌نام نیستند."
       },
       "models": {
         "dynamic": true,

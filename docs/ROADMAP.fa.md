@@ -11,9 +11,9 @@
 - ۱۴ Repository در Upstream Monitor
 - ۷ ممیزی Repository با تصمیم ماشین‌خوان Add / Watch / Reject
 - ۹ Provider با درخواست مستقیم موفق از ایران
-- ۵ Provider با مسدودیت جغرافیایی تأییدشده
+- ۷ Provider با مسدودیت جغرافیایی تأییدشده یا مانع ثبت‌نام
 - ۱ Provider با عدم پشتیبانی رسمی ایران
-- ۷ Provider با وضعیت دسترسی ایران نامشخص
+- ۵ Provider با وضعیت دسترسی ایران نامشخص
 - Backlog ماشین‌خوان در `data/verification-backlog.json`
 
 ## P0 — یکپارچگی قرارداد داده

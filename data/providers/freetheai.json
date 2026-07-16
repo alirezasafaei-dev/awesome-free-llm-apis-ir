@@ -49,7 +49,7 @@
     "checked_by": "maintainers",
     "stale_after_days": 14
   },
-  "notes_fa": "این سرویس یک Gateway اجتماعی است، نه Provider اصلی مدل. پایداری، قوانین و ظرفیت آن باید مستقل از Providerهای رسمی پایش شود.",
+  "notes_fa": "این سرویس یک Gateway اجتماعی است، نه Provider اصلی مدل. پایداری، قوانین و ظرفیت آن باید مستقل از Providerهای رسمی پایش شود. ثبت‌نام از طریق Discord (/signup) امکان‌پذیر است و Discord در ایران فعال است. مانع اصلی نیاز به /checkin روزانه است.",
   "sources": [
     "https://github.com/Free-The-Ai/free-ai/blob/master/README.md",
     "https://freetheai.xyz/docs",

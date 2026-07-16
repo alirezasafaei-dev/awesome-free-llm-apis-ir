@@ -11,9 +11,9 @@ This document is the canonical roadmap. A phase is marked complete only when its
 - 14 repositories in the upstream monitor
 - 7 machine-readable repository audits with Add / Watch / Reject decisions
 - 9 providers with a successful direct request from Iran
-- 5 providers with credential-validated geographic blocking
+- 7 providers with credential-validated geographic blocking or signup barriers
 - 1 provider with official lack of Iran support
-- 7 providers whose Iran-access status remains unknown
+- 5 providers whose Iran-access status remains unknown
 - Machine-readable execution backlog in `data/verification-backlog.json`
 
 ## P0 — Data-contract integrity

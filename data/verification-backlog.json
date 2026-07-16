@@ -4,7 +4,7 @@
   "parent_issue": 29,
   "summary": {
     "provider_count": 22,
-    "unknown_count": 7
+    "unknown_count": 5
   },
   "tracks": [
     {
@@ -35,13 +35,23 @@
       "issue": 34,
       "priority": "P1",
       "execution": "research_and_local",
-      "status": "open",
+      "status": "partially_resolved",
       "providers": [
-        "freetheai",
-        "modelscope",
-        "siliconflow"
+        "freetheai"
       ],
-      "blocker_type": "signup_or_identity"
+      "blocker_type": "signup_or_identity",
+      "resolved_providers": [
+        {
+          "provider_id": "modelscope",
+          "resolution": "signup_blocked",
+          "reason": "Requires Chinese identity verification (national ID or passport)"
+        },
+        {
+          "provider_id": "siliconflow",
+          "resolution": "signup_blocked",
+          "reason": "Requires Chinese phone number (+86) for verification"
+        }
+      ]
     },
     {
       "id": "network_matrix",
@@ -74,15 +84,7 @@
       "provider_id": "freetheai",
       "track_issue": 34,
       "blocker_type": "community_signup",
-      "next_action": "Document the current Discord signup requirement and test only through the normal authorized flow.",
-      "requires_local_execution": true,
-      "automatable": false
-    },
-    {
-      "provider_id": "modelscope",
-      "track_issue": 34,
-      "blocker_type": "identity_verification",
-      "next_action": "Verify the current first-party identity requirement and preserve unknown unless authorized access is available.",
+      "next_action": "Test direct API access from Iran via Discord-authorized key. Discord is accessible from Iran.",
       "requires_local_execution": true,
       "automatable": false
     },
@@ -91,14 +93,6 @@
       "track_issue": 33,
       "blocker_type": "account_access",
       "next_action": "Complete the standard developer access flow and run a minimal direct request from Iran.",
-      "requires_local_execution": true,
-      "automatable": false
-    },
-    {
-      "provider_id": "siliconflow",
-      "track_issue": 34,
-      "blocker_type": "phone_verification",
-      "next_action": "Confirm the current first-party phone requirement without bypassing platform controls.",
       "requires_local_execution": true,
       "automatable": false
     },
