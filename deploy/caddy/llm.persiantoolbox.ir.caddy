@@ -2,8 +2,9 @@ llm.persiantoolbox.ir {
 	encode zstd gzip
 	root * /srv/awesome-free-llm-apis-ir/current
 
-	@plausible_api path /api/event
-	reverse_proxy @plausible_api 127.0.0.1:8001
+	handle /api/event {
+		reverse_proxy 127.0.0.1:8001
+	}
 
 	@catalog path /catalog.json
 	header @catalog Cache-Control "public, max-age=300, must-revalidate"
