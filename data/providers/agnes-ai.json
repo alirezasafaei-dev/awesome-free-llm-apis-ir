@@ -62,6 +62,7 @@
   "sources": [
     "https://freellm.net/providers/agnes-ai",
     "https://agnes-ai.com/",
-    "https://platform.agnes-ai.com/"
+    "https://platform.agnes-ai.com/",
+    "https://github.com/AgnesAI-Labs/AgnesAI-Models"
   ]
 }

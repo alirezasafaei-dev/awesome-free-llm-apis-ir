@@ -29,6 +29,15 @@
       "notes_fa": "دیتاست وسیع و خودکار؛ مناسب کشف تغییر، نه منبع نهایی حقیقت."
     },
     {
+      "repository": "AgnesAI-Labs/AgnesAI-Models",
+      "role": "source_of_record",
+      "trust_tier": 1,
+      "classification": "official_gateway",
+      "paths": ["README.md"],
+      "review_policy": "Verify free-tier limits (RPM, models) against first-party docs before catalog updates.",
+      "notes_fa": "مخزن رسمی Agnes AI Gateway. منبع معتبر برای تأیید Free Tier و مدل‌ها."
+    },
+    {
       "repository": "Free-The-Ai/free-ai",
       "role": "provider_candidate",
       "trust_tier": 2,

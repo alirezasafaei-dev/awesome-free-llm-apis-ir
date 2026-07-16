@@ -7,3 +7,5 @@ node_modules/
 reports/local/
 .site-dist/
 benchmarks/results/local/
+.cache/
+artifacts/
