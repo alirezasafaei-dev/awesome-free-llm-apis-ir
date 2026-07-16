@@ -12,7 +12,7 @@
       "issue": 32,
       "priority": "P0",
       "execution": "local",
-      "status": "open",
+      "status": "partially_completed",
       "providers": [],
       "blocker_type": "security_review"
     },
@@ -25,6 +25,7 @@
       "providers": [
         "agnes-ai",
         "fireworks-ai",
+        "freetheai",
         "nvidia-nim",
         "vercel-ai-gateway"
       ],
@@ -35,21 +36,24 @@
       "issue": 34,
       "priority": "P1",
       "execution": "research_and_local",
-      "status": "partially_resolved",
-      "providers": [
-        "freetheai"
-      ],
+      "status": "resolved",
+      "providers": [],
       "blocker_type": "signup_or_identity",
       "resolved_providers": [
         {
           "provider_id": "modelscope",
           "resolution": "signup_blocked",
-          "reason": "Requires Chinese identity verification (national ID or passport)"
+          "reason": "Requires the identity-verification flow documented by the service"
         },
         {
           "provider_id": "siliconflow",
           "resolution": "signup_blocked",
-          "reason": "Requires Chinese phone number (+86) for verification"
+          "reason": "Requires the account-verification flow documented by the service"
+        },
+        {
+          "provider_id": "freetheai",
+          "resolution": "unknown",
+          "reason": "Community signup is reachable; a key-based model request remains part of Issue #33"
         }
       ]
     },
@@ -58,7 +62,7 @@
       "issue": 35,
       "priority": "P0",
       "execution": "local",
-      "status": "open",
+      "status": "partially_completed",
       "providers": [],
       "blocker_type": "independent_asn_and_vpn"
     }
@@ -68,23 +72,23 @@
       "provider_id": "agnes-ai",
       "track_issue": 33,
       "blocker_type": "account_access",
-      "next_action": "Complete authorized signup, obtain API access, and run a minimal direct request from Iran.",
+      "next_action": "Obtain authorized API access and run a minimal model request from the direct Iran route.",
       "requires_local_execution": true,
       "automatable": false
     },
     {
       "provider_id": "fireworks-ai",
       "track_issue": 33,
-      "blocker_type": "inactive_account",
-      "next_action": "Repeat the direct and supported-route comparison with an active authorized account.",
+      "blocker_type": "inactive_account_and_inconclusive_network_failure",
+      "next_action": "Repeat the direct and supported-route comparison with an active authorized account; do not classify connection refusal alone as blocking.",
       "requires_local_execution": true,
       "automatable": false
     },
     {
       "provider_id": "freetheai",
-      "track_issue": 34,
-      "blocker_type": "community_signup",
-      "next_action": "Test direct API access from Iran via Discord-authorized key. Discord is accessible from Iran.",
+      "track_issue": 33,
+      "blocker_type": "community_key_required",
+      "next_action": "Use an authorized Discord-issued key and run a minimal model request from the direct Iran route.",
       "requires_local_execution": true,
       "automatable": false
     },
@@ -92,7 +96,7 @@
       "provider_id": "nvidia-nim",
       "track_issue": 33,
       "blocker_type": "account_access",
-      "next_action": "Complete the standard developer access flow and run a minimal direct request from Iran.",
+      "next_action": "Complete the standard developer access flow and run a minimal model request from the direct Iran route.",
       "requires_local_execution": true,
       "automatable": false
     },
@@ -100,7 +104,7 @@
       "provider_id": "vercel-ai-gateway",
       "track_issue": 33,
       "blocker_type": "account_access",
-      "next_action": "Create an authorized gateway configuration and run a minimal direct request from Iran.",
+      "next_action": "Create an authorized gateway configuration and run a minimal model request from the direct Iran route.",
       "requires_local_execution": true,
       "automatable": false
     }
