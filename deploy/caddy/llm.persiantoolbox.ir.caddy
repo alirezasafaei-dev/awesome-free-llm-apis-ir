@@ -3,7 +3,7 @@ llm.persiantoolbox.ir {
 	root * /srv/awesome-free-llm-apis-ir/current
 
 	handle /api/event {
-		reverse_proxy 127.0.0.1:8001
+		reverse_proxy 127.0.0.1:8002
 	}
 
 	@catalog path /catalog.json
