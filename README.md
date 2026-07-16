@@ -30,7 +30,7 @@
 <!-- This section is generated. Run: npm run generate -->
 | سرویس | نوع | رایگان | محدودیت نمونه | OpenAI-compatible | دسترسی ایران | آخرین بررسی |
 |---|---|---|---|:---:|---|---|
-| [Agnes AI](https://agnes-ai.com/) | Gateway رسمی | مدل‌های رایگان | 30 RPM | ✅ | ❔ نامشخص | 2026-07-16 |
+| [Agnes AI](https://agnes-ai.com/) | Gateway رسمی | مدل‌های رایگان | 20 RPM | ✅ | ❔ نامشخص | 2026-07-16 |
 | [Aion Labs](https://www.aionlabs.ai/) | Provider رسمی | سهمیه دائمی | 15 RPM · 20,000 TPM | ✅ | ❔ نامشخص | 2026-07-15 |
 | [Cerebras Inference](https://cloud.cerebras.ai/) | Gateway رسمی | آزمایشی | 5 RPM · 30,000 TPM | ✅ | ⛔ مسدود | 2026-07-14 |
 | [Cloudflare Workers AI](https://developers.cloudflare.com/workers-ai/) | Gateway رسمی | سهمیه دائمی | 10,000 neurons/day | ✅ | ✅ مستقیم تست‌شده | 2026-07-14 |
@@ -58,7 +58,7 @@
 
 | سرویس | Base URL | Auth | نیاز به کارت بانکی |
 |---|---|---|---|
-| [Agnes AI](https://agnes-ai.com/) | `https://apihub.agnes-ai.com/v1` | API Key | ❌ ثبت‌نام |
+| [Agnes AI](https://agnes-ai.com/) | `https://apihub.agnes-ai.com/v1` | API Key | ❔ نامشخص |
 | [Aion Labs](https://www.aionlabs.ai/) | `https://api.aionlabs.ai/v1` | API Key | ❌ خیر |
 | [Cerebras](https://cloud.cerebras.ai/) | `https://api.cerebras.ai/v1` | API Key | ✅ ثبت‌نام |
 | [Cloudflare Workers AI](https://developers.cloudflare.com/workers-ai/) | `https://api.cloudflare.com/client/v4/accounts/{id}/ai/v1` | API Token | ❌ سهمیه رایگان |
@@ -128,6 +128,16 @@ GITHUB_TOKEN=... npm run upstreams:check
 ```
 
 جزئیات معماری، Tierهای اعتماد، Artifact/Cache و روش پاسخ به هشدار در [راهنمای پایش Repositoryهای بالادستی](docs/UPSTREAM_REPOSITORY_WATCH.fa.md) آمده است.
+
+## ممیزی Repositoryهای کاندید
+
+تصمیم Add/Watch/Reject برای Repositoryهای کشف‌شده در [Registry ماشین‌خوان ممیزی](data/repository-audits.json) ثبت می‌شود و CI مرز آن‌ها را با Provider و Tools Catalog کنترل می‌کند.
+
+```bash
+npm run validate:repo-audits
+```
+
+روش، Evidence و نتیجهٔ ممیزی‌های جاری در [راهنمای ممیزی Repositoryهای GitHub](docs/GITHUB_REPOSITORY_AUDITS.fa.md) آمده است.
 
 ## تست واقعی از ایران
 

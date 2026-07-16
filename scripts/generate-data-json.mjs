@@ -44,8 +44,8 @@ const output = {
       freeTier: {
         status: ft.status,
         type: ft.type,
-        requiresPaymentMethod: ft.requires_payment_method ?? true,
-        limitExample: limit.rpm ? `${limit.rpm} RPM` : limit.notes_fa || null,
+        requiresPaymentMethod: ft.requires_payment_method ?? null,
+        limitExample: limit.rpm != null ? `${limit.rpm} RPM` : limit.notes_fa || null,
         notesFa: ft.notes_fa || null
       },
       capabilities: p.capabilities || [],

@@ -1,0 +1,115 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://llm.persiantoolbox.ir/schema/repository-audit.schema.json",
+  "title": "GitHub repository audit registry",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "last_updated", "audits"],
+  "properties": {
+    "schema_version": { "const": "1.0.0" },
+    "last_updated": { "type": "string", "format": "date" },
+    "audits": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "repository",
+          "repository_url",
+          "decision",
+          "classification",
+          "scope",
+          "maintenance_status",
+          "archived",
+          "openai_compatible",
+          "auth_surface",
+          "free_api_evidence",
+          "license",
+          "risk",
+          "reason_fa",
+          "evidence"
+        ],
+        "properties": {
+          "repository": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$"
+          },
+          "repository_url": {
+            "type": "string",
+            "format": "uri",
+            "pattern": "^https://github\\.com/"
+          },
+          "decision": {
+            "enum": ["add_provider", "add_upstream", "watch", "reject"]
+          },
+          "classification": {
+            "enum": [
+              "official_gateway",
+              "community_gateway",
+              "session_bridge",
+              "self_hosted",
+              "catalog_tooling",
+              "client_tool",
+              "prompt_library"
+            ]
+          },
+          "scope": {
+            "enum": ["provider_catalog", "tools_catalog", "upstream_monitor", "out_of_scope"]
+          },
+          "maintenance_status": {
+            "enum": ["active", "inactive", "archived", "unknown"]
+          },
+          "archived": { "type": "boolean" },
+          "last_activity_at": {
+            "type": ["string", "null"],
+            "format": "date"
+          },
+          "openai_compatible": {
+            "enum": ["yes", "partial", "no", "not_applicable", "unknown"]
+          },
+          "auth_surface": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "enum": [
+                "api_key",
+                "cookie",
+                "browser_session",
+                "third_party_keys",
+                "account_balance",
+                "none",
+                "unknown"
+              ]
+            }
+          },
+          "free_api_evidence": {
+            "enum": ["verified", "claimed", "none", "not_applicable", "unknown"]
+          },
+          "license": { "type": "string", "minLength": 1 },
+          "risk": { "enum": ["low", "medium", "high", "critical"] },
+          "reason_fa": { "type": "string", "minLength": 1 },
+          "follow_up_fa": { "type": "string", "minLength": 1 },
+          "evidence": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["type", "url", "checked_at", "notes_fa"],
+              "properties": {
+                "type": {
+                  "enum": ["github_metadata", "readme", "official_docs", "code", "package_manifest", "commit"]
+                },
+                "url": { "type": "string", "format": "uri" },
+                "checked_at": { "type": "string", "format": "date" },
+                "notes_fa": { "type": "string", "minLength": 1 }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
