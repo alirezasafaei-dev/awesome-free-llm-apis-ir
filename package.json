@@ -8,6 +8,7 @@
     "validate": "node scripts/validate.mjs",
     "generate:data": "node scripts/generate-data-json.mjs",
     "generate:data:check": "node scripts/generate-data-json.mjs --check",
+    "data:test": "node scripts/test-data-json-contract.mjs",
     "generate": "node scripts/generate-readme.mjs && node scripts/generate-catalog.mjs && node scripts/generate-data-json.mjs",
     "generate:check": "node scripts/generate-readme.mjs --check && node scripts/generate-data-json.mjs --check",
     "catalog:check": "node scripts/generate-catalog.mjs --check",
@@ -31,7 +32,7 @@
     "generate:tools:check": "node scripts/generate-tool-catalog.mjs --check",
     "tools:test": "node scripts/test-tool-classification.mjs",
     "validate:repo-audits": "node scripts/validate-repository-audits.mjs",
-    "test": "npm run validate && npm run generate:check && npm run catalog:check && npm run verify:iran:dry && npm run upstreams:test && npm run advisor:test && npm run benchmark:validate && npm run benchmark:dry && npm run benchmark:test && npm run site:check && npm run deploy:check && npm run deploy:test && npm run validate:tools && npm run generate:tools:check && npm run tools:test && npm run validate:repo-audits"
+    "test": "npm run validate && npm run generate:check && npm run catalog:check && npm run data:test && npm run verify:iran:dry && npm run upstreams:test && npm run advisor:test && npm run benchmark:validate && npm run benchmark:dry && npm run benchmark:test && npm run site:check && npm run deploy:check && npm run deploy:test && npm run validate:tools && npm run generate:tools:check && npm run tools:test && npm run validate:repo-audits"
   },
   "engines": {
     "node": ">=20"
