@@ -1,0 +1,48 @@
+{
+  "schema_version": "1.0.0",
+  "tool_type": "proxy",
+  "id": "freellmapi",
+  "name": "FreeLLMAPI",
+  "description": "Self-hosted multi-provider proxy that aggregates free LLM API endpoints behind a single OpenAI-compatible interface.",
+  "description_fa": "پروکسی چند-Provider خودمیزبان که چندین API رایگان را پشت یک رابط سازگار با OpenAI یکپارچه می‌کند.",
+  "repository": "https://github.com/tashfeenahmed/freellmapi",
+  "deployment": {
+    "type": "self_hosted",
+    "instructions": "git clone and follow README setup",
+    "instructions_fa": "git clone و راه‌اندازی مطابق README"
+  },
+  "auth_surface": {
+    "type": "api_key",
+    "credential_storage": "env_file",
+    "notes_fa": "کلیدهای API Providerها در فایل env ذخیره می‌شوند"
+  },
+  "capabilities": {
+    "openai_compatible": true,
+    "anthropic_compatible": false,
+    "supported_upstreams": [
+      "gpt4free providers",
+      "community REST endpoints"
+    ],
+    "features": ["load_balancing", "fallback"]
+  },
+  "iran_compatibility": {
+    "status": "unknown",
+    "last_checked": "2026-07-16",
+    "notes_fa": "مستقیماً تست نشده. وابسته به Providerهای زیرمجموعه برای دسترسی از ایران."
+  },
+  "risk": {
+    "terms": "medium",
+    "stability": "volatile",
+    "credential_safety": "moderate",
+    "notes_fa": "پایداری وابسته به upstreamها. کلیدها در env محلی ذخیره می‌شوند."
+  },
+  "verification": {
+    "level": "code_reviewed",
+    "last_checked": "2026-07-16",
+    "checked_by": "upstream_monitor",
+    "stale_after_days": 14
+  },
+  "upstream_repositories": [
+    "https://github.com/tashfeenahmed/freellmapi"
+  ]
+}

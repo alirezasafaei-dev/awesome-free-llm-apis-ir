@@ -1,0 +1,50 @@
+{
+  "schema_version": "1.0.0",
+  "tool_type": "router",
+  "id": "free-way",
+  "name": "Free-Way",
+  "description": "Local OpenAI and Anthropic-compatible gateway that routes requests through free model endpoints with caching and rate limiting.",
+  "description_fa": "Gateway محلی سازگار با OpenAI و Anthropic که درخواست‌ها را از طریق endpointهای رایگان با کش و Rate limiting مسیریابی می‌کند.",
+  "repository": "https://github.com/GoDiao/Free-Way",
+  "deployment": {
+    "type": "local",
+    "instructions": "Clone repo, configure providers, run",
+    "instructions_fa": "clone مخزن، تنظیم Providerها، اجرا"
+  },
+  "auth_surface": {
+    "type": "api_key",
+    "credential_storage": "config_file",
+    "notes_fa": "کلیدها یا Tokenهای Providerها در فایل کانفیگ محلی ذخیره می‌شوند."
+  },
+  "capabilities": {
+    "openai_compatible": true,
+    "anthropic_compatible": true,
+    "supported_upstreams": [
+      "OpenAI",
+      "Anthropic",
+      "Google Gemini",
+      "other OpenAI-compatible endpoints"
+    ],
+    "features": ["load_balancing", "fallback", "rate_limit_management"]
+  },
+  "iran_compatibility": {
+    "status": "unknown",
+    "last_checked": "2026-07-16",
+    "notes_fa": "وابسته به Providerهای upstream. ممکن است برخی Providerها از ایران قابل دسترس باشند."
+  },
+  "risk": {
+    "terms": "medium",
+    "stability": "experimental",
+    "credential_safety": "moderate",
+    "notes_fa": "کلیدها در فایل کانفیگ محلی. پروژه نسبتاً جدید و آزمایشی."
+  },
+  "verification": {
+    "level": "code_reviewed",
+    "last_checked": "2026-07-16",
+    "checked_by": "upstream_monitor",
+    "stale_after_days": 14
+  },
+  "upstream_repositories": [
+    "https://github.com/GoDiao/Free-Way"
+  ]
+}

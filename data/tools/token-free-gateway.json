@@ -1,0 +1,50 @@
+{
+  "schema_version": "1.0.0",
+  "tool_type": "session_bridge",
+  "id": "token-free-gateway",
+  "name": "Token Free Gateway",
+  "description": "Web-session bridge that uses browser cookies to access OpenAI, Claude, Gemini and other provider web interfaces through a local API.",
+  "description_fa": "پل Session وب که از Cookie مرورگر برای دسترسی به رابط‌های وب OpenAI، Claude، Gemini و سایر Providerها از طریق API محلی استفاده می‌کند.",
+  "repository": "https://github.com/andeya/token-free-gateway",
+  "deployment": {
+    "type": "local",
+    "instructions": "Clone repo, install dependencies, configure cookies",
+    "instructions_fa": "clone مخزن، نصب وابستگی‌ها، تنظیم کوکی‌ها"
+  },
+  "auth_surface": {
+    "type": "cookie",
+    "credential_storage": "browser_local",
+    "notes_fa": "نیاز به Cookie جلسه کاربری از مرورگر. پس از خروج از حساب کاربری منقضی می‌شود."
+  },
+  "capabilities": {
+    "openai_compatible": true,
+    "anthropic_compatible": true,
+    "supported_upstreams": [
+      "OpenAI ChatGPT",
+      "Anthropic Claude",
+      "Google Gemini",
+      "Alibaba Qwen"
+    ],
+    "features": ["cookie_injection", "session_persistence"]
+  },
+  "iran_compatibility": {
+    "status": "unknown",
+    "last_checked": "2026-07-16",
+    "notes_fa": "بستگی به امکان ثبت‌نام و ورود به Providerها از ایران دارد."
+  },
+  "risk": {
+    "terms": "high",
+    "stability": "volatile",
+    "credential_safety": "risky",
+    "notes_fa": "استفاده از Session Cookieهای کاربری می‌تواند Terms را نقض کند. Sessionها پس از logout منقضی می‌شوند."
+  },
+  "verification": {
+    "level": "code_reviewed",
+    "last_checked": "2026-07-16",
+    "checked_by": "upstream_monitor",
+    "stale_after_days": 14
+  },
+  "upstream_repositories": [
+    "https://github.com/andeya/token-free-gateway"
+  ]
+}

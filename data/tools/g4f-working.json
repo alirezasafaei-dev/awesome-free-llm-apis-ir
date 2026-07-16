@@ -1,0 +1,47 @@
+{
+  "schema_version": "1.0.0",
+  "tool_type": "monitoring_companion",
+  "id": "g4f-working",
+  "name": "g4f-working",
+  "description": "Volatility and availability monitoring companion for gpt4free providers. Tracks which provider endpoints are currently functional.",
+  "description_fa": "همراه پایش نوسان و دسترسی برای Providerهای gpt4free. ردیابی می‌کند کدام endpointهای Provider در حال حاضر کار می‌کنند.",
+  "repository": "https://github.com/Free-AI-Things/g4f-working",
+  "deployment": {
+    "type": "hosted",
+    "instructions": "Visit the website for current provider status",
+    "instructions_fa": "مراجعه به وب‌سایت برای وضعیت فعلی Providerها"
+  },
+  "auth_surface": {
+    "type": "none",
+    "credential_storage": "none",
+    "notes_fa": "فقط فقط‌خوان (read-only). نیازی به احراز هویت ندارد."
+  },
+  "capabilities": {
+    "openai_compatible": false,
+    "anthropic_compatible": false,
+    "supported_upstreams": [
+      "gpt4free provider ecosystem"
+    ],
+    "features": ["model_discovery"]
+  },
+  "iran_compatibility": {
+    "status": "compatible",
+    "last_checked": "2026-07-16",
+    "notes_fa": "فقط خواندنی و بدون نیاز به احراز هویت. از ایران قابل دسترسی است."
+  },
+  "risk": {
+    "terms": "low",
+    "stability": "volatile",
+    "credential_safety": "safe",
+    "notes_fa": "فاقد ذخیره‌سازی credential. اطلاعات show است و نوسان بالایی دارد."
+  },
+  "verification": {
+    "level": "community_verified",
+    "last_checked": "2026-07-16",
+    "checked_by": "upstream_monitor",
+    "stale_after_days": 14
+  },
+  "upstream_repositories": [
+    "https://github.com/Free-AI-Things/g4f-working"
+  ]
+}

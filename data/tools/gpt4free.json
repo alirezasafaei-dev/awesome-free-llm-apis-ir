@@ -1,0 +1,51 @@
+{
+  "schema_version": "1.0.0",
+  "tool_type": "session_bridge",
+  "id": "gpt4free",
+  "name": "gpt4free",
+  "description": "Provider proxy and browser-session ecosystem. Uses cookie injection, HAR imports, and browser automation to access provider models.",
+  "description_fa": "اکوسیستم پروکسی Provider و Sessionهای مرورگر. از Cookie injection، HAR import و مرورگر خودکار برای دسترسی به مدل‌های Providerها استفاده می‌کند.",
+  "repository": "https://github.com/xtekky/gpt4free",
+  "deployment": {
+    "type": "local",
+    "instructions": "pip install g4f or clone repo",
+    "instructions_fa": "pip install g4f یا clone مخزن"
+  },
+  "auth_surface": {
+    "type": "cookie",
+    "credential_storage": "browser_local",
+    "notes_fa": "از Cookie مرورگر یا HAR file برای احراز هویت استفاده می‌کند. کوکی‌ها منقضی می‌شوند."
+  },
+  "capabilities": {
+    "openai_compatible": true,
+    "anthropic_compatible": false,
+    "supported_upstreams": [
+      "OpenAI",
+      "Anthropic",
+      "Google",
+      "Microsoft",
+      "multiple community endpoints"
+    ],
+    "features": ["cookie_injection", "har_import", "session_persistence", "model_discovery"]
+  },
+  "iran_compatibility": {
+    "status": "requires_configuration",
+    "last_checked": "2026-07-16",
+    "notes_fa": "قابل استفاده از ایران با VPN. Providerهای زیرمجموعه ممکن است ایران را مسدود کرده باشند."
+  },
+  "risk": {
+    "terms": "high",
+    "stability": "volatile",
+    "credential_safety": "risky",
+    "notes_fa": "استفاده از Cookie و HAR می‌تواند Terms of Service Providerها را نقض کند. کوکی‌ها منقضی و ناپایدارند."
+  },
+  "verification": {
+    "level": "code_reviewed",
+    "last_checked": "2026-07-16",
+    "checked_by": "upstream_monitor",
+    "stale_after_days": 14
+  },
+  "upstream_repositories": [
+    "https://github.com/xtekky/gpt4free"
+  ]
+}

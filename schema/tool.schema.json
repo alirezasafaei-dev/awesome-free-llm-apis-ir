@@ -1,0 +1,204 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://llm.persiantoolbox.ir/schema/tool.schema.json",
+  "title": "Tool Entry",
+  "description": "Schema for tool, proxy, session-bridge, and router entries separate from the main provider catalog.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "tool_type",
+    "id",
+    "name",
+    "description",
+    "repository",
+    "deployment",
+    "auth_surface",
+    "capabilities",
+    "iran_compatibility",
+    "verification"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "tool_type": {
+      "enum": ["proxy", "session_bridge", "router", "monitoring_companion", "aggregator"]
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1
+    },
+    "description_fa": {
+      "type": "string",
+      "minLength": 1
+    },
+    "repository": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "^https://github\\.com/"
+    },
+    "homepage": {
+      "type": "string",
+      "format": "uri"
+    },
+    "deployment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type"],
+      "properties": {
+        "type": {
+          "enum": ["local", "self_hosted", "hosted"]
+        },
+        "instructions": {
+          "type": "string"
+        },
+        "instructions_fa": {
+          "type": "string"
+        }
+      }
+    },
+    "auth_surface": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "credential_storage"],
+      "properties": {
+        "type": {
+          "enum": ["api_key", "oauth", "cookie", "har", "browser_session", "none"]
+        },
+        "credential_storage": {
+          "enum": ["env_file", "config_file", "browser_local", "memory_only", "none", "third_party_service"]
+        },
+        "notes_fa": {
+          "type": "string"
+        }
+      }
+    },
+    "capabilities": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["openai_compatible", "anthropic_compatible", "supported_upstreams"],
+      "properties": {
+        "openai_compatible": {
+          "type": "boolean"
+        },
+        "anthropic_compatible": {
+          "type": "boolean"
+        },
+        "supported_upstreams": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "features": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["load_balancing", "fallback", "rate_limit_management", "model_discovery", "session_persistence", "cookie_injection", "har_import", "anonymous_access"]
+          },
+          "uniqueItems": true
+        }
+      }
+    },
+    "iran_compatibility": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "last_checked", "notes_fa"],
+      "properties": {
+        "status": {
+          "enum": ["compatible", "requires_configuration", "requires_vpn", "unknown", "blocked"]
+        },
+        "last_checked": {
+          "type": "string",
+          "format": "date"
+        },
+        "notes_fa": {
+          "type": "string"
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["type", "source", "checked_at"],
+            "properties": {
+              "type": {
+                "enum": ["direct_test", "community_report", "documentation_review", "upstream_monitor"]
+              },
+              "source": {
+                "type": "string"
+              },
+              "checked_at": {
+                "type": "string",
+                "format": "date"
+              },
+              "notes_fa": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "risk": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["terms", "stability", "credential_safety"],
+      "properties": {
+        "terms": {
+          "enum": ["low", "medium", "high", "critical"]
+        },
+        "stability": {
+          "enum": ["stable", "volatile", "experimental", "archived"]
+        },
+        "credential_safety": {
+          "enum": ["safe", "moderate", "risky", "dangerous"]
+        },
+        "notes_fa": {
+          "type": "string"
+        }
+      }
+    },
+    "verification": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["level", "last_checked", "stale_after_days"],
+      "properties": {
+        "level": {
+          "enum": ["docs_verified", "code_reviewed", "community_verified", "live_tested"]
+        },
+        "last_checked": {
+          "type": "string",
+          "format": "date"
+        },
+        "checked_by": {
+          "type": "string"
+        },
+        "stale_after_days": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "upstream_repositories": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "uri",
+        "pattern": "^https://github\\.com/"
+      },
+      "uniqueItems": true
+    }
+  }
+}

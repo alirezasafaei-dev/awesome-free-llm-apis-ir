@@ -7,7 +7,7 @@ Website: [llm.persiantoolbox.ir](https://llm.persiantoolbox.ir/) · Iran mirror:
 > [!IMPORTANT]
 > A free tier does not imply availability in Iran. Direct and VPN results are never conflated: every VPN report records its route and exit country. `Unknown` means there is not enough evidence; it does not mean the service works.
 
-The canonical catalog is in [`data/providers`](data/providers), validated against [`schema/provider.schema.json`](schema/provider.schema.json). The main [Persian README](README.md) contains the generated summary table and contribution guidance.
+The canonical catalog is in [`data/providers`](data/providers), validated against [`schema/provider.schema.json`](schema/provider.schema.json). A **separate tools catalog** for proxies, session bridges, and routers lives in [`data/tools`](data/tools) with its own schema at [`schema/tool.schema.json`](schema/tool.schema.json), aggregated into [`catalog-tools.json`](catalog-tools.json). The main [Persian README](README.md) contains the generated summary table and contribution guidance.
 
 ## Principles
 

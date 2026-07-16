@@ -1,0 +1,48 @@
+{
+  "schema_version": "1.0.0",
+  "tool_type": "aggregator",
+  "id": "freellmpool",
+  "name": "FreeLLMPool",
+  "description": "Proxy and catalog hybrid that aggregates free provider endpoints with rotating key pools and load balancing.",
+  "description_fa": "ترکیبی از Proxy و Catalog که endpointهای Provider رایگان را با Pool چرخشی کلید و Load balancing یکپارچه می‌کند.",
+  "repository": "https://github.com/0xzr/freellmpool",
+  "deployment": {
+    "type": "self_hosted",
+    "instructions": "Clone and configure provider keys",
+    "instructions_fa": "clone و تنظیم کلیدهای Provider"
+  },
+  "auth_surface": {
+    "type": "api_key",
+    "credential_storage": "env_file",
+    "notes_fa": "کلیدهای API Providerها در فایل env ذخیره می‌شوند. گاهی از کلیدهای عمومی اشتراکی استفاده می‌کند."
+  },
+  "capabilities": {
+    "openai_compatible": true,
+    "anthropic_compatible": false,
+    "supported_upstreams": [
+      "multiple free API providers",
+      "community endpoints"
+    ],
+    "features": ["load_balancing", "fallback", "rate_limit_management"]
+  },
+  "iran_compatibility": {
+    "status": "unknown",
+    "last_checked": "2026-07-16",
+    "notes_fa": "مستقیماً تست نشده. کارایی از ایران وابسته به Providerهای زیرمجموعه است."
+  },
+  "risk": {
+    "terms": "medium",
+    "stability": "volatile",
+    "credential_safety": "moderate",
+    "notes_fa": "کلیدهای اشتراکی ممکن است توسط Provider مسدود شوند. پایداری وابسته به community است."
+  },
+  "verification": {
+    "level": "code_reviewed",
+    "last_checked": "2026-07-16",
+    "checked_by": "upstream_monitor",
+    "stale_after_days": 14
+  },
+  "upstream_repositories": [
+    "https://github.com/0xzr/freellmpool"
+  ]
+}
