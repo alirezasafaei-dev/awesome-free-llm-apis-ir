@@ -72,6 +72,51 @@
       "paths": ["README.md"],
       "review_policy": "Use availability results only as advisory signals; require independent reproduction before publication.",
       "notes_fa": "رادار روزانه برای نوسان Providerهای بدون احراز هویت در اکوسیستم g4f."
+    },
+    {
+      "repository": "andeya/token-free-gateway",
+      "role": "tooling_watch",
+      "trust_tier": 3,
+      "classification": "session_bridge",
+      "paths": ["README.md"],
+      "review_policy": "Monitor cookie-based access patterns; never import into main provider catalog.",
+      "notes_fa": "پل Session مبتنی بر Cookie مرورگر. پرخطر از نظر پایداری و Terms."
+    },
+    {
+      "repository": "router-for-me/CLIProxyAPI",
+      "role": "tooling_watch",
+      "trust_tier": 3,
+      "classification": "session_bridge",
+      "paths": ["README.md"],
+      "review_policy": "Monitor OAuth flow changes; credential safety depends on local token storage.",
+      "notes_fa": "پل OAuth/CLI. توکن در فایل محلی ذخیره می‌شود."
+    },
+    {
+      "repository": "0xzr/freellmpool",
+      "role": "tooling_watch",
+      "trust_tier": 3,
+      "classification": "self_hosted",
+      "paths": ["README.md"],
+      "review_policy": "Treat aggregated provider claims as signals only; require independent reproduction.",
+      "notes_fa": "Pool چرخشی کلید API با Load balancing. مناسب برای کشف اما غیررسمی."
+    },
+    {
+      "repository": "GoDiao/Free-Way",
+      "role": "tooling_watch",
+      "trust_tier": 3,
+      "classification": "router",
+      "paths": ["README.md"],
+      "review_policy": "Experimental project; verify all upstream provider claims independently.",
+      "notes_fa": "Gateway محلی آزمایشی با قابلیت Fallback خودکار."
+    },
+    {
+      "repository": "animaios/animarouter",
+      "role": "tooling_watch",
+      "trust_tier": 3,
+      "classification": "router",
+      "paths": ["README.md"],
+      "review_policy": "Lightweight project; validate rate limits and provider support before catalog use.",
+      "notes_fa": "Gateway مسیریابی سبک. پروژه جدید با پشتیبانی محدود."
     }
   ]
 }
