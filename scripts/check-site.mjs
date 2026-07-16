@@ -22,7 +22,14 @@ for (const needle of ["lang=\"fa\"", "dir=\"rtl\"", "./app.js", "./styles.css", 
   if (!html.includes(needle)) throw new Error(`site/index.html is missing ${needle}`);
 }
 if (!appSource.includes('fetch("./catalog.json"')) throw new Error("site/app.js does not fetch the generated catalog");
-if (/<script[^>]+src=["']https?:\/\//i.test(html)) throw new Error("Remote scripts are not allowed");
+const remoteScriptsAllowed = ["https://plausible.alirezasafaei.dev/js/script.js"];
+const scriptTags = html.match(/<script[^>]+src=["']https?:\/\/[^"']+["'][^>]*>/gi) || [];
+for (const tag of scriptTags) {
+  const srcMatch = tag.match(/src=["']([^"']+)["']/i);
+  if (srcMatch && !remoteScriptsAllowed.includes(srcMatch[1])) {
+    throw new Error(`Remote script not allowed: ${srcMatch[1]}`);
+  }
+}
 const canonicalOrigin = "https://llm.persiantoolbox.ir/";
 if (!html.includes(`<link rel="canonical" href="${canonicalOrigin}">`)) throw new Error("Canonical production URL is missing");
 if (!html.includes(`<meta property="og:url" content="${canonicalOrigin}">`)) throw new Error("Open Graph production URL is missing");
