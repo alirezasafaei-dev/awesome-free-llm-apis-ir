@@ -665,13 +665,13 @@
         "structured_output"
       ],
       "iranAccess": {
-        "status": "unknown",
+        "status": "signup_blocked",
         "label": "❔ نامشخص",
         "tested": false,
         "testedAt": null,
         "network": null,
-        "evidenceCount": 0,
-        "notesFa": "از ایران تست نشده. Provider چینی با احراز هویت سطح بالا — دسترسی نامشخص."
+        "evidenceCount": 1,
+        "notesFa": "ثبت‌نام نیاز به احراز هویت هویتی چینی (شماره ملی یا پاسپورت) دارد. کاربران ایرانی بدون اسناد هویتی چینی قادر به ثبت‌نام نیستند."
       },
       "models": [
         "Qwen/Qwen3.5-397B-A17B",
@@ -944,13 +944,13 @@
         "structured_output"
       ],
       "iranAccess": {
-        "status": "unknown",
+        "status": "signup_blocked",
         "label": "❔ نامشخص",
         "tested": false,
         "testedAt": null,
         "network": null,
-        "evidenceCount": 0,
-        "notesFa": "از ایران تست نشده. Provider چینی — احتمال دسترسی بدون تحریم بالا است."
+        "evidenceCount": 1,
+        "notesFa": "ثبت‌نام نیاز به تأیید شماره تلفن چینی (+86) دارد. کاربران ایرانی بدون شماره تلفن چینی قادر به تکمیل ثبت‌نام نیستند."
       },
       "models": [
         "Qwen/Qwen3-8B",

@@ -33,14 +33,21 @@
     "notes_fa": "پلتفرم چینی API-Inference رایگان. ۵۴+ مدل: DeepSeek-V4، Qwen3.5-397B، GLM-5.2، Kimi-K2.5 و غیره. نیاز به ثبت‌نام و احراز هویت."
   },
   "iran_access": {
-    "status": "unknown",
+    "status": "signup_blocked",
     "official_policy": "not_documented",
     "tested_from_iran": false,
     "tested_at": null,
-    "test_method": "not_tested",
+    "test_method": "official_docs",
     "network": null,
-    "evidence": [],
-    "notes_fa": "از ایران تست نشده. Provider چینی با احراز هویت سطح بالا — دسترسی نامشخص."
+    "evidence": [
+      {
+        "type": "official_docs",
+        "url": "https://modelscope.cn/my/myaccesstoken",
+        "checked_at": "2026-07-16",
+        "notes_fa": "ثبت‌نام نیاز به حساب Alibaba Cloud و احراز هویت واقعی (شماره ملی چین یا پاسپورت) دارد."
+      }
+    ],
+    "notes_fa": "ثبت‌نام نیاز به احراز هویت هویتی چینی (شماره ملی یا پاسپورت) دارد. کاربران ایرانی بدون اسناد هویتی چینی قادر به ثبت‌نام نیستند."
   },
   "models": {
     "dynamic": true,
