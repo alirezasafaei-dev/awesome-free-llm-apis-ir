@@ -22,6 +22,17 @@ const numericLimitFields = new Set([
   "rpm", "rpd", "rph", "tpm", "tph", "tpd", "input_tokens", "output_tokens",
   "concurrent_requests", "daily_units", "monthly_credit_usd", "monthly_requests"
 ]);
+const allowedKeys = {
+  provider: new Set(["schema_version", "service_type", "id", "name", "website", "docs", "signup", "api", "capabilities", "free_tier", "iran_access", "models", "verification", "notes_fa", "sources"]),
+  api: new Set(["base_url", "openai_compatible", "auth"]),
+  freeTier: new Set(["status", "type", "requires_payment_method", "limits", "notes_fa"]),
+  limit: new Set(["scope", "model", "condition", "rpm", "rpd", "rph", "tpm", "tph", "tpd", "input_tokens", "output_tokens", "concurrent_requests", "daily_units", "unit_name", "monthly_credit_usd", "monthly_requests", "notes_fa"]),
+  iranAccess: new Set(["status", "official_policy", "tested_from_iran", "tested_at", "test_method", "network", "evidence", "notes_fa"]),
+  network: new Set(["country", "isp", "asn", "city", "route", "exit_country", "vpn_provider"]),
+  evidence: new Set(["type", "url", "checked_at", "timestamp", "http_status", "latency_ms", "model_tested", "endpoint", "source", "auth_method", "credential_validated_from", "credential_validated_status", "response_fingerprint", "response_body_fingerprint", "notes_fa"]),
+  models: new Set(["dynamic", "source", "notable"]),
+  verification: new Set(["level", "last_checked", "checked_by", "stale_after_days"])
+};
 
 const errors = [];
 const warnings = [];
@@ -43,6 +54,13 @@ function requireFields(value, fields, file, prefix = "") {
   }
   for (const field of fields) {
     if (!(field in value)) fail(file, `missing ${prefix}${field}`);
+  }
+}
+
+function rejectUnknownKeys(value, keys, file, prefix) {
+  if (!value || typeof value !== "object" || Array.isArray(value)) return;
+  for (const key of Object.keys(value)) {
+    if (!keys.has(key)) fail(file, `${prefix}${key} is not allowed by the provider schema`);
   }
 }
 
@@ -71,12 +89,22 @@ function validCountryCode(value) {
   return typeof value === "string" && /^[A-Z]{2}$/.test(value);
 }
 
+function datePart(value) {
+  return typeof value === "string" && value.length >= 10 ? value.slice(0, 10) : null;
+}
+
+function isSuccessStatus(value) {
+  return Number.isInteger(value) && value >= 200 && value < 300;
+}
+
 function validateLimit(limit, file, index) {
-  requireFields(limit, ["scope"], file, `free_tier.limits[${index}].`);
-  if (typeof limit?.scope !== "string" || !limit.scope.trim()) fail(file, `free_tier.limits[${index}].scope must be non-empty`);
+  const prefix = `free_tier.limits[${index}].`;
+  requireFields(limit, ["scope"], file, prefix);
+  rejectUnknownKeys(limit, allowedKeys.limit, file, prefix);
+  if (typeof limit?.scope !== "string" || !limit.scope.trim()) fail(file, `${prefix}scope must be non-empty`);
   for (const [key, value] of Object.entries(limit ?? {})) {
     if (numericLimitFields.has(key) && value !== null && (typeof value !== "number" || value < 0)) {
-      fail(file, `free_tier.limits[${index}].${key} must be a non-negative number or null`);
+      fail(file, `${prefix}${key} must be a non-negative number or null`);
     }
   }
 }
@@ -84,6 +112,7 @@ function validateLimit(limit, file, index) {
 function validateEvidence(evidence, file, index) {
   const prefix = `iran_access.evidence[${index}]`;
   requireFields(evidence, ["type"], file, `${prefix}.`);
+  rejectUnknownKeys(evidence, allowedKeys.evidence, file, `${prefix}.`);
   if (!allowed.evidenceType.has(evidence?.type)) {
     fail(file, `${prefix}.type is invalid`);
     return;
@@ -104,11 +133,37 @@ function validateEvidence(evidence, file, index) {
     if (typeof evidence.model_tested !== "string" || !evidence.model_tested.trim()) fail(file, `${prefix}.model_tested must be non-empty`);
     if (!validHttpsTemplate(evidence.endpoint)) fail(file, `${prefix}.endpoint must be an HTTPS URL`);
     if (typeof evidence.source !== "string" || !evidence.source.trim()) fail(file, `${prefix}.source must be non-empty`);
+    if (evidence.auth_method != null && (typeof evidence.auth_method !== "string" || !evidence.auth_method.trim())) {
+      fail(file, `${prefix}.auth_method must be a non-empty string or null`);
+    }
+  }
+
+  const hasCredentialSource = evidence.credential_validated_from != null;
+  const hasCredentialStatus = evidence.credential_validated_status != null;
+  if (hasCredentialSource !== hasCredentialStatus) {
+    fail(file, `${prefix} credential validation source and status must be provided together`);
+  }
+  if (hasCredentialSource && evidence.type !== "live_test") {
+    fail(file, `${prefix} credential validation metadata is only valid for live_test evidence`);
+  }
+  if (hasCredentialSource && (typeof evidence.credential_validated_from !== "string" || !evidence.credential_validated_from.trim())) {
+    fail(file, `${prefix}.credential_validated_from must be a non-empty string`);
+  }
+  if (hasCredentialStatus && (!Number.isInteger(evidence.credential_validated_status) || evidence.credential_validated_status < 100 || evidence.credential_validated_status > 599)) {
+    fail(file, `${prefix}.credential_validated_status must be an integer from 100 to 599`);
   }
 }
 
 function validateProvider(p, file) {
   requireFields(p, ["schema_version", "service_type", "id", "name", "website", "docs", "api", "capabilities", "free_tier", "iran_access", "verification", "sources"], file);
+  rejectUnknownKeys(p, allowedKeys.provider, file, "");
+  rejectUnknownKeys(p.api, allowedKeys.api, file, "api.");
+  rejectUnknownKeys(p.free_tier, allowedKeys.freeTier, file, "free_tier.");
+  rejectUnknownKeys(p.iran_access, allowedKeys.iranAccess, file, "iran_access.");
+  rejectUnknownKeys(p.iran_access?.network, allowedKeys.network, file, "iran_access.network.");
+  rejectUnknownKeys(p.models, allowedKeys.models, file, "models.");
+  rejectUnknownKeys(p.verification, allowedKeys.verification, file, "verification.");
+
   if (p.schema_version !== "1.1.0") fail(file, "schema_version must be 1.1.0");
   if (!allowed.serviceType.has(p.service_type)) fail(file, "invalid service_type");
   if (!hostedServiceTypes.has(p.service_type)) fail(file, "session_bridge and self_hosted entries belong in the separate tools catalog");
@@ -146,6 +201,7 @@ function validateProvider(p, file) {
   const evidence = p.iran_access?.evidence;
   if (!Array.isArray(evidence)) fail(file, "iran_access.evidence must be an array");
   for (const [index, item] of (evidence ?? []).entries()) validateEvidence(item, file, index);
+  const liveEvidence = (evidence ?? []).filter((item) => item?.type === "live_test");
 
   if (claimsLiveResult && !p.iran_access?.tested_from_iran) fail(file, "verified Iran status requires tested_from_iran=true");
   if (p.iran_access?.tested_from_iran && !validDate(p.iran_access?.tested_at ?? "")) fail(file, "Iran test requires tested_at date");
@@ -166,11 +222,19 @@ function validateProvider(p, file) {
   if (claimsLiveResult && !(evidence ?? []).some((item) => ["live_test", "community_report"].includes(item.type))) {
     fail(file, "verified Iran status requires live/community evidence");
   }
-  if (p.iran_access?.test_method === "live_request" && p.iran_access?.tested_from_iran && !(evidence ?? []).some((item) => item.type === "live_test")) {
+  if (p.iran_access?.test_method === "live_request" && p.iran_access?.tested_from_iran && liveEvidence.length === 0) {
     fail(file, "live_request requires live_test evidence");
   }
   if (claimsVpnResult && p.iran_access?.network?.route !== "vpn") fail(file, "VPN status requires network.route=vpn");
   if (claimsVpnResult && !p.iran_access?.network?.exit_country) fail(file, "VPN status requires network.exit_country");
+
+  if (p.iran_access?.status === "verified_working" && !liveEvidence.some((item) => isSuccessStatus(item.http_status))) {
+    fail(file, "verified_working requires at least one successful live_test response");
+  }
+  if (p.iran_access?.status === "verified_blocked") {
+    const hasValidatedBlock = liveEvidence.some((item) => !isSuccessStatus(item.http_status) && isSuccessStatus(item.credential_validated_status));
+    if (!hasValidatedBlock) fail(file, "verified_blocked requires a failed Iran live_test plus successful credential validation from a supported route");
+  }
 
   if (!allowed.verification.has(p.verification?.level)) fail(file, "invalid verification.level");
   if (!validDate(p.verification?.last_checked ?? "")) fail(file, "invalid verification.last_checked");
@@ -178,6 +242,20 @@ function validateProvider(p, file) {
   if (checked > today) fail(file, "verification date cannot be in the future");
   const ageDays = Math.floor((today - checked) / 86_400_000);
   if (ageDays > (p.verification?.stale_after_days ?? 0)) warn(file, `data is stale (${ageDays} days old)`);
+
+  if (liveEvidence.length > 0 && p.verification?.level !== "live_verified") {
+    fail(file, "live_test evidence requires verification.level=live_verified");
+  }
+  if (p.iran_access?.tested_at && p.verification?.last_checked < p.iran_access.tested_at) {
+    fail(file, "verification.last_checked cannot predate iran_access.tested_at");
+  }
+  const evidenceDates = (evidence ?? [])
+    .map((item) => item.checked_at ?? datePart(item.timestamp))
+    .filter((value) => validDate(value ?? ""));
+  const latestEvidenceDate = evidenceDates.sort().at(-1);
+  if (latestEvidenceDate && p.verification?.last_checked < latestEvidenceDate) {
+    fail(file, "verification.last_checked cannot predate the newest evidence item");
+  }
 
   if (!Array.isArray(p.sources) || p.sources.length === 0) fail(file, "sources must be non-empty");
   if (new Set(p.sources ?? []).size !== (p.sources ?? []).length) fail(file, "sources must be unique");

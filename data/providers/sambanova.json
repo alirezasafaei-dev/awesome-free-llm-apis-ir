@@ -82,7 +82,6 @@
         "model_tested": "deepseek-v3.1",
         "endpoint": "https://api.sambanova.ai/v1/chat/completions",
         "source": "LOCAL_PC — Iran mobile network (MCI AS44244)",
-        "network": "mobile (MCI AS44244, Rasht)",
         "notes_fa": "تأیید مجدد روی اینترنت موبایل ایران — ۲۰۲۶-۰۷-۱۶"
       }
     ]
@@ -97,12 +96,12 @@
     ]
   },
   "verification": {
-    "level": "docs_verified",
-    "last_checked": "2026-07-14",
+    "level": "live_verified",
+    "last_checked": "2026-07-16",
     "checked_by": "maintainers",
     "stale_after_days": 30
   },
-  "notes_fa": "وضعیت ثبت‌نام و API از ایران هنوز تست نشده است.",
+  "notes_fa": "درخواست API مستقیم از دو شبکهٔ ایران ثبت شده و در هر دو آزمون موفق بوده است؛ وضعیت ثبت‌نام حساب‌های جدید باید جداگانه و دوره‌ای بررسی شود.",
   "sources": [
     "https://docs.sambanova.ai/docs/en/models/rate-limits",
     "https://docs.sambanova.ai/docs/en/features/openai-compatibility"

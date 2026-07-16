@@ -32,24 +32,24 @@
 |---|---|---|---|:---:|---|---|
 | [Agnes AI](https://agnes-ai.com/) | Gateway رسمی | مدل‌های رایگان | 20 RPM | ✅ | ❔ نامشخص | 2026-07-16 |
 | [Aion Labs](https://www.aionlabs.ai/) | Provider رسمی | سهمیه دائمی | 15 RPM · 20,000 TPM | ✅ | ❔ نامشخص | 2026-07-15 |
-| [Cerebras Inference](https://cloud.cerebras.ai/) | Gateway رسمی | آزمایشی | 5 RPM · 30,000 TPM | ✅ | ⛔ مسدود | 2026-07-14 |
-| [Cloudflare Workers AI](https://developers.cloudflare.com/workers-ai/) | Gateway رسمی | سهمیه دائمی | 10,000 neurons/day | ✅ | ✅ مستقیم تست‌شده | 2026-07-14 |
-| [Cohere](https://cohere.com/) | Provider رسمی | آزمایشی | 20 RPM · 1,000 requests/month | — | ⛔ مسدود | 2026-07-14 |
+| [Cerebras Inference](https://cloud.cerebras.ai/) | Gateway رسمی | آزمایشی | 5 RPM · 30,000 TPM | ✅ | ⛔ مسدود | 2026-07-16 |
+| [Cloudflare Workers AI](https://developers.cloudflare.com/workers-ai/) | Gateway رسمی | سهمیه دائمی | 10,000 neurons/day | ✅ | ✅ مستقیم تست‌شده | 2026-07-16 |
+| [Cohere](https://cohere.com/) | Provider رسمی | آزمایشی | 20 RPM · 1,000 requests/month | — | ⛔ مسدود | 2026-07-16 |
 | [Fireworks AI](https://fireworks.ai/) | Gateway رسمی | اعتبار ماهانه | 10 RPM | ✅ | ❔ نامشخص | 2026-07-16 |
 | [FreeTheAI](https://freetheai.xyz/) | Gateway اجتماعی | مدل‌های رایگان | 10 RPM · 250 RPD | ✅ | ❔ نامشخص | 2026-07-15 |
-| [GitHub Models](https://github.com/marketplace/models) | Gateway رسمی | سهمیه دائمی | 15 RPM · 150 RPD | ✅ | ✅ مستقیم تست‌شده | 2026-07-14 |
-| [Google Gemini API](https://ai.google.dev/) | Provider رسمی | سهمیه دائمی | وابسته به حساب/مدل | ✅ | 🚫 پشتیبانی‌نشده رسمی | 2026-07-14 |
-| [Groq](https://groq.com/) | Gateway رسمی | سهمیه دائمی | 30 RPM · 14400 RPD | ✅ | ❔ نامشخص | 2026-07-14 |
-| [Hugging Face Inference Providers](https://huggingface.co/inference-providers) | Gateway رسمی | اعتبار ماهانه | $0.1/month | ✅ | ✅ مستقیم تست‌شده | 2026-07-14 |
-| [Kilo Gateway](https://kilo.ai/) | Gateway رسمی | مدل‌های رایگان | 200 RPH | ✅ | ✅ مستقیم تست‌شده | 2026-07-15 |
+| [GitHub Models](https://github.com/marketplace/models) | Gateway رسمی | سهمیه دائمی | 15 RPM · 150 RPD | ✅ | ✅ مستقیم تست‌شده | 2026-07-15 |
+| [Google Gemini API](https://ai.google.dev/) | Provider رسمی | سهمیه دائمی | وابسته به حساب/مدل | ✅ | 🚫 پشتیبانی‌نشده رسمی | 2026-07-16 |
+| [Groq](https://groq.com/) | Gateway رسمی | سهمیه دائمی | 30 RPM · 14400 RPD | ✅ | ❔ نامشخص | 2026-07-16 |
+| [Hugging Face Inference Providers](https://huggingface.co/inference-providers) | Gateway رسمی | اعتبار ماهانه | $0.1/month | ✅ | ✅ مستقیم تست‌شده | 2026-07-16 |
+| [Kilo Gateway](https://kilo.ai/) | Gateway رسمی | مدل‌های رایگان | 200 RPH | ✅ | ✅ مستقیم تست‌شده | 2026-07-16 |
 | [LLM7.io](https://llm7.io/) | Gateway اجتماعی | مدل‌های رایگان | 30 RPM | ✅ | ❔ نامشخص | 2026-07-16 |
-| [Mistral AI](https://mistral.ai/) | Provider رسمی | سهمیه دائمی | وابسته به حساب/مدل | ✅ | ✅ مستقیم تست‌شده | 2026-07-14 |
+| [Mistral AI](https://mistral.ai/) | Provider رسمی | سهمیه دائمی | وابسته به حساب/مدل | ✅ | ✅ مستقیم تست‌شده | 2026-07-16 |
 | [ModelScope (Alibaba)](https://modelscope.cn/) | Gateway رسمی | مدل‌های رایگان | 2000 RPD | ✅ | ❔ نامشخص | 2026-07-16 |
 | [NVIDIA NIM API Catalog](https://build.nvidia.com/) | Gateway رسمی | سهمیه دائمی | وابسته به حساب/مدل | ✅ | ❔ نامشخص | 2026-07-14 |
 | [OpenCode Zen](https://opencode.ai/zen) | Gateway رسمی | مدل‌های رایگان | مدل‌محور | ✅ | ❔ نامشخص | 2026-07-16 |
-| [OpenRouter](https://openrouter.ai/) | Gateway رسمی | مدل‌های رایگان | 20 RPM · 50 RPD | ✅ | ⛔ مسدود | 2026-07-14 |
+| [OpenRouter](https://openrouter.ai/) | Gateway رسمی | مدل‌های رایگان | 20 RPM · 50 RPD | ✅ | ⛔ مسدود | 2026-07-16 |
 | [OVHcloud AI Endpoints](https://www.ovhcloud.com/en/public-cloud/ai-endpoints/) | Gateway رسمی | مدل‌های رایگان | 2 RPM | ✅ | ✅ مستقیم تست‌شده | 2026-07-16 |
-| [SambaNova Cloud](https://cloud.sambanova.ai/) | Gateway رسمی | سهمیه دائمی | 20 RPM · 20 RPD | ✅ | ✅ مستقیم تست‌شده | 2026-07-14 |
+| [SambaNova Cloud](https://cloud.sambanova.ai/) | Gateway رسمی | سهمیه دائمی | 20 RPM · 20 RPD | ✅ | ✅ مستقیم تست‌شده | 2026-07-16 |
 | [SiliconFlow](https://cloud.siliconflow.cn/) | Gateway رسمی | مدل‌های رایگان | 30 RPM · 60,000 TPM | ✅ | ❔ نامشخص | 2026-07-16 |
 | [Vercel AI Gateway](https://vercel.com/ai) | Gateway رسمی | اعتبار ماهانه | $5/month | ✅ | ❔ نامشخص | 2026-07-15 |
 <!-- PROVIDERS_TABLE_END -->
@@ -198,12 +198,15 @@ npm run benchmark:run
 
 ## نقشهٔ راه
 
-1. **دادهٔ جهانی:** ✅ تکمیل ۲۲ سرویس با سهمیه، مدل‌ها و محدودیت‌ها
-2. **راستی‌آزمایی ایران:** ✅ تست مستقیم و VPN روی دو شبکهٔ مستقل (ثابت + موبایل MCI)
-3. **منابع ایرانی:** ممیزی APIهای بومی NLP، OCR و مدل‌های فارسی با همان استاندارد سخت‌گیرانه
-4. **کیفیت فارسی:** ✅ بنچمارک پایهٔ نسخه‌دار؛ مرحلهٔ بعد گسترش Dataset و اجرای مدل‌های بیشتر
-5. **وب‌سایت و جامعه:** ✅ جست‌وجو، فیلتر، هشدار دادهٔ قدیمی، Pages و انتشار دوگانهٔ VPS
-6. **کاتالوگ ابزارها:** ✅ کاتالوگ مستقل با Schema، Validator و تست مجزا
+وضعیت پروژه بر اساس معیار پذیرش و Evidence نگهداری می‌شود؛ تکمیل زیرساخت به معنی تکمیل همهٔ تست‌های عملی نیست.
+
+- **P0 — قرارداد داده:** هم‌راستا کردن Schema و Validator، رد فیلد ناشناخته و نرمال‌سازی Metadata تست زنده
+- **P0 — ایران:** تست مستقیم روی شبکه ثابت و موبایل انجام شده؛ Credential validation از VPN با ماتریس کامل VPN تفاوت دارد
+- **P1 — Catalog:** تکمیل Evidence سرویس‌های نامشخص و بازبینی مستمر محدودیت‌ها و ثبت‌نام
+- **P1 — Tools/Audits:** جداسازی کامل ابزارها و ثبت تصمیم Add / Watch / Reject
+- **P2 — Benchmark/Website:** گسترش بنچمارک فارسی و نمایش مستقل Tools و Audits
+
+جزئیات، وضعیت هر فاز و معیار خروج در [نقشهٔ راه اصلی](docs/ROADMAP.fa.md) آمده است.
 
 ## مشارکت
 

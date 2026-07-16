@@ -65,12 +65,12 @@
     ]
   },
   "verification": {
-    "level": "docs_verified",
-    "last_checked": "2026-07-15",
+    "level": "live_verified",
+    "last_checked": "2026-07-16",
     "checked_by": "maintainers",
     "stale_after_days": 14
   },
-  "notes_fa": "دسترسی مستقیم و VPN از ایران هنوز تست زنده نشده است. به‌دلیل فهرست پویا، مدل انتخاب‌شده در مسیر رایگان ممکن است تغییر کند.",
+  "notes_fa": "دسترسی ناشناس مستقیم از ایران در ۲۰۲۶-۰۷-۱۶ با درخواست زنده تأیید شد. به‌دلیل فهرست پویا، مدل انتخاب‌شده در مسیر رایگان ممکن است تغییر کند.",
   "sources": [
     "https://kilo.ai/docs/gateway",
     "https://kilo.ai/docs/gateway/authentication",

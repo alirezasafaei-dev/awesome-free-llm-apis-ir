@@ -9,15 +9,16 @@ Website: [llm.persiantoolbox.ir](https://llm.persiantoolbox.ir/) · Iran mirror:
 
 The canonical catalog is in [`data/providers`](data/providers), validated against [`schema/provider.schema.json`](schema/provider.schema.json). A **separate tools catalog** for proxies, session bridges, and routers lives in [`data/tools`](data/tools) with its own schema at [`schema/tool.schema.json`](schema/tool.schema.json), aggregated into [`catalog-tools.json`](catalog-tools.json). The main [Persian README](README.md) contains the generated summary table and contribution guidance.
 
-## Status
+## Current status
 
-| Metric | Count |
-|---|---|
-| Providers | 22 (7 verified_working from Iran, 3 verified_blocked, 11 unknown, 1 docs_verified) |
-| Tools (proxies/routers/bridges) | 9 (in separate catalog) |
-| Upstream repositories watched | 14 |
-| Persian benchmark prompts | 15 |
-| Test suite steps | 16 (all green) |
+Live counts are intentionally not duplicated in this document because static counters become stale as the catalog changes. Use the machine-readable sources instead:
+
+- [`catalog.json`](catalog.json) — provider count and full canonical provider records
+- [`data.json`](data.json) — compact website/client projection
+- [`catalog-tools.json`](catalog-tools.json) — independent tools count and records
+- [`data/upstreams.json`](data/upstreams.json) — watched upstream repositories
+- [`data/repository-audits.json`](data/repository-audits.json) — Add / Watch / Reject audit decisions
+- [`docs/ROADMAP.en.md`](docs/ROADMAP.en.md) — current phases, gaps, and acceptance criteria
 
 ## Principles
 
@@ -27,21 +28,25 @@ The canonical catalog is in [`data/providers`](data/providers), validated agains
 - No API keys or personal data in issues or pull requests
 - Machine-readable, website-ready data
 - Stale-data warnings instead of silent assumptions
+- Public schema and executable validation must describe the same contract
 
 ## Quick start
 
 ```bash
 npm install
-npm test          # 16-step validation suite
-npm run validate  # Provider data validation
-npm run generate  # Regenerate README table + catalog.json
+npm test
+npm run validate
+npm run providers:normalize
+npm run generate
 ```
 
 ## Related
 
+- [`docs/ROADMAP.en.md`](docs/ROADMAP.en.md) — canonical roadmap
 - [`catalog-tools.json`](catalog-tools.json) — separate tools/proxies/bridges catalog
 - [`data/upstreams.json`](data/upstreams.json) — watched upstream repositories
 - [`docs/TOOLS_CATALOG.fa.md`](docs/TOOLS_CATALOG.fa.md) — tools catalog documentation (Persian)
 - [`docs/IRAN_LIVE_VERIFICATION.fa.md`](docs/IRAN_LIVE_VERIFICATION.fa.md) — Iran live test guide and results (Persian)
+- [`docs/GITHUB_REPOSITORY_AUDITS.fa.md`](docs/GITHUB_REPOSITORY_AUDITS.fa.md) — repository-audit methodology and decisions (Persian)
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for contributions and [the Persian methodology](docs/METHODOLOGY.fa.md) for evidence rules.

@@ -119,6 +119,9 @@
               "model_tested": { "type": ["string", "null"] },
               "endpoint": { "type": ["string", "null"] },
               "source": { "type": ["string", "null"] },
+              "auth_method": { "type": ["string", "null"] },
+              "credential_validated_from": { "type": ["string", "null"] },
+              "credential_validated_status": { "type": ["integer", "null"], "minimum": 100, "maximum": 599 },
               "response_fingerprint": { "type": ["string", "null"] },
               "response_body_fingerprint": { "type": ["string", "null"] },
               "notes_fa": { "type": ["string", "null"] }
@@ -135,10 +138,19 @@
               {
                 "if": { "properties": { "type": { "const": "live_test" } } },
                 "then": { "required": ["timestamp", "http_status", "latency_ms", "model_tested", "endpoint", "source"] }
+              },
+              {
+                "if": { "required": ["credential_validated_from"] },
+                "then": { "required": ["credential_validated_status"] }
+              },
+              {
+                "if": { "required": ["credential_validated_status"] },
+                "then": { "required": ["credential_validated_from"] }
               }
             ]
           }
-        }
+        },
+        "notes_fa": { "type": "string" }
       }
     },
     "models": {

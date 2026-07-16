@@ -61,7 +61,7 @@
         "model_tested": "gemini-2.5-flash-lite",
         "endpoint": "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions",
         "source": "LOCAL_PC — Iran mobile network (MCI AS44244)",
-        "notes_fa": "403 even via proxy (DE) — account-level restriction (user location not supported)"
+        "notes_fa": "پاسخ ۴۰۳ از مسیر مستقیم و خروجی آلمان مشاهده شد؛ همراه با فهرست رسمی مناطق، این نتیجه محدودیت سطح حساب/منطقه را تأیید می‌کند."
       }
     ]
   },
@@ -71,8 +71,8 @@
     "notable": []
   },
   "verification": {
-    "level": "docs_verified",
-    "last_checked": "2026-07-14",
+    "level": "live_verified",
+    "last_checked": "2026-07-16",
     "checked_by": "maintainers",
     "stale_after_days": 30
   },

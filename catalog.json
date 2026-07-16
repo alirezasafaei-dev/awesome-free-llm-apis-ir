@@ -280,8 +280,8 @@
         ]
       },
       "verification": {
-        "level": "docs_verified",
-        "last_checked": "2026-07-14",
+        "level": "live_verified",
+        "last_checked": "2026-07-16",
         "checked_by": "maintainers",
         "stale_after_days": 30
       },
@@ -355,7 +355,6 @@
             "model_tested": "@cf/meta/llama-3.2-3b-instruct",
             "endpoint": "https://api.cloudflare.com/client/v4/accounts/{account_id}/ai/v1/chat/completions",
             "source": "LOCAL_PC — Iran mobile network (MCI AS44244)",
-            "network": "mobile (MCI AS44244, Rasht)",
             "notes_fa": "تأیید مجدد روی اینترنت موبایل ایران — ۲۰۲۶-۰۷-۱۶",
             "latency_ms": 888
           }
@@ -370,8 +369,8 @@
         ]
       },
       "verification": {
-        "level": "docs_verified",
-        "last_checked": "2026-07-14",
+        "level": "live_verified",
+        "last_checked": "2026-07-16",
         "checked_by": "maintainers",
         "stale_after_days": 30
       },
@@ -461,8 +460,8 @@
         ]
       },
       "verification": {
-        "level": "docs_verified",
-        "last_checked": "2026-07-14",
+        "level": "live_verified",
+        "last_checked": "2026-07-16",
         "checked_by": "maintainers",
         "stale_after_days": 30
       },
@@ -693,7 +692,7 @@
             "source": "LOCAL_PC — Iran fixed network (curl)"
           }
         ],
-        "notes_fa": "⚠️ GitHub Models در تاریخ ۳۰ جولای ۲۰۲۶ (حدود ۱۵ روز دیگر) بازنشسته می‌شود. Node.js fetch در ایران به دلیل محدودیت TLS stack به این دامنه متصل نمی‌شود، اما curl و ابزارهای مبتنی بر libcurl کار می‌کنند."
+        "notes_fa": "درخواست زنده با curl از شبکهٔ ثابت ایران موفق بود. تفاوت رفتار Node.js fetch و curl فقط در شبکهٔ آزمون مشاهده شد و به‌عنوان محدودیت عمومی سرویس تعمیم داده نمی‌شود."
       },
       "models": {
         "dynamic": true,
@@ -701,8 +700,8 @@
         "notable": []
       },
       "verification": {
-        "level": "docs_verified",
-        "last_checked": "2026-07-14",
+        "level": "live_verified",
+        "last_checked": "2026-07-15",
         "checked_by": "maintainers",
         "stale_after_days": 30
       },
@@ -775,7 +774,7 @@
             "model_tested": "gemini-2.5-flash-lite",
             "endpoint": "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions",
             "source": "LOCAL_PC — Iran mobile network (MCI AS44244)",
-            "notes_fa": "403 even via proxy (DE) — account-level restriction (user location not supported)"
+            "notes_fa": "پاسخ ۴۰۳ از مسیر مستقیم و خروجی آلمان مشاهده شد؛ همراه با فهرست رسمی مناطق، این نتیجه محدودیت سطح حساب/منطقه را تأیید می‌کند."
           }
         ]
       },
@@ -785,8 +784,8 @@
         "notable": []
       },
       "verification": {
-        "level": "docs_verified",
-        "last_checked": "2026-07-14",
+        "level": "live_verified",
+        "last_checked": "2026-07-16",
         "checked_by": "maintainers",
         "stale_after_days": 30
       },
@@ -887,12 +886,12 @@
         ]
       },
       "verification": {
-        "level": "docs_verified",
-        "last_checked": "2026-07-14",
+        "level": "live_verified",
+        "last_checked": "2026-07-16",
         "checked_by": "maintainers",
         "stale_after_days": 30
       },
-      "notes_fa": "دسترسی ایران نیازمند تست جداگانهٔ ثبت‌نام و درخواست API است.",
+      "notes_fa": "درخواست زنده از ایران پاسخ ۴۰۳ داد، اما اعتبار همان کلید از منطقهٔ مجاز تأیید نشده است؛ بنابراین وضعیت دسترسی همچنان نامشخص است.",
       "sources": [
         "https://console.groq.com/docs/rate-limits",
         "https://console.groq.com/docs/models"
@@ -961,7 +960,6 @@
             "model_tested": "openai/gpt-oss-20b:fastest",
             "endpoint": "https://router.huggingface.co/v1/chat/completions",
             "source": "LOCAL_PC — Iran mobile network (MCI AS44244)",
-            "network": "mobile (MCI AS44244, Rasht)",
             "notes_fa": "تأیید مجدد روی اینترنت موبایل ایران — ۲۰۲۶-۰۷-۱۶",
             "latency_ms": 826
           }
@@ -973,8 +971,8 @@
         "notable": []
       },
       "verification": {
-        "level": "docs_verified",
-        "last_checked": "2026-07-14",
+        "level": "live_verified",
+        "last_checked": "2026-07-16",
         "checked_by": "maintainers",
         "stale_after_days": 30
       },
@@ -1051,12 +1049,12 @@
         ]
       },
       "verification": {
-        "level": "docs_verified",
-        "last_checked": "2026-07-15",
+        "level": "live_verified",
+        "last_checked": "2026-07-16",
         "checked_by": "maintainers",
         "stale_after_days": 14
       },
-      "notes_fa": "دسترسی مستقیم و VPN از ایران هنوز تست زنده نشده است. به‌دلیل فهرست پویا، مدل انتخاب‌شده در مسیر رایگان ممکن است تغییر کند.",
+      "notes_fa": "دسترسی ناشناس مستقیم از ایران در ۲۰۲۶-۰۷-۱۶ با درخواست زنده تأیید شد. به‌دلیل فهرست پویا، مدل انتخاب‌شده در مسیر رایگان ممکن است تغییر کند.",
       "sources": [
         "https://kilo.ai/docs/gateway",
         "https://kilo.ai/docs/gateway/authentication",
@@ -1185,7 +1183,6 @@
             "model_tested": "mistral-small-latest",
             "endpoint": "https://api.mistral.ai/v1/chat/completions",
             "source": "LOCAL_PC — Iran mobile network (MCI AS44244)",
-            "network": "mobile (MCI AS44244, Rasht)",
             "notes_fa": "تأیید مجدد روی اینترنت موبایل ایران — ۲۰۲۶-۰۷-۱۶"
           }
         ]
@@ -1198,8 +1195,8 @@
         ]
       },
       "verification": {
-        "level": "docs_verified",
-        "last_checked": "2026-07-14",
+        "level": "live_verified",
+        "last_checked": "2026-07-16",
         "checked_by": "maintainers",
         "stale_after_days": 30
       },
@@ -1474,12 +1471,12 @@
         "notable": []
       },
       "verification": {
-        "level": "docs_verified",
-        "last_checked": "2026-07-14",
+        "level": "live_verified",
+        "last_checked": "2026-07-16",
         "checked_by": "maintainers",
         "stale_after_days": 30
       },
-      "notes_fa": "برای ادعای دسترسی مستقیم با IP ایران هنوز تست تاریخ‌دار ثبت نشده است.",
+      "notes_fa": "دسترسی مستقیم از ایران در ۲۰۲۶-۰۷-۱۶ با همان کلیدی که از آلمان پاسخ ۲۰۰ داشت، پاسخ ۴۰۳ داد؛ مسدودیت جغرافیایی در همان آزمون تأیید شد.",
       "sources": [
         "https://openrouter.ai/docs/api/reference/limits",
         "https://openrouter.ai/docs/guides/routing/model-variants/free"
@@ -1649,7 +1646,6 @@
             "model_tested": "deepseek-v3.1",
             "endpoint": "https://api.sambanova.ai/v1/chat/completions",
             "source": "LOCAL_PC — Iran mobile network (MCI AS44244)",
-            "network": "mobile (MCI AS44244, Rasht)",
             "notes_fa": "تأیید مجدد روی اینترنت موبایل ایران — ۲۰۲۶-۰۷-۱۶"
           }
         ]
@@ -1664,12 +1660,12 @@
         ]
       },
       "verification": {
-        "level": "docs_verified",
-        "last_checked": "2026-07-14",
+        "level": "live_verified",
+        "last_checked": "2026-07-16",
         "checked_by": "maintainers",
         "stale_after_days": 30
       },
-      "notes_fa": "وضعیت ثبت‌نام و API از ایران هنوز تست نشده است.",
+      "notes_fa": "درخواست API مستقیم از دو شبکهٔ ایران ثبت شده و در هر دو آزمون موفق بوده است؛ وضعیت ثبت‌نام حساب‌های جدید باید جداگانه و دوره‌ای بررسی شود.",
       "sources": [
         "https://docs.sambanova.ai/docs/en/models/rate-limits",
         "https://docs.sambanova.ai/docs/en/features/openai-compatibility"
