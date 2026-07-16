@@ -25,7 +25,7 @@ Live counts are intentionally not duplicated in this document because static cou
 - Official documentation for quota claims
 - Dated evidence for Iran access claims
 - Separate labels for direct access, VPN access, and official regional policy
-- No API keys or personal data in issues or pull requests
+- No API keys, full IP addresses, infrastructure usernames, or personal data in published files, issues, or pull requests
 - Machine-readable, website-ready data
 - Stale-data warnings instead of silent assumptions
 - Public schema and executable validation must describe the same contract
@@ -37,6 +37,7 @@ npm install
 npm test
 npm run validate
 npm run providers:normalize
+npm run privacy:test
 npm run generate
 ```
 
