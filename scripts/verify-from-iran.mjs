@@ -142,6 +142,14 @@ const providers = [
     defaultModel: "gpt-4o-mini",
     validatedEnv: "VERCEL_AI_GATEWAY_CREDENTIAL_VALIDATED",
     endpoint: () => "https://ai-gateway.vercel.sh/v1/chat/completions"
+  },
+  {
+    id: "fireworks-ai",
+    keyEnv: "FIREWORKS_API_KEY",
+    modelEnv: "FIREWORKS_MODEL",
+    defaultModel: "gpt-oss-120b",
+    validatedEnv: "FIREWORKS_CREDENTIAL_VALIDATED",
+    endpoint: () => "https://api.fireworks.ai/inference/v1/chat/completions"
   }
 ];
 

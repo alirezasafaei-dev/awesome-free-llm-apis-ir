@@ -1,7 +1,7 @@
 {
   "schema_version": "1.1.0",
-  "last_updated": "2026-07-15",
-  "provider_count": 15,
+  "last_updated": "2026-07-16",
+  "provider_count": 16,
   "providers": [
     {
       "schema_version": "1.1.0",
@@ -365,6 +365,80 @@
       "sources": [
         "https://docs.cohere.com/docs/rate-limits",
         "https://docs.cohere.com/docs/how-does-cohere-pricing-work"
+      ]
+    },
+    {
+      "schema_version": "1.1.0",
+      "service_type": "official_gateway",
+      "id": "fireworks-ai",
+      "name": "Fireworks AI",
+      "website": "https://fireworks.ai/",
+      "docs": "https://docs.fireworks.ai/",
+      "signup": "https://app.fireworks.ai/login",
+      "api": {
+        "base_url": "https://api.fireworks.ai/inference/v1",
+        "openai_compatible": true,
+        "auth": "api_key"
+      },
+      "capabilities": [
+        "chat",
+        "text_generation",
+        "reasoning",
+        "embeddings",
+        "tool_calling",
+        "structured_output"
+      ],
+      "free_tier": {
+        "status": "active",
+        "type": "monthly_credit",
+        "requires_payment_method": false,
+        "limits": [
+          {
+            "scope": "global",
+            "condition": "no payment method linked",
+            "rpm": 10,
+            "notes_fa": "بدون کارت بانکی: ۱۰ RPM و $۱ اعتبار رایگان اولیه"
+          },
+          {
+            "scope": "global",
+            "condition": "with payment method",
+            "rpm": 600,
+            "notes_fa": "با کارت بانکی: ۶۰۰ RPM"
+          }
+        ],
+        "notes_fa": "$۱ اعتبار رایگان در شروع کار. بدون نیاز به کارت بانکی. پس از اتمام اعتبار، حساب متوقف می‌شود مگر کارت اضافه کنید."
+      },
+      "iran_access": {
+        "status": "unknown",
+        "official_policy": "not_documented",
+        "tested_from_iran": false,
+        "tested_at": null,
+        "test_method": "not_tested",
+        "network": null,
+        "evidence": [],
+        "notes_fa": "از ایران تست نشده. $۱ اعتبار بدون کارت ممکن است نیاز به VPN برای ثبت‌نام داشته باشد."
+      },
+      "models": {
+        "dynamic": true,
+        "source": "https://fireworks.ai/models",
+        "notable": [
+          "llama-3.3-70b",
+          "gpt-oss-120b",
+          "deepseek-v4-flash",
+          "qwen3-7b-plus",
+          "gemma-3n-4b"
+        ]
+      },
+      "verification": {
+        "level": "docs_verified",
+        "last_checked": "2026-07-16",
+        "checked_by": "maintainers",
+        "stale_after_days": 30
+      },
+      "sources": [
+        "https://fireworks.ai/pricing",
+        "https://docs.fireworks.ai/getting-started/quickstart",
+        "https://docs.fireworks.ai/guides/quotas_usage/rate-limits"
       ]
     },
     {
