@@ -1,0 +1,20 @@
+{
+  "timestamp_utc": "2026-07-17T09:46:51.124Z",
+  "repository": "alirezasafaei-dev/awesome-free-llm-apis-ir",
+  "main_sha": "1a4e2d191d22cf55ed844f6f1075177c4a7dc776",
+  "github": {
+    "stars": 1,
+    "forks": 0,
+    "open_issues": 9
+  },
+  "content": {
+    "provider_count": 22,
+    "guide_count": 6,
+    "provider_page_count": 22,
+    "guide_page_count": 6
+  },
+  "plausible": "OWNER_REQUIRED",
+  "search_console": "OWNER_REQUIRED",
+  "bing_webmaster": "OWNER_REQUIRED",
+  "analytics_status": "OWNER_REQUIRED"
+}
