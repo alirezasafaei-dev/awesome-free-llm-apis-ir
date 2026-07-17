@@ -122,9 +122,11 @@ try {
     const articlePath = path.join(destination, "guides", article.slug, "index.html");
     await access(articlePath);
     const html = await readFile(articlePath, "utf8");
-    for (const needle of [article.title, article.canonical_target, "application/ld+json", "../../analytics.js", "../../plausible.js"]) {
+    for (const needle of [article.title, article.canonical_target, "application/ld+json", "../../analytics.js", "../../plausible.js", `data-guide-slug="${article.slug}"`]) {
       if (!html.includes(needle)) throw new Error(`${article.slug}: generated page is missing ${needle}`);
     }
+    const h1Count = (html.match(/<h1(?:\s|>)/g) || []).length;
+    if (h1Count !== 1) throw new Error(`${article.slug}: expected exactly one H1, found ${h1Count}`);
     if (!sitemap.includes(`<loc>${article.canonical_target}</loc>`)) {
       throw new Error(`${article.slug}: sitemap entry is missing`);
     }
