@@ -25,7 +25,7 @@
 
 | ID | Date UTC | Channel | Language | Content type | Status | Public URL | UTM source | Campaign | Owner | Notes |
 |---|---|---|---|---|---|---|---|---|---|---|
-| L-001 |  | GitHub Release | FA/EN | Release | DRAFT_READY |  | github | initial_launch | Owner | متن آماده در `docs/LAUNCH_COPY_PACK.fa-en.md` |
+| L-001 | 2026-07-16 | GitHub Release | FA/EN | Release | PUBLISHED | https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir/releases/tag/v0.1.0-seo | github | initial_launch | Owner | Release v0.1.0-seo with 22 providers, 6 guides |
 | L-002 |  | GitHub Discussion | FA | Announcement | DRAFT_READY |  | github | initial_launch | Owner | نیازمند فعال‌بودن Discussions |
 | L-003 |  | LinkedIn | FA | Post | DRAFT_READY |  | linkedin | initial_launch | Owner | تصویر از `assets/social/` |
 | L-004 |  | LinkedIn | EN | Post | DRAFT_READY |  | linkedin | international_launch | Owner | انتشار جداگانه یا پس از نسخه فارسی |
@@ -53,20 +53,20 @@
 
 ## Baseline قبل از لانچ
 
-تاریخ ثبت: `TBD`
+تاریخ ثبت: `2026-07-17`
 
 | Metric | Value | Source |
 |---|---:|---|
-| Weekly visitors |  | Plausible |
-| Weekly pageviews |  | Plausible |
-| Search impressions |  | Google Search Console |
-| Search clicks |  | Google Search Console |
-| Average CTR |  | Google Search Console |
-| Indexed pages |  | Google Search Console |
-| Bing indexed pages |  | Bing Webmaster Tools |
-| GitHub stars |  | GitHub |
-| GitHub forks |  | GitHub |
-| Open issues |  | GitHub |
+| Weekly visitors | N/A | Plausible (OWNER_REQUIRED) |
+| Weekly pageviews | N/A | Plausible (OWNER_REQUIRED) |
+| Search impressions | N/A | Google Search Console (OWNER_REQUIRED) |
+| Search clicks | N/A | Google Search Console (OWNER_REQUIRED) |
+| Average CTR | N/A | Google Search Console (OWNER_REQUIRED) |
+| Indexed pages | N/A | Google Search Console (OWNER_REQUIRED) |
+| Bing indexed pages | N/A | Bing Webmaster Tools (OWNER_REQUIRED) |
+| GitHub stars | 1 | GitHub API |
+| GitHub forks | 0 | GitHub API |
+| Open issues | 9 | GitHub API |
 
 ## جمع‌بندی هفته اول
 
