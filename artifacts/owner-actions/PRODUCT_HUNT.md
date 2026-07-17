@@ -1,50 +1,94 @@
-# Owner Action: Product Hunt
+# Product Hunt Eligibility and Publication Packet
 
-## Status
+## Launch row
 
-`OWNER_BLOCKED`
+`L-016`
 
-## Prerequisites
+## Default decision
 
-- Product Hunt account required
-- Product should be ready for public view
-- Tagline and description should be concise
+`DEFER_NOT_ELIGIBLE`
 
-## Title
+طبق Featuring Guidelines رسمی Product Hunt که در ۱۰ مارس ۲۰۲۶ به‌روزرسانی شده، «Directories or lists» معمولاً Featured نمی‌شوند. پروژه در شکل فعلی یک Catalog/Directory است؛ بنابراین Hermes نباید Product Hunt را صرفاً برای کامل‌کردن Checklist منتشر کند.
+
+## Eligibility gate
+
+Track فقط وقتی از `DEFER_NOT_ELIGIBLE` خارج شود که مالک با Evidence تأیید کند:
+
+- Advisor یا Workflow تعاملی، Value اصلی محصول است؛
+- محصول فراتر از فهرست لینک‌ها Outcome عملی ایجاد می‌کند؛
+- Demo واقعی آماده است؛
+- Landing page انگلیسی کامل است؛
+- Direct product URL کار می‌کند؛
+- مالک آگاهانه ریسک Featured نشدن را پذیرفته است.
+
+```text
+INTERACTIVE_PRODUCT_VALUE=
+ENGLISH_LANDING_READY=
+DEMO_READY=
+DIRECT_PRODUCT_URL_READY=
+OWNER_ACCEPTS_DIRECTORY_RISK=
+ELIGIBILITY_DECISION=DEFER_NOT_ELIGIBLE|DRAFT_ALLOWED
+```
+
+## Draft metadata — فقط در صورت `DRAFT_ALLOWED`
+
+### Name
 
 Awesome Free LLM APIs IR
 
-## Tagline
+### Tagline
 
-A Persian-first, machine-readable catalog of free LLM APIs with real quota data, OpenAI compatibility, and Iran-access evidence.
+Compare free LLM APIs by quotas, compatibility and regional evidence
 
-## Description
+### Short description
 
-Finding a "free" LLM API means more than finding a list of names. Developers need to know about real free tiers vs trials, payment requirements, RPM/RPD/TPM limits, OpenAI compatibility, and regional accessibility.
+An open, machine-readable tool for comparing free LLM APIs by tier type, documented quotas, payment requirements, OpenAI compatibility and dated regional-access evidence.
 
-Awesome Free LLM APIs IR tracks all these separately in an open, machine-readable catalog with dated evidence.
+### Product URL
 
-- 22 providers and gateways
-- Clear free-tier classification
-- OpenAI-compatible endpoints
-- Iran-access evidence
-- Machine-readable catalog JSON
-- Practical guides and provider pages
+`https://llm.persiantoolbox.ir/?utm_source=producthunt&utm_medium=launch&utm_campaign=international_launch`
 
-Website: https://llm.persiantoolbox.ir/?utm_source=producthunt&utm_medium=producthunt&utm_campaign=international_launch
+### Maker comment
 
-Repository: https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir
+We built Awesome Free LLM APIs IR because most “free LLM API” resources mix permanent free tiers, trials, credits and temporarily free models.
 
-## UTM
+The project separates those categories and exposes documented quotas, payment requirements, OpenAI compatibility, Base URLs and dated regional-access evidence. The same validated data powers an interactive website, provider pages and a machine-readable catalog.
 
-`utm_source=producthunt&utm_medium=producthunt&utm_campaign=international_launch`
+We would value feedback on the comparison workflow, evidence model and stale-data handling. We are not asking for coordinated votes.
 
-## Checklist Before Publish
+## Hermes workflow
 
-- [ ] Product Hunt account created
-- [ ] Product submitted
-- [ ] Tagline and description finalized
-- [ ] Thumbnail uploaded
-- [ ] No secrets
-- [ ] `PUBLIC_URL=`
-- [ ] `PUBLISHED_AT_UTC=`
+1. Personal Product Hunt account و Maker identity را نمایش بده.
+2. بررسی کن محصول قبلاً Submit نشده است.
+3. Direct product URL، Gallery و Demo را کنترل کن.
+4. Draft یا Schedule بساز؛ فوراً Launch نکن.
+5. Preview کامل را نشان بده.
+6. قبل از Publish متوقف شو.
+7. Approval دقیق `APPROVE PRODUCT HUNT DESPITE DIRECTORY RISK` بگیر.
+8. هیچ درخواست Upvote یا Vote ring ایجاد نکن.
+9. فقط پس از Public شدن، URL را در `L-016` ثبت کن.
+
+## Stop conditions
+
+- محصول عمدتاً Directory/List است.
+- Demo یا English landing کامل نیست.
+- Direct product URL کار نمی‌کند.
+- هدف اصلی Backlink یا رأی‌گیری است.
+
+در Stop condition، وضعیت `BLOCKED` یا `DRAFT_READY` بماند؛ `PUBLISHED` نشود.
+
+## Evidence
+
+```text
+ELIGIBILITY_DECISION=
+OWNER_RISK_APPROVAL=
+PUBLIC_URL=
+PUBLISHED_AT_UTC=
+MAKER_ACCOUNT_DISPLAY_NAME=
+LOG_PR_URL=
+```
+
+## Official references
+
+- https://help.producthunt.com/en/articles/9883485-product-hunt-featuring-guidelines
+- https://help.producthunt.com/en/articles/479557-how-to-post-a-product
