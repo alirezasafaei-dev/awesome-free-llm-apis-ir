@@ -1,9 +1,11 @@
-import { readFile, readdir } from "node:fs/promises";
+import { access, readFile, readdir, rm } from "node:fs/promises";
+import { spawnSync } from "node:child_process";
 import path from "node:path";
 import process from "node:process";
 
 const root = process.cwd();
 const contentDir = path.join(root, "content", "fa");
+const destination = path.join(root, ".site-dist");
 const requiredFields = [
   "title",
   "slug",
@@ -44,6 +46,7 @@ if (entries.length < 3) {
 }
 
 const slugs = new Set();
+const articles = [];
 for (const filename of entries) {
   const source = await readFile(path.join(contentDir, filename), "utf8");
   const { metadata, body } = parseFrontmatter(source, filename);
@@ -82,6 +85,52 @@ for (const filename of entries) {
     throw new Error(`${filename}: private key material detected`);
   }
   if (!body.includes("```")) throw new Error(`${filename}: expected at least one practical code block`);
+
+  articles.push(metadata);
 }
 
-console.log(`Persian content checks passed for ${entries.length} articles.`);
+for (const script of ["scripts/build-persian-content.mjs", "scripts/validate-persian-content.mjs"]) {
+  const syntax = spawnSync(process.execPath, ["--check", path.join(root, script)], { encoding: "utf8" });
+  if (syntax.status !== 0) throw new Error(syntax.stderr || `${script}: syntax check failed`);
+}
+
+try {
+  const baseBuild = spawnSync(process.execPath, [path.join(root, "scripts/build-site.mjs")], {
+    cwd: root,
+    encoding: "utf8"
+  });
+  if (baseBuild.status !== 0) throw new Error(baseBuild.stderr || baseBuild.stdout || "Base site build failed");
+
+  const contentBuild = spawnSync(process.execPath, [path.join(root, "scripts/build-persian-content.mjs")], {
+    cwd: root,
+    encoding: "utf8"
+  });
+  if (contentBuild.status !== 0) throw new Error(contentBuild.stderr || contentBuild.stdout || "Persian content build failed");
+
+  const sitemap = await readFile(path.join(destination, "sitemap.xml"), "utf8");
+  const homepage = await readFile(path.join(destination, "index.html"), "utf8");
+  const buildMeta = JSON.parse(await readFile(path.join(destination, "build-meta.json"), "utf8"));
+
+  if (!homepage.includes('id="persian-guides"')) {
+    throw new Error("Homepage is missing the Persian guides section");
+  }
+  if (buildMeta.persian_article_count !== articles.length) {
+    throw new Error("build-meta Persian article count mismatch");
+  }
+
+  for (const article of articles) {
+    const articlePath = path.join(destination, "guides", article.slug, "index.html");
+    await access(articlePath);
+    const html = await readFile(articlePath, "utf8");
+    for (const needle of [article.title, article.canonical_target, "application/ld+json", "../../analytics.js", "../../plausible.js"]) {
+      if (!html.includes(needle)) throw new Error(`${article.slug}: generated page is missing ${needle}`);
+    }
+    if (!sitemap.includes(`<loc>${article.canonical_target}</loc>`)) {
+      throw new Error(`${article.slug}: sitemap entry is missing`);
+    }
+  }
+} finally {
+  await rm(destination, { recursive: true, force: true });
+}
+
+console.log(`Persian content and production-page checks passed for ${entries.length} articles.`);
