@@ -28,7 +28,7 @@
 | L-001 | 2026-07-16 | GitHub Release | FA/EN | Release | PUBLISHED | https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir/releases/tag/v0.1.0-seo | github | initial_launch | Owner | Release v0.1.0-seo with 22 providers, 6 guides |
 | L-002 |  | GitHub Discussion | FA | Announcement | DRAFT_READY |  | github | initial_launch | Owner | نیازمند فعال‌بودن Discussions |
 | L-003 | 2026-07-17 | LinkedIn | FA | Post | PUBLISHED | https://www.linkedin.com/posts/alireza-safaei-b69bb0422_llm-artificialintelligence-api-share-7483843985954906112-TtFA/ | linkedin | initial_launch | Owner | اولین انتشار در LinkedIn فارسی |
-| L-004 |  | LinkedIn | EN | Post | DRAFT_READY |  | linkedin | international_launch | Owner | انتشار جداگانه یا پس از نسخه فارسی |
+| L-004 | 2026-07-17 | LinkedIn | EN | Post | PUBLISHED | https://www.linkedin.com/posts/alireza-safaei-b69bb0422_llm-ai-api-share-7483851900073840640-ifK6/ | linkedin | international_launch | Owner | اولین انتشار انگلیسی در LinkedIn |
 | L-005 | 2026-07-17 | X | FA | Post | PUBLISHED | https://x.com/asdevelooper/status/2078084687956701662 | x | initial_launch | Owner | اولین پست در X با اکانت asdevelooper |
 | L-006 | 2026-07-17 | Telegram | FA | Channel post | PUBLISHED | https://t.me/asdev_ir/4 | telegram | initial_launch | Owner | اولین پست در کانال رسمی asdev_ir |
 | L-007 |  | Instagram | FA | Carousel | DRAFT_READY |  | instagram | initial_launch | Owner | نیازمند طراحی و انتشار حساب |
