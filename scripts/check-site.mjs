@@ -124,9 +124,19 @@ for (const slug of guideSlugs) {
   if (!sitemap.includes(`<loc>https://llm.persiantoolbox.ir/guides/${slug}/</loc>`)) throw new Error(`Sitemap is missing guide ${slug}`);
 }
 
+const socialAssets = [
+  { file: "assets/social/og-default.png", width: 1200, height: 630 },
+  { file: "assets/social/github-card.png", width: 1280, height: 640 },
+  { file: "assets/social/site-desktop.png", width: 1440, height: 900 },
+  { file: "assets/social/site-mobile.png", width: 390, height: 844 }
+];
+for (const asset of socialAssets) {
+  await access(path.join(root, asset.file));
+}
+
 const buildMeta = JSON.parse(await readFile(path.join(root, ".site-dist", "build-meta.json"), "utf8"));
 if (!("source_revision" in buildMeta)) throw new Error("build-meta.json is missing source_revision");
 if (buildMeta.provider_page_count !== catalog.providers.length) throw new Error("build-meta provider_page_count mismatch");
 if (buildMeta.guide_page_count !== guideCount) throw new Error("build-meta guide_page_count mismatch");
 await rm(path.join(root, ".site-dist"), { recursive: true, force: true });
-console.log(`Static SEO and analytics checks passed for ${catalog.providers.length} provider pages and ${guideCount} guide pages.`);
+console.log(`Static SEO, analytics, and social asset checks passed for ${catalog.providers.length} provider pages, ${guideCount} guide pages, and ${socialAssets.length} social assets.`);

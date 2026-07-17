@@ -201,6 +201,11 @@ export async function buildGuides(catalog) {
   <meta property="og:type" content="article">
   <meta property="og:locale" content="fa_IR">
   <meta property="og:url" content="${canonicalUrl}">
+  <meta property="og:image" content="${canonicalOrigin}/assets/social/og-default.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="${canonicalOrigin}/assets/social/og-default.png">
   <link rel="canonical" href="${canonicalUrl}">
   <link rel="stylesheet" href="../../styles.css">
   <link rel="stylesheet" href="../../seo.css">

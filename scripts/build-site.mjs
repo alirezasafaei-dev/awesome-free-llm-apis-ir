@@ -118,7 +118,11 @@ function providerPage(provider, relatedProviders) {
   <meta property="og:type" content="article">
   <meta property="og:locale" content="fa_IR">
   <meta property="og:url" content="${canonicalUrl}">
-  <meta name="twitter:card" content="summary">
+  <meta property="og:image" content="${canonicalOrigin}/assets/social/og-default.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="${canonicalOrigin}/assets/social/og-default.png">
   <link rel="canonical" href="${canonicalUrl}">
   <link rel="stylesheet" href="../../styles.css">
   <link rel="stylesheet" href="../../seo.css">
@@ -127,7 +131,7 @@ function providerPage(provider, relatedProviders) {
 </head>
 <body>
   <header class="topbar">
-    <a class="brand" href="../../" aria-label="Awesome Free LLM APIs IR"><span class="brand-mark" aria-hidden="true">AI</span><span>Awesome Free LLM APIs IR</span></a>
+    <a class="brand" href="../../"><span class="brand-mark" aria-hidden="true">AI</span><span>Awesome Free LLM APIs IR</span></a>
     <nav aria-label="پیوندهای اصلی"><a href="../../#catalog">همه APIها</a><a class="docs-link" href="${escapeHtml(provider.docs)}" rel="nofollow noopener" target="_blank">مستندات رسمی</a><a href="https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir">GitHub</a></nav>
   </header>
   <main class="provider-page">
