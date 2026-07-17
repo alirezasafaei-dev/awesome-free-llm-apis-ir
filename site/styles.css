@@ -122,7 +122,7 @@ main { max-width: 1240px; margin: 0 auto; padding: 0 24px 60px; }
 .card-topline { display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 28px; }
 .access-badge, .freshness-badge, .tag-list span { display: inline-flex; align-items: center; width: fit-content; border-radius: 999px; padding: 4px 9px; font-size: 11px; font-weight: 800; }
 .access-badge { background: var(--surface-soft); }
-.freshness-badge { color: #047857; background: #a7f3d0; }
+.freshness-badge { color: #065f46; background: #a7f3d0; }
 .freshness-badge.stale { color: var(--warning); background: color-mix(in srgb, var(--warning) 12%, transparent); }
 .provider-title { display: flex; align-items: center; gap: 12px; margin-top: 18px; }
 .provider-avatar { flex: 0 0 auto; display: grid; place-items: center; width: 48px; height: 48px; border-radius: 15px; background: linear-gradient(135deg, color-mix(in srgb, var(--primary) 18%, var(--surface)), color-mix(in srgb, var(--accent) 15%, var(--surface))); color: var(--primary); font-weight: 900; }
