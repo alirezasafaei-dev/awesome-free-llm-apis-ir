@@ -1,0 +1,101 @@
+name: گزارش دسترسی Provider از ایران
+description: نتیجه ثبت‌نام یا اجرای واقعی یک API را بدون اطلاعات حساس گزارش کنید
+title: "[Iran Access] <Provider name> — <direct/VPN/signup>"
+labels:
+  - iran-access-report
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ممنون که به دقیق‌ترشدن مرجع فارسی کمک می‌کنید.
+
+        **هیچ API Key، Cookie، Token، شماره تلفن، ایمیل شخصی، IP، Recovery Code یا تصویر پنل حساب را وارد نکنید.**
+
+  - type: input
+    id: provider
+    attributes:
+      label: نام Provider
+      placeholder: مثال: Mistral AI
+    validations:
+      required: true
+
+  - type: dropdown
+    id: test_type
+    attributes:
+      label: مرحله‌ای که تست شد
+      options:
+        - فقط بازشدن سایت
+        - ثبت‌نام
+        - ورود به حساب
+        - ساخت API Key
+        - فهرست مدل‌ها
+        - درخواست واقعی مدل
+    validations:
+      required: true
+
+  - type: dropdown
+    id: network
+    attributes:
+      label: نوع اتصال
+      options:
+        - مستقیم از ایران
+        - VPN با خروجی خارج از ایران
+        - هر دو حالت
+        - ترجیح می‌دهم اعلام نکنم
+    validations:
+      required: true
+
+  - type: dropdown
+    id: result
+    attributes:
+      label: نتیجه
+      options:
+        - موفق
+        - ناموفق
+        - ناپایدار
+        - ثبت‌نام مسدود بود
+        - حساب ساخته شد ولی API کار نکرد
+    validations:
+      required: true
+
+  - type: input
+    id: tested_at
+    attributes:
+      label: تاریخ تست
+      description: تاریخ را به شکل YYYY-MM-DD بنویسید
+      placeholder: "2026-07-17"
+    validations:
+      required: true
+
+  - type: input
+    id: model
+    attributes:
+      label: Model ID یا قابلیت تست‌شده
+      description: اختیاری؛ کلید یا شناسه حساب را وارد نکنید
+      placeholder: مثال: chat completions / MODEL_ID
+
+  - type: textarea
+    id: sanitized_error
+    attributes:
+      label: توضیح یا خطای پاک‌سازی‌شده
+      description: Secretها، شناسه حساب، IP و اطلاعات شخصی را حذف کنید
+      placeholder: کد وضعیت و خلاصه خطا را بنویسید
+
+  - type: input
+    id: official_source
+    attributes:
+      label: لینک مستندات یا سیاست رسمی مرتبط
+      description: اختیاری
+      placeholder: https://...
+
+  - type: checkboxes
+    id: confirmations
+    attributes:
+      label: تأییدها
+      options:
+        - label: حداقل یکی از مراحل بالا را شخصاً تست کرده‌ام.
+          required: true
+        - label: هیچ Secret یا اطلاعات شخصی در گزارش قرار نداده‌ام.
+          required: true
+        - label: می‌دانم نتیجه یک تست تاریخ‌دار است و تضمین دائمی محسوب نمی‌شود.
+          required: true
