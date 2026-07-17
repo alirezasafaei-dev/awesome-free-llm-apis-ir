@@ -34,6 +34,25 @@ function sendEvent(name, props = {}) {
   plausible(name, { props: safeProps });
 }
 
+function safeCampaignValue(value) {
+  return typeof value === "string" && /^[a-zA-Z0-9_-]{1,64}$/.test(value)
+    ? value
+    : null;
+}
+
+function trackPersianCampaignLanding() {
+  const url = new URL(window.location.href);
+  const campaign = safeCampaignValue(url.searchParams.get("utm_campaign"));
+  if (campaign !== "persian_growth") return;
+
+  sendEvent("persian_campaign_landing", {
+    guide_slug: currentPathValue("guides") ?? "home",
+    source: safeCampaignValue(url.searchParams.get("utm_source")) ?? "unknown",
+    medium: safeCampaignValue(url.searchParams.get("utm_medium")) ?? "unknown",
+    content: safeCampaignValue(url.searchParams.get("utm_content")) ?? "unknown"
+  });
+}
+
 async function copyFromButton(button) {
   const explicitValue = button.dataset.copyText;
   if (!explicitValue) return;
@@ -47,13 +66,17 @@ async function copyFromButton(button) {
   }
 }
 
+trackPersianCampaignLanding();
+
 document.addEventListener("click", (event) => {
   const target = event.target.closest("a, button");
   if (!target) return;
 
   const href = target instanceof HTMLAnchorElement ? target.href : "";
   const providerId = providerIdFromCard(target) || pathValue(href, "providers") || currentPathValue("providers");
-  const guideSlug = pathValue(href, "guides") || currentPathValue("guides");
+  const currentGuideSlug = currentPathValue("guides");
+  const linkedGuideSlug = pathValue(href, "guides");
+  const guideSlug = linkedGuideSlug || currentGuideSlug;
 
   if (target.classList.contains("copy-button")) {
     void copyFromButton(target);
@@ -68,8 +91,26 @@ document.addEventListener("click", (event) => {
     sendEvent("provider_website_click", { provider_id: providerId ?? "unknown" });
     return;
   }
+  if (href.includes("issues/new?template=iran-access-report.yml")) {
+    sendEvent("iran_access_report_click", { guide_slug: currentGuideSlug ?? "unknown" });
+    return;
+  }
+  if (currentGuideSlug && href) {
+    try {
+      const url = new URL(href, window.location.href);
+      if (url.origin === window.location.origin && url.hash === "#catalog") {
+        sendEvent("guide_catalog_click", { guide_slug: currentGuideSlug });
+        return;
+      }
+    } catch {
+      // Ignore malformed non-navigation values.
+    }
+  }
   if (href.includes("github.com")) {
-    sendEvent("github_click", { page_type: guideSlug ? "guide" : providerId ? "provider" : "home" });
+    sendEvent("github_click", {
+      page_type: guideSlug ? "guide" : providerId ? "provider" : "home",
+      guide_slug: guideSlug ?? ""
+    });
     return;
   }
   if (href.endsWith("/catalog.json") || href.includes("/catalog.json?")) {
@@ -81,6 +122,5 @@ document.addEventListener("click", (event) => {
     sendEvent("provider_page_click", { provider_id: linkedProviderId });
     return;
   }
-  const linkedGuideSlug = pathValue(href, "guides");
   if (linkedGuideSlug) sendEvent("guide_page_click", { guide_slug: linkedGuideSlug });
 });
