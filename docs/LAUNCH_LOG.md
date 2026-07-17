@@ -35,7 +35,7 @@
 | L-008 |  | Instagram | FA | Story | DRAFT_READY |  | instagram | initial_launch | Owner | Link Sticker با UTM |
 | L-009 |  | Instagram | FA | Reel | DRAFT_READY |  | instagram | initial_launch | Owner | نیازمند ضبط/تدوین |
 | L-010 | 2026-07-17 | Virgool | FA | Article | PUBLISHED | https://vrgl.ir/kRMtg | virgool | initial_launch | Owner | مقاله آموزشی با لحن غیرتبلیغاتی در virgool.io/@asdevelooper |
-| L-011 |  | Persian Toolbox Blog | FA | Article | DRAFT_READY |  | persiantoolbox | initial_launch | Owner/Agent |  |
+| L-011 | 2026-07-17 | Persian Toolbox Blog | FA | Article | PUBLISHED | https://persiantoolbox.ir/blog/awesome-free-llm-apis-ir | persiantoolbox | initial_launch | Owner/Agent | مقاله آموزشی کامل با کد نمونه |
 | L-012 |  | YouTube | FA | Demo video | DRAFT_READY |  | youtube | initial_launch | Owner |  |
 | L-013 |  | Aparat | FA | Demo video | DRAFT_READY |  | aparat | initial_launch | Owner |  |
 | L-014 |  | DEV/Hashnode | EN | Technical article | DRAFT_READY |  | devto | international_launch | Owner |  |
