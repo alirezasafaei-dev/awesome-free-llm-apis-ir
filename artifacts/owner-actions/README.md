@@ -10,10 +10,29 @@
 - Social assets: `assets/social/`
 - سایت Canonical: `https://llm.persiantoolbox.ir/`
 
-## ترتیب پیشنهادی انتشار
+## Packet index
+
+- GitHub Release: `GITHUB_RELEASE.md`
+- GitHub Discussion: `GITHUB_DISCUSSION.md`
+- LinkedIn: `LINKEDIN.md`
+- Telegram: `TELEGRAM.md`
+- X: `X.md`
+- Instagram Carousel/Story/Reel: `INSTAGRAM.md`
+- Virgool: `VIRGOOL.md`
+- YouTube/Aparat: `YOUTUBE_APARAT.md`
+- Product Hunt: `PRODUCT_HUNT.md`
+- Hacker News: `HACKER_NEWS.md`
+- Reddit: `REDDIT.md`
+- Outreach: `OUTREACH.md`
+- Demo recording: `DEMO_RECORDING.md`
+- Measurement: `MEASUREMENT.md`
+
+## ترتیب پیشنهادی اجرا
 
 | Order | Channel | Packet | Launch ID | Default status | شرط اجرا |
 |---:|---|---|---|---|---|
+| 0 | GitHub Release | `GITHUB_RELEASE.md` | L-001 | VERIFY_EXISTING | بررسی Release گزارش‌شده و جلوگیری از Duplicate |
+| 0 | GitHub Discussion | `GITHUB_DISCUSSION.md` | L-002 | OWNER_READY | فعال‌بودن Discussions |
 | 1 | LinkedIn FA | `LINKEDIN.md` | L-003 | OWNER_READY | تأیید حساب و Preview |
 | 2 | Telegram | `TELEGRAM.md` | L-006 | OWNER_READY | کانال رسمی مالک |
 | 3 | X FA/Thread | `X.md` | L-005 | OWNER_READY | Preview ترتیب Thread |
@@ -29,8 +48,11 @@
 | 13 | Product Hunt | `PRODUCT_HUNT.md` | L-016 | DEFER_NOT_ELIGIBLE | عبور از Eligibility gate |
 | 14 | Outreach | `OUTREACH.md` | — | PER_RECIPIENT_APPROVAL | شخصی‌سازی تک‌گیرنده‌ای |
 
+Demo پیش‌نیاز Reel، YouTube و Aparat است. پس از هر Publication از `MEASUREMENT.md` برای Checkpointهای 24h، 72h و 7d استفاده شود.
+
 ## State machine
 
+- `VERIFY_EXISTING`: ابتدا دارایی/انتشار موجود بررسی شود؛ Duplicate ساخته نشود.
 - `OWNER_READY`: متن و UTM آماده؛ نیازمند Preview و Approval.
 - `ASSET_REQUIRED`: متن آماده ولی Asset نهایی هنوز لازم است.
 - `DEMO_REQUIRED`: انتشار وابسته به Demo video است.
@@ -55,7 +77,7 @@
 10. ثبت UTC و URL در `docs/LAUNCH_LOG.md`
 11. `npm run launch:log:test && npm test`
 12. Draft PR برای Launch Log
-13. ثبت Checkpointهای 24h، 72h و 7d
+13. ثبت Checkpointهای 24h، 72h و 7d طبق `MEASUREMENT.md`
 
 ## Approval template
 
