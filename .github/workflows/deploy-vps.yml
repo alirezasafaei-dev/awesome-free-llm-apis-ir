@@ -30,6 +30,28 @@ defaults:
     shell: bash
 
 jobs:
+  privacy-check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - uses: actions/checkout@v4
+      - name: Ensure no infrastructure secrets in public workflow
+        run: |
+          set -Eeuo pipefail
+          WORKFLOW_FILE=".github/workflows/deploy-vps.yml"
+          # Patterns that must never appear in the public workflow
+          IP_PATTERN='[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}'
+          USER_HOST_PATTERN='[a-z]+@[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}'
+          if grep -EoP "$IP_PATTERN" "$WORKFLOW_FILE" | grep -vE '^(127\.0\.0\.1|0\.0\.0\.0)$'; then
+            echo "FAIL: IPv4 address found in public workflow" >&2
+            exit 1
+          fi
+          if grep -EoP "$USER_HOST_PATTERN" "$WORKFLOW_FILE"; then
+            echo "FAIL: user@IPv4 pattern found in public workflow" >&2
+            exit 1
+          fi
+          echo "Privacy check passed: no infrastructure secrets in public workflow"
+
   build:
     runs-on: ubuntu-latest
     timeout-minutes: 15
@@ -56,7 +78,7 @@ jobs:
 
   deploy-global:
     if: github.event_name == 'push' || inputs.target == 'both' || inputs.target == 'global'
-    needs: build
+    needs: [build, privacy-check]
     runs-on: ubuntu-latest
     timeout-minutes: 15
     environment:
@@ -81,14 +103,19 @@ jobs:
           ssh-keygen -y -f ~/.ssh/id_ed25519 >/dev/null
       - name: Publish atomic release
         id: release
+        env:
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_PORT: ${{ secrets.SSH_PORT }}
+          DEPLOY_ROOT: ${{ secrets.DEPLOY_ROOT }}
         run: |
           set -Eeuo pipefail
-          SSH=(ssh -i ~/.ssh/id_ed25519 -p 22 -o BatchMode=yes -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes)
-          SCP=(scp -i ~/.ssh/id_ed25519 -P 22 -o BatchMode=yes -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes)
-          "${SCP[@]}" site-release.tar.gz asdev@91.107.153.223:/tmp/llm-site-${GITHUB_SHA}.tar.gz
-          "${SCP[@]}" deploy/remote-release.sh asdev@91.107.153.223:/tmp/llm-release-${GITHUB_SHA}.sh
-          "${SCP[@]}" deploy/rollback-release.sh asdev@91.107.153.223:/tmp/llm-rollback-${GITHUB_SHA}.sh
-          "${SSH[@]}" asdev@91.107.153.223 "bash /tmp/llm-release-${GITHUB_SHA}.sh /srv/awesome-free-llm-apis-ir /tmp/llm-site-${GITHUB_SHA}.tar.gz ${GITHUB_SHA}"
+          SSH=(ssh -i ~/.ssh/id_ed25519 -p "$SSH_PORT" -o BatchMode=yes -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes)
+          SCP=(scp -i ~/.ssh/id_ed25519 -P "$SSH_PORT" -o BatchMode=yes -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes)
+          "${SCP[@]}" site-release.tar.gz "${SSH_USER}@${SSH_HOST}:/tmp/llm-site-${GITHUB_SHA}.tar.gz"
+          "${SCP[@]}" deploy/remote-release.sh "${SSH_USER}@${SSH_HOST}:/tmp/llm-release-${GITHUB_SHA}.sh"
+          "${SCP[@]}" deploy/rollback-release.sh "${SSH_USER}@${SSH_HOST}:/tmp/llm-rollback-${GITHUB_SHA}.sh"
+          "${SSH[@]}" "${SSH_USER}@${SSH_HOST}" "bash /tmp/llm-release-${GITHUB_SHA}.sh ${DEPLOY_ROOT} /tmp/llm-site-${GITHUB_SHA}.tar.gz ${GITHUB_SHA}"
       - name: Verify canonical deployment
         env:
           EXPECTED_SHA: ${{ github.sha }}
@@ -122,15 +149,20 @@ jobs:
           exit 1
       - name: Roll back failed publication
         if: failure() && steps.release.outcome == 'success'
+        env:
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_PORT: ${{ secrets.SSH_PORT }}
+          DEPLOY_ROOT: ${{ secrets.DEPLOY_ROOT }}
         run: |
-          ssh -i ~/.ssh/id_ed25519 -p 22 -o BatchMode=yes -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes asdev@91.107.153.223 "bash /tmp/llm-rollback-${GITHUB_SHA}.sh /srv/awesome-free-llm-apis-ir" || true
+          ssh -i ~/.ssh/id_ed25519 -p "$SSH_PORT" -o BatchMode=yes -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes "${SSH_USER}@${SSH_HOST}" "bash /tmp/llm-rollback-${GITHUB_SHA}.sh ${DEPLOY_ROOT}" || true
       - name: Remove local SSH material
         if: always()
         run: rm -f ~/.ssh/id_ed25519 ~/.ssh/known_hosts
 
   deploy-iran:
     if: github.event_name == 'push' || inputs.target == 'both' || inputs.target == 'iran'
-    needs: build
+    needs: [build, privacy-check]
     runs-on: ubuntu-latest
     timeout-minutes: 15
     environment:
@@ -155,14 +187,19 @@ jobs:
           ssh-keygen -y -f ~/.ssh/id_ed25519 >/dev/null
       - name: Publish atomic release
         id: release
+        env:
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_PORT: ${{ secrets.SSH_PORT }}
+          DEPLOY_ROOT: ${{ secrets.DEPLOY_ROOT }}
         run: |
           set -Eeuo pipefail
-          SSH=(ssh -i ~/.ssh/id_ed25519 -p 22 -o BatchMode=yes -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes)
-          SCP=(scp -i ~/.ssh/id_ed25519 -P 22 -o BatchMode=yes -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes)
-          "${SCP[@]}" site-release.tar.gz ubuntu@193.93.169.32:/tmp/llm-site-${GITHUB_SHA}.tar.gz
-          "${SCP[@]}" deploy/remote-release.sh ubuntu@193.93.169.32:/tmp/llm-release-${GITHUB_SHA}.sh
-          "${SCP[@]}" deploy/rollback-release.sh ubuntu@193.93.169.32:/tmp/llm-rollback-${GITHUB_SHA}.sh
-          "${SSH[@]}" ubuntu@193.93.169.32 "bash /tmp/llm-release-${GITHUB_SHA}.sh /srv/awesome-free-llm-apis-ir /tmp/llm-site-${GITHUB_SHA}.tar.gz ${GITHUB_SHA}"
+          SSH=(ssh -i ~/.ssh/id_ed25519 -p "$SSH_PORT" -o BatchMode=yes -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes)
+          SCP=(scp -i ~/.ssh/id_ed25519 -P "$SSH_PORT" -o BatchMode=yes -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes)
+          "${SCP[@]}" site-release.tar.gz "${SSH_USER}@${SSH_HOST}:/tmp/llm-site-${GITHUB_SHA}.tar.gz"
+          "${SCP[@]}" deploy/remote-release.sh "${SSH_USER}@${SSH_HOST}:/tmp/llm-release-${GITHUB_SHA}.sh"
+          "${SCP[@]}" deploy/rollback-release.sh "${SSH_USER}@${SSH_HOST}:/tmp/llm-rollback-${GITHUB_SHA}.sh"
+          "${SSH[@]}" "${SSH_USER}@${SSH_HOST}" "bash /tmp/llm-release-${GITHUB_SHA}.sh ${DEPLOY_ROOT} /tmp/llm-site-${GITHUB_SHA}.tar.gz ${GITHUB_SHA}"
       - name: Verify Iran mirror deployment
         env:
           EXPECTED_SHA: ${{ github.sha }}
@@ -195,8 +232,13 @@ jobs:
           exit 1
       - name: Roll back failed publication
         if: failure() && steps.release.outcome == 'success'
+        env:
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_PORT: ${{ secrets.SSH_PORT }}
+          DEPLOY_ROOT: ${{ secrets.DEPLOY_ROOT }}
         run: |
-          ssh -i ~/.ssh/id_ed25519 -p 22 -o BatchMode=yes -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes ubuntu@193.93.169.32 "bash /tmp/llm-rollback-${GITHUB_SHA}.sh /srv/awesome-free-llm-apis-ir" || true
+          ssh -i ~/.ssh/id_ed25519 -p "$SSH_PORT" -o BatchMode=yes -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes "${SSH_USER}@${SSH_HOST}" "bash /tmp/llm-rollback-${GITHUB_SHA}.sh ${DEPLOY_ROOT}" || true
       - name: Remove local SSH material
         if: always()
         run: rm -f ~/.ssh/id_ed25519 ~/.ssh/known_hosts
