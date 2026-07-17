@@ -27,7 +27,7 @@
 |---|---|---|---|---|---|---|---|---|---|---|
 | L-001 | 2026-07-16 | GitHub Release | FA/EN | Release | PUBLISHED | https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir/releases/tag/v0.1.0-seo | github | initial_launch | Owner | Release v0.1.0-seo with 22 providers, 6 guides |
 | L-002 |  | GitHub Discussion | FA | Announcement | DRAFT_READY |  | github | initial_launch | Owner | نیازمند فعال‌بودن Discussions |
-| L-003 |  | LinkedIn | FA | Post | DRAFT_READY |  | linkedin | initial_launch | Owner | تصویر از `assets/social/` |
+| L-003 | 2026-07-17 | LinkedIn | FA | Post | PUBLISHED | https://www.linkedin.com/posts/alireza-safaei-b69bb0422_llm-artificialintelligence-api-share-7483843985954906112-TtFA/ | linkedin | initial_launch | Owner | اولین انتشار در LinkedIn فارسی |
 | L-004 |  | LinkedIn | EN | Post | DRAFT_READY |  | linkedin | international_launch | Owner | انتشار جداگانه یا پس از نسخه فارسی |
 | L-005 |  | X | FA | Post/Thread | DRAFT_READY |  | x | initial_launch | Owner |  |
 | L-006 |  | Telegram | FA | Channel post | DRAFT_READY |  | telegram | initial_launch | Owner |  |
