@@ -39,7 +39,7 @@
 | L-012 |  | YouTube | FA | Demo video | DRAFT_READY |  | youtube | initial_launch | Owner |  |
 | L-013 |  | Aparat | FA | Demo video | DRAFT_READY |  | aparat | initial_launch | Owner |  |
 | L-014 | 2026-07-17 | DEV.to | EN | Technical article | PUBLISHED | https://dev.to/alirezasafaeidev/how-we-built-a-machine-readable-catalog-of-free-llm-apis-34im | devto | international_launch | Owner | اولین انتشار انگلیسی در DEV.to |
-| L-015 |  | Reddit | EN | Community post | DRAFT_READY |  | reddit | international_launch | Owner | قوانین Subreddit بررسی شود |
+| L-015 | 2026-07-17 | Reddit | EN | Community post | PUBLISHED | https://www.reddit.com/u/asdevelooper/s/Pn0qod5MUc | reddit | international_launch | Owner | انتشار در r/coolgithubprojects با اکانت u/asdevelooper |
 | L-016 |  | Product Hunt | EN | Product launch | DRAFT_READY |  | producthunt | international_launch | Owner | نیازمند حساب مالک |
 | L-017 |  | Hacker News | EN | Show HN/Submission | DRAFT_READY |  | hackernews | international_launch | Owner | بدون درخواست رأی |
 | L-018 | 2026-07-17 | Hashnode | EN | Technical article | PUBLISHED | https://persiantoolbox.hashnode.dev/how-we-built-a-machine-readable-catalog-of-free-llm-apis | hashnode | international_launch | Owner | نسخه انگلیسی مشابه DEV.to |
