@@ -32,6 +32,9 @@ https://llm.persiantoolbox.ir/guides/practical-free-llm-api-iran/?utm_source=tel
 
 LinkedIn:
 https://llm.persiantoolbox.ir/guides/practical-free-llm-api-iran/?utm_source=linkedin&utm_medium=social&utm_campaign=persian_growth&utm_content=practical_api_selection
+
+Aparat:
+https://llm.persiantoolbox.ir/guides/practical-free-llm-api-iran/?utm_source=aparat&utm_medium=video&utm_campaign=persian_growth&utm_content=practical_api_selection_short
 ```
 
 ## عنوان ویرگول
@@ -64,18 +67,18 @@ https://llm.persiantoolbox.ir/guides/practical-free-llm-api-iran/?utm_source=lin
 قبل از شروع این ۶ مورد را بررسی کنید:
 
 ۱) نوع سهمیه: دائمی، مدل رایگان، Credit یا Trial
-۲) نیاز به کارت بانکی
+۲) نیاز یا عدم نیاز به کارت بانکی
 ۳) امکان ثبت‌نام از ایران
-۴) موفقیت درخواست واقعی مدل
-۵) محدودیت RPM/RPD/TPM
+۴) موفقیت یک درخواست واقعی مدل
+۵) محدودیت‌های RPM، RPD و TPM
 ۶) امکان تعویض Base URL و Provider
 
-بازشدن سایت یا Endpoint عمومی، کارکردن واقعی مدل را ثابت نمی‌کند.
+بازشدن سایت یا Endpoint عمومی به‌تنهایی کارکرد واقعی مدل را ثابت نمی‌کند.
 
-راهنمای مرحله‌به‌مرحله + نمونه Python:
+راهنمای مرحله‌به‌مرحله، چک‌لیست و نمونه Python:
 {{TELEGRAM_UTM_URL}}
 
-اگر سرویسی را از ایران تست کرده‌اید، نتیجه تاریخ‌دار را در GitHub ثبت کنید؛ بدون API Key یا اطلاعات حساب.
+اگر یک سرویس را از ایران تست کرده‌اید، نتیجه تاریخ‌دار را در GitHub ثبت کنید؛ بدون API Key یا اطلاعات حساب.
 ```
 
 ## پست LinkedIn فارسی
@@ -83,19 +86,21 @@ https://llm.persiantoolbox.ir/guides/practical-free-llm-api-iran/?utm_source=lin
 ```text
 مشکل انتخاب API رایگان LLM برای توسعه‌دهنده ایرانی فقط کیفیت مدل نیست.
 
-ممکن است سایت باز شود اما:
-- ثبت‌نام کامل نشود؛
-- API Key ساخته نشود؛
-- مدل برای منطقه یا حساب فعال نباشد؛
-- سهمیه رایگان فقط یک Trial کوتاه باشد.
+ممکن است سایت یک Provider باز شود، اما:
 
-برای همین یک راهنمای عملی نوشتم که انتخاب را از «نام Provider» به یک فرآیند قابل تست تبدیل می‌کند:
+• ثبت‌نام کامل نشود؛
+• API Key ساخته نشود؛
+• مدل برای منطقه یا حساب فعال نباشد؛
+• سهمیه رایگان فقط یک Trial کوتاه باشد؛
+• محدودیت درخواست برای پروژه واقعی کافی نباشد.
+
+برای همین یک راهنمای عملی آماده کرده‌ام که انتخاب را از «نام Provider» به یک فرآیند قابل تست تبدیل می‌کند:
 
 • تعریف Use case
-• تشخیص نوع سهمیه
-• بررسی دسترسی ایران
+• تشخیص Free Tier، Trial و Credit
+• بررسی وضعیت دسترسی ایران
 • اجرای اولین درخواست واقعی
-• مدیریت Secret
+• مدیریت امن API Key
 • طراحی Provider fallback
 
 مقاله و کاتالوگ زنده:
