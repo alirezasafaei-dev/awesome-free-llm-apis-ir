@@ -38,7 +38,7 @@
 | L-011 | 2026-07-17 | Persian Toolbox Blog | FA | Article | PUBLISHED | https://persiantoolbox.ir/blog/awesome-free-llm-apis-ir | persiantoolbox | initial_launch | Owner/Agent | مقاله آموزشی کامل با کد نمونه |
 | L-012 |  | YouTube | FA | Demo video | DRAFT_READY |  | youtube | initial_launch | Owner |  |
 | L-013 |  | Aparat | FA | Demo video | DRAFT_READY |  | aparat | initial_launch | Owner |  |
-| L-014 |  | DEV/Hashnode | EN | Technical article | DRAFT_READY |  | devto | international_launch | Owner |  |
+| L-014 | 2026-07-17 | DEV.to | EN | Technical article | PUBLISHED | https://dev.to/alirezasafaeidev/how-we-built-a-machine-readable-catalog-of-free-llm-apis-34im | devto | international_launch | Owner | اولین انتشار انگلیسی در DEV.to |
 | L-015 |  | Reddit | EN | Community post | DRAFT_READY |  | reddit | international_launch | Owner | قوانین Subreddit بررسی شود |
 | L-016 |  | Product Hunt | EN | Product launch | DRAFT_READY |  | producthunt | international_launch | Owner | نیازمند حساب مالک |
 | L-017 |  | Hacker News | EN | Show HN/Submission | DRAFT_READY |  | hackernews | international_launch | Owner | بدون درخواست رأی |
