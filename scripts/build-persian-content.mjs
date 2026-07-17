@@ -41,6 +41,15 @@ function renderInline(value) {
   return html;
 }
 
+function tableCells(line) {
+  return line
+    .trim()
+    .replace(/^\|/, "")
+    .replace(/\|$/, "")
+    .split("|")
+    .map((cell) => cell.trim());
+}
+
 function markdownToHtml(markdown) {
   const lines = markdown.replaceAll("\r\n", "\n").split("\n");
   const output = [];
@@ -71,8 +80,28 @@ function markdownToHtml(markdown) {
     const heading = line.match(/^(#{1,3})\s+(.+)$/);
     if (heading) {
       const level = heading[1].length;
+      if (level === 1 && output.length === 0) {
+        index += 1;
+        continue;
+      }
       output.push(`<h${level}>${renderInline(heading[2])}</h${level}>`);
       index += 1;
+      continue;
+    }
+
+    if (
+      line.trim().startsWith("|") &&
+      index + 1 < lines.length &&
+      /^\s*\|?(?:\s*:?-{3,}:?\s*\|)+\s*$/.test(lines[index + 1])
+    ) {
+      const headers = tableCells(line);
+      index += 2;
+      const rows = [];
+      while (index < lines.length && lines[index].trim().startsWith("|")) {
+        rows.push(tableCells(lines[index]));
+        index += 1;
+      }
+      output.push(`<table><thead><tr>${headers.map((cell) => `<th>${renderInline(cell)}</th>`).join("")}</tr></thead><tbody>${rows.map((row) => `<tr>${row.map((cell) => `<td>${renderInline(cell)}</td>`).join("")}</tr>`).join("")}</tbody></table>`);
       continue;
     }
 
@@ -173,7 +202,7 @@ function articlePage(article) {
   </header>
   <main class="provider-page">
     <nav class="breadcrumbs" aria-label="مسیر صفحه"><a href="../../">خانه</a><span>←</span><span>راهنما</span><span>←</span><span>${escapeHtml(title)}</span></nav>
-    <article class="provider-detail">
+    <article class="provider-detail" data-guide-slug="${escapeHtml(metadata.slug)}">
       <h1>${escapeHtml(title)}</h1>
       <p class="provider-lead">${escapeHtml(description)}</p>
       <div class="freshness-badge">آخرین بازبینی: ${escapeHtml(metadata.updated_at)}</div>
