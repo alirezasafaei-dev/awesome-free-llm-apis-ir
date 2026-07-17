@@ -42,6 +42,7 @@
 | L-015 |  | Reddit | EN | Community post | DRAFT_READY |  | reddit | international_launch | Owner | قوانین Subreddit بررسی شود |
 | L-016 |  | Product Hunt | EN | Product launch | DRAFT_READY |  | producthunt | international_launch | Owner | نیازمند حساب مالک |
 | L-017 |  | Hacker News | EN | Show HN/Submission | DRAFT_READY |  | hackernews | international_launch | Owner | بدون درخواست رأی |
+| L-018 | 2026-07-17 | Hashnode | EN | Technical article | PUBLISHED | https://persiantoolbox.hashnode.dev/how-we-built-a-machine-readable-catalog-of-free-llm-apis | hashnode | international_launch | Owner | نسخه انگلیسی مشابه DEV.to |
 
 ## اندازه‌گیری هر انتشار
 
