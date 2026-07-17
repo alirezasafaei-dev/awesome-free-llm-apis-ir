@@ -1,58 +1,108 @@
 # Owner Action Packets — Content Package Index
 
-## Status
+## Current status
 
-All packets are `DRAFT_READY` or `OWNER_BLOCKED`. None have been published yet.
+- GitHub Release `v0.1.0-seo`: published
+- GitHub Discussions: disabled / owner action required
+- External channels: not yet published unless a real Public URL is recorded in `docs/LAUNCH_LOG.md`
+- Demo: script and secure recording runbook ready; video asset still required
+- Measurement: 24h, 72h and 7d runbook ready
 
-## Recommended Publication Order
+## Core operator files
 
-1. **GitHub Release** — Already published (`v0.1.0-seo`)
-2. **GitHub Discussion** — Requires enabling Discussions in repo settings
-3. **LinkedIn (Persian)** — Highest professional reach
-4. **X / Twitter (Persian)** — Quick announcement
-5. **Telegram** — Developer communities
-6. **Virgool / Blog** — In-depth article
-7. **LinkedIn (English)** — International audience
-8. **YouTube / Aparat** — Demo video
-9. **Product Hunt** — Product discovery (requires account)
-10. **Hacker News** — Technical community (requires account)
-11. **Reddit** — Community posts (check subreddit rules)
-12. **Outreach** — Direct maintainer contacts
+- Hermes prompt: `docs/HERMES_LAUNCH_EXECUTION_PROMPT.fa.md`
+- Launch Log: `docs/LAUNCH_LOG.md`
+- Demo script: `docs/DEMO_SCRIPT.fa-en.md`
+- Secure recording: `DEMO_RECORDING.md`
+- Measurement: `MEASUREMENT.md`
 
-## File Index
+## Recommended order
 
-| File | Channel | Status | UTM Source |
+1. Verify existing GitHub Release URL.
+2. Enable/publish GitHub Discussion if owner chooses.
+3. LinkedIn فارسی.
+4. Telegram official channel.
+5. X فارسی یا Thread.
+6. Instagram Carousel and Story.
+7. Virgool.
+8. Record and approve Demo.
+9. Instagram Reel, YouTube and Aparat.
+10. LinkedIn English.
+11. Reddit after per-community review.
+12. Hacker News only with owner-written, non-AI-edited text.
+13. Product Hunt only after eligibility gate; default is defer while primarily a directory/list.
+14. Personalized outreach, one recipient per approval.
+
+## File index
+
+| File | Channel | Default state | UTM source |
 |---|---|---|---|
-| `GITHUB_RELEASE.md` | GitHub Release | PUBLISHED | github |
+| `GITHUB_RELEASE.md` | GitHub Release | PUBLISHED/VERIFY | github |
 | `GITHUB_DISCUSSION.md` | GitHub Discussion | OWNER_BLOCKED | github |
-| `LINKEDIN.md` | LinkedIn (FA) | DRAFT_READY | linkedin |
-| `X.md` | X / Twitter (FA) | DRAFT_READY | x |
+| `LINKEDIN.md` | LinkedIn | DRAFT_READY | linkedin |
+| `X.md` | X | DRAFT_READY | x |
 | `TELEGRAM.md` | Telegram | DRAFT_READY | telegram |
-| `INSTAGRAM.md` | Instagram (FA) | DRAFT_READY | instagram |
-| `VIRGOOL.md` | Virgool / Blog | DRAFT_READY | virgool |
-| `YOUTUBE_APARAT.md` | YouTube / Aparat | DRAFT_READY | youtube |
-| `PRODUCT_HUNT.md` | Product Hunt | OWNER_BLOCKED | producthunt |
-| `HACKER_NEWS.md` | Hacker News | OWNER_BLOCKED | hackernews |
-| `REDDIT.md` | Reddit | OWNER_BLOCKED | reddit |
-| `OUTREACH.md` | Direct Outreach | DRAFT_READY | outreach |
+| `INSTAGRAM.md` | Carousel/Story/Reel | ASSET_REQUIRED/DEMO_REQUIRED | instagram |
+| `VIRGOOL.md` | Virgool | DRAFT_READY | virgool |
+| `YOUTUBE_APARAT.md` | YouTube/Aparat | DEMO_REQUIRED | youtube/aparat |
+| `PRODUCT_HUNT.md` | Product Hunt | DEFER_NOT_ELIGIBLE | producthunt |
+| `HACKER_NEWS.md` | Hacker News | HUMAN_REWRITE_REQUIRED | hackernews |
+| `REDDIT.md` | Reddit | COMMUNITY_REVIEW | reddit |
+| `OUTREACH.md` | Direct outreach | PER_RECIPIENT_APPROVAL | none/public-link only |
 
-## Assets Required
+## Common publication workflow
 
-| Asset | Dimensions | Usage |
-|---|---|---|
-| `assets/social/og-default.png` | 1200×630 | LinkedIn, Instagram, Virgool |
-| `assets/social/github-card.png` | 1280×640 | GitHub Social Preview |
-| `assets/social/site-desktop.png` | 1440×900 | Virgool article header |
-| `assets/social/site-mobile.png` | 390×844 | Instagram story |
-| `assets/social/demo-launch.mp4` | 1080×1920 | YouTube, Aparat |
+1. `git pull --ff-only origin main`
+2. `npm ci && npm test && npm run site:build`
+3. Validate counts from Catalog/Build.
+4. `npm run launch:links:test`
+5. Prepare Draft and assets.
+6. Show Account, Destination, text, asset and UTM.
+7. Receive independent approval for that exact action.
+8. Publish only that action.
+9. Open public page and extract real Public URL.
+10. Record UTC and URL in Launch Log.
+11. `npm run launch:log:test && npm test`
+12. Commit Log on a separate branch and open Draft PR.
+13. Follow `MEASUREMENT.md` for 24h, 72h and 7d.
 
-## Campaigns
+## Approval template
 
-- `initial_launch` — Persian channels
-- `international_launch` — English channels
+```text
+APPROVE_CHANNEL=
+ACCOUNT_DISPLAY_NAME=
+DESTINATION=
+LANGUAGE=
+FINAL_TEXT_SHA256=
+ASSETS=
+UTM_URL=
+IRREVERSIBLE_ACTION=
+```
 
-## Key Links
+Approval does not transfer between channels or publication types.
 
-- Website: https://llm.persiantoolbox.ir/
-- Repository: https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir
-- Catalog: https://llm.persiantoolbox.ir/catalog.json
+## Evidence template
+
+```text
+CHANNEL=
+LAUNCH_ID=
+PUBLIC_URL=
+PUBLISHED_AT_UTC=
+ACCOUNT_DISPLAY_NAME=
+UTM_SOURCE=
+CAMPAIGN=
+ASSET_PATHS=
+LOG_PR_URL=
+24H_DUE=
+72H_DUE=
+7D_DUE=
+```
+
+## Prohibited
+
+- Cookie, Password, Token or Session export
+- Dashboard screenshots or PII in Repository
+- Mass-posting, Mass-DM, BCC, vote solicitation or coordinated upvotes
+- Guessed metrics
+- Treating VPN/foreign-host results as direct-Iran evidence
+- Claiming `PUBLISHED` without a public URL
