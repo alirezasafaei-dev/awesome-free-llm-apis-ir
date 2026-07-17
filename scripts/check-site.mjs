@@ -38,7 +38,18 @@ for (const tag of scriptTags) {
   if (srcMatch && !remoteScriptsAllowed.includes(srcMatch[1])) throw new Error(`Remote script not allowed: ${srcMatch[1]}`);
 }
 
-for (const eventName of ["provider_page_click", "guide_page_click", "copy_base_url", "provider_docs_click", "provider_website_click", "github_click", "catalog_download"]) {
+for (const eventName of [
+  "provider_page_click",
+  "guide_page_click",
+  "copy_base_url",
+  "provider_docs_click",
+  "provider_website_click",
+  "github_click",
+  "catalog_download",
+  "persian_campaign_landing",
+  "guide_catalog_click",
+  "iran_access_report_click"
+]) {
   if (!analyticsSource.includes(`\"${eventName}\"`)) throw new Error(`Analytics source is missing ${eventName}`);
 }
 if (!analyticsSource.includes("window.plausible")) throw new Error("Analytics source does not initialize the Plausible queue");
