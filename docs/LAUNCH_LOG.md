@@ -34,7 +34,7 @@
 | L-007 |  | Instagram | FA | Carousel | DRAFT_READY |  | instagram | initial_launch | Owner | نیازمند طراحی و انتشار حساب |
 | L-008 |  | Instagram | FA | Story | DRAFT_READY |  | instagram | initial_launch | Owner | Link Sticker با UTM |
 | L-009 |  | Instagram | FA | Reel | DRAFT_READY |  | instagram | initial_launch | Owner | نیازمند ضبط/تدوین |
-| L-010 |  | Virgool | FA | Article | DRAFT_READY |  | virgool | initial_launch | Owner | نسخه تکراری کامل Guide نباشد |
+| L-010 | 2026-07-17 | Virgool | FA | Article | PUBLISHED | https://vrgl.ir/kRMtg | virgool | initial_launch | Owner | مقاله آموزشی با لحن غیرتبلیغاتی در virgool.io/@asdevelooper |
 | L-011 |  | Persian Toolbox Blog | FA | Article | DRAFT_READY |  | persiantoolbox | initial_launch | Owner/Agent |  |
 | L-012 |  | YouTube | FA | Demo video | DRAFT_READY |  | youtube | initial_launch | Owner |  |
 | L-013 |  | Aparat | FA | Demo video | DRAFT_READY |  | aparat | initial_launch | Owner |  |
