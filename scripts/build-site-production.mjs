@@ -1,11 +1,13 @@
-import { readFile, readdir, writeFile } from "node:fs/promises";
+import { cp, readFile, readdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
 
 const root = process.cwd();
 const destination = path.join(root, ".site-dist");
+const dataPath = path.join(root, "data.json");
 
 await import("./build-site.mjs");
+await cp(dataPath, path.join(destination, "data.json"));
 
 async function normalizeNestedTrackerPaths(section) {
   const sectionRoot = path.join(destination, section);
@@ -38,4 +40,4 @@ const guidePages = await normalizeNestedTrackerPaths("guides");
 
 await import("./enrich-provider-pages.mjs");
 
-console.log(`Normalized Plausible tracker paths for ${providerPages} provider pages and ${guidePages} Persian guide pages.`);
+console.log(`Published data.json and normalized Plausible tracker paths for ${providerPages} provider pages and ${guidePages} Persian guide pages.`);
