@@ -11,3 +11,5 @@ benchmarks/results/local/
 artifacts/
 site-release.tar.gz
 deploy-csp.sh
+scripts/launch-readonly-monitor.mjs
+scripts/test-vpn-matrix.sh

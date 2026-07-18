@@ -34,7 +34,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 2
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4 # v4.2.1 — 34e114876b0b11c390a56381ad16ebd13914f8d5
       - name: Ensure no infrastructure secrets in public workflow
         run: |
           set -Eeuo pipefail
@@ -56,17 +56,18 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v4 # v4.2.1 — 34e114876b0b11c390a56381ad16ebd13914f8d5
+      - uses: actions/setup-node@v4 # v4.3.0 — 49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
           node-version: 22
+      - run: npm ci
       - run: npm test
       - run: npm run site:build
         env:
           SOURCE_REVISION: ${{ github.sha }}
       - name: Package immutable release
         run: tar -C .site-dist -czf site-release.tar.gz .
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v4 # v4.6.2 — ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: site-release-${{ github.sha }}
           path: |
@@ -85,7 +86,7 @@ jobs:
       name: production-global
       url: https://llm.persiantoolbox.ir/
     steps:
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v4 # v4.1.8 — d3f86a106a0bac45b974a628896c90dbdf5c8093
         with:
           name: site-release-${{ github.sha }}
       - name: Configure pinned SSH identity
@@ -169,7 +170,7 @@ jobs:
       name: production-iran
       url: https://ir.llm.persiantoolbox.ir/
     steps:
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v4 # v4.1.8 — d3f86a106a0bac45b974a628896c90dbdf5c8093
         with:
           name: site-release-${{ github.sha }}
       - name: Configure pinned SSH identity
