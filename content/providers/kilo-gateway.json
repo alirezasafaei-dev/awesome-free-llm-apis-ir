@@ -1,0 +1,51 @@
+{
+  "schema_version": "1.0.0",
+  "provider_id": "kilo-gateway",
+  "intent_fa": "Kilo Gateway برای دسترسی OpenAI-compatible به مدل‌های متعدد و استفاده از مسیر پویا `kilo-auto/free` مناسب است. مدل‌های رایگان می‌توانند برای کاربر ناشناس هم قابل استفاده باشند، اما تخصیص مدل بالادستی پویاست و محدودیت IP یا Provider اعمال می‌شود؛ برای حساب، کنترل مصرف یا مدل‌های پولی باید API Key جداگانه ساخت.",
+  "signup_steps_fa": [
+    "برای تست ناشناس، ابتدا فهرست رسمی مدل‌ها و `kilo-auto/free` را بررسی کنید؛ مدل‌های رایگان و Provider زیرساختی می‌توانند بدون اطلاع قبلی تغییر کنند و داده حساس نباید به مسیر free ارسال شود.",
+    "برای استفاده احراز‌شده، در app.kilo.ai حساب بسازید و API Key شخصی را از Profile دریافت کنید. مقدار را فقط در KILO_API_KEY نگهداری کنید و آن را در مرورگر، URL، log یا مخزن قرار ندهید.",
+    "پیش از بار واقعی، GET /models را بررسی کنید و یک درخواست کوتاه بفرستید. برای free route محدودیت ۲۰۰ درخواست در ساعت به‌ازای IP ثبت شده و محدودیت Provider بالادستی نیز می‌تواند زودتر اعمال شود."
+  ],
+  "first_request": {
+    "language": "curl",
+    "code": "curl -X POST https://api.kilo.ai/api/gateway/chat/completions \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\"model\":\"kilo-auto/free\",\"messages\":[{\"role\":\"user\",\"content\":\"سلام! در یک جمله پاسخ بده.\"}],\"stream\":false}'",
+    "notes_fa": "این نمونه مسیر anonymous free را نشان می‌دهد و Secret ندارد. برای حساب احراز‌شده، هدر Authorization با KILO_API_KEY اضافه شود. مدل واقعی پشت kilo-auto/free پویاست و ممکن است سیاست پردازش داده متفاوتی داشته باشد.",
+    "source_url": "https://kilo.ai/docs/gateway/models-and-providers",
+    "checked_at": "2026-07-16"
+  },
+  "common_errors": [
+    {
+      "code": "400",
+      "title_fa": "مدل یا پارامتر درخواست معتبر نیست",
+      "resolution_fa": "شناسه مدل را از GET /models بگیرید، ساختار messages را حداقلی کنید و context را از پنجره مدل بزرگ‌تر نفرستید. برای Auto Free به مدل ثابت و cache‌شده تکیه نکنید.",
+      "source_url": "https://kilo.ai/docs/gateway/api-reference",
+      "checked_at": "2026-07-16"
+    },
+    {
+      "code": "401/402",
+      "title_fa": "کلید نامعتبر یا اعتبار حساب کافی نیست",
+      "resolution_fa": "برای مدل احراز‌شده، KILO_API_KEY و هدر Bearer را کنترل کنید. 402 مربوط به موجودی است؛ برای مسیر رایگان از مدل مشخصاً free استفاده کنید و درخواست پولی را به‌اشتباه retry نکنید.",
+      "source_url": "https://kilo.ai/docs/gateway/api-reference",
+      "checked_at": "2026-07-16"
+    },
+    {
+      "code": "429/502/503",
+      "title_fa": "محدودیت IP یا خطای Provider بالادستی",
+      "resolution_fa": "برای 429 نرخ ارسال را کم و backoff اعمال کنید. برای خطای Provider یا unavailable، پس از تأخیر محدود دوباره تلاش کنید یا مدل رایگان دیگری انتخاب کنید؛ loop سریع retry هم محدودیت را تشدید می‌کند و هم خروجی ناپایدار می‌سازد.",
+      "source_url": "https://kilo.ai/docs/getting-started/rate-limits-and-costs",
+      "checked_at": "2026-07-16"
+    }
+  ],
+  "when_not_to_use_fa": [
+    "زمانی که prompt یا خروجی حاوی داده شخصی، محرمانه یا مالکیتی است؛ Auto Free می‌تواند درخواست را به Providerهایی با سیاست logging یا بهبود مدل هدایت کند.",
+    "زمانی که پروژه به مدل ثابت، latency قابل پیش‌بینی یا SLA تولیدی نیاز دارد؛ مدل پشت kilo-auto/free و ظرفیت Providerهای رایگان پویاست.",
+    "زمانی که وابستگی به Gateway چندارائه‌دهنده‌ای یا تفاوت خطاهای Provider بالادستی برای معماری پروژه پذیرفتنی نیست."
+  ],
+  "related_guides": [
+    "openai-sdk-custom-base-url",
+    "free-tier-vs-trial-vs-credit",
+    "free-coding-api"
+  ],
+  "last_reviewed": "2026-07-16"
+}
