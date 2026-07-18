@@ -25,36 +25,36 @@
     "limits": [
       {
         "scope": "model",
-        "model": "llama-3.1-8b-instant",
+        "model": "openai/gpt-oss-20b",
         "condition": "Free Plan",
         "rpm": 30,
-        "rpd": 14400,
-        "tpm": 6000,
-        "tpd": 500000,
+        "rpd": 1000,
+        "tpm": 8000,
+        "tpd": 200000,
         "notes_fa": null
       },
       {
         "scope": "model",
-        "model": "llama-3.3-70b-versatile",
+        "model": "openai/gpt-oss-120b",
         "condition": "Free Plan",
         "rpm": 30,
         "rpd": 1000,
-        "tpm": 12000,
-        "tpd": 100000,
+        "tpm": 8000,
+        "tpd": 200000,
         "notes_fa": null
       },
       {
         "scope": "model",
-        "model": "qwen/qwen3-32b",
+        "model": "qwen/qwen3.6-27b",
         "condition": "Free Plan",
-        "rpm": 60,
+        "rpm": 30,
         "rpd": 1000,
-        "tpm": 6000,
-        "tpd": 500000,
+        "tpm": 8000,
+        "tpd": 200000,
         "notes_fa": null
       }
     ],
-    "notes_fa": "سهمیه‌ها در سطح Organization اعمال می‌شوند و مدل‌به‌مدل متفاوت‌اند. صفحه Limits حساب مرجع نهایی است."
+    "notes_fa": "سهمیه‌ها در سطح Organization اعمال می‌شوند و مدل‌به‌مدل متفاوت‌اند. مدل qwen/qwen3-32b طبق صفحه رسمی Deprecation در ۱۷ ژوئیه ۲۰۲۶ خاموش شد و از فهرست نمونه حذف شده است؛ صفحه Limits حساب مرجع نهایی است."
   },
   "iran_access": {
     "status": "verified_blocked",
@@ -106,20 +106,21 @@
     "dynamic": true,
     "source": "https://console.groq.com/docs/models",
     "notable": [
-      "llama-3.1-8b-instant",
-      "llama-3.3-70b-versatile",
-      "qwen/qwen3-32b"
+      "openai/gpt-oss-20b",
+      "openai/gpt-oss-120b",
+      "qwen/qwen3.6-27b"
     ]
   },
   "verification": {
     "level": "live_verified",
-    "last_checked": "2026-07-16",
+    "last_checked": "2026-07-18",
     "checked_by": "maintainers",
     "stale_after_days": 30
   },
-  "notes_fa": "درخواست زنده از مسیر مستقیم ایران پاسخ ۴۰۳ داد و همان کلید از منطقهٔ پشتیبانی‌شده پاسخ ۲۰۰ گرفت؛ مسدودیت جغرافیایی در تاریخ ثبت‌شده تأیید شد.",
+  "notes_fa": "درخواست زنده از مسیر مستقیم ایران پاسخ ۴۰۳ داد و همان کلید از منطقهٔ پشتیبانی‌شده پاسخ ۲۰۰ گرفت؛ مسدودیت جغرافیایی در تاریخ ثبت‌شده تأیید شد. مدل‌ها و سهمیه‌های نمونه در ۱۸ ژوئیه ۲۰۲۶ با صفحات رسمی Limits و Deprecation تطبیق داده شدند.",
   "sources": [
     "https://console.groq.com/docs/rate-limits",
-    "https://console.groq.com/docs/models"
+    "https://console.groq.com/docs/models",
+    "https://console.groq.com/docs/deprecations"
   ]
 }

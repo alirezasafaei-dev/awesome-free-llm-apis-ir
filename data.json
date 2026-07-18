@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-07-16",
+  "lastUpdated": "2026-07-18",
   "providerCount": 22,
   "providers": [
     {
@@ -111,9 +111,9 @@
       "freeTier": {
         "status": "trial",
         "type": "trial",
-        "requiresPaymentMethod": null,
+        "requiresPaymentMethod": true,
         "limitExample": "5 RPM",
-        "notesFa": "مستندات نرخ، این سطح را Free Trial می‌نامند؛ بنابراین به‌عنوان رایگان دائمی برچسب نخورده است."
+        "notesFa": "حساب جدید پس از افزودن روش پرداخت تأییدشده، ۵ دلار اعتبار آزمایشی دریافت می‌کند که ۳۰ روز اعتبار دارد. بدون روش پرداخت، Playground و API فعال نمی‌شوند؛ بنابراین این سطح رایگان دائمی نیست."
       },
       "capabilities": [
         "chat",
@@ -141,7 +141,7 @@
       ],
       "verification": {
         "level": "live_verified",
-        "lastChecked": "2026-07-16",
+        "lastChecked": "2026-07-18",
         "staleAfterDays": 30
       }
     },
@@ -432,7 +432,7 @@
         "type": "permanent_allowance",
         "requiresPaymentMethod": false,
         "limitExample": "30 RPM",
-        "notesFa": "سهمیه‌ها در سطح Organization اعمال می‌شوند و مدل‌به‌مدل متفاوت‌اند. صفحه Limits حساب مرجع نهایی است."
+        "notesFa": "سهمیه‌ها در سطح Organization اعمال می‌شوند و مدل‌به‌مدل متفاوت‌اند. مدل qwen/qwen3-32b طبق صفحه رسمی Deprecation در ۱۷ ژوئیه ۲۰۲۶ خاموش شد و از فهرست نمونه حذف شده است؛ صفحه Limits حساب مرجع نهایی است."
       },
       "capabilities": [
         "chat",
@@ -454,13 +454,13 @@
         "notesFa": "مسدودیت جغرافیایی تأیید شد. کلید معتبر از سرور خارج ایران ۲۰۰ برگرداند."
       },
       "models": [
-        "llama-3.1-8b-instant",
-        "llama-3.3-70b-versatile",
-        "qwen/qwen3-32b"
+        "openai/gpt-oss-20b",
+        "openai/gpt-oss-120b",
+        "qwen/qwen3.6-27b"
       ],
       "verification": {
         "level": "live_verified",
-        "lastChecked": "2026-07-16",
+        "lastChecked": "2026-07-18",
         "staleAfterDays": 30
       }
     },
