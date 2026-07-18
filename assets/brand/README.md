@@ -17,7 +17,7 @@
 
 The website implementation uses the shared symbol SVG plus HTML text. This avoids duplicated inline SVG markup across generated page templates.
 
-This lean source pack was rebuilt from the current production `main`; generated PNG previews are intentionally excluded.
+This lean source pack was rebuilt from the current production `main`; generated PNG previews are intentionally excluded. Relative asset paths are regression-tested for both production domains and repository-scoped GitHub Pages.
 
 ## Palette
 
