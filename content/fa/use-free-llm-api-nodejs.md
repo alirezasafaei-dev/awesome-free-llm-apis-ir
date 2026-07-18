@@ -1,6 +1,7 @@
 ---
 title: "استفاده از API رایگان هوش مصنوعی در Node.js با Base URL سفارشی"
 slug: "use-free-llm-api-nodejs"
+translation_key: "use-free-llm-api-nodejs"
 description: "آموزش عملی اتصال Node.js به APIهای سازگار با OpenAI، مدیریت متغیرهای محیطی، Streaming، Timeout، Retry، خطاها و ساخت Endpoint امن برای چت‌بات."
 primary_keyword: "API رایگان هوش مصنوعی Node.js"
 secondary_keywords:

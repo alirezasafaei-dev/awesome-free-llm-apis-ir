@@ -1,6 +1,7 @@
 ---
 title: "Fixing 429 Errors and Managing Rate Limits in Free LLM APIs"
 slug: "en-llm-api-rate-limit-429"
+translation_key: "llm-api-rate-limit-429"
 description: "Expert guide to diagnosing quota types, implementing retry with backoff and jitter, request queuing, circuit breakers, and provider fallback for free language model APIs."
 primary_keyword: "fix 429 error LLM API"
 secondary_keywords:

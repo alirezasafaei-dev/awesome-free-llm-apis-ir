@@ -1,6 +1,7 @@
 ---
 title: "انتخاب API رایگان هوش مصنوعی در ایران؛ از ثبت‌نام تا اولین درخواست"
 slug: "practical-free-llm-api-iran"
+translation_key: "practical-free-llm-api-iran"
 description: "راهنمای عملی انتخاب، ثبت‌نام، تست اتصال و اجرای اولین درخواست API رایگان LLM برای کاربران داخل ایران؛ همراه با معیارهای امنیت، سهمیه و دسترسی."
 primary_keyword: "API رایگان هوش مصنوعی در ایران"
 secondary_keywords:

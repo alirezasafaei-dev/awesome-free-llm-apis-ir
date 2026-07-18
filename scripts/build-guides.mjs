@@ -211,7 +211,7 @@ export async function buildGuides(catalog) {
   <meta name="twitter:image" content="${canonicalOrigin}/assets/social/og-default.png">
   <link rel="canonical" href="${canonicalUrl}">
   ${hreflangLinks([
-    { hreflang: "fa", href: canonicalUrl },
+    { hreflang: "fa-IR", href: canonicalUrl },
     { hreflang: "x-default", href: canonicalUrl }
   ])}
   <link rel="stylesheet" href="../../styles.css">

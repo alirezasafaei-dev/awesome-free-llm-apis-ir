@@ -1,6 +1,7 @@
 ---
 title: "رفع خطای 429 و مدیریت Rate Limit در APIهای رایگان LLM"
 slug: "llm-api-rate-limit-429"
+translation_key: "llm-api-rate-limit-429"
 description: "راهنمای تخصصی تشخیص سهمیه، Retry با Backoff و Jitter، صف درخواست، Circuit Breaker و Provider fallback برای APIهای رایگان مدل زبانی."
 primary_keyword: "رفع خطای 429 API هوش مصنوعی"
 secondary_keywords:

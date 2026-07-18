@@ -1,6 +1,7 @@
 ---
 title: "Using a Free LLM API in Node.js with a Custom Base URL"
 slug: "en-use-free-llm-api-nodejs"
+translation_key: "use-free-llm-api-nodejs"
 description: "Practical tutorial for connecting Node.js to OpenAI-compatible free LLM APIs, managing environment variables, streaming, timeout, retry, errors, and building a secure chat endpoint."
 primary_keyword: "free LLM API Node.js"
 secondary_keywords:

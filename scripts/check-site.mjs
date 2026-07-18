@@ -2,11 +2,13 @@ import { access, readFile, readdir, rm } from "node:fs/promises";
 import { spawnSync } from "node:child_process";
 import path from "node:path";
 import process from "node:process";
+import { XMLParser } from "fast-xml-parser";
 
 const root = process.cwd();
 const plausibleScript = "./plausible.js";
 const required = [
   "site/index.html",
+  "site/en/index.html",
   "site/styles.css",
   "site/seo.css",
   "site/app.js",
@@ -97,6 +99,13 @@ if (!html.includes('role="status"')) throw new Error("Result count missing role=
 if (!html.includes("<!-- HREFLANG_TAGS -->")) throw new Error("Homepage is missing hreflang placeholder");
 if (!html.includes("<!-- LANGUAGE_SWITCHER -->")) throw new Error("Homepage is missing language switcher placeholder");
 
+// Check /en/ source has placeholders
+const enHtml = await readFile(path.join(root, "site/en/index.html"), "utf8");
+if (!enHtml.includes("<!-- HREFLANG_TAGS -->")) throw new Error("English homepage is missing hreflang placeholder");
+if (!enHtml.includes("<!-- LANGUAGE_SWITCHER -->")) throw new Error("English homepage is missing language switcher placeholder");
+if (!enHtml.includes("lang=\"en\"")) throw new Error("English homepage missing lang=en");
+if (!enHtml.includes("dir=\"ltr\"")) throw new Error("English homepage missing dir=ltr");
+
 // Check 404.html
 const notFoundHtml = await readFile(path.join(root, "site/404.html"), "utf8");
 if (!notFoundHtml.includes("noindex")) throw new Error("404.html is missing noindex");
@@ -140,6 +149,8 @@ if (!appSource.includes("advisor_provider_click")) throw new Error("Site does no
 
 const build = spawnSync(process.execPath, [path.join(root, "scripts/build-site.mjs")], { cwd: root, encoding: "utf8" });
 if (build.status !== 0) throw new Error(build.stderr || "Site build failed");
+const faBuild = spawnSync(process.execPath, [path.join(root, "scripts/build-persian-content.mjs")], { cwd: root, encoding: "utf8" });
+if (faBuild.status !== 0) throw new Error(faBuild.stderr || "Persian content build failed");
 for (const file of ["index.html", "styles.css", "seo.css", "app.js", "analytics.js", "catalog.json", "build-meta.json", "robots.txt", "sitemap.xml", "llms.txt", "404.html"]) {
   await access(path.join(root, ".site-dist", file));
 }
@@ -152,7 +163,17 @@ if ((builtIndex.match(new RegExp(plausibleScript.replace(/[.*+?^${}()|[\]\\]/g, 
 if (!builtIndex.includes('"Organization"') || !builtIndex.includes('"creator"')) throw new Error("Built homepage JSON-LD missing creator/organization");
 
 // Built homepage hreflang check
-if (!builtIndex.includes('hreflang="fa"') || !builtIndex.includes('hreflang="en"') || !builtIndex.includes('hreflang="x-default"')) throw new Error("Built homepage missing hreflang tags");
+if (!builtIndex.includes('hreflang="fa-IR"') || !builtIndex.includes('hreflang="en"') || !builtIndex.includes('hreflang="x-default"')) throw new Error("Built homepage missing hreflang tags (expected fa-IR, en, x-default)");
+if (builtIndex.includes('hreflang="fa" href=')) throw new Error("Built homepage must not emit bare fa hreflang");
+if (!builtIndex.includes('href="https://llm.persiantoolbox.ir/en/"')) throw new Error("Built homepage en hreflang must point to /en/");
+
+// Built /en/ hreflang check
+const builtEnIndex = await readFile(path.join(root, ".site-dist", "en", "index.html"), "utf8");
+if (!builtEnIndex.includes('hreflang="fa-IR"') || !builtEnIndex.includes('hreflang="en"') || !builtEnIndex.includes('hreflang="x-default"')) throw new Error("Built English homepage missing hreflang tags");
+if (builtEnIndex.includes('hreflang="fa"')) throw new Error("Built English homepage must not emit bare fa hreflang");
+if (!builtEnIndex.includes('lang="en"') || !builtEnIndex.includes('dir="ltr"')) throw new Error("Built English homepage missing lang/dir");
+if (!builtEnIndex.includes('<script defer src="../analytics.js"></script>')) throw new Error("Built English homepage missing analytics");
+if (!builtEnIndex.includes('href="https://llm.persiantoolbox.ir/"') || !builtEnIndex.includes('lang-switcher')) throw new Error("Built English homepage missing language switcher pointing to Persian home");
 
 const organizationId = "https://llm.persiantoolbox.ir/#organization";
 
@@ -166,7 +187,9 @@ for (const provider of catalog.providers) {
   for (const needle of [canonical, "application/ld+json", provider.name, "../../seo.css", "../../analytics.js", "خلاصه فنی", `data-provider-id="${provider.id}"`, "data-copy-text=", "skip-link", "#organization"]) {
     if (!providerHtml.includes(needle)) throw new Error(`${provider.id} page is missing ${needle}`);
   }
-  if (!providerHtml.includes(`hreflang="fa" href="${canonical}"`) || !providerHtml.includes(`hreflang="x-default" href="${canonical}"`)) throw new Error(`${provider.id} page is missing hreflang tags`);
+  if (!providerHtml.includes(`hreflang="fa-IR" href="${canonical}"`) || !providerHtml.includes(`hreflang="x-default" href="${canonical}"`)) throw new Error(`${provider.id} page is missing hreflang tags`);
+  if (providerHtml.includes(`hreflang="fa" href="${canonical}"`)) throw new Error(`${provider.id} page must not emit bare fa hreflang`);
+  if (providerHtml.includes('lang-switcher')) throw new Error(`${provider.id} page must not have a language switcher (no English counterpart)`);
   if ((providerHtml.match(new RegExp(plausibleScript.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "g")) || []).length !== 1) throw new Error(`${provider.id} page must contain exactly one Plausible tracker`);
 
   // Title duplication check - no "API API" pattern
@@ -214,7 +237,9 @@ for (const slug of guideSlugs) {
   for (const needle of [canonical, "application/ld+json", "../../analytics.js", `dateModified\":\"${catalog.last_updated}`, "skip-link", "#organization"]) {
     if (!guideHtml.includes(needle)) throw new Error(`Guide ${slug} is missing ${needle}`);
   }
-  if (!guideHtml.includes(`hreflang="fa" href="${canonical}"`) || !guideHtml.includes(`hreflang="x-default" href="${canonical}"`)) throw new Error(`Guide ${slug} is missing hreflang tags`);
+  if (!guideHtml.includes(`hreflang="fa-IR" href="${canonical}"`) || !guideHtml.includes(`hreflang="x-default" href="${canonical}"`)) throw new Error(`Guide ${slug} is missing hreflang tags`);
+  if (guideHtml.includes(`hreflang="fa" href="${canonical}"`)) throw new Error(`Guide ${slug} must not emit bare fa hreflang`);
+  if (guideHtml.includes('lang-switcher')) throw new Error(`Guide ${slug} must not have a language switcher (no English counterpart)`);
   if (guideHtml.includes('href="../providers/')) throw new Error(`Guide ${slug} contains a broken provider relative link`);
   if (guideHtml.includes('href="../catalog.json"')) throw new Error(`Guide ${slug} contains a broken catalog relative link`);
   if ((guideHtml.match(new RegExp(plausibleScript.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "g")) || []).length !== 1) throw new Error(`Guide ${slug} must contain exactly one Plausible tracker`);
@@ -239,6 +264,27 @@ for (const slug of guideSlugs) {
   }
 }
 
+// Long-form Persian article validation
+const faArticleSlugs = ["practical-free-llm-api-iran", "build-persian-chatbot-python-free-llm-api", "fix-llm-api-401-403-model-not-found", "llm-api-rate-limit-429", "use-free-llm-api-nodejs"];
+const faEnPairs = {
+  "practical-free-llm-api-iran": "en-practical-free-llm-api-iran",
+  "build-persian-chatbot-python-free-llm-api": "en-build-persian-chatbot-python",
+  "fix-llm-api-401-403-model-not-found": "en-fix-llm-api-401-403",
+  "llm-api-rate-limit-429": "en-llm-api-rate-limit-429",
+  "use-free-llm-api-nodejs": "en-use-free-llm-api-nodejs"
+};
+for (const slug of faArticleSlugs) {
+  const articlePath = path.join(guidesDir, slug, "index.html");
+  await access(articlePath);
+  const articleHtml = await readFile(articlePath, "utf8");
+  const canonical = `https://llm.persiantoolbox.ir/guides/${slug}/`;
+  if (!articleHtml.includes(`hreflang="fa-IR" href="${canonical}"`)) throw new Error(`Persian article ${slug} missing fa-IR hreflang`);
+  if (!articleHtml.includes('hreflang="en"')) throw new Error(`Persian article ${slug} missing en hreflang (has English counterpart)`);
+  if (!articleHtml.includes('hreflang="x-default"')) throw new Error(`Persian article ${slug} missing x-default hreflang`);
+  if (articleHtml.includes(`hreflang="fa" href=`)) throw new Error(`Persian article ${slug} must not emit bare fa hreflang`);
+  if (!articleHtml.includes('lang-switcher')) throw new Error(`Persian article ${slug} must have a language switcher (has English counterpart)`);
+}
+
 // English guide validation
 for (const slug of enGuideSlugs) {
   const guidePath = path.join(guidesDir, "en", slug, "index.html");
@@ -248,7 +294,9 @@ for (const slug of enGuideSlugs) {
   for (const needle of [canonical, "application/ld+json", "analytics.js", "dateModified", "skip-link", "#organization"]) {
     if (!guideHtml.includes(needle)) throw new Error(`English guide ${slug} is missing ${needle}`);
   }
-  if (!guideHtml.includes(`hreflang="en" href="${canonical}"`) || !guideHtml.includes(`hreflang="x-default" href="${canonical}"`)) throw new Error(`English guide ${slug} is missing hreflang tags`);
+  if (!guideHtml.includes(`hreflang="fa-IR"`) || !guideHtml.includes(`hreflang="en" href="${canonical}"`) || !guideHtml.includes(`hreflang="x-default"`)) throw new Error(`English guide ${slug} is missing reciprocal hreflang tags (expected fa-IR, en, x-default)`);
+  if (guideHtml.includes(`hreflang="fa" href=`)) throw new Error(`English guide ${slug} must not emit bare fa hreflang`);
+  if (!guideHtml.includes('lang-switcher')) throw new Error(`English guide ${slug} must have a language switcher (has Persian counterpart)`);
   if ((guideHtml.match(new RegExp(plausibleScript.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "g")) || []).length !== 1) throw new Error(`English guide ${slug} must contain exactly one Plausible tracker`);
   const enGuideTitleMatch = guideHtml.match(/<title>([^<]+)<\/title>/);
   if (enGuideTitleMatch && /API\s+API/i.test(enGuideTitleMatch[1])) throw new Error(`English guide ${slug} title has duplicate API: ${enGuideTitleMatch[1]}`);
@@ -257,13 +305,101 @@ for (const slug of enGuideSlugs) {
 }
 
 const sitemap = await readFile(path.join(root, ".site-dist", "sitemap.xml"), "utf8");
+const faArticleCount = faArticleSlugs.length;
 const sitemapUrlCount = (sitemap.match(/<url>/g) || []).length;
-if (sitemapUrlCount < catalog.providers.length + 1 + guideCount + enGuideSlugs.length) throw new Error(`Sitemap URL count ${sitemapUrlCount} is less than expected (min ${catalog.providers.length + 1 + guideCount + enGuideSlugs.length})`);
-if (!sitemap.includes('xmlns:xhtml="http://www.w3.org/1999/xhtml"')) throw new Error("Sitemap is missing xhtml namespace");
-if (!sitemap.includes('<xhtml:link rel="alternate"')) throw new Error("Sitemap is missing xhtml:link hreflang entries");
-for (const provider of catalog.providers) {
-  if (!sitemap.includes(`<loc>https://llm.persiantoolbox.ir/providers/${provider.id}/</loc>`)) throw new Error(`Sitemap is missing ${provider.id}`);
+if (sitemapUrlCount < catalog.providers.length + 1 + 1 + guideCount + faArticleCount + enGuideSlugs.length) throw new Error(`Sitemap URL count ${sitemapUrlCount} is less than expected (min ${catalog.providers.length + 2 + guideCount + faArticleCount + enGuideSlugs.length})`);
+// Parse sitemap as XML
+const parser = new XMLParser({ ignoreAttributes: false, attributeNamePrefix: "@_" });
+const sitemapObj = parser.parse(sitemap);
+const urlset = sitemapObj?.urlset;
+if (!urlset) throw new Error("Sitemap XML did not parse into urlset element");
+if (!urlset["@_xmlns:xhtml"]) throw new Error("Sitemap is missing xhtml namespace attribute");
+const urlEntries = Array.isArray(urlset.url) ? urlset.url : [urlset.url];
+const sitemapLocs = new Set(urlEntries.map((u) => u.loc));
+
+// Check every entry has loc
+for (const entry of urlEntries) {
+  if (!entry.loc) throw new Error("Sitemap entry missing <loc>");
 }
+
+// Check canonical URLs present
+for (const provider of catalog.providers) {
+  const expectedLoc = `https://llm.persiantoolbox.ir/providers/${provider.id}/`;
+  if (!sitemapLocs.has(expectedLoc)) throw new Error(`Sitemap is missing ${provider.id}`);
+}
+for (const slug of guideSlugs) {
+  if (!sitemapLocs.has(`https://llm.persiantoolbox.ir/guides/${slug}/`)) throw new Error(`Sitemap missing Persian guide ${slug}`);
+}
+for (const slug of enGuideSlugs) {
+  if (!sitemapLocs.has(`https://llm.persiantoolbox.ir/guides/en/${slug}/`)) throw new Error(`Sitemap missing English guide ${slug}`);
+}
+if (!sitemapLocs.has("https://llm.persiantoolbox.ir/")) throw new Error("Sitemap missing homepage");
+if (!sitemapLocs.has("https://llm.persiantoolbox.ir/en/")) throw new Error("Sitemap missing English homepage");
+
+// Check no bare fa hreflang, and validate reciprocal clusters
+const xhtmlNs = "http://www.w3.org/1999/xhtml";
+for (const entry of urlEntries) {
+  const links = entry["xhtml:link"];
+  if (!links) throw new Error(`Sitemap entry ${entry.loc} has no xhtml:link`);
+  const linkArr = Array.isArray(links) ? links : [links];
+  const hreflangs = linkArr.map((l) => l["@_hreflang"]);
+  const hrefs = linkArr.map((l) => l["@_href"]);
+  
+  // No bare fa
+  if (hreflangs.includes("fa")) throw new Error(`Sitemap ${entry.loc} uses bare fa hreflang, must be fa-IR`);
+  
+  // Must include x-default
+  if (!hreflangs.includes("x-default")) throw new Error(`Sitemap ${entry.loc} missing x-default hreflang`);
+  
+  // Every alternate href must also exist as a loc
+  for (const href of hrefs) {
+    if (!sitemapLocs.has(href) && !href.startsWith("https://llm.persiantoolbox.ir/#")) throw new Error(`Sitemap alternate ${href} referenced from ${entry.loc} is missing as a <loc>`);
+  }
+  
+  // Check no two real lang codes point to same URL (excluding x-default matching fa-IR)
+  const realLinks = linkArr.filter((l) => l["@_hreflang"] !== "x-default");
+  const hrefSet = new Set();
+  for (const l of realLinks) {
+    if (hrefSet.has(l["@_href"])) throw new Error(`Sitemap ${entry.loc} has duplicate href for different hreflang: ${l["@_href"]}`);
+    hrefSet.add(l["@_href"]);
+  }
+}
+
+// Reciprocal cluster check: paired Persian/English article entries must have identical xhtml clusters
+const faGuideUrls = guideSlugs.map((slug) => `https://llm.persiantoolbox.ir/guides/${slug}/`);
+const enGuideUrls = enGuideSlugs.map((slug) => `https://llm.persiantoolbox.ir/guides/en/${slug}/`);
+const faEntries = urlEntries.filter((u) => faGuideUrls.includes(u.loc));
+const enEntries = urlEntries.filter((u) => enGuideSlugs.some((slug) => u.loc === `https://llm.persiantoolbox.ir/guides/en/${slug}/`));
+// Compare each pair (they share the same filename stem minus en- prefix)
+const pairMap = {
+  "practical-free-llm-api-iran": { fa: "https://llm.persiantoolbox.ir/guides/practical-free-llm-api-iran/", en: "https://llm.persiantoolbox.ir/guides/en/en-practical-free-llm-api-iran/" },
+  "build-persian-chatbot-python": { fa: "https://llm.persiantoolbox.ir/guides/build-persian-chatbot-python-free-llm-api/", en: "https://llm.persiantoolbox.ir/guides/en/en-build-persian-chatbot-python/" },
+  "fix-llm-api-401-403-model-not-found": { fa: "https://llm.persiantoolbox.ir/guides/fix-llm-api-401-403-model-not-found/", en: "https://llm.persiantoolbox.ir/guides/en/en-fix-llm-api-401-403/" },
+  "llm-api-rate-limit-429": { fa: "https://llm.persiantoolbox.ir/guides/llm-api-rate-limit-429/", en: "https://llm.persiantoolbox.ir/guides/en/en-llm-api-rate-limit-429/" },
+  "use-free-llm-api-nodejs": { fa: "https://llm.persiantoolbox.ir/guides/use-free-llm-api-nodejs/", en: "https://llm.persiantoolbox.ir/guides/en/en-use-free-llm-api-nodejs/" }
+};
+for (const [key, urls] of Object.entries(pairMap)) {
+  const faEntry = urlEntries.find((u) => u.loc === urls.fa);
+  const enEntry = urlEntries.find((u) => u.loc === urls.en);
+  if (!faEntry) throw new Error(`Sitemap missing FA entry for ${key}`);
+  if (!enEntry) throw new Error(`Sitemap missing EN entry for ${key}`);
+  const faLinks = Array.isArray(faEntry["xhtml:link"]) ? faEntry["xhtml:link"] : [faEntry["xhtml:link"]];
+  const enLinks = Array.isArray(enEntry["xhtml:link"]) ? enEntry["xhtml:link"] : [enEntry["xhtml:link"]];
+  const faCluster = faLinks.map((l) => `${l["@_hreflang"]}:${l["@_href"]}`).sort().join("|");
+  const enCluster = enLinks.map((l) => `${l["@_hreflang"]}:${l["@_href"]}`).sort().join("|");
+  if (faCluster !== enCluster) throw new Error(`Sitemap ${key} reciprocal clusters differ:\n  FA: ${faCluster}\n  EN: ${enCluster}`);
+}
+
+// Check homepage and /en/ reciprocal cluster
+const homeEntry = urlEntries.find((u) => u.loc === "https://llm.persiantoolbox.ir/");
+const enHomeEntry = urlEntries.find((u) => u.loc === "https://llm.persiantoolbox.ir/en/");
+if (!homeEntry) throw new Error("Sitemap missing homepage");
+if (!enHomeEntry) throw new Error("Sitemap missing /en/");
+const homeLinks = Array.isArray(homeEntry["xhtml:link"]) ? homeEntry["xhtml:link"] : [homeEntry["xhtml:link"]];
+const enHomeLinks = Array.isArray(enHomeEntry["xhtml:link"]) ? enHomeEntry["xhtml:link"] : [enHomeEntry["xhtml:link"]];
+const homeCluster = homeLinks.map((l) => `${l["@_hreflang"]}:${l["@_href"]}`).sort().join("|");
+const enHomeCluster = enHomeLinks.map((l) => `${l["@_hreflang"]}:${l["@_href"]}`).sort().join("|");
+if (homeCluster !== enHomeCluster) throw new Error("Sitemap homepage and /en/ clusters must be identical");
 
 const socialAssets = [
   { file: "assets/social/og-default.png", width: 1200, height: 630 },
@@ -284,7 +420,8 @@ for (const asset of socialAssets) {
 const buildMeta = JSON.parse(await readFile(path.join(root, ".site-dist", "build-meta.json"), "utf8"));
 if (!("source_revision" in buildMeta)) throw new Error("build-meta.json is missing source_revision");
 if (buildMeta.provider_page_count !== catalog.providers.length) throw new Error("build-meta provider_page_count mismatch");
-if (Number(buildMeta.guide_page_count) < guideCount + enGuideSlugs.length) throw new Error(`build-meta guide_page_count ${buildMeta.guide_page_count} is less than expected ${guideCount + enGuideSlugs.length}`);
+const expectedGuideCount = guideCount + faArticleSlugs.length + enGuideSlugs.length;
+if (Number(buildMeta.guide_page_count) < expectedGuideCount) throw new Error(`build-meta guide_page_count ${buildMeta.guide_page_count} is less than expected ${expectedGuideCount}`);
 
 // Favicon asset validation in built output
 for (const asset of faviconAssets) {

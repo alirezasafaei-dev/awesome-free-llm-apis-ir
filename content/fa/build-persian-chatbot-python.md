@@ -1,6 +1,7 @@
 ---
 title: "ساخت چت‌بات فارسی با Python و API رایگان سازگار با OpenAI"
 slug: "build-persian-chatbot-python-free-llm-api"
+translation_key: "build-persian-chatbot-python-free-llm-api"
 description: "آموزش عملی ساخت چت‌بات فارسی با Python، OpenAI SDK، Base URL سفارشی، مدیریت تاریخچه، Timeout و خطاهای API."
 primary_keyword: "ساخت چت بات فارسی با پایتون"
 secondary_keywords:
