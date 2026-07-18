@@ -1,0 +1,51 @@
+{
+  "schema_version": "1.0.0",
+  "provider_id": "cerebras",
+  "intent_fa": "Cerebras Inference برای توسعه‌دهنده‌ای مناسب است که API سازگار با OpenAI یا SDK رسمی برای چت، استدلال، Tool Calling و خروجی ساخت‌یافته می‌خواهد و سرعت استنتاج در نمونه‌سازی یا برنامه‌های تعاملی مهم است. نوع Trial، محدودیت‌ها و نتیجه دسترسی از ایران باید فقط از داده و Evidence تاریخ‌دار همین صفحه برداشت شود.",
+  "signup_steps_fa": [
+    "از Cloud Console رسمی Cerebras حساب بسازید یا وارد شوید و از بخش API Keys یک کلید ایجاد کنید.",
+    "کلید را در متغیر محیطی CEREBRAS_API_KEY یا Secret Manager سرور نگهداری کنید و هرگز آن را در کد سمت کاربر قرار ندهید.",
+    "پیش از اجرای درخواست، مدل‌های عمومی و Limits حساب را بررسی کنید؛ موجودبودن مدل و سقف مصرف می‌تواند با Tier حساب متفاوت باشد."
+  ],
+  "first_request": {
+    "language": "curl",
+    "code": "curl https://api.cerebras.ai/v1/chat/completions \\\n  -H \"Authorization: Bearer ${CEREBRAS_API_KEY}\" \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\"model\":\"gpt-oss-120b\",\"messages\":[{\"role\":\"user\",\"content\":\"یک پاسخ کوتاه فارسی بنویس\"}]}'",
+    "notes_fa": "این نمونه از Bearer authentication و متغیر محیطی استفاده می‌کند. پیش از استفاده، شناسه مدل را با مدل‌های در دسترس حساب و مستندات رسمی تطبیق دهید.",
+    "source_url": "https://inference-docs.cerebras.ai/quickstart",
+    "checked_at": "2026-07-16"
+  },
+  "common_errors": [
+    {
+      "code": "401",
+      "title_fa": "کلید Cerebras در محیط اجرا پیدا نشد یا معتبر نیست",
+      "resolution_fa": "مقدار CEREBRAS_API_KEY را در همان Shell یا محیط Deployment بررسی کنید، کلید حذف‌شده را دوباره استفاده نکنید و کلید افشاشده را فوراً Rotate کنید.",
+      "source_url": "https://inference-docs.cerebras.ai/support/error",
+      "checked_at": "2026-07-16"
+    },
+    {
+      "code": "404",
+      "title_fa": "مدل پیدا نشد یا برای حساب فعال نیست",
+      "resolution_fa": "شناسه مدل را بدون حدس از صفحه مدل‌های رسمی بردارید و بررسی کنید که مدل منقضی، تغییرنام‌داده یا خارج از دسترسی Tier حساب نباشد.",
+      "source_url": "https://inference-docs.cerebras.ai/quickstart",
+      "checked_at": "2026-07-16"
+    },
+    {
+      "code": "429",
+      "title_fa": "عبور از محدودیت درخواست یا توکن",
+      "resolution_fa": "درخواست‌ها را با Backoff کنترل کنید، max_completion_tokens را متناسب تنظیم کنید و مقدارهای دقیق Limits حساب را مرجع نهایی قرار دهید.",
+      "source_url": "https://inference-docs.cerebras.ai/support/rate-limits",
+      "checked_at": "2026-07-16"
+    }
+  ],
+  "when_not_to_use_fa": [
+    "وقتی فقط یک Free Tier دائمی می‌خواهید و مدل Trial یا محدودیت زمانی برای پروژه قابل قبول نیست.",
+    "وقتی وضعیت دسترسی نمایش‌داده‌شده در این صفحه با مسیر شبکه یا الزامات عملیاتی شما سازگار نیست.",
+    "وقتی به پارامتر یا مدل خاصی وابسته‌اید اما آن مورد در فهرست رسمی مدل‌های حساب شما وجود ندارد."
+  ],
+  "related_guides": [
+    "openai-sdk-custom-base-url",
+    "free-tier-vs-trial-vs-credit",
+    "llm-api-rate-limit-429"
+  ],
+  "last_reviewed": "2026-07-16"
+}
