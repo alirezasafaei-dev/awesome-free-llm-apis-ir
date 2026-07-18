@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-labelledby="title desc">
+  <title id="title">Free LLM APIs IR gradient symbol</title>
+  <desc id="desc">A minimal gateway-shaped L with connected AI nodes.</desc>
+  <defs>
+    <linearGradient id="brand-gradient" x1="45" y1="30" x2="210" y2="215" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#2563EB"/>
+      <stop offset="1" stop-color="#06B6D4"/>
+    </linearGradient>
+  </defs>
+  <path d="M56 38V166C56 188.091 73.909 206 96 206H202"
+        fill="none" stroke="url(#brand-gradient)" stroke-width="26"
+        stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M112 116L158 80M112 116L174 140M112 116L126 170"
+        fill="none" stroke="#06B6D4" stroke-width="8" stroke-linecap="round"/>
+  <circle cx="112" cy="116" r="15" fill="#06B6D4"/>
+  <circle cx="158" cy="80" r="13" fill="#06B6D4"/>
+  <circle cx="174" cy="140" r="13" fill="#06B6D4"/>
+  <circle cx="126" cy="170" r="13" fill="#06B6D4"/>
+</svg>

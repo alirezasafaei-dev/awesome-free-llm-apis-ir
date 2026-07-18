@@ -20,8 +20,8 @@ const required = [
 ];
 for (const file of required) await access(path.join(root, file));
 
-// Favicon assets
-const faviconAssets = ["favicon.svg", "favicon-16x16.png", "favicon-32x32.png", "apple-touch-icon.png"];
+// Favicon and brand assets
+const faviconAssets = ["favicon.svg", "favicon-16x16.png", "favicon-32x32.png", "apple-touch-icon.png", "logo-symbol.svg", "social-avatar.svg"];
 for (const asset of faviconAssets) {
   await access(path.join(root, "site", "assets", asset));
 }

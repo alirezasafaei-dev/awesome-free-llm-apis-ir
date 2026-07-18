@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1040 240" role="img" aria-labelledby="title desc">
+  <title id="title">Free LLM APIs IR horizontal logo</title>
+  <desc id="desc">Horizontal logo for light backgrounds.</desc>
+  <g transform="translate(20 0)">
+  <path d="M56 38V166C56 188.091 73.909 206 96 206H202"
+        fill="none" stroke="#2563EB" stroke-width="26"
+        stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M112 116L158 80M112 116L174 140M112 116L126 170"
+        fill="none" stroke="#06B6D4" stroke-width="8"
+        stroke-linecap="round"/>
+  <circle cx="112" cy="116" r="15" fill="#06B6D4"/>
+  <circle cx="158" cy="80" r="13" fill="#06B6D4"/>
+  <circle cx="174" cy="140" r="13" fill="#06B6D4"/>
+  <circle cx="126" cy="170" r="13" fill="#06B6D4"/>
+</g>
+  <g font-family="Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif">
+    <text x="310" y="112" font-size="66" font-weight="760" letter-spacing="-2.2" fill="#0F172A">Free LLM APIs</text>
+    <text x="782" y="112" font-size="66" font-weight="800" letter-spacing="-1" fill="#2563EB">IR</text>
+    <text x="314" y="158" font-size="18" font-weight="650" letter-spacing="4.6" fill="#64748B">DISCOVER  •  COMPARE  •  CONNECT</text>
+  </g>
+</svg>

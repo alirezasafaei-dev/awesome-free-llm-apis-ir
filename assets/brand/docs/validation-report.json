@@ -1,0 +1,77 @@
+{
+  "01-logo-symbol-color.svg": {
+    "xml": "valid",
+    "render": "passed",
+    "bytes": 772
+  },
+  "02-logo-symbol-gradient.svg": {
+    "xml": "valid",
+    "render": "passed",
+    "bytes": 1014
+  },
+  "03-logo-symbol-white.svg": {
+    "xml": "valid",
+    "render": "passed",
+    "bytes": 774
+  },
+  "04-logo-symbol-mono-navy.svg": {
+    "xml": "valid",
+    "render": "passed",
+    "bytes": 757
+  },
+  "05-logo-horizontal-light.svg": {
+    "xml": "valid",
+    "render": "passed",
+    "bytes": 1273
+  },
+  "06-logo-horizontal-dark.svg": {
+    "xml": "valid",
+    "render": "passed",
+    "bytes": 1277
+  },
+  "07-logo-horizontal-compact-light.svg": {
+    "xml": "valid",
+    "render": "passed",
+    "bytes": 1134
+  },
+  "08-logo-horizontal-compact-dark.svg": {
+    "xml": "valid",
+    "render": "passed",
+    "bytes": 1127
+  },
+  "09-logo-stacked-light.svg": {
+    "xml": "valid",
+    "render": "passed",
+    "bytes": 1265
+  },
+  "10-logo-stacked-dark.svg": {
+    "xml": "valid",
+    "render": "passed",
+    "bytes": 1275
+  },
+  "11-wordmark-light.svg": {
+    "xml": "valid",
+    "render": "passed",
+    "bytes": 473
+  },
+  "12-wordmark-dark.svg": {
+    "xml": "valid",
+    "render": "passed",
+    "bytes": 478
+  },
+  "13-favicon.svg": {
+    "xml": "valid",
+    "render": "passed",
+    "bytes": 633
+  },
+  "14-mask-icon.svg": {
+    "xml": "valid",
+    "render": "passed",
+    "bytes": 763
+  },
+  "15-social-avatar.svg": {
+    "xml": "valid",
+    "render": "passed",
+    "bytes": 866
+  }
+}

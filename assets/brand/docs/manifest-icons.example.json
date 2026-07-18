@@ -1,0 +1,15 @@
+{
+  "icons": [
+    {
+      "src": "/assets/logo/13-favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "/assets/logo/15-social-avatar.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
