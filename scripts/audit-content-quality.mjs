@@ -4,6 +4,7 @@ import process from "node:process";
 
 const root = process.cwd();
 const contentDir = path.join(root, "content", "fa");
+const providerContentDir = path.join(root, "content", "providers");
 const catalogPath = path.join(root, "catalog.json");
 const generatedGuidesSourcePath = path.join(root, "scripts", "build-guides.mjs");
 
@@ -64,61 +65,54 @@ function missingSectionsFromText(source) {
     .map(({ id }) => id);
 }
 
-function providerMissingSections(provider) {
+async function loadProviderContent() {
+  const map = new Map();
+  try {
+    const entries = await readdir(providerContentDir, { withFileTypes: true });
+    for (const entry of entries) {
+      if (!entry.isFile() || !entry.name.endsWith(".json")) continue;
+      try {
+        const record = JSON.parse(await readFile(path.join(providerContentDir, entry.name), "utf8"));
+        if (hasText(record.provider_id)) map.set(record.provider_id, record);
+      } catch {
+        // Structural errors are reported by validate-provider-content.mjs.
+      }
+    }
+  } catch (error) {
+    if (error.code !== "ENOENT") throw error;
+  }
+  return map;
+}
+
+function providerMissingSections(provider, editorial) {
   const missing = [];
 
-  if (!hasText(provider.description) && !hasText(provider.notes_fa) && !hasText(provider.free_tier?.notes_fa)) {
-    missing.push("intent");
-  }
-
-  if (!hasArray(provider.signup?.steps) && !hasText(provider.signup?.notes_fa)) {
-    missing.push("signup");
-  }
-
-  if (!hasText(provider.first_request?.curl) && !hasText(provider.first_request?.python) && !hasText(provider.first_request?.javascript)) {
-    missing.push("first-request");
-  }
-
-  if (!hasArray(provider.free_tier?.limits) && !hasText(provider.free_tier?.notes_fa)) {
-    missing.push("quota");
-  }
-
-  if (!hasText(provider.iran_access?.status) || (!hasText(provider.iran_access?.notes_fa) && !hasArray(provider.iran_access?.evidence))) {
-    missing.push("iran");
-  }
-
-  if (!hasArray(provider.common_errors) && !hasText(provider.troubleshooting_fa)) {
-    missing.push("errors");
-  }
-
-  if (!hasText(provider.when_not_to_use_fa) && !hasArray(provider.when_not_to_use)) {
-    missing.push("when-not-to-use");
-  }
+  if (!hasText(editorial?.intent_fa)) missing.push("intent");
+  if (!hasArray(editorial?.signup_steps_fa)) missing.push("signup");
+  if (!hasText(editorial?.first_request?.code)) missing.push("first-request");
+  if (!hasArray(provider.free_tier?.limits) && !hasText(provider.free_tier?.notes_fa)) missing.push("quota");
+  if (!hasText(provider.iran_access?.status) || (!hasText(provider.iran_access?.notes_fa) && !hasArray(provider.iran_access?.evidence))) missing.push("iran");
+  if (!hasArray(editorial?.common_errors)) missing.push("errors");
+  if (!hasArray(editorial?.when_not_to_use_fa)) missing.push("when-not-to-use");
 
   const officialSources = [provider.docs, provider.website, ...(provider.sources ?? [])].filter(hasText);
-  if (officialSources.length < 2 || !hasText(provider.verification?.last_checked)) {
-    missing.push("references");
-  }
-
-  if (!hasText(provider.id) || !hasText(provider.docs)) {
-    missing.push("links");
-  }
+  if (officialSources.length < 2 || !hasText(provider.verification?.last_checked)) missing.push("references");
+  if (!hasArray(editorial?.related_guides)) missing.push("links");
 
   return [...new Set(missing)];
 }
 
 const catalog = JSON.parse(await readFile(catalogPath, "utf8"));
+const providerContent = await loadProviderContent();
 
 for (const provider of catalog.providers) {
-  const missingSections = providerMissingSections(provider);
+  const editorial = providerContent.get(provider.id);
+  const missingSections = providerMissingSections(provider, editorial);
   const issues = [];
 
-  if (!hasText(provider.notes_fa) && !hasText(provider.free_tier?.notes_fa)) {
-    issues.push("فاقد یادداشت فارسی");
-  }
-  if (!hasText(provider.verification?.last_checked)) {
-    issues.push("تاریخ آخرین بررسی ثبت نشده");
-  }
+  if (!hasText(provider.notes_fa) && !hasText(provider.free_tier?.notes_fa)) issues.push("فاقد یادداشت فارسی");
+  if (!hasText(provider.verification?.last_checked)) issues.push("تاریخ آخرین بررسی ثبت نشده");
+  if (!editorial) issues.push("فایل محتوای تحریریه‌ای Provider ایجاد نشده");
 
   if (missingSections.length || issues.length) {
     reports.push({
@@ -137,7 +131,7 @@ try {
     if (entry.isFile() && entry.name.endsWith(".md")) markdownFiles.push(entry.name);
   }
 } catch {
-  // The directory is optional in minimal checkouts.
+  // content/fa is optional in minimal checkouts.
 }
 
 for (const filename of markdownFiles) {
@@ -201,9 +195,7 @@ for (const [index, slug] of generatedGuideTargets.entries()) {
 
 for (const report of reports) {
   for (const section of report.missing_sections) {
-    if (!requirementIds.has(section)) {
-      throw new Error(`Unknown content requirement "${section}" in ${report.type}:${report.id}`);
-    }
+    if (!requirementIds.has(section)) throw new Error(`Unknown content requirement "${section}" in ${report.type}:${report.id}`);
   }
 }
 
@@ -219,6 +211,7 @@ const result = {
   requirements,
   summary: {
     providers_total: catalog.providers.length,
+    provider_content_files: providerContent.size,
     markdown_guides_scanned: markdownFiles.length,
     generated_guides_targeted: generatedGuideTargets.length,
     reports_total: reports.length,
