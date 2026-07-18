@@ -54,16 +54,16 @@
 
 ## Baseline قبل از لانچ
 
-تاریخ ثبت: `2026-07-17`
+تاریخ ثبت: `2026-07-18`
 
 | Metric | Value | Source |
 |---|---:|---|
 | Weekly visitors | N/A | Plausible (OWNER_REQUIRED) |
 | Weekly pageviews | N/A | Plausible (OWNER_REQUIRED) |
-| Search impressions | N/A | Google Search Console (OWNER_REQUIRED) |
-| Search clicks | N/A | Google Search Console (OWNER_REQUIRED) |
-| Average CTR | N/A | Google Search Console (OWNER_REQUIRED) |
-| Indexed pages | N/A | Google Search Console (OWNER_REQUIRED) |
+| Search impressions | 0 | Google Search Console (2026-07-16) |
+| Search clicks | 0 | Google Search Console (2026-07-16) |
+| Average CTR | N/A | Google Search Console (no data) |
+| Indexed pages | 0 | Google Search Console (2026-07-18) |
 | Bing indexed pages | N/A | Bing Webmaster Tools (OWNER_REQUIRED) |
 | GitHub stars | 1 | GitHub API |
 | GitHub forks | 0 | GitHub API |
@@ -85,4 +85,4 @@
 
 | Date | Decision | Evidence | Owner | Follow-up issue |
 |---|---|---|---|---|
-|  |  |  |  |  |
+| 2026-07-18 | GSC baseline recorded: 0 impressions, 0 clicks, 0 indexed pages | GSC export `llm.persiantoolbox.ir-Performance-on-Search-2026-07-18` | Agent | #42 |
