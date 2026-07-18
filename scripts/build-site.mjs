@@ -3,13 +3,13 @@ import { spawnSync } from "node:child_process";
 import path from "node:path";
 import process from "node:process";
 import { buildGuides } from "./build-guides.mjs";
+import { canonicalOrigin, hreflangLinks, languageSwitcher, sitemapXhtmlLinks } from "./locales.mjs";
 
 const root = process.cwd();
 const source = path.join(root, "site");
 const socialAssetsSource = path.join(root, "assets", "social");
 const destination = path.join(root, ".site-dist");
 const catalogPath = path.join(root, "catalog.json");
-const canonicalOrigin = "https://llm.persiantoolbox.ir";
 const organizationId = `${canonicalOrigin}/#organization`;
 const plausibleScript = "./plausible.js";
 
@@ -154,6 +154,10 @@ function providerPage(provider, relatedProviders) {
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="${canonicalOrigin}/assets/social/og-default.png">
   <link rel="canonical" href="${canonicalUrl}">
+  ${hreflangLinks([
+    { hreflang: "fa", href: canonicalUrl },
+    { hreflang: "x-default", href: canonicalUrl }
+  ])}
   <link rel="stylesheet" href="../../styles.css">
   <link rel="stylesheet" href="../../seo.css">
   <title>${escapeHtml(title)}</title>
@@ -221,6 +225,18 @@ indexHtml = indexHtml.replace(
   `<script defer data-domain="llm.persiantoolbox.ir" src="${plausibleScript}"></script>`,
   `${analyticsTags("./")}`
 );
+indexHtml = indexHtml.replace(
+  "<!-- HREFLANG_TAGS -->",
+  hreflangLinks([
+    { hreflang: "fa", href: canonicalOrigin + "/" },
+    { hreflang: "en", href: canonicalOrigin + "/" },
+    { hreflang: "x-default", href: canonicalOrigin + "/" }
+  ])
+);
+indexHtml = indexHtml.replace(
+  "<!-- LANGUAGE_SWITCHER -->",
+  languageSwitcher("fa", canonicalOrigin + "/")
+);
 await writeFile(indexPath, indexHtml);
 
 const providersRoot = path.join(destination, "providers");
@@ -243,12 +259,33 @@ const guides = [
   { slug: "openai-sdk-custom-base-url", title: "آموزش SDK OpenAI با Base URL سفارشی" }
 ].map((guide) => ({ ...guide, lastmod: catalog.last_updated }));
 
+const sitemapHomeXhtml = sitemapXhtmlLinks([
+  { hreflang: "fa", href: canonicalOrigin + "/" },
+  { hreflang: "en", href: canonicalOrigin + "/" },
+  { hreflang: "x-default", href: canonicalOrigin + "/" }
+]);
 const sitemapUrls = [
-  { loc: `${canonicalOrigin}/`, lastmod: catalog.last_updated, priority: "1.0" },
-  ...providers.map((provider) => ({ loc: `${canonicalOrigin}/providers/${provider.id}/`, lastmod: provider.verification.last_checked, priority: "0.8" })),
-  ...guides.map((guide) => ({ loc: `${canonicalOrigin}/guides/${guide.slug}/`, lastmod: guide.lastmod, priority: "0.9" }))
+  { loc: `${canonicalOrigin}/`, lastmod: catalog.last_updated, priority: "1.0", xhtml: sitemapHomeXhtml },
+  ...providers.map((provider) => ({
+    loc: `${canonicalOrigin}/providers/${provider.id}/`,
+    lastmod: provider.verification.last_checked,
+    priority: "0.8",
+    xhtml: sitemapXhtmlLinks([
+      { hreflang: "fa", href: `${canonicalOrigin}/providers/${provider.id}/` },
+      { hreflang: "x-default", href: `${canonicalOrigin}/providers/${provider.id}/` }
+    ])
+  })),
+  ...guides.map((guide) => ({
+    loc: `${canonicalOrigin}/guides/${guide.slug}/`,
+    lastmod: guide.lastmod,
+    priority: "0.9",
+    xhtml: sitemapXhtmlLinks([
+      { hreflang: "fa", href: `${canonicalOrigin}/guides/${guide.slug}/` },
+      { hreflang: "x-default", href: `${canonicalOrigin}/guides/${guide.slug}/` }
+    ])
+  }))
 ];
-const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${sitemapUrls.map((item) => `  <url><loc>${escapeXml(item.loc)}</loc><lastmod>${item.lastmod}</lastmod><priority>${item.priority}</priority></url>`).join("\n")}\n</urlset>\n`;
+const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n${sitemapUrls.map((item) => `  <url>\n    <loc>${escapeXml(item.loc)}</loc>\n    <lastmod>${item.lastmod}</lastmod>\n    <priority>${item.priority}</priority>\n${item.xhtml}\n  </url>`).join("\n")}\n</urlset>\n`;
 await writeFile(path.join(destination, "sitemap.xml"), sitemap);
 await writeFile(path.join(destination, "robots.txt"), `User-agent: *\nAllow: /\n\nSitemap: ${canonicalOrigin}/sitemap.xml\n`);
 const llmsText = `# Awesome Free LLM APIs IR\n\nPersian-first catalog of free LLM APIs with quotas, OpenAI compatibility, official sources and Iran-access evidence.\n\nCanonical website: ${canonicalOrigin}/\nMachine-readable catalog: ${canonicalOrigin}/catalog.json\nGitHub repository: https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir\nProvider pages: ${providers.map((provider) => `${canonicalOrigin}/providers/${provider.id}/`).join(" ")}\nGuide pages: ${guides.map((guide) => `${canonicalOrigin}/guides/${guide.slug}/`).join(" ")}\n`;

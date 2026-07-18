@@ -2,6 +2,8 @@ import { writeFile, mkdir } from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
 
+import { hreflangLinks } from "./locales.mjs";
+
 const root = process.cwd();
 const destination = path.join(root, ".site-dist");
 const guidesDir = path.join(destination, "guides");
@@ -208,6 +210,10 @@ export async function buildGuides(catalog) {
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="${canonicalOrigin}/assets/social/og-default.png">
   <link rel="canonical" href="${canonicalUrl}">
+  ${hreflangLinks([
+    { hreflang: "fa", href: canonicalUrl },
+    { hreflang: "x-default", href: canonicalUrl }
+  ])}
   <link rel="stylesheet" href="../../styles.css">
   <link rel="stylesheet" href="../../seo.css">
   <title>${escapeHtml(guide.title)}</title>

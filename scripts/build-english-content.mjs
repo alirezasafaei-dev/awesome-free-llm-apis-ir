@@ -2,6 +2,8 @@ import { mkdir, readFile, readdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
 
+import { hreflangLinks, sitemapXhtmlLinks } from "./locales.mjs";
+
 const root = process.cwd();
 const contentDir = path.join(root, "content", "en");
 const destination = path.join(root, ".site-dist");
@@ -199,6 +201,10 @@ function articlePage(article) {
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="${canonicalOrigin}/assets/social/og-default.png">
   <link rel="canonical" href="${escapeHtml(canonicalUrl)}">
+  ${hreflangLinks([
+    { hreflang: "en", href: canonicalUrl },
+    { hreflang: "x-default", href: canonicalUrl }
+  ])}
   <link rel="stylesheet" href="../../styles.css">
   <link rel="stylesheet" href="../../seo.css">
   <title>${escapeHtml(title)}</title>
@@ -259,7 +265,13 @@ const sitemapPath = path.join(destination, "sitemap.xml");
 let sitemap = await readFile(sitemapPath, "utf8");
 const sitemapEntries = articles
   .filter((article) => !sitemap.includes(`<loc>${article.metadata.canonical_target}</loc>`))
-  .map((article) => `  <url><loc>${article.metadata.canonical_target}</loc><lastmod>${article.metadata.updated_at}</lastmod><priority>0.9</priority></url>`)
+  .map((article) => {
+    const xhtml = sitemapXhtmlLinks([
+      { hreflang: "en", href: article.metadata.canonical_target },
+      { hreflang: "x-default", href: article.metadata.canonical_target }
+    ]);
+    return `  <url>\n    <loc>${article.metadata.canonical_target}</loc>\n    <lastmod>${article.metadata.updated_at}</lastmod>\n    <priority>0.9</priority>\n${xhtml}\n  </url>`;
+  })
   .join("\n");
 if (sitemapEntries) sitemap = sitemap.replace("</urlset>", `${sitemapEntries}\n</urlset>`);
 await writeFile(sitemapPath, sitemap);

@@ -93,6 +93,10 @@ if (!html.includes('class="skip-link"')) throw new Error("Homepage missing skip-
 if (!html.includes('aria-pressed')) throw new Error("Theme toggle missing aria-pressed");
 if (!html.includes('role="status"')) throw new Error("Result count missing role=status");
 
+// Check hreflang homepage placeholder in source
+if (!html.includes("<!-- HREFLANG_TAGS -->")) throw new Error("Homepage is missing hreflang placeholder");
+if (!html.includes("<!-- LANGUAGE_SWITCHER -->")) throw new Error("Homepage is missing language switcher placeholder");
+
 // Check 404.html
 const notFoundHtml = await readFile(path.join(root, "site/404.html"), "utf8");
 if (!notFoundHtml.includes("noindex")) throw new Error("404.html is missing noindex");
@@ -147,6 +151,9 @@ if ((builtIndex.match(new RegExp(plausibleScript.replace(/[.*+?^${}()|[\]\\]/g, 
 // Built homepage structured data must include Organization and Dataset.creator
 if (!builtIndex.includes('"Organization"') || !builtIndex.includes('"creator"')) throw new Error("Built homepage JSON-LD missing creator/organization");
 
+// Built homepage hreflang check
+if (!builtIndex.includes('hreflang="fa"') || !builtIndex.includes('hreflang="en"') || !builtIndex.includes('hreflang="x-default"')) throw new Error("Built homepage missing hreflang tags");
+
 const organizationId = "https://llm.persiantoolbox.ir/#organization";
 
 for (const provider of catalog.providers) {
@@ -159,6 +166,7 @@ for (const provider of catalog.providers) {
   for (const needle of [canonical, "application/ld+json", provider.name, "../../seo.css", "../../analytics.js", "خلاصه فنی", `data-provider-id="${provider.id}"`, "data-copy-text=", "skip-link", "#organization"]) {
     if (!providerHtml.includes(needle)) throw new Error(`${provider.id} page is missing ${needle}`);
   }
+  if (!providerHtml.includes(`hreflang="fa" href="${canonical}"`) || !providerHtml.includes(`hreflang="x-default" href="${canonical}"`)) throw new Error(`${provider.id} page is missing hreflang tags`);
   if ((providerHtml.match(new RegExp(plausibleScript.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "g")) || []).length !== 1) throw new Error(`${provider.id} page must contain exactly one Plausible tracker`);
 
   // Title duplication check - no "API API" pattern
@@ -206,6 +214,7 @@ for (const slug of guideSlugs) {
   for (const needle of [canonical, "application/ld+json", "../../analytics.js", `dateModified\":\"${catalog.last_updated}`, "skip-link", "#organization"]) {
     if (!guideHtml.includes(needle)) throw new Error(`Guide ${slug} is missing ${needle}`);
   }
+  if (!guideHtml.includes(`hreflang="fa" href="${canonical}"`) || !guideHtml.includes(`hreflang="x-default" href="${canonical}"`)) throw new Error(`Guide ${slug} is missing hreflang tags`);
   if (guideHtml.includes('href="../providers/')) throw new Error(`Guide ${slug} contains a broken provider relative link`);
   if (guideHtml.includes('href="../catalog.json"')) throw new Error(`Guide ${slug} contains a broken catalog relative link`);
   if ((guideHtml.match(new RegExp(plausibleScript.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "g")) || []).length !== 1) throw new Error(`Guide ${slug} must contain exactly one Plausible tracker`);
@@ -239,6 +248,7 @@ for (const slug of enGuideSlugs) {
   for (const needle of [canonical, "application/ld+json", "analytics.js", "dateModified", "skip-link", "#organization"]) {
     if (!guideHtml.includes(needle)) throw new Error(`English guide ${slug} is missing ${needle}`);
   }
+  if (!guideHtml.includes(`hreflang="en" href="${canonical}"`) || !guideHtml.includes(`hreflang="x-default" href="${canonical}"`)) throw new Error(`English guide ${slug} is missing hreflang tags`);
   if ((guideHtml.match(new RegExp(plausibleScript.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "g")) || []).length !== 1) throw new Error(`English guide ${slug} must contain exactly one Plausible tracker`);
   const enGuideTitleMatch = guideHtml.match(/<title>([^<]+)<\/title>/);
   if (enGuideTitleMatch && /API\s+API/i.test(enGuideTitleMatch[1])) throw new Error(`English guide ${slug} title has duplicate API: ${enGuideTitleMatch[1]}`);
@@ -249,6 +259,8 @@ for (const slug of enGuideSlugs) {
 const sitemap = await readFile(path.join(root, ".site-dist", "sitemap.xml"), "utf8");
 const sitemapUrlCount = (sitemap.match(/<url>/g) || []).length;
 if (sitemapUrlCount < catalog.providers.length + 1 + guideCount + enGuideSlugs.length) throw new Error(`Sitemap URL count ${sitemapUrlCount} is less than expected (min ${catalog.providers.length + 1 + guideCount + enGuideSlugs.length})`);
+if (!sitemap.includes('xmlns:xhtml="http://www.w3.org/1999/xhtml"')) throw new Error("Sitemap is missing xhtml namespace");
+if (!sitemap.includes('<xhtml:link rel="alternate"')) throw new Error("Sitemap is missing xhtml:link hreflang entries");
 for (const provider of catalog.providers) {
   if (!sitemap.includes(`<loc>https://llm.persiantoolbox.ir/providers/${provider.id}/</loc>`)) throw new Error(`Sitemap is missing ${provider.id}`);
 }
