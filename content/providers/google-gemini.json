@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.0.0",
+  "provider_id": "google-gemini",
+  "intent_fa": "Google Gemini API برای کاربرانی مناسب است که در منطقه رسمی پشتیبانی‌شده به مدل‌های Gemini و رابط سازگار با OpenAI نیاز دارند. ایران در فهرست رسمی مناطق پشتیبانی‌شده قرار ندارد و تست مستقیم ثبت‌شده نیز پاسخ ۴۰۳ داده است؛ بنابراین این صفحه وضعیت منطقه‌ای را شفاف توضیح می‌دهد و سرویس را به‌عنوان گزینه مستقیم برای کاربران داخل ایران معرفی نمی‌کند.",
+  "signup_steps_fa": [
+    "پیش از ساخت کلید، فهرست رسمی Available regions را بررسی کنید؛ فقط کاربری که از نظر منطقه و شرایط حساب مجاز است باید از Google AI Studio کلید API بسازد.",
+    "کلید را در متغیر محیطی GEMINI_API_KEY نگهداری کنید و آن را در JavaScript سمت مرورگر، مخزن عمومی یا پیام پشتیبانی منتشر نکنید.",
+    "مدل و سهمیه را در AI Studio و مستندات فعلی کنترل کنید؛ وجود Free Tier یا یک مدل در مستندات به معنی پشتیبانی منطقه‌ای برای ایران نیست."
+  ],
+  "first_request": {
+    "language": "curl",
+    "code": "curl https://generativelanguage.googleapis.com/v1beta/openai/chat/completions \\\n  -H \"Content-Type: application/json\" \\\n  -H \"Authorization: Bearer $GEMINI_API_KEY\" \\\n  -d '{\"model\":\"gemini-2.5-flash-lite\",\"messages\":[{\"role\":\"user\",\"content\":\"سلام! کوتاه پاسخ بده.\"}]}'",
+    "notes_fa": "این نمونه فقط برای حساب و منطقه رسمی پشتیبانی‌شده است. از آن برای دورزدن محدودیت منطقه‌ای استفاده نکنید؛ شناسه مدل و محدودیت حساب نیز باید پیش از اجرا در مستندات رسمی کنترل شود.",
+    "source_url": "https://ai.google.dev/gemini-api/docs/openai",
+    "checked_at": "2026-07-16"
+  },
+  "common_errors": [
+    {
+      "code": "400",
+      "title_fa": "پیش‌شرط حساب یا منطقه برقرار نیست",
+      "resolution_fa": "پیام FAILED_PRECONDITION را بررسی کنید؛ Free Tier ممکن است برای کشور حساب یا محل استفاده در دسترس نباشد. فهرست مناطق رسمی و وضعیت billing را بدون تلاش برای دورزدن سیاست منطقه‌ای کنترل کنید.",
+      "source_url": "https://ai.google.dev/gemini-api/docs/troubleshooting",
+      "checked_at": "2026-07-16"
+    },
+    {
+      "code": "403",
+      "title_fa": "دسترسی یا منطقه مجاز نیست",
+      "resolution_fa": "اعتبار کلید، محدودیت پروژه و فهرست رسمی مناطق را بررسی کنید. برای ایران، Catalog پروژه وضعیت officially_unsupported را بر اساس سند رسمی و تست مستقیم ثبت کرده است.",
+      "source_url": "https://ai.google.dev/gemini-api/docs/available-regions",
+      "checked_at": "2026-07-16"
+    },
+    {
+      "code": "429",
+      "title_fa": "سهمیه درخواست تکمیل شده",
+      "resolution_fa": "مصرف مدل و پروژه را در AI Studio بررسی کنید، درخواست‌ها را کاهش دهید و retry را با exponential backoff و jitter انجام دهید؛ سهمیه مدل‌ها یکسان نیست.",
+      "source_url": "https://ai.google.dev/gemini-api/docs/troubleshooting",
+      "checked_at": "2026-07-16"
+    },
+    {
+      "code": "503",
+      "title_fa": "مدل موقتاً شلوغ است",
+      "resolution_fa": "درخواست را با backoff محدود تکرار کنید، ورودی را کوتاه‌تر کنید یا مدل مناسب دیگری را فقط از فهرست رسمی انتخاب کنید؛ retry نامحدود اجرا نکنید.",
+      "source_url": "https://ai.google.dev/gemini-api/docs/troubleshooting",
+      "checked_at": "2026-07-16"
+    }
+  ],
+  "when_not_to_use_fa": [
+    "برای استفاده مستقیم از داخل ایران، چون ایران در فهرست رسمی مناطق پشتیبانی‌شده نیست و Evidence پروژه نیز پاسخ ۴۰۳ ثبت کرده است.",
+    "زمانی که پروژه به سازگاری کامل و بدون تفاوت با تمام قابلیت‌های OpenAI API وابسته است؛ لایه compatibility باید برای قابلیت موردنظر جداگانه تست شود.",
+    "زمانی که مدل یا سهمیه ثابت و تضمین‌شده لازم است و تغییرات مدل یا محدودیت‌های حساب قابل پذیرش نیست."
+  ],
+  "related_guides": [
+    "openai-sdk-custom-base-url",
+    "best-free-llm-api-iran",
+    "free-tier-vs-trial-vs-credit"
+  ],
+  "last_reviewed": "2026-07-16"
+}
