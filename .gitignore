@@ -4,8 +4,10 @@ node_modules/
 .env
 .env.*
 !.env.example
-reports/local/
+reports/
 .site-dist/
 benchmarks/results/local/
 .cache/
 artifacts/
+site-release.tar.gz
+deploy-csp.sh

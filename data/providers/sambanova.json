@@ -4,7 +4,7 @@
   "id": "sambanova",
   "name": "SambaNova Cloud",
   "website": "https://cloud.sambanova.ai/",
-  "docs": "https://docs.sambanova.ai/docs/en/developer-guide/quickstart",
+  "docs": "https://docs.sambanova.ai/docs/en/get-started/quickstart",
   "signup": "https://cloud.sambanova.ai/",
   "api": {
     "base_url": "https://api.sambanova.ai/v1",

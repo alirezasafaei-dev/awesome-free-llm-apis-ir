@@ -2,10 +2,10 @@
 
 این راهنما انتشار مستقل وب‌سایت `awesome-free-llm-apis-ir` را روی دو سرور توضیح می‌دهد. هیچ فایل یا Process مربوط به PersianToolbox، ASDEV یا AuditSystems تغییر نمی‌کند.
 
-| نقش | دامنه | IP | SSH | وب‌سرور |
-|---|---|---|---|---|
-| اصلی جهانی | `llm.persiantoolbox.ir` | `91.107.153.223` | `asdev@...:22` | Caddy |
-| آینهٔ ایران | `ir.llm.persiantoolbox.ir` | `193.93.169.32` | `ubuntu@...:22` | Nginx |
+| نقش | دامنه | مقصد SSH | وب‌سرور |
+|---|---|---|---|
+| اصلی جهانی | `llm.persiantoolbox.ir` | Secretهای Environment `production-global` | Caddy |
+| آینهٔ ایران | `ir.llm.persiantoolbox.ir` | Secretهای Environment `production-iran` | Nginx |
 
 نسخهٔ جهانی Canonical است. آینهٔ ایران Header برابر `X-Robots-Tag: noindex, nofollow` برمی‌گرداند تا محتوای تکراری وارد نتایج جست‌وجو نشود. GitHub Pages نیز به‌عنوان نسخهٔ پشتیبان مستقل باقی می‌ماند.
 
@@ -27,15 +27,15 @@
 روی سرور خارج:
 
 ```bash
-sudo install -d -o asdev -g asdev -m 0755 /srv/awesome-free-llm-apis-ir
-sudo -u asdev install -d -m 0755 /srv/awesome-free-llm-apis-ir/releases
+sudo install -d -o "$DEPLOY_USER" -g "$DEPLOY_USER" -m 0755 /srv/awesome-free-llm-apis-ir
+sudo -u "$DEPLOY_USER" install -d -m 0755 /srv/awesome-free-llm-apis-ir/releases
 ```
 
 روی سرور ایران:
 
 ```bash
-sudo install -d -o ubuntu -g ubuntu -m 0755 /srv/awesome-free-llm-apis-ir
-sudo -u ubuntu install -d -m 0755 /srv/awesome-free-llm-apis-ir/releases
+sudo install -d -o "$DEPLOY_USER" -g "$DEPLOY_USER" -m 0755 /srv/awesome-free-llm-apis-ir
+sudo -u "$DEPLOY_USER" install -d -m 0755 /srv/awesome-free-llm-apis-ir/releases
 ```
 
 برای اولین بار یک Release اولیه باید توسط Workflow منتشر شود؛ تا قبل از آن Root وب‌سرور خالی است.
@@ -44,14 +44,14 @@ sudo -u ubuntu install -d -m 0755 /srv/awesome-free-llm-apis-ir/releases
 
 برای هر سرور یک کلید Ed25519 جداگانه بسازید. از کلید شخصی روزمره یا یک کلید مشترک میان دو سرور استفاده نکنید. Private Key را در Terminal، Issue، Commit یا پیام عمومی چاپ نکنید.
 
-Public Key سرور خارج باید فقط به `~asdev/.ssh/authorized_keys` و Public Key سرور ایران فقط به `~ubuntu/.ssh/authorized_keys` اضافه شود. Permissionها:
+Public Key هر Environment باید فقط به `~$DEPLOY_USER/.ssh/authorized_keys` همان سرور اضافه شود. Permissionها:
 
 ```bash
 chmod 700 ~/.ssh
 chmod 600 ~/.ssh/authorized_keys
 ```
 
-Fingerprint کلید میزبان SSH را از Console خود VPS یا یک نشست ازقبل‌اعتمادشده تأیید کنید. خروجی تأییدشدهٔ `ssh-keyscan` برای همان IP در Secret مربوط به `SSH_KNOWN_HOSTS` قرار می‌گیرد؛ خروجی تأییدنشده را کورکورانه قبول نکنید.
+Fingerprint کلید میزبان SSH را از Console خود VPS یا یک نشست ازقبل‌اعتمادشده تأیید کنید. خروجی تأییدشدهٔ `ssh-keyscan` برای Host همان Environment در Secret مربوط به `SSH_KNOWN_HOSTS` قرار می‌گیرد؛ خروجی تأییدنشده را کورکورانه قبول نکنید.
 
 ## ۳. GitHub Environments و Secrets
 
@@ -149,7 +149,7 @@ curl -fsSI https://DOMAIN/
 
 ## ۸. مانیتور هفتگی سلامت
 
-یک systemd timer روی سرور ایران (`ubuntu@193.93.169.32`) نصب شده که هر دوشنبه ساعت ۰۶:۰۰ تهران موارد زیر را بررسی می‌کند:
+یک systemd timer روی آینهٔ ایران نصب شده که طبق برنامهٔ عملیاتی خصوصی موارد زیر را بررسی می‌کند:
 
 - وضعیت nginx و fail2ban
 - وجود فایل‌های `build-meta.json` و `catalog.json`

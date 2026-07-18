@@ -468,7 +468,7 @@
       "id": "hugging-face-inference",
       "name": "Hugging Face Inference Providers",
       "serviceType": "official_gateway",
-      "website": "https://huggingface.co/inference-providers",
+      "website": "https://huggingface.co/docs/inference-providers/index",
       "api": {
         "baseUrl": "https://router.huggingface.co/v1",
         "openaiCompatible": true,

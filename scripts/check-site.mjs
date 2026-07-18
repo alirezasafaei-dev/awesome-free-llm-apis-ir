@@ -53,6 +53,7 @@ for (const eventName of [
   if (!analyticsSource.includes(`\"${eventName}\"`)) throw new Error(`Analytics source is missing ${eventName}`);
 }
 if (!analyticsSource.includes("window.plausible")) throw new Error("Analytics source does not initialize the Plausible queue");
+if (!analyticsSource.includes('"offsite_articles"')) throw new Error("Analytics source does not recognize the offsite article campaign");
 if (analyticsSource.includes("_paq")) throw new Error("Matomo queue syntax must not be used for Plausible");
 if (analyticsSource.includes('createElement("script")')) throw new Error("Analytics source must not inject a duplicate remote tracker");
 
