@@ -55,9 +55,9 @@ function assertFails(fixture, description, expectedTypes) {
 
   const fixtureText = JSON.stringify(fixture);
   const rawIdentifiers = new Set([
-    ...fixtureText.matchAll(/(?<![\\d.])(?:\\d{1,3}\\.){3}\\d{1,3}(?![\\d.])/g)
+    ...fixtureText.matchAll(/(?<![\d.])(?:\d{1,3}\.){3}\d{1,3}(?![\d.])/g)
   ].map((match) => match[0]));
-  for (const match of fixtureText.matchAll(/(?:SSH\\s+username|ssh\\s+user)\\s*:\\s*([A-Za-z_][A-Za-z0-9._-]*)/gi)) {
+  for (const match of fixtureText.matchAll(/(?:SSH\s+username|ssh\s+user)\s*:\s*([A-Za-z_][A-Za-z0-9._-]*)/gi)) {
     rawIdentifiers.add(match[1]);
   }
   for (const identifier of rawIdentifiers) {
