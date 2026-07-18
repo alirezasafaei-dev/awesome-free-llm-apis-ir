@@ -1,0 +1,51 @@
+{
+  "schema_version": "1.0.0",
+  "provider_id": "modelscope",
+  "intent_fa": "ModelScope API-Inference برای آزمایش مدل‌های متن‌باز با رابط سازگار با OpenAI مناسب است، اما استفاده از آن به حساب ModelScope متصل به Alibaba Cloud و احراز هویت واقعی وابسته است. endpoint از ایران Reachable ثبت شده، ولی مانع فعلی دریافت Credential است؛ این راهنما هیچ روش دورزدن احراز هویت ارائه نمی‌کند و محدودیت‌های مدل‌محور را پویا در نظر می‌گیرد.",
+  "signup_steps_fa": [
+    "در ModelScope حساب بسازید، آن را به حساب Alibaba Cloud متصل کنید و فقط از مسیر رسمی احراز هویت واقعی استفاده کنید. اگر شرایط هویتی یا منطقه‌ای را ندارید، این Provider را گزینه عملی فرض نکنید.",
+    "پس از فعال‌شدن API-Inference، Access Token اختصاصی را از صفحه My Access Token دریافت و فقط در MODELSCOPE_ACCESS_TOKEN یا secret manager نگهداری کنید؛ Token را در Notebook عمومی، URL یا log قرار ندهید.",
+    "مدلی را انتخاب کنید که در صفحه Model نشان API Inference دارد و نمونه همان صفحه را مرجع قرار دهید. سهمیه کل، سقف مدل و concurrency پویا هستند؛ پیش از هر workload مقدار باقی‌مانده را از headerها و مستندات Limits کنترل کنید."
+  ],
+  "first_request": {
+    "language": "curl",
+    "code": "curl https://api-inference.modelscope.cn/v1/chat/completions \\\n  -H \"Authorization: Bearer $MODELSCOPE_ACCESS_TOKEN\" \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\"model\":\"Qwen/Qwen3.5-35B-A3B\",\"messages\":[{\"role\":\"user\",\"content\":\"سلام! در یک جمله پاسخ بده.\"}],\"stream\":false}'",
+    "notes_fa": "شناسه مدل فقط نمونه است. فهرست مدل‌های API-Inference و روش فراخوانی reasoning یا multimodal می‌تواند متفاوت باشد؛ نمونه داخل صفحه همان مدل مرجع نهایی است.",
+    "source_url": "https://modelscope.cn/docs/model-service/API-Inference/intro",
+    "checked_at": "2026-07-16"
+  },
+  "common_errors": [
+    {
+      "code": "401/403",
+      "title_fa": "Token معتبر نیست یا حساب هنوز مجاز نشده است",
+      "resolution_fa": "MODELSCOPE_ACCESS_TOKEN، اتصال حساب Alibaba Cloud و تکمیل احراز هویت رسمی را بررسی کنید. Reachability endpoint جای مجازبودن حساب را نمی‌گیرد و کنترل هویتی نباید دور زده شود.",
+      "source_url": "https://modelscope.cn/docs/model-service/API-Inference/intro",
+      "checked_at": "2026-07-16"
+    },
+    {
+      "code": "404/model",
+      "title_fa": "مدل از API-Inference حذف شده یا شناسه نادرست است",
+      "resolution_fa": "صفحه مدل را باز کنید و وجود نشان API Inference و Model ID فعلی را کنترل کنید. مدل‌های نمونه مستندات می‌توانند منسوخ شوند؛ نام cache‌شده را بدون بررسی استفاده نکنید.",
+      "source_url": "https://modelscope.cn/docs/model-service/API-Inference/intro",
+      "checked_at": "2026-07-16"
+    },
+    {
+      "code": "429/quota",
+      "title_fa": "سهمیه کل، مدل یا concurrency تمام شده است",
+      "resolution_fa": "headerهای rate-limit و صفحه Limits را بررسی کنید، concurrency را کم و retry را با backoff اجرا کنید. محدودیت‌های بعضی مدل‌های بزرگ پایین‌تر و پویا هستند و retry بیشتر سهمیه روزانه را بازنمی‌گرداند.",
+      "source_url": "https://modelscope.cn/docs/model-service/API-Inference/limits",
+      "checked_at": "2026-07-16"
+    }
+  ],
+  "when_not_to_use_fa": [
+    "زمانی که امکان اتصال حساب Alibaba Cloud و احراز هویت واقعی رسمی وجود ندارد؛ Reachability API به معنی امکان دریافت Token نیست.",
+    "زمانی که پروژه به مدل ثابت، quota ثابت یا SLA تولیدی نیاز دارد؛ مدل‌ها، سقف مدل‌محور و concurrency می‌توانند تغییر کنند.",
+    "زمانی که شرایط حاکمیت داده، حوزه قضایی یا الزامات سازمانی با پلتفرم و فرآیند هویتی آن سازگار نیست."
+  ],
+  "related_guides": [
+    "openai-sdk-custom-base-url",
+    "free-tier-vs-trial-vs-credit",
+    "free-coding-api"
+  ],
+  "last_reviewed": "2026-07-16"
+}
