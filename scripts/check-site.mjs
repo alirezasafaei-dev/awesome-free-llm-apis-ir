@@ -192,6 +192,8 @@ if (providerDirectories.length !== catalog.providers.length) throw new Error("Ge
 
 const guideCount = 6;
 const guideSlugs = ["best-free-llm-api-iran", "openai-compatible-api-without-card", "free-coding-api", "free-embedding-api", "free-tier-vs-trial-vs-credit", "openai-sdk-custom-base-url"];
+
+const enGuideSlugs = ["en-practical-free-llm-api-iran", "en-build-persian-chatbot-python", "en-fix-llm-api-401-403", "en-llm-api-rate-limit-429", "en-use-free-llm-api-nodejs"];
 const guidesDir = path.join(root, ".site-dist", "guides");
 await access(guidesDir);
 const guideDirectories = await readdir(guidesDir);
@@ -228,9 +230,25 @@ for (const slug of guideSlugs) {
   }
 }
 
+// English guide validation
+for (const slug of enGuideSlugs) {
+  const guidePath = path.join(guidesDir, "en", slug, "index.html");
+  await access(guidePath);
+  const guideHtml = await readFile(guidePath, "utf8");
+  const canonical = `https://llm.persiantoolbox.ir/guides/en/${slug}/`;
+  for (const needle of [canonical, "application/ld+json", "analytics.js", "dateModified", "skip-link", "#organization"]) {
+    if (!guideHtml.includes(needle)) throw new Error(`English guide ${slug} is missing ${needle}`);
+  }
+  if ((guideHtml.match(new RegExp(plausibleScript.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "g")) || []).length !== 1) throw new Error(`English guide ${slug} must contain exactly one Plausible tracker`);
+  const enGuideTitleMatch = guideHtml.match(/<title>([^<]+)<\/title>/);
+  if (enGuideTitleMatch && /API\s+API/i.test(enGuideTitleMatch[1])) throw new Error(`English guide ${slug} title has duplicate API: ${enGuideTitleMatch[1]}`);
+  const enGuideH1Count = (guideHtml.match(/<h1[^>]*>/g) || []).length;
+  if (enGuideH1Count !== 1) throw new Error(`English guide ${slug} has ${enGuideH1Count} H1 tags, expected 1`);
+}
+
 const sitemap = await readFile(path.join(root, ".site-dist", "sitemap.xml"), "utf8");
 const sitemapUrlCount = (sitemap.match(/<url>/g) || []).length;
-if (sitemapUrlCount < catalog.providers.length + 1 + guideCount) throw new Error(`Sitemap URL count ${sitemapUrlCount} is less than expected`);
+if (sitemapUrlCount < catalog.providers.length + 1 + guideCount + enGuideSlugs.length) throw new Error(`Sitemap URL count ${sitemapUrlCount} is less than expected (min ${catalog.providers.length + 1 + guideCount + enGuideSlugs.length})`);
 for (const provider of catalog.providers) {
   if (!sitemap.includes(`<loc>https://llm.persiantoolbox.ir/providers/${provider.id}/</loc>`)) throw new Error(`Sitemap is missing ${provider.id}`);
 }
@@ -254,7 +272,7 @@ for (const asset of socialAssets) {
 const buildMeta = JSON.parse(await readFile(path.join(root, ".site-dist", "build-meta.json"), "utf8"));
 if (!("source_revision" in buildMeta)) throw new Error("build-meta.json is missing source_revision");
 if (buildMeta.provider_page_count !== catalog.providers.length) throw new Error("build-meta provider_page_count mismatch");
-if (Number(buildMeta.guide_page_count) < guideCount) throw new Error(`build-meta guide_page_count ${buildMeta.guide_page_count} is less than expected ${guideCount}`);
+if (Number(buildMeta.guide_page_count) < guideCount + enGuideSlugs.length) throw new Error(`build-meta guide_page_count ${buildMeta.guide_page_count} is less than expected ${guideCount + enGuideSlugs.length}`);
 
 // Favicon asset validation in built output
 for (const asset of faviconAssets) {

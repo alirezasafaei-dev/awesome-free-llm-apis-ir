@@ -1,4 +1,5 @@
 import { cp, mkdir, readFile, rm, writeFile } from "node:fs/promises";
+import { spawnSync } from "node:child_process";
 import path from "node:path";
 import process from "node:process";
 import { buildGuides } from "./build-guides.mjs";
@@ -232,6 +233,7 @@ for (const [index, provider] of providers.entries()) {
 }
 
 const guideCount = await buildGuides(catalog);
+
 const guides = [
   { slug: "best-free-llm-api-iran", title: "بهترین API رایگان LLM برای ایران" },
   { slug: "openai-compatible-api-without-card", title: "API سازگار با OpenAI بدون نیاز به کارت" },
@@ -255,4 +257,14 @@ await writeFile(
   path.join(destination, "build-meta.json"),
   `${JSON.stringify({ schema_version: "1.1.0", source_revision: sourceRevision, catalog_last_updated: catalog.last_updated, provider_count: catalog.provider_count, provider_page_count: providers.length, guide_page_count: guideCount }, null, 2)}\n`
 );
-console.log(`Built static site with ${catalog.provider_count} providers, ${providers.length} provider pages, and ${guideCount} guide pages in .site-dist/.`);
+let enGuideCount = 0;
+const enBuild = spawnSync(process.execPath, [path.join(root, "scripts/build-english-content.mjs")], {
+  cwd: root,
+  encoding: "utf8",
+  stdio: ["ignore", "inherit", "inherit"]
+});
+if (enBuild.status !== 0) process.exit(enBuild.status);
+const enMeta = JSON.parse(await readFile(path.join(destination, "build-meta.json"), "utf8"));
+enGuideCount = enMeta.english_article_count ?? 0;
+
+console.log(`Built static site with ${catalog.provider_count} providers, ${providers.length} provider pages, ${guideCount} Persian guide pages, and ${enGuideCount} English guide pages in .site-dist/.`);

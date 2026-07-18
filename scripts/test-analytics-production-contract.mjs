@@ -23,6 +23,7 @@ for (const section of ["providers", "guides"]) {
   const directories = await readdir(sectionRoot, { withFileTypes: true });
   for (const directory of directories) {
     if (!directory.isDirectory()) continue;
+    if (section === "guides" && directory.name === "en") continue;
     const html = await readFile(path.join(sectionRoot, directory.name, "index.html"), "utf8");
     if ((html.match(/src="\.\.\/\.\.\/plausible\.js"/g) || []).length !== 1) {
       throw new Error(`${section}/${directory.name} must load exactly one root Plausible tracker`);
@@ -30,6 +31,21 @@ for (const section of ["providers", "guides"]) {
     if (html.includes('src="./plausible.js"')) {
       throw new Error(`${section}/${directory.name} contains a broken nested tracker path`);
     }
+  }
+}
+
+// English guides are one level deeper under guides/en/
+const enSectionRoot = path.join(destination, "guides", "en");
+await access(enSectionRoot);
+const enDirectories = await readdir(enSectionRoot, { withFileTypes: true });
+for (const directory of enDirectories) {
+  if (!directory.isDirectory()) continue;
+  const html = await readFile(path.join(enSectionRoot, directory.name, "index.html"), "utf8");
+  if ((html.match(/src="\.\.\/\.\.\/\.\.\/plausible\.js"/g) || []).length !== 1) {
+    throw new Error(`guides/en/${directory.name} must load exactly one root Plausible tracker`);
+  }
+  if (html.includes('src="./plausible.js"')) {
+    throw new Error(`guides/en/${directory.name} contains a broken nested tracker path`);
   }
 }
 
