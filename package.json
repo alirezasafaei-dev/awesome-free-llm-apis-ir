@@ -29,6 +29,7 @@
     "catalog:check": "node scripts/generate-catalog.mjs --check",
     "content:audit": "node scripts/audit-content-quality.mjs",
     "content:audit:test": "node scripts/test-content-audit-contract.mjs",
+    "content:guides:test": "node scripts/test-expanded-guides-content.mjs",
     "check:freshness": "node scripts/check-freshness.mjs --strict",
     "site:build": "node scripts/build-site-production.mjs && npm run content:fa:build",
     "site:check": "node scripts/check-site.mjs",
@@ -53,7 +54,7 @@
     "tools:test": "node scripts/test-tool-classification.mjs",
     "validate:repo-audits": "node scripts/validate-repository-audits.mjs",
     "hermes:pilot:test": "node scripts/test-hermes-pilot.mjs",
-    "test": "npm run validate && npm run providers:normalize && npm run roadmap:test && npm run privacy:test && npm run privacy:github:test && npm run workflow-pins:test && npm run content:fa:test && npm run content:en:test && npm run content:audit:test && npm run content:fa:live:verify:dry && npm run launch:links:test && npm run links:test && npm run launch:log:test && npm run verification:backlog:test && npm run generate:check && npm run catalog:check && npm run data:test && npm run verify:iran:dry && npm run upstreams:test && npm run advisor:test && npm run benchmark:validate && npm run benchmark:dry && npm run benchmark:test && npm run pages:paths:test && npm run site:check && npm run analytics:production:test && npm run deploy:check && npm run deploy:test && npm run validate:tools && npm run generate:tools:check && npm run tools:test && npm run validate:repo-audits && npm run hermes:pilot:test"
+    "test": "npm run validate && npm run providers:normalize && npm run roadmap:test && npm run privacy:test && npm run privacy:github:test && npm run workflow-pins:test && npm run content:fa:test && npm run content:en:test && npm run content:audit:test && npm run content:guides:test && npm run content:fa:live:verify:dry && npm run launch:links:test && npm run links:test && npm run launch:log:test && npm run verification:backlog:test && npm run generate:check && npm run catalog:check && npm run data:test && npm run verify:iran:dry && npm run upstreams:test && npm run advisor:test && npm run benchmark:validate && npm run benchmark:dry && npm run benchmark:test && npm run pages:paths:test && npm run site:check && npm run analytics:production:test && npm run deploy:check && npm run deploy:test && npm run validate:tools && npm run generate:tools:check && npm run tools:test && npm run validate:repo-audits && npm run hermes:pilot:test"
   },
   "engines": {
     "node": ">=20"
