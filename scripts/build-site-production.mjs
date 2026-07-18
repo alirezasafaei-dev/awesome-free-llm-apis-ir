@@ -35,6 +35,5 @@ async function normalizeNestedTrackerPaths(section) {
 
 const providerPages = await normalizeNestedTrackerPaths("providers");
 const guidePages = await normalizeNestedTrackerPaths("guides");
-const enGuidePages = await normalizeNestedTrackerPaths("guides/en");
 
-console.log(`Normalized Plausible tracker paths for ${providerPages} provider pages, ${guidePages} Persian guide pages, and ${enGuidePages} English guide pages.`);
+console.log(`Normalized Plausible tracker paths for ${providerPages} provider pages and ${guidePages} Persian guide pages.`);

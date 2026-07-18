@@ -1,12 +1,12 @@
 import { mkdir, readFile, readdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
+import { hreflangLinks, languageSwitcher, sitemapXhtmlLinks, getTranslationPair, resolveUrl, canonicalOrigin } from "./locales.mjs";
 
 const root = process.cwd();
 const contentDir = path.join(root, "content", "fa");
 const destination = path.join(root, ".site-dist");
 const guidesDir = path.join(destination, "guides");
-const canonicalOrigin = "https://llm.persiantoolbox.ir";
 const organizationId = `${canonicalOrigin}/#organization`;
 const repositoryUrl = "https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir";
 const reportUrl = `${repositoryUrl}/issues/new?template=iran-access-report.yml`;
@@ -150,6 +150,9 @@ function articlePage(article) {
   const canonicalUrl = metadata.canonical_target;
   const title = metadata.title;
   const description = metadata.description;
+  const translationKey = metadata.translation_key;
+  const pair = translationKey ? getTranslationPair(translationKey) : null;
+  const enUrl = pair ? resolveUrl(pair.en) : null;
   const structuredData = {
     "@context": "https://schema.org",
     "@graph": [
@@ -181,6 +184,19 @@ function articlePage(article) {
     ]
   };
 
+  const hreflang = pair
+    ? hreflangLinks([
+        { hreflang: "fa-IR", href: canonicalUrl },
+        { hreflang: "en", href: enUrl },
+        { hreflang: "x-default", href: canonicalUrl }
+      ])
+    : hreflangLinks([
+        { hreflang: "fa-IR", href: canonicalUrl },
+        { hreflang: "x-default", href: canonicalUrl }
+      ]);
+
+  const switcher = pair ? languageSwitcher("fa-IR", enUrl) : "";
+
   return `<!doctype html>
 <html lang="fa" dir="rtl">
 <head>
@@ -199,6 +215,7 @@ function articlePage(article) {
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="${canonicalOrigin}/assets/social/og-default.png">
   <link rel="canonical" href="${escapeHtml(canonicalUrl)}">
+  ${hreflang}
   <link rel="stylesheet" href="../../styles.css">
   <link rel="stylesheet" href="../../seo.css">
   <title>${escapeHtml(title)}</title>
@@ -207,8 +224,8 @@ function articlePage(article) {
 <body data-page-type="guide">
   <a class="skip-link" href="#article-content">رفتن به محتوای اصلی</a>
   <header class="topbar">
-    <a class="brand" href="../../"><span class="brand-mark" aria-hidden="true">AI</span><span>Awesome Free LLM APIs IR</span></a>
-    <nav aria-label="پیوندهای اصلی"><a href="../../#persian-guides">راهنماهای فارسی</a><a href="../../#catalog">همه APIها</a><a href="${repositoryUrl}">GitHub</a></nav>
+    <a class="brand" href="../../" aria-label="Awesome Free LLM APIs IR"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M56 38V166C56 188.091 73.909 206 96 206H202" stroke="#2563EB" stroke-width="26" stroke-linecap="round" stroke-linejoin="round"/><path d="M112 116L158 80M112 116L174 140M112 116L126 170" stroke="#06B6D4" stroke-width="8" stroke-linecap="round"/><circle cx="112" cy="116" r="15" fill="#06B6D4"/><circle cx="158" cy="80" r="13" fill="#06B6D4"/><circle cx="174" cy="140" r="13" fill="#06B6D4"/><circle cx="126" cy="170" r="13" fill="#06B6D4"/></svg></span><span>Awesome Free LLM APIs IR</span></a>
+    <nav aria-label="پیوندهای اصلی"><a href="../../#persian-guides">راهنماهای فارسی</a><a href="../../#catalog">همه APIها</a><a href="${repositoryUrl}">GitHub</a>${switcher ? `\n        ${switcher}` : ""}</nav>
   </header>
   <main class="provider-page">
     <nav class="breadcrumbs" aria-label="مسیر صفحه"><a href="../../">خانه</a><span>←</span><span>راهنما</span><span>←</span><span>${escapeHtml(title)}</span></nav>
@@ -259,7 +276,20 @@ const sitemapPath = path.join(destination, "sitemap.xml");
 let sitemap = await readFile(sitemapPath, "utf8");
 const sitemapEntries = articles
   .filter((article) => !sitemap.includes(`<loc>${article.metadata.canonical_target}</loc>`))
-  .map((article) => `  <url><loc>${article.metadata.canonical_target}</loc><lastmod>${article.metadata.updated_at}</lastmod><priority>0.9</priority></url>`)
+  .map((article) => {
+    const pair = article.metadata.translation_key ? getTranslationPair(article.metadata.translation_key) : null;
+    const xhtml = pair
+      ? sitemapXhtmlLinks([
+          { hreflang: "fa-IR", href: article.metadata.canonical_target },
+          { hreflang: "en", href: resolveUrl(pair.en) },
+          { hreflang: "x-default", href: article.metadata.canonical_target }
+        ])
+      : sitemapXhtmlLinks([
+          { hreflang: "fa-IR", href: article.metadata.canonical_target },
+          { hreflang: "x-default", href: article.metadata.canonical_target }
+        ]);
+    return `  <url>\n    <loc>${article.metadata.canonical_target}</loc>\n    <lastmod>${article.metadata.updated_at}</lastmod>\n    <priority>0.9</priority>\n${xhtml}\n  </url>`;
+  })
   .join("\n");
 if (sitemapEntries) sitemap = sitemap.replace("</urlset>", `${sitemapEntries}\n</urlset>`);
 await writeFile(sitemapPath, sitemap);

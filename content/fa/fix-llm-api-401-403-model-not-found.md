@@ -1,6 +1,7 @@
 ---
 title: "رفع خطاهای 401، 403، 404 و Model Not Found در APIهای LLM"
 slug: "fix-llm-api-401-403-model-not-found"
+translation_key: "fix-llm-api-401-403-model-not-found"
 description: "راهنمای عیب‌یابی تخصصی خطاهای API Key نامعتبر، مجوز منطقه‌ای، مدل غیرفعال، Base URL اشتباه و Endpoint ناسازگار در APIهای مدل زبانی."
 primary_keyword: "رفع خطای 401 API هوش مصنوعی"
 secondary_keywords:

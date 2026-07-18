@@ -1,6 +1,7 @@
 ---
 title: "Fixing 401, 403, 404, and Model Not Found Errors in LLM APIs"
 slug: "en-fix-llm-api-401-403"
+translation_key: "fix-llm-api-401-403-model-not-found"
 description: "Troubleshooting guide for invalid API key, regional permission, disabled model, wrong Base URL, and incompatible endpoint errors in language model APIs."
 primary_keyword: "fix 401 error LLM API"
 secondary_keywords:
