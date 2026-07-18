@@ -1,2 +1,30 @@
 * @alirezasafaei-dev
 
+# Deployment, release, and rollback scripts
+/deploy/ @alirezasafaei-dev
+
+# GitHub Actions workflows
+/.github/workflows/ @alirezasafaei-dev
+
+# Security policy and incident response
+/SECURITY.md @alirezasafaei-dev
+
+# CI/CD configuration
+/.github/dependabot.yml @alirezasafaei-dev
+
+# Operational documentation (VPS, SSH, private infra)
+/docs/VPS_DUAL_DEPLOYMENT.fa.md @alirezasafaei-dev
+/docs/PRIVATE_INFRASTRUCTURE_POLICY.fa.md @alirezasafaei-dev
+/docs/PRODUCTION_REVISION_POLICY.fa.md @alirezasafaei-dev
+
+# Site build and deployment scripts
+/scripts/build-site*.mjs @alirezasafaei-dev
+/scripts/build-persian*.mjs @alirezasafaei-dev
+/scripts/check-deploy.mjs @alirezasafaei-dev
+/scripts/test-deploy-release.mjs @alirezasafaei-dev
+/scripts/test-analytics-production-contract.mjs @alirezasafaei-dev
+/scripts/test-publication-privacy.mjs @alirezasafaei-dev
+
+# Hermes agent pilot
+/ops/hermes/ @alirezasafaei-dev
+
