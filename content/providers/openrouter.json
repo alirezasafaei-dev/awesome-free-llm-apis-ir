@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.0.0",
+  "provider_id": "openrouter",
+  "intent_fa": "OpenRouter برای توسعه‌دهنده‌ای مناسب است که می‌خواهد از یک Endpoint سازگار با OpenAI به مدل‌ها و Providerهای متعدد دسترسی داشته باشد، مدل رایگان مشخص یا Router رایگان را آزمایش کند و امکان fallback یا تغییر مدل با کمترین تغییر کد داشته باشد. محدودیت رایگان و وضعیت ایران باید از داده و Evidence همین صفحه خوانده شود.",
+  "signup_steps_fa": [
+    "از صفحه رسمی OpenRouter حساب بسازید و در Settings بخش Keys یک API Key ایجاد کنید.",
+    "کلید را در متغیر محیطی OPENROUTER_API_KEY یا Secret Manager سمت سرور ذخیره کنید؛ کلید نباید وارد JavaScript مرورگر یا مخزن عمومی شود.",
+    "مدل را از Catalog رسمی انتخاب کنید؛ برای Router رایگان از openrouter/free و برای مدل رایگان مشخص از شناسه دارای پسوند :free استفاده کنید.",
+    "پیش از استفاده تولیدی، Limit کلید، موجودی حساب و وضعیت Providerهای بالادستی را بررسی کنید."
+  ],
+  "first_request": {
+    "language": "curl",
+    "code": "curl https://openrouter.ai/api/v1/chat/completions \\\n  -H \"Authorization: Bearer ${OPENROUTER_API_KEY}\" \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\"model\":\"openrouter/free\",\"messages\":[{\"role\":\"user\",\"content\":\"یک پاسخ کوتاه فارسی بنویس\"}]}'",
+    "notes_fa": "openrouter/free یک مدل رایگان موجود را به‌صورت خودکار انتخاب می‌کند و انتخاب مدل ثابت را تضمین نمی‌کند. برای کنترل مدل، شناسه رسمی یک variant رایگان را استفاده کنید.",
+    "source_url": "https://openrouter.ai/docs/quickstart",
+    "checked_at": "2026-07-16"
+  },
+  "common_errors": [
+    {
+      "code": "401",
+      "title_fa": "API Key نامعتبر، غیرفعال یا ارسال‌نشده",
+      "resolution_fa": "هدر Authorization را بررسی کنید، کلید را از محیط صحیح بخوانید و در صورت لغو یا افشا، کلید جدید بسازید.",
+      "source_url": "https://openrouter.ai/docs/api/reference/errors-and-debugging",
+      "checked_at": "2026-07-16"
+    },
+    {
+      "code": "402",
+      "title_fa": "موجودی یا سقف اعتبار کلید کافی نیست",
+      "resolution_fa": "وضعیت حساب و limit_remaining کلید را بررسی کنید. موجودی منفی یا سقف مصرف تمام‌شده می‌تواند حتی درخواست مدل رایگان را متوقف کند.",
+      "source_url": "https://openrouter.ai/docs/api/reference/limits",
+      "checked_at": "2026-07-16"
+    },
+    {
+      "code": "429",
+      "title_fa": "Rate Limit پلتفرم یا Provider بالادستی",
+      "resolution_fa": "Retry-After را رعایت کنید، Backoff نمایی به‌کار ببرید و در صورت محدودیت Provider بالادستی، fallback model یا تنظیمات routing را بررسی کنید.",
+      "source_url": "https://openrouter.ai/docs/api/reference/limits",
+      "checked_at": "2026-07-16"
+    },
+    {
+      "code": "503",
+      "title_fa": "Provider واجد شرایط برای درخواست موجود نیست",
+      "resolution_fa": "محدودیت‌های routing، مدل و قابلیت‌های درخواستی را کاهش دهید یا fallback model اضافه کنید؛ تکرار فوری بدون تغییر تنظیمات معمولاً کافی نیست.",
+      "source_url": "https://openrouter.ai/docs/api/reference/errors-and-debugging",
+      "checked_at": "2026-07-16"
+    }
+  ],
+  "when_not_to_use_fa": [
+    "وقتی در Router رایگان به انتخاب قطعی و همیشگی یک مدل مشخص نیاز دارید.",
+    "وقتی بار تولیدی شما به SLA ثابت نیاز دارد اما فقط به ظرفیت متغیر مدل‌های رایگان تکیه می‌کنید.",
+    "وقتی وضعیت دسترسی نمایش‌داده‌شده در همین صفحه با مسیر شبکه یا الزامات پروژه سازگار نیست."
+  ],
+  "related_guides": [
+    "openai-sdk-custom-base-url",
+    "free-tier-vs-trial-vs-credit",
+    "llm-api-rate-limit-429"
+  ],
+  "last_reviewed": "2026-07-16"
+}
