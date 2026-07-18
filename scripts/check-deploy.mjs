@@ -26,6 +26,8 @@ const release = await readFile(path.join(root, files.release), "utf8");
 
 if (!caddy.includes("llm.persiantoolbox.ir") || !caddy.includes("/srv/awesome-free-llm-apis-ir/current")) throw new Error("Caddy production host/root mismatch");
 if (!nginx.includes("ir.llm.persiantoolbox.ir") || !nginx.includes('X-Robots-Tag "noindex, nofollow"')) throw new Error("Nginx mirror policy mismatch");
+if (!caddy.includes('Strict-Transport-Security "max-age=31536000"')) throw new Error("Caddy HSTS policy is missing");
+if (!nginx.includes('Strict-Transport-Security "max-age=31536000"')) throw new Error("Nginx HSTS policy is missing");
 for (const token of ["production-global", "production-iran", "SSH_PRIVATE_KEY", "SSH_KNOWN_HOSTS", "rollback-release.sh"]) {
   if (!workflow.includes(token)) throw new Error(`VPS workflow is missing ${token}`);
 }
@@ -45,6 +47,10 @@ if (strictHostKeyCount < 4) throw new Error(`Expected 4 StrictHostKeyChecking=ye
 
 if (!workflow.includes("'Iran mirror is missing X-Robots-Tag noindex.'")) throw new Error("Iran mirror job must require X-Robots-Tag noindex");
 if (!workflow.includes("'Canonical endpoint unexpectedly contains noindex.'")) throw new Error("Canonical deployment must reject X-Robots-Tag noindex");
+
+for (const buildInput of ["'assets/**'", "'content/**'", "'data/**'", "'site/**'", "'scripts/build-guides.mjs'"]) {
+  if (!workflow.includes(buildInput)) throw new Error(`VPS deploy trigger is missing build input ${buildInput}`);
+}
 
 const timeoutCount = (workflow.match(/timeout-minutes:\s*\d+/g) || []).length;
 if (timeoutCount < 4) throw new Error(`Expected 4 timeout-minutes (build, deploy-global, deploy-iran, verify-mirror-consistency), found ${timeoutCount}`);

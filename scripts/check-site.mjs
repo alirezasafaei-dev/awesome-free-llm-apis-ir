@@ -144,6 +144,12 @@ const socialAssets = [
 ];
 for (const asset of socialAssets) {
   await access(path.join(root, asset.file));
+  const builtAsset = path.join(root, ".site-dist", asset.file);
+  await access(builtAsset);
+  const signature = (await readFile(builtAsset)).subarray(0, 8);
+  if (!signature.equals(Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]))) {
+    throw new Error(`Built social asset is not a PNG: ${asset.file}`);
+  }
 }
 
 const buildMeta = JSON.parse(await readFile(path.join(root, ".site-dist", "build-meta.json"), "utf8"));

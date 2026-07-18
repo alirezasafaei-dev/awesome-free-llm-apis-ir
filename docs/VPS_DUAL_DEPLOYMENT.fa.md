@@ -110,6 +110,8 @@ sudo nginx -t
 sudo systemctl reload nginx
 ```
 
+هدر HSTS موجود در فایل مرجع فقط روی پاسخ HTTPS اثر امنیتی دارد. روی سروری که Certbot قبلاً TLS را فعال کرده است، فایل زندهٔ تولیدشده توسط Certbot را با نسخهٔ HTTP-only مخزن Overwrite نکنید؛ فقط تغییر Header را وارد همان Server block فعال HTTPS کنید، سپس `nginx -t` و Reload انجام دهید.
+
 اگر UFW فعال است، فقط پورت‌های موردنیاز را باز کنید:
 
 ```bash

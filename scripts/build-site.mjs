@@ -5,6 +5,7 @@ import { buildGuides } from "./build-guides.mjs";
 
 const root = process.cwd();
 const source = path.join(root, "site");
+const socialAssetsSource = path.join(root, "assets", "social");
 const destination = path.join(root, ".site-dist");
 const catalogPath = path.join(root, "catalog.json");
 const canonicalOrigin = "https://llm.persiantoolbox.ir";
@@ -169,6 +170,8 @@ function providerPage(provider, relatedProviders) {
 await rm(destination, { recursive: true, force: true });
 await mkdir(destination, { recursive: true });
 await cp(source, destination, { recursive: true });
+await mkdir(path.join(destination, "assets"), { recursive: true });
+await cp(socialAssetsSource, path.join(destination, "assets", "social"), { recursive: true });
 await cp(catalogPath, path.join(destination, "catalog.json"));
 
 const catalog = JSON.parse(await readFile(catalogPath, "utf8"));
