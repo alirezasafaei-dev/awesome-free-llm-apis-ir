@@ -9,6 +9,7 @@ const socialAssetsSource = path.join(root, "assets", "social");
 const destination = path.join(root, ".site-dist");
 const catalogPath = path.join(root, "catalog.json");
 const canonicalOrigin = "https://llm.persiantoolbox.ir";
+const organizationId = `${canonicalOrigin}/#organization`;
 const plausibleScript = "./plausible.js";
 
 const accessLabels = {
@@ -60,6 +61,24 @@ function analyticsTags(prefix) {
   return `<script defer src="${prefix}analytics.js"></script>\n  <script defer data-domain="llm.persiantoolbox.ir" src="${plausibleScript}"></script>`;
 }
 
+function normalizeProviderLabel(name) {
+  const trimmed = name.trim().replace(/\s+API(?:\s|$)/, " ").replace(/\s+API\s*$/, "").trim();
+  if (trimmed.endsWith("API") || trimmed.endsWith("Api") || trimmed.endsWith("api")) {
+    return trimmed;
+  }
+  return trimmed;
+}
+
+function providerDisplaySuffix(name) {
+  const base = normalizeProviderLabel(name);
+  return `${base} API رایگان`;
+}
+
+function providerDirectoryLabel(name) {
+  const base = normalizeProviderLabel(name);
+  return `${base} API`;
+}
+
 function limitText(provider) {
   const first = provider.free_tier?.limits?.[0];
   if (!first) return "وابسته به مدل یا حساب";
@@ -79,7 +98,8 @@ function providerDescription(provider) {
 
 function providerPage(provider, relatedProviders) {
   const canonicalUrl = `${canonicalOrigin}/providers/${provider.id}/`;
-  const title = `${provider.name} API رایگان | سهمیه و وضعیت دسترسی ایران`;
+  const displayTitle = providerDisplaySuffix(provider.name);
+  const title = `${displayTitle} | سهمیه و وضعیت دسترسی ایران`;
   const description = providerDescription(provider);
   const capabilities = provider.capabilities.map((item) => capabilityLabels[item] ?? item);
   const models = provider.models?.notable ?? [];
@@ -88,14 +108,22 @@ function providerPage(provider, relatedProviders) {
     "@context": "https://schema.org",
     "@graph": [
       {
+        "@type": "Organization",
+        "@id": organizationId,
+        "name": "Awesome Free LLM APIs IR",
+        "url": canonicalOrigin,
+        "sameAs": ["https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir"]
+      },
+      {
         "@type": "TechArticle",
         "@id": `${canonicalUrl}#article`,
-        headline: title,
+        headline: displayTitle,
         description,
         inLanguage: "fa-IR",
         dateModified: provider.verification.last_checked,
         mainEntityOfPage: canonicalUrl,
-        author: { "@type": "Organization", name: "Awesome Free LLM APIs IR", url: canonicalOrigin }
+        author: { "@id": organizationId },
+        publisher: { "@id": organizationId }
       },
       {
         "@type": "BreadcrumbList",
@@ -131,15 +159,16 @@ function providerPage(provider, relatedProviders) {
   <script type="application/ld+json">${jsonLd(structuredData)}</script>
 </head>
 <body>
+  <a class="skip-link" href="#provider-detail">رفتن به محتوای اصلی</a>
   <header class="topbar">
     <a class="brand" href="../../"><span class="brand-mark" aria-hidden="true">AI</span><span>Awesome Free LLM APIs IR</span></a>
     <nav aria-label="پیوندهای اصلی"><a href="../../#catalog">همه APIها</a><a class="docs-link" href="${escapeHtml(provider.docs)}" rel="nofollow noopener" target="_blank">مستندات رسمی</a><a href="https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir">GitHub</a></nav>
   </header>
   <main class="provider-page">
     <nav class="breadcrumbs" aria-label="مسیر صفحه"><a href="../../">APIهای رایگان LLM</a><span>←</span><span>${escapeHtml(provider.name)}</span></nav>
-    <article class="provider-detail" data-provider-id="${escapeHtml(provider.id)}">
+    <article class="provider-detail" id="provider-detail" data-provider-id="${escapeHtml(provider.id)}">
       <p class="eyebrow">صفحه اختصاصی Provider</p>
-      <h1>${escapeHtml(provider.name)} API رایگان</h1>
+      <h1>${escapeHtml(displayTitle)}</h1>
       <p class="provider-lead">${escapeHtml(description)}</p>
       <div class="provider-status-row"><span class="access-badge">${escapeHtml(accessLabels[provider.iran_access.status] ?? provider.iran_access.status)}</span><span class="freshness-badge">آخرین بررسی: ${escapeHtml(provider.verification.last_checked)}</span></div>
       <section class="provider-facts" aria-labelledby="facts-title">
@@ -149,7 +178,7 @@ function providerPage(provider, relatedProviders) {
           <div><dt>محدودیت نمونه</dt><dd>${escapeHtml(limitText(provider))}</dd></div>
           <div><dt>سازگار با OpenAI</dt><dd>${provider.api.openai_compatible ? "بله" : "خیر"}</dd></div>
           <div><dt>نیاز به روش پرداخت</dt><dd>${provider.free_tier.requires_payment_method === true ? "بله" : provider.free_tier.requires_payment_method === false ? "خیر" : "در منابع رسمی مشخص نیست"}</dd></div>
-          <div><dt>Base URL</dt><dd><code>${escapeHtml(provider.api.base_url)}</code> <button class="copy-button" type="button" data-copy-text="${escapeHtml(provider.api.base_url)}">کپی</button></dd></div>
+          <div><dt>Base URL</dt><dd><code>${escapeHtml(provider.api.base_url)}</code> <button class="copy-button" type="button" data-copy-text="${escapeHtml(provider.api.base_url)}" aria-label="کپی Base URL"><span class="copy-text">کپی</span><span class="copy-status" role="status" aria-live="polite" hidden></span></button></dd></div>
           <div><dt>وضعیت ایران</dt><dd>${escapeHtml(accessLabels[provider.iran_access.status] ?? provider.iran_access.status)}</dd></div>
         </dl>
       </section>
@@ -178,7 +207,7 @@ const catalog = JSON.parse(await readFile(catalogPath, "utf8"));
 const providers = [...catalog.providers].sort((a, b) => a.name.localeCompare(b.name, "en"));
 const sourceRevision = process.env.SOURCE_REVISION?.trim() || null;
 const linksHtml = providers
-  .map((provider) => `<li><a href="./providers/${provider.id}/">${escapeHtml(provider.name)} API</a><span>${escapeHtml(freeLabels[provider.free_tier.type] ?? provider.free_tier.type)}</span></li>`)
+  .map((provider) => `<li><a href="./providers/${provider.id}/">${escapeHtml(providerDirectoryLabel(provider.name))}</a><span>${escapeHtml(freeLabels[provider.free_tier.type] ?? provider.free_tier.type)}</span></li>`)
   .join("\n          ");
 const indexPath = path.join(destination, "index.html");
 let indexHtml = await readFile(indexPath, "utf8");

@@ -6,6 +6,7 @@ const root = process.cwd();
 const destination = path.join(root, ".site-dist");
 const guidesDir = path.join(destination, "guides");
 const canonicalOrigin = "https://llm.persiantoolbox.ir";
+const organizationId = `${canonicalOrigin}/#organization`;
 const plausibleScript = "./plausible.js";
 
 const freeLabels = {
@@ -61,10 +62,10 @@ const guides = [
       return `
         <p>کاتالوگ فعلی شامل ${catalog.provider_count.toLocaleString("fa-IR")} Provider است. انتخاب مناسب باید بر اساس نوع سهمیه، قابلیت موردنیاز، شرایط ثبت‌نام و شواهد تاریخ‌دار دسترسی انجام شود؛ پاسخ ساده یک Endpoint به‌تنهایی موفقیت اجرای مدل را ثابت نمی‌کند.</p>
         <h2>نمونه مقایسه ۱۰ سرویس</h2>
-        <table>
+        <div class="table-wrapper"><table>
           <thead><tr><th>سرویس</th><th>نوع سهمیه</th><th>وضعیت ایران</th></tr></thead>
           <tbody>${tableRows}</tbody>
-        </table>
+        </table></div>
         <p>جزئیات و منابع هر سرویس در صفحه اختصاصی آن قرار دارد. نسخه ماشین‌خوان کامل نیز از <a href="../../catalog.json">Catalog JSON</a> قابل دریافت است.</p>
       `;
     }
@@ -210,16 +211,25 @@ export async function buildGuides(catalog) {
   <link rel="stylesheet" href="../../styles.css">
   <link rel="stylesheet" href="../../seo.css">
   <title>${escapeHtml(guide.title)}</title>
-  <script type="application/ld+json">${JSON.stringify({ "@context": "https://schema.org", "@type": "Article", headline: guide.h1, description: guide.description, inLanguage: "fa-IR", dateModified: catalog.last_updated, mainEntityOfPage: canonicalUrl, author: { "@type": "Organization", name: "Awesome Free LLM APIs IR", url: canonicalOrigin } }).replaceAll("<", "\\u003c")}</script>
+  <script type="application/ld+json">${JSON.stringify({ "@context": "https://schema.org", "@graph": [
+    { "@type": "Organization", "@id": organizationId, "name": "Awesome Free LLM APIs IR", "url": canonicalOrigin, "sameAs": ["https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir"] },
+    { "@type": "TechArticle", "headline": guide.h1, "description": guide.description, "inLanguage": "fa-IR", "dateModified": catalog.last_updated, "mainEntityOfPage": canonicalUrl, "author": { "@id": organizationId }, "publisher": { "@id": organizationId } },
+    { "@type": "BreadcrumbList", "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "خانه", "item": `${canonicalOrigin}/` },
+      { "@type": "ListItem", "position": 2, "name": "راهنماها", "item": `${canonicalOrigin}/#guide` },
+      { "@type": "ListItem", "position": 3, "name": guide.h1, "item": canonicalUrl }
+    ]}
+  ]}).replaceAll("<", "\\u003c")}</script>
 </head>
 <body data-page-type="guide">
+  <a class="skip-link" href="#guide-content">رفتن به محتوای اصلی</a>
   <header class="topbar">
     <a class="brand" href="../../" aria-label="Awesome Free LLM APIs IR"><span class="brand-mark" aria-hidden="true">AI</span><span>Awesome Free LLM APIs IR</span></a>
     <nav aria-label="پیوندهای اصلی"><a href="../../#catalog">همه APIها</a><a href="https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir">GitHub</a></nav>
   </header>
   <main class="provider-page">
     <nav class="breadcrumbs" aria-label="مسیر صفحه"><a href="../../">خانه</a><span>←</span><span>راهنما</span><span>←</span><span>${escapeHtml(guide.h1)}</span></nav>
-    <article class="provider-detail">
+    <article class="provider-detail" id="guide-content">
       <h1>${escapeHtml(guide.h1)}</h1>
       <div class="freshness-badge">آخرین بررسی داده: ${escapeHtml(catalog.last_updated)}</div>
       <div class="guide-content">${guide.content(catalog)}</div>

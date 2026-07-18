@@ -7,6 +7,7 @@ const contentDir = path.join(root, "content", "fa");
 const destination = path.join(root, ".site-dist");
 const guidesDir = path.join(destination, "guides");
 const canonicalOrigin = "https://llm.persiantoolbox.ir";
+const organizationId = `${canonicalOrigin}/#organization`;
 const repositoryUrl = "https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir";
 const reportUrl = `${repositoryUrl}/issues/new?template=iran-access-report.yml`;
 
@@ -101,7 +102,7 @@ function markdownToHtml(markdown) {
         rows.push(tableCells(lines[index]));
         index += 1;
       }
-      output.push(`<table><thead><tr>${headers.map((cell) => `<th>${renderInline(cell)}</th>`).join("")}</tr></thead><tbody>${rows.map((row) => `<tr>${row.map((cell) => `<td>${renderInline(cell)}</td>`).join("")}</tr>`).join("")}</tbody></table>`);
+      output.push(`<div class="table-wrapper"><table><thead><tr>${headers.map((cell) => `<th>${renderInline(cell)}</th>`).join("")}</tr></thead><tbody>${rows.map((row) => `<tr>${row.map((cell) => `<td>${renderInline(cell)}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`);
       continue;
     }
 
@@ -153,13 +154,21 @@ function articlePage(article) {
     "@context": "https://schema.org",
     "@graph": [
       {
+        "@type": "Organization",
+        "@id": organizationId,
+        "name": "Awesome Free LLM APIs IR",
+        "url": canonicalOrigin,
+        "sameAs": [repositoryUrl]
+      },
+      {
         "@type": "TechArticle",
         headline: title,
         description,
         inLanguage: "fa-IR",
         dateModified: metadata.updated_at,
         mainEntityOfPage: canonicalUrl,
-        author: { "@type": "Organization", name: "Awesome Free LLM APIs IR", url: canonicalOrigin }
+        author: { "@id": organizationId },
+        publisher: { "@id": organizationId }
       },
       {
         "@type": "BreadcrumbList",
@@ -196,13 +205,14 @@ function articlePage(article) {
   <script type="application/ld+json">${JSON.stringify(structuredData).replaceAll("<", "\\u003c")}</script>
 </head>
 <body data-page-type="guide">
+  <a class="skip-link" href="#article-content">رفتن به محتوای اصلی</a>
   <header class="topbar">
     <a class="brand" href="../../"><span class="brand-mark" aria-hidden="true">AI</span><span>Awesome Free LLM APIs IR</span></a>
     <nav aria-label="پیوندهای اصلی"><a href="../../#persian-guides">راهنماهای فارسی</a><a href="../../#catalog">همه APIها</a><a href="${repositoryUrl}">GitHub</a></nav>
   </header>
   <main class="provider-page">
     <nav class="breadcrumbs" aria-label="مسیر صفحه"><a href="../../">خانه</a><span>←</span><span>راهنما</span><span>←</span><span>${escapeHtml(title)}</span></nav>
-    <article class="provider-detail" data-guide-slug="${escapeHtml(metadata.slug)}">
+    <article class="provider-detail" id="article-content" data-guide-slug="${escapeHtml(metadata.slug)}">
       <h1>${escapeHtml(title)}</h1>
       <p class="provider-lead">${escapeHtml(description)}</p>
       <div class="freshness-badge">آخرین بازبینی: ${escapeHtml(metadata.updated_at)}</div>
@@ -272,8 +282,8 @@ if (!indexHtml.includes('id="persian-guides"')) {
           ${cards}
         </div>
       </section>\n\n`;
-  const marker = '      <section id="catalog" class="catalog-section" aria-labelledby="catalog-title">';
-  if (!indexHtml.includes(marker)) throw new Error("Homepage catalog marker not found");
+  const marker = '      <section id="guide" class="seo-intro" aria-labelledby="guide-title">';
+  if (!indexHtml.includes(marker)) throw new Error("Homepage guide marker not found");
   indexHtml = indexHtml.replace(marker, section + marker);
 }
 await writeFile(indexPath, indexHtml);
