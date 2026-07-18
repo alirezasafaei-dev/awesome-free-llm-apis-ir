@@ -52,6 +52,18 @@ function assertFails(fixture, description, expectedTypes) {
   for (const type of expectedTypes) {
     assert(result.stderr.includes(type), `reports violation type: ${type}`);
   }
+
+  const fixtureText = JSON.stringify(fixture);
+  const rawIdentifiers = new Set([
+    ...fixtureText.matchAll(/(?<![\\d.])(?:\\d{1,3}\\.){3}\\d{1,3}(?![\\d.])/g)
+  ].map((match) => match[0]));
+  for (const match of fixtureText.matchAll(/(?:SSH\\s+username|ssh\\s+user)\\s*:\\s*([A-Za-z_][A-Za-z0-9._-]*)/gi)) {
+    rawIdentifiers.add(match[1]);
+  }
+  for (const identifier of rawIdentifiers) {
+    assert(!result.stderr.includes(identifier), "does not print a raw infrastructure identifier");
+    assert(!result.stdout.includes(identifier), "does not print a raw infrastructure identifier to stdout");
+  }
 }
 
 const PRIVATE_192 = ipv4(192, 168, 1, 1);
