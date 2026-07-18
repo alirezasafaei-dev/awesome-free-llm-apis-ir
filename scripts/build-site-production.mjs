@@ -36,4 +36,6 @@ async function normalizeNestedTrackerPaths(section) {
 const providerPages = await normalizeNestedTrackerPaths("providers");
 const guidePages = await normalizeNestedTrackerPaths("guides");
 
+await import("./enrich-provider-pages.mjs");
+
 console.log(`Normalized Plausible tracker paths for ${providerPages} provider pages and ${guidePages} Persian guide pages.`);
