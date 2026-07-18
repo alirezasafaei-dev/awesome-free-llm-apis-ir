@@ -77,9 +77,13 @@ function providerDescription(provider) {
   return `${provider.name}: ${freeLabels[provider.free_tier.type] ?? provider.free_tier.type}، ${limitText(provider)}، ${accessLabels[provider.iran_access.status] ?? provider.iran_access.status}. اطلاعات API و وضعیت ایران با منبع و تاریخ بررسی.`;
 }
 
+function providerApiLabel(name) {
+  return /\bapi\b/i.test(name) ? "" : " API";
+}
+
 function providerPage(provider, relatedProviders) {
   const canonicalUrl = `${canonicalOrigin}/providers/${provider.id}/`;
-  const title = `${provider.name} API رایگان | سهمیه و وضعیت دسترسی ایران`;
+  const title = `${provider.name}${providerApiLabel(provider.name)} رایگان | سهمیه و وضعیت دسترسی ایران`;
   const description = providerDescription(provider);
   const capabilities = provider.capabilities.map((item) => capabilityLabels[item] ?? item);
   const models = provider.models?.notable ?? [];
@@ -139,7 +143,7 @@ function providerPage(provider, relatedProviders) {
     <nav class="breadcrumbs" aria-label="مسیر صفحه"><a href="../../">APIهای رایگان LLM</a><span>←</span><span>${escapeHtml(provider.name)}</span></nav>
     <article class="provider-detail" data-provider-id="${escapeHtml(provider.id)}">
       <p class="eyebrow">صفحه اختصاصی Provider</p>
-      <h1>${escapeHtml(provider.name)} API رایگان</h1>
+      <h1>${escapeHtml(provider.name)}${providerApiLabel(provider.name)} رایگان</h1>
       <p class="provider-lead">${escapeHtml(description)}</p>
       <div class="provider-status-row"><span class="access-badge">${escapeHtml(accessLabels[provider.iran_access.status] ?? provider.iran_access.status)}</span><span class="freshness-badge">آخرین بررسی: ${escapeHtml(provider.verification.last_checked)}</span></div>
       <section class="provider-facts" aria-labelledby="facts-title">
@@ -178,7 +182,7 @@ const catalog = JSON.parse(await readFile(catalogPath, "utf8"));
 const providers = [...catalog.providers].sort((a, b) => a.name.localeCompare(b.name, "en"));
 const sourceRevision = process.env.SOURCE_REVISION?.trim() || null;
 const linksHtml = providers
-  .map((provider) => `<li><a href="./providers/${provider.id}/">${escapeHtml(provider.name)} API</a><span>${escapeHtml(freeLabels[provider.free_tier.type] ?? provider.free_tier.type)}</span></li>`)
+  .map((provider) => `<li><a href="./providers/${provider.id}/">${escapeHtml(provider.name)}${providerApiLabel(provider.name)}</a><span>${escapeHtml(freeLabels[provider.free_tier.type] ?? provider.free_tier.type)}</span></li>`)
   .join("\n          ");
 const indexPath = path.join(destination, "index.html");
 let indexHtml = await readFile(indexPath, "utf8");
