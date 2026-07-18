@@ -217,19 +217,19 @@ function articlePage(article) {
   <meta name="twitter:image" content="${canonicalOrigin}/assets/social/og-default.png">
   <link rel="canonical" href="${escapeHtml(canonicalUrl)}">
   ${hreflang}
-  <link rel="stylesheet" href="../../styles.css">
-  <link rel="stylesheet" href="../../seo.css">
+  <link rel="stylesheet" href="../../../styles.css">
+  <link rel="stylesheet" href="../../../seo.css">
   <title>${escapeHtml(title)}</title>
   <script type="application/ld+json">${JSON.stringify(structuredData).replaceAll("<", "\\u003c")}</script>
 </head>
 <body data-page-type="guide">
   <a class="skip-link" href="#article-content">Skip to main content</a>
   <header class="topbar">
-    <a class="brand" href="../../"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M56 38V166C56 188.091 73.909 206 96 206H202" stroke="#2563EB" stroke-width="26" stroke-linecap="round" stroke-linejoin="round"/><path d="M112 116L158 80M112 116L174 140M112 116L126 170" stroke="#06B6D4" stroke-width="8" stroke-linecap="round"/><circle cx="112" cy="116" r="15" fill="#06B6D4"/><circle cx="158" cy="80" r="13" fill="#06B6D4"/><circle cx="174" cy="140" r="13" fill="#06B6D4"/><circle cx="126" cy="170" r="13" fill="#06B6D4"/></svg></span><span>Awesome Free LLM APIs IR</span></a>
-    <nav aria-label="Main links"><a href="../../en/">Home</a><a href="../../#catalog">All APIs</a><a href="${repositoryUrl}">GitHub</a>${switcher ? `\n        ${switcher}` : ""}</nav>
+    <a class="brand" href="../../../en/"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M56 38V166C56 188.091 73.909 206 96 206H202" stroke="#2563EB" stroke-width="26" stroke-linecap="round" stroke-linejoin="round"/><path d="M112 116L158 80M112 116L174 140M112 116L126 170" stroke="#06B6D4" stroke-width="8" stroke-linecap="round"/><circle cx="112" cy="116" r="15" fill="#06B6D4"/><circle cx="158" cy="80" r="13" fill="#06B6D4"/><circle cx="174" cy="140" r="13" fill="#06B6D4"/><circle cx="126" cy="170" r="13" fill="#06B6D4"/></svg></span><span>Awesome Free LLM APIs IR</span></a>
+    <nav aria-label="Main links"><a href="../../../en/">Home</a><a href="../../../#catalog">All APIs</a><a href="${repositoryUrl}">GitHub</a>${switcher ? `\n        ${switcher}` : ""}</nav>
   </header>
   <main class="provider-page">
-    <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="../../">Home</a><span>›</span><span>English Guide</span><span>›</span><span>${escapeHtml(title)}</span></nav>
+    <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="../../../en/">Home</a><span>›</span><span>English Guide</span><span>›</span><span>${escapeHtml(title)}</span></nav>
     <article class="provider-detail" id="article-content" data-guide-slug="${escapeHtml(metadata.slug)}">
       <h1>${escapeHtml(title)}</h1>
       <p class="provider-lead">${escapeHtml(description)}</p>
@@ -240,12 +240,12 @@ function articlePage(article) {
         <p>If you tested a provider from Iran, submit a dated result without API keys, cookies, or personal information.</p>
         <div class="hero-actions"><a class="button primary" href="${reportUrl}">Submit Iran Access Report</a><a class="button detail-secondary" href="${repositoryUrl}">View on GitHub</a></div>
       </aside>
-      <div class="hero-actions"><a class="button primary" href="../../#catalog">Compare all APIs</a><a class="button detail-secondary" href="../../#english-guides">English Guides</a></div>
+      <div class="hero-actions"><a class="button primary" href="../../../#catalog">Compare all APIs</a><a class="button detail-secondary" href="../../../en/#english-guides">English Guides</a></div>
     </article>
   </main>
-  <footer><p>Quota and access information should be verified against the timestamped catalog and official sources.</p><a href="../../catalog.json">Download Catalog JSON</a></footer>
-  <script defer src="./analytics.js"></script>
-  <script defer data-domain="llm.persiantoolbox.ir" src="./plausible.js"></script>
+  <footer><p>Quota and access information should be verified against the timestamped catalog and official sources.</p><a href="../../../catalog.json">Download Catalog JSON</a></footer>
+  <script defer src="../../../analytics.js"></script>
+  <script defer data-domain="llm.persiantoolbox.ir" src="../../../plausible.js"></script>
 </body>
 </html>`;
 }

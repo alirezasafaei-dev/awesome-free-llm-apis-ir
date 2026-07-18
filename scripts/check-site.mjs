@@ -285,6 +285,20 @@ for (const slug of faArticleSlugs) {
   if (!articleHtml.includes('lang-switcher')) throw new Error(`Persian article ${slug} must have a language switcher (has English counterpart)`);
 }
 
+// URL resolution helper
+function urlResolve(relative, pageUrl) {
+  return new URL(relative, pageUrl).href;
+}
+
+// English /en/ homepage runtime validation
+if (builtEnIndex.includes("../app.js")) throw new Error("/en/ must not reference app.js");
+if (/\bhref="\.\/catalog\.json"/.test(builtEnIndex) || /\bsrc="\.\/catalog\.json"/.test(builtEnIndex) || builtEnIndex.includes("/en/catalog.json")) throw new Error("/en/ must not request /en/catalog.json");
+if (builtEnIndex.includes("/en/providers/") || builtEnIndex.includes("../providers/")) throw new Error("/en/ must not contain provider paths");
+if (builtEnIndex.includes("id=\"theme-toggle\"")) throw new Error("/en/ must not reference #theme-toggle");
+if (builtEnIndex.includes("class=\"filters\"")) throw new Error("/en/ must not contain filter form markup");
+if (builtEnIndex.includes("class=\"provider-grid\"")) throw new Error("/en/ must not contain provider grid markup");
+if (builtEnIndex.includes('id="provider-template"')) throw new Error("/en/ must not contain provider template");
+
 // English guide validation
 for (const slug of enGuideSlugs) {
   const guidePath = path.join(guidesDir, "en", slug, "index.html");
@@ -302,6 +316,53 @@ for (const slug of enGuideSlugs) {
   if (enGuideTitleMatch && /API\s+API/i.test(enGuideTitleMatch[1])) throw new Error(`English guide ${slug} title has duplicate API: ${enGuideTitleMatch[1]}`);
   const enGuideH1Count = (guideHtml.match(/<h1[^>]*>/g) || []).length;
   if (enGuideH1Count !== 1) throw new Error(`English guide ${slug} has ${enGuideH1Count} H1 tags, expected 1`);
+
+  // URL resolution tests for each English guide
+  const cssHref = guideHtml.match(/<link rel="stylesheet" href="([^"]+\.css)"/);
+  if (cssHref) {
+    const resolved = new URL(cssHref[1], canonical).href;
+    // Should resolve to production root styles
+    const expectedPaths = [
+      "https://llm.persiantoolbox.ir/styles.css",
+      "https://llm.persiantoolbox.ir/seo.css"
+    ];
+    if (!expectedPaths.includes(resolved)) throw new Error(`English guide ${slug} CSS ${resolved} does not resolve to a root asset`);
+  }
+  const analyticsHref = guideHtml.match(/<script[^>]+src="([^"]*analytics\.js)"/);
+  if (analyticsHref) {
+    const resolved = new URL(analyticsHref[1], canonical).href;
+    if (resolved !== "https://llm.persiantoolbox.ir/analytics.js") throw new Error(`English guide ${slug} analytics resolves to ${resolved}, expected root analytics.js`);
+  }
+  const plausibleHref = guideHtml.match(/<script[^>]+src="([^"]*plausible\.js)"/);
+  if (plausibleHref) {
+    const resolved = new URL(plausibleHref[1], canonical).href;
+    if (resolved !== "https://llm.persiantoolbox.ir/plausible.js") throw new Error(`English guide ${slug} plausible resolves to ${resolved}, expected root plausible.js`);
+  }
+
+  // Navigation links resolve to correct destinations
+  const homeMatch = guideHtml.match(/brand.*?href="([^"]+)"/);
+  if (homeMatch) {
+    const resolved = new URL(homeMatch[1], canonical).href;
+    if (resolved !== "https://llm.persiantoolbox.ir/en/") throw new Error(`English guide ${slug} brand link resolves to ${resolved}, expected /en/`);
+  }
+  const catalogLinks = [...guideHtml.matchAll(/href="([^"]*#catalog)"/g)];
+  for (const m of catalogLinks) {
+    const resolved = new URL(m[1], canonical).href;
+    if (resolved !== "https://llm.persiantoolbox.ir/#catalog") throw new Error(`English guide ${slug} catalog link resolves to ${resolved}, expected /#catalog`);
+  }
+  const jsonLinks = [...guideHtml.matchAll(/href="([^"]*catalog\.json)"/g)];
+  for (const m of jsonLinks) {
+    const resolved = new URL(m[1], canonical).href;
+    if (resolved !== "https://llm.persiantoolbox.ir/catalog.json") throw new Error(`English guide ${slug} catalog JSON link resolves to ${resolved}, expected /catalog.json`);
+  }
+
+  // Exactly one analytics script and one plausible script
+  if ((guideHtml.match(/<script[^>]+src="[^"]*analytics\.js"[^>]*>/g) || []).length !== 1) throw new Error(`English guide ${slug} must have exactly one analytics script`);
+  if ((guideHtml.match(/<script[^>]+src="[^"]*plausible\.js"[^>]*>/g) || []).length !== 1) throw new Error(`English guide ${slug} must have exactly one plausible script`);
+
+  // No broken relative provider or catalog JSON paths
+  if (guideHtml.includes('href="../providers/')) throw new Error(`English guide ${slug} contains a broken provider relative link`);
+  if (guideHtml.includes('href="../catalog.json"')) throw new Error(`English guide ${slug} contains a broken catalog relative link`);
 }
 
 const sitemap = await readFile(path.join(root, ".site-dist", "sitemap.xml"), "utf8");

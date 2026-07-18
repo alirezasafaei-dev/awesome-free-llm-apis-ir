@@ -41,7 +41,7 @@
       </a>
       <nav aria-label="Main links">
         <a href="#english-guides">Guides</a>
-        <a href="#catalog">All APIs</a>
+        <a href="/#catalog">All APIs</a>
         <a href="https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir">GitHub</a>
         <a href="https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir/issues/new/choose">Report Issue</a>
         <!-- LANGUAGE_SWITCHER -->
@@ -55,7 +55,7 @@
           <h1 id="hero-title">Free LLM APIs<br><span>for Iran, verified.</span></h1>
           <p class="hero-description">Free quotas, models, OpenAI-compatible endpoints, and direct-connection evidence from Iran — each entry sourced from official documentation and dated.</p>
           <div class="hero-actions">
-            <a class="button primary" href="#catalog">Browse APIs</a>
+            <a class="button primary" href="/#catalog">Browse APIs</a>
           </div>
         </div>
         <div class="hero-panel" aria-label="Data features">
@@ -65,13 +65,6 @@
         </div>
       </section>
 
-      <div class="trust-strip" aria-label="Catalog stats">
-        <span><strong id="stat-total">—</strong> <small>Providers</small></span>
-        <span><strong id="stat-free">—</strong> <small>Free tier or models</small></span>
-        <span><strong id="stat-openai">—</strong> <small>OpenAI-compatible</small></span>
-        <span><strong id="stat-fresh">—</strong> <small>Fresh data</small></span>
-      </div>
-
       <section id="english-guides" class="seo-intro" aria-labelledby="english-guides-title">
         <p class="eyebrow">English Tutorials</p>
         <h2 id="english-guides-title">Practical Guides for Using Free LLM APIs from Iran</h2>
@@ -79,38 +72,19 @@
         <!-- ENGLISH_GUIDE_CARDS -->
       </section>
 
-      <section id="catalog" class="catalog-section" aria-labelledby="catalog-title">
+      <section id="catalog-link" class="seo-intro" aria-labelledby="catalog-link-title">
         <div class="section-heading">
           <div>
-            <p class="eyebrow">Live Catalog</p>
-            <h2 id="catalog-title">Compare Free LLM APIs</h2>
+            <p class="eyebrow">Interactive Catalog</p>
+            <h2 id="catalog-link-title">Browse the Full Provider Catalog</h2>
           </div>
-          <p id="catalog-updated" class="updated">Loading data…</p>
         </div>
-
-        <form id="filters" class="filters" role="search" aria-label="Filter providers">
-          <label class="search-field"><span>Search</span><input id="search" type="search" placeholder="Provider name, model, or capability…" autocomplete="off"></label>
-          <label><span>Free type</span><select id="free-type"><option value="">All</option><option value="permanent_allowance">Permanent allowance</option><option value="free_models">Free models</option><option value="monthly_credit">Monthly credit</option><option value="trial">Trial</option></select></label>
-          <label><span>Iran access</span><select id="access-status"><option value="">All</option><option value="verified_working">Direct verified</option><option value="verified_working_vpn">VPN verified</option><option value="direct_blocked_vpn_working">Direct blocked / VPN ok</option><option value="verified_blocked">Blocked</option><option value="signup_blocked">Signup blocked</option><option value="officially_unsupported">Officially unsupported</option><option value="unknown">Unknown</option></select></label>
-          <label><span>Capability</span><select id="capability"><option value="">All</option><option value="chat">Chat</option><option value="reasoning">Reasoning</option><option value="embeddings">Embedding</option><option value="tool_calling">Tool calling</option><option value="structured_output">Structured output</option></select></label>
-          <label class="checkbox-field"><input id="openai-only" type="checkbox"><span>OpenAI-compatible only</span></label>
-          <button id="reset-filters" class="reset-button" type="reset">Clear filters</button>
-        </form>
-
-        <section class="advisor" aria-labelledby="advisor-title" hidden>
-          <div><p class="eyebrow">Quick advisor</p><h3 id="advisor-title">Which provider fits your use case?</h3></div>
-          <div class="advisor-controls">
-            <label><span>Use case</span><select id="advisor-usecase"><option value="chat">Chat & text generation</option><option value="coding">Coding & tool calling</option><option value="reasoning">Reasoning</option><option value="embeddings">Embedding & search</option></select></label>
-            <label><span>Priority</span><select id="advisor-priority"><option value="low-friction">Quick setup</option><option value="iran-aware">Iran transparency</option><option value="openai-compatible">OpenAI API compatible</option><option value="fresh">Fresh data</option></select></label>
-          </div>
-          <ol id="advisor-results" class="advisor-results"></ol>
-        </section>
-
-        <div class="results-bar"><p id="result-count" role="status" aria-live="polite">Loading…</p><label class="sort-field"><span>Sort</span><select id="sort"><option value="name">Name</option><option value="freshness">Freshness</option><option value="free">Free type</option></select></label></div>
-        <div id="loading" class="message-card">Loading catalog…</div>
-        <div id="error" class="message-card error" hidden>Failed to load data. Please reload the page.</div>
-        <div id="empty" class="message-card" hidden>No providers match your filters.</div>
-        <div id="provider-grid" class="provider-grid"></div>
+        <p>The interactive catalog lives on the Persian-language homepage. Detailed provider profiles include Iran-access evidence, quotas, model lists, and OpenAI-compatible endpoints — all sourced from official documentation with dated verification.</p>
+        <p>Provider notes and Iran-access reports are currently Persian-first. The catalog JSON file is machine-readable and locale-neutral.</p>
+        <div class="hero-actions">
+          <a class="button primary" href="/#catalog">Open interactive catalog</a>
+          <a class="button detail-secondary" href="/catalog.json">Browse catalog JSON</a>
+        </div>
       </section>
 
       <section class="contribute"><div><p class="eyebrow">Data outdated or incorrect?</p><h2>This catalog improves with accurate contributions.</h2><p>Reports must include the official source, date, and connection path — no full IPs or API keys.</p></div><a class="button primary" href="https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir/issues/new/choose">Submit a report</a></section>
@@ -122,20 +96,6 @@
       <a href="https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir">Source on GitHub</a>
     </footer>
 
-    <template id="provider-template">
-      <article class="provider-card">
-        <div class="card-topline"><span class="access-badge"><span class="visually-hidden">Iran access: </span></span><span class="freshness-badge"></span></div>
-        <div class="provider-title"><div class="provider-avatar" aria-hidden="true"></div><div><h3></h3><code class="provider-id"></code></div></div>
-        <p class="provider-note"></p><div class="tag-list"></div>
-        <dl class="facts"><div><dt>Free type</dt><dd class="free-label"></dd></div><div><dt>Rate limit</dt><dd class="limit-label"></dd></div><div><dt>OpenAI API</dt><dd class="openai-label"></dd></div><div><dt>Last checked</dt><dd class="checked-label"></dd></div></dl>
-        <details><summary>Details & models</summary><p class="free-note"></p><p class="models-note"></p><div class="api-base-row"><code class="api-base"></code><button class="copy-button" type="button" aria-label="Copy Base URL"><span class="copy-text">Copy</span><span class="copy-status" role="status" aria-live="polite" hidden></span></button></div></details>
-        <div class="card-actions">
-          <a class="detail-link" href="../providers/">Details, evidence & Iran status</a>
-          <a class="docs-link" target="_blank" rel="noopener noreferrer">Documentation</a>
-        </div>
-      </article>
-    </template>
-    <script type="module" src="../app.js"></script>
     <script defer data-domain="llm.persiantoolbox.ir" src="../plausible.js"></script>
   </body>
 </html>
