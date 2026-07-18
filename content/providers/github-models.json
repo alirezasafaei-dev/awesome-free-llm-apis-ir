@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.0.0",
+  "provider_id": "github-models",
+  "intent_fa": "GitHub Models برای نمونه‌سازی، مقایسه مدل‌ها و اجرای آزمایش‌های کوچک در محیط GitHub یا GitHub Actions مناسب است. این راهنما روی ساخت توکن حداقلی، ارسال درخواست سازگار با OpenAI و مدیریت محدودیت‌های Public Preview تمرکز دارد؛ دسترسی موفق ثبت‌شده از ایران یک Evidence تاریخ‌دار است و تضمین دائمی محسوب نمی‌شود.",
+  "signup_steps_fa": [
+    "با حساب GitHub وارد Marketplace مدل‌ها شوید و مدل موردنظر را از کاتالوگ رسمی انتخاب کنید؛ شناسه مدل باید دقیقاً مطابق نمونه کد همان صفحه باشد.",
+    "برای اجرای محلی یک Personal Access Token با حداقل مجوز لازم برای GitHub Models بسازید و آن را در متغیر محیطی GITHUB_MODELS_TOKEN نگهداری کنید؛ برای GitHub Actions نیز permissions مربوط به models را فقط در سطح موردنیاز فعال کنید.",
+    "ابتدا یک درخواست کوچک اجرا کنید و سپس محدودیت مدل، تعداد درخواست روزانه و هم‌زمانی را از مستندات و metadata کاتالوگ کنترل کنید؛ Public Preview برای بار تولیدی تضمین‌شده طراحی نشده است."
+  ],
+  "first_request": {
+    "language": "curl",
+    "code": "curl -L -X POST \\\n  -H \"Accept: application/vnd.github+json\" \\\n  -H \"Authorization: Bearer $GITHUB_MODELS_TOKEN\" \\\n  -H \"X-GitHub-Api-Version: 2022-11-28\" \\\n  -H \"Content-Type: application/json\" \\\n  https://models.github.ai/inference/chat/completions \\\n  -d '{\"model\":\"openai/gpt-4.1-mini\",\"messages\":[{\"role\":\"user\",\"content\":\"سلام! کوتاه پاسخ بده.\"}]}'",
+    "notes_fa": "توکن واقعی را فقط از متغیر محیطی بخوانید. شناسه مدل از کاتالوگ رسمی انتخاب می‌شود و ممکن است تغییر کند؛ در صورت خطای مدل، صفحه Marketplace و metadata مدل را دوباره بررسی کنید.",
+    "source_url": "https://docs.github.com/en/github-models/quickstart",
+    "checked_at": "2026-07-15"
+  },
+  "common_errors": [
+    {
+      "code": "401",
+      "title_fa": "توکن نامعتبر یا منقضی",
+      "resolution_fa": "مقدار GITHUB_MODELS_TOKEN، تاریخ انقضا و هدر Authorization را بررسی کنید؛ توکن را در خروجی CI یا گزارش عمومی چاپ نکنید.",
+      "source_url": "https://docs.github.com/en/github-models/quickstart",
+      "checked_at": "2026-07-15"
+    },
+    {
+      "code": "403",
+      "title_fa": "مجوز Models کافی نیست",
+      "resolution_fa": "Scope یا permission مربوط به GitHub Models را برای نوع توکن یا workflow فعال کنید و اصل کمترین دسترسی را حفظ کنید؛ مجوزهای نامرتبط اضافه نکنید.",
+      "source_url": "https://docs.github.com/en/github-models/prototyping-with-ai-models",
+      "checked_at": "2026-07-15"
+    },
+    {
+      "code": "404",
+      "title_fa": "شناسه مدل پیدا نشد",
+      "resolution_fa": "مالک و نام کامل مدل را از Marketplace کپی کنید و بررسی کنید مدل هنوز در کاتالوگ و برای نوع حساب شما قابل استفاده باشد.",
+      "source_url": "https://docs.github.com/en/rest/models/catalog",
+      "checked_at": "2026-07-15"
+    },
+    {
+      "code": "429",
+      "title_fa": "سقف Public Preview رد شد",
+      "resolution_fa": "درخواست‌ها را صف‌بندی کنید، backoff و jitter اضافه کنید و محدودیت کلاس مدل و حساب را بررسی کنید؛ retry فوری و هم‌زمان فشار را بیشتر می‌کند.",
+      "source_url": "https://docs.github.com/en/github-models/prototyping-with-ai-models#rate-limits",
+      "checked_at": "2026-07-15"
+    }
+  ],
+  "when_not_to_use_fa": [
+    "زمانی که سرویس تولیدی به SLA، ظرفیت رزروشده یا ثبات بلندمدت شناسه مدل نیاز دارد؛ API رایگان GitHub Models در Public Preview است.",
+    "زمانی که پروژه نباید به حساب GitHub، PAT یا permission مخصوص workflow وابسته باشد.",
+    "زمانی که تعداد درخواست یا context موردنیاز از محدودیت کلاس مدل و حساب رایگان بیشتر است."
+  ],
+  "related_guides": [
+    "openai-sdk-custom-base-url",
+    "free-coding-api",
+    "free-tier-vs-trial-vs-credit"
+  ],
+  "last_reviewed": "2026-07-15"
+}

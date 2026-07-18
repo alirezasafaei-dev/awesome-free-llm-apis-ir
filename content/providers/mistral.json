@@ -1,0 +1,51 @@
+{
+  "schema_version": "1.0.0",
+  "provider_id": "mistral",
+  "intent_fa": "Mistral AI برای نمونه‌سازی چت، استدلال، Embedding و Tool Calling با API رسمی و سازگار با الگوی OpenAI مناسب است. این صفحه برای کاربری نوشته شده که می‌خواهد کلید API بسازد، نخستین درخواست امن را ارسال کند و بداند سهمیه حساب و نتیجه دسترسی مستقیم از ایران باید همیشه با تاریخ و منبع دوباره بررسی شوند.",
+  "signup_steps_fa": [
+    "از مسیر رسمی Mistral Studio حساب بسازید یا وارد شوید و Free mode را برای استفاده محدود فعال نگه دارید؛ محدودیت نهایی همان مقداری است که در صفحه Limits حساب نمایش داده می‌شود.",
+    "در بخش API Keys یک کلید جدید با نام و تاریخ انقضای مناسب بسازید و آن را فقط در متغیر محیطی MISTRAL_API_KEY نگهداری کنید؛ کلید را داخل کد مرورگر، مخزن Git یا فایل عمومی قرار ندهید.",
+    "پیش از استفاده عملی، مدل انتخابی را در فهرست رسمی مدل‌ها کنترل کنید و یک درخواست کوچک آزمایشی بفرستید تا وضعیت کلید، مدل و سهمیه همان حساب مشخص شود."
+  ],
+  "first_request": {
+    "language": "curl",
+    "code": "curl https://api.mistral.ai/v1/chat/completions \\\n  -H \"Authorization: Bearer $MISTRAL_API_KEY\" \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\"model\":\"mistral-small-latest\",\"messages\":[{\"role\":\"user\",\"content\":\"سلام! در یک جمله پاسخ بده.\"}]}'",
+    "notes_fa": "کلید واقعی باید فقط از متغیر محیطی خوانده شود. نام مدل و محدودیت حساب ممکن است تغییر کند؛ در صورت خطای مدل، فهرست رسمی و صفحه Limits کنسول را بررسی کنید.",
+    "source_url": "https://docs.mistral.ai/getting-started/quickstarts/studio/activate-and-generate-api-key",
+    "checked_at": "2026-07-16"
+  },
+  "common_errors": [
+    {
+      "code": "401",
+      "title_fa": "کلید نامعتبر یا ارسال‌نشده",
+      "resolution_fa": "وجود MISTRAL_API_KEY، هدر Authorization و فعال‌بودن کلید در Studio را بررسی کنید و هرگز مقدار کلید را در لاگ یا پیام خطا منتشر نکنید.",
+      "source_url": "https://docs.mistral.ai/getting-started/quickstarts/studio/activate-and-generate-api-key",
+      "checked_at": "2026-07-16"
+    },
+    {
+      "code": "422",
+      "title_fa": "بدنه درخواست یا مدل نامعتبر",
+      "resolution_fa": "ساختار messages، نوع فیلدها و شناسه دقیق مدل را با مستندات فعلی تطبیق دهید؛ یک درخواست حداقلی به تشخیص فیلد مشکل‌دار کمک می‌کند.",
+      "source_url": "https://docs.mistral.ai/api/",
+      "checked_at": "2026-07-16"
+    },
+    {
+      "code": "429",
+      "title_fa": "عبور از محدودیت حساب",
+      "resolution_fa": "نرخ درخواست و حجم توکن را کاهش دهید، retry را با exponential backoff و jitter اجرا کنید و مقدار واقعی محدودیت را از صفحه Limits همان حساب بخوانید.",
+      "source_url": "https://docs.mistral.ai/admin/billing-usage/usage-limits",
+      "checked_at": "2026-07-16"
+    }
+  ],
+  "when_not_to_use_fa": [
+    "زمانی که پروژه به یک عدد عمومی و تضمین‌شده برای سهمیه رایگان نیاز دارد، زیرا مقدار دقیق Free mode در حساب و صفحه Limits نمایش داده می‌شود.",
+    "زمانی که بار تولیدی سنگین، SLA قراردادی یا ظرفیت رزروشده لازم است و پلن رایگان محدود برای این هدف کافی نیست.",
+    "زمانی که انتخاب پروژه به یک مدل ثابت و بدون تغییر وابسته است؛ پیش از استقرار باید چرخه عمر و فهرست مدل‌ها جداگانه کنترل شود."
+  ],
+  "related_guides": [
+    "openai-sdk-custom-base-url",
+    "free-tier-vs-trial-vs-credit",
+    "best-free-llm-api-iran"
+  ],
+  "last_reviewed": "2026-07-16"
+}
