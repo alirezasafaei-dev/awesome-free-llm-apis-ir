@@ -225,7 +225,7 @@ function articlePage(article) {
 <body data-page-type="guide">
   <a class="skip-link" href="#article-content">Skip to main content</a>
   <header class="topbar">
-    <a class="brand" href="../../../en/"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M56 38V166C56 188.091 73.909 206 96 206H202" stroke="#2563EB" stroke-width="26" stroke-linecap="round" stroke-linejoin="round"/><path d="M112 116L158 80M112 116L174 140M112 116L126 170" stroke="#06B6D4" stroke-width="8" stroke-linecap="round"/><circle cx="112" cy="116" r="15" fill="#06B6D4"/><circle cx="158" cy="80" r="13" fill="#06B6D4"/><circle cx="174" cy="140" r="13" fill="#06B6D4"/><circle cx="126" cy="170" r="13" fill="#06B6D4"/></svg></span><span>Awesome Free LLM APIs IR</span></a>
+    <a class="brand" href="../../../en/"><span class="brand-mark" aria-hidden="true"><img src="../../../assets/logo-symbol.svg" alt="" width="40" height="40"></span><span>Awesome Free LLM APIs IR</span></a>
     <nav aria-label="Main links"><a href="../../../en/">Home</a><a href="../../../#catalog">All APIs</a><a href="${repositoryUrl}">GitHub</a>${switcher ? `\n        ${switcher}` : ""}</nav>
   </header>
   <main class="provider-page">

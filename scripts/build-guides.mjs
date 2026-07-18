@@ -502,7 +502,7 @@ export async function buildGuides(catalog) {
 <body data-page-type="guide">
   <a class="skip-link" href="#guide-content">رفتن به محتوای اصلی</a>
   <header class="topbar">
-    <a class="brand" href="../../" aria-label="Awesome Free LLM APIs IR"><span class="brand-mark" aria-hidden="true">AI</span><span>Awesome Free LLM APIs IR</span></a>
+    <a class="brand" href="../../" aria-label="Awesome Free LLM APIs IR"><span class="brand-mark" aria-hidden="true"><img src="../../assets/logo-symbol.svg" alt="" width="40" height="40"></span><span>Awesome Free LLM APIs IR</span></a>
     <nav aria-label="پیوندهای اصلی"><a href="../../#catalog">همه APIها</a><a href="https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir">GitHub</a></nav>
   </header>
   <main class="provider-page">
