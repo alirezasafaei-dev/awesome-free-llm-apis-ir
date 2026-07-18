@@ -17,6 +17,8 @@
 
 The website implementation uses the shared symbol SVG plus HTML text. This avoids duplicated inline SVG markup across generated page templates.
 
+This lean source pack was rebuilt from the current production `main`; generated PNG previews are intentionally excluded.
+
 ## Palette
 
 - Navy `#0F172A`
