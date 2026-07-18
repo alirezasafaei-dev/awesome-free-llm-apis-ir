@@ -59,11 +59,20 @@ async function copyFromButton(button) {
   if (!explicitValue) return;
   try {
     await navigator.clipboard.writeText(explicitValue);
-    const original = button.textContent;
-    button.textContent = "کپی شد";
-    setTimeout(() => { button.textContent = original; }, 1400);
+    const statusEl = button.querySelector(".copy-status");
+    const textEl = button.querySelector(".copy-text");
+    if (statusEl) {
+      statusEl.textContent = "کپی شد";
+      statusEl.hidden = false;
+    }
+    if (textEl) textEl.textContent = "کپی شد";
+    setTimeout(() => {
+      if (statusEl) { statusEl.textContent = ""; statusEl.hidden = true; }
+      if (textEl) textEl.textContent = "کپی";
+    }, 1400);
   } catch {
-    button.textContent = "ناموفق";
+    const textEl = button.querySelector(".copy-text");
+    if (textEl) textEl.textContent = "ناموفق";
   }
 }
 
@@ -90,6 +99,10 @@ document.addEventListener("click", (event) => {
   }
   if (target.classList.contains("website-link")) {
     sendEvent("provider_website_click", { provider_id: providerId ?? "unknown" });
+    return;
+  }
+  if (target.classList.contains("detail-link")) {
+    sendEvent("provider_detail_click", { provider_id: providerId ?? "unknown" });
     return;
   }
   if (href.includes("issues/new?template=iran-access-report.yml")) {

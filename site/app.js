@@ -1,12 +1,34 @@
 const accessLabels = {
-  verified_working: "✅ مستقیم تست‌شده",
-  verified_working_vpn: "🛡️ با VPN تست‌شده",
-  direct_blocked_vpn_working: "🛡️ مستقیم مسدود / VPN موفق",
-  verified_blocked: "⛔ مستقیم مسدود",
-  officially_unsupported: "🚫 پشتیبانی‌نشده رسمی",
-  intermittent: "⚠️ ناپایدار",
-  signup_blocked: "🧾 ثبت‌نام مسدود",
-  unknown: "❔ نامشخص"
+  verified_working: "مستقیم تست‌شده",
+  verified_working_vpn: "با VPN تست‌شده",
+  direct_blocked_vpn_working: "مستقیم مسدود / VPN موفق",
+  verified_blocked: "مستقیم مسدود",
+  officially_unsupported: "پشتیبانی‌نشده رسمی",
+  intermittent: "ناپایدار",
+  signup_blocked: "ثبت‌نام مسدود",
+  unknown: "نامشخص"
+};
+
+const accessEmoji = {
+  verified_working: "✅",
+  verified_working_vpn: "🛡️",
+  direct_blocked_vpn_working: "🛡️",
+  verified_blocked: "⛔",
+  officially_unsupported: "🚫",
+  intermittent: "⚠️",
+  signup_blocked: "🧾",
+  unknown: "❔"
+};
+
+const accessAriaLabel = {
+  verified_working: "وضعیت دسترسی ایران: مستقیم تست‌شده",
+  verified_working_vpn: "وضعیت دسترسی ایران: با VPN تست‌شده",
+  direct_blocked_vpn_working: "وضعیت دسترسی ایران: مستقیم مسدود، VPN موفق",
+  verified_blocked: "وضعیت دسترسی ایران: مستقیم مسدود",
+  officially_unsupported: "وضعیت دسترسی ایران: پشتیبانی‌نشده رسمی",
+  intermittent: "وضعیت دسترسی ایران: ناپایدار",
+  signup_blocked: "وضعیت دسترسی ایران: ثبت‌نام مسدود",
+  unknown: "وضعیت دسترسی ایران: نامشخص"
 };
 
 const freeLabels = {
@@ -73,6 +95,12 @@ function searchText(provider) {
   ].join(" "));
 }
 
+function sendAnalytics(name, props = {}) {
+  if (typeof window.plausible === "function") {
+    window.plausible(name, { props });
+  }
+}
+
 function currentFilters() {
   return {
     query: normalize(elements.search.value),
@@ -123,7 +151,10 @@ function setText(root, selector, value) {
 function createCard(provider) {
   const card = elements["provider-template"].content.firstElementChild.cloneNode(true);
   const stale = isStale(provider);
-  setText(card, ".access-badge", accessLabels[provider.iran_access.status] ?? provider.iran_access.status);
+  const accessBadge = card.querySelector(".access-badge");
+  const accessStatus = provider.iran_access.status;
+  accessBadge.textContent = `${accessEmoji[accessStatus] ?? ""} ${accessLabels[accessStatus] ?? accessStatus}`;
+  accessBadge.setAttribute("aria-label", accessAriaLabel[accessStatus] ?? accessStatus);
   const freshness = card.querySelector(".freshness-badge");
   freshness.textContent = stale ? "نیازمند بررسی" : "دادهٔ تازه";
   freshness.classList.toggle("stale", stale);
@@ -146,17 +177,33 @@ function createCard(provider) {
     tags.append(tag);
   });
 
+  const detailLink = card.querySelector(".detail-link");
+  detailLink.href = `./providers/${provider.id}/`;
+  detailLink.addEventListener("click", () => {
+    sendAnalytics("provider_detail_click", { provider_id: provider.id });
+  });
+
   const docs = card.querySelector(".docs-link");
   docs.href = provider.docs;
   const website = card.querySelector(".website-link");
-  website.href = provider.website;
+  if (website) website.href = provider.website;
   card.querySelector(".copy-button").addEventListener("click", async (event) => {
     try {
       await navigator.clipboard.writeText(provider.api.base_url);
-      event.currentTarget.textContent = "کپی شد";
-      setTimeout(() => { event.currentTarget.textContent = "کپی"; }, 1400);
+      const statusEl = event.currentTarget.querySelector(".copy-status");
+      const textEl = event.currentTarget.querySelector(".copy-text");
+      if (statusEl) {
+        statusEl.textContent = "کپی شد";
+        statusEl.hidden = false;
+      }
+      if (textEl) textEl.textContent = "کپی شد";
+      setTimeout(() => {
+        if (statusEl) { statusEl.textContent = ""; statusEl.hidden = true; }
+        if (textEl) textEl.textContent = "کپی";
+      }, 1400);
     } catch {
-      event.currentTarget.textContent = "ناموفق";
+      const textEl = event.currentTarget.querySelector(".copy-text");
+      if (textEl) textEl.textContent = "ناموفق";
     }
   });
   return card;
@@ -206,13 +253,20 @@ function renderAdvisor() {
 
   elements["advisor-results"].replaceChildren(...recommendations.map(({ provider, score }) => {
     const item = document.createElement("li");
+    const link = document.createElement("a");
+    link.href = `./providers/${provider.id}/`;
+    link.className = "advisor-link";
+    link.addEventListener("click", () => {
+      sendAnalytics("advisor_provider_click", { provider_id: provider.id, usecase, priority });
+    });
     const title = document.createElement("strong");
     title.textContent = provider.name;
     const meta = document.createElement("span");
     meta.textContent = `${freeLabels[provider.free_tier.type] ?? provider.free_tier.type} · ${serviceLabels[provider.service_type] ?? provider.service_type} · امتیاز ${score.toLocaleString("fa-IR")}`;
     const reason = document.createElement("small");
     reason.textContent = `${limitText(provider)} · ${accessLabels[provider.iran_access.status] ?? provider.iran_access.status}${provider.service_type === "community_gateway" ? " ⚠️ سرویس غیررسمی" : ""}`;
-    item.append(title, meta, reason);
+    link.append(title, meta, reason);
+    item.append(link);
     return item;
   }));
 }
@@ -245,11 +299,39 @@ function loadUrlFilters() {
 function setupTheme() {
   const stored = localStorage.getItem("theme");
   const preferred = matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-  document.documentElement.dataset.theme = stored || preferred;
-  elements["theme-toggle"].addEventListener("click", () => {
+  const current = stored || preferred;
+  document.documentElement.dataset.theme = current;
+  const toggle = elements["theme-toggle"];
+  const isDark = current === "dark";
+  toggle.setAttribute("aria-pressed", String(isDark));
+  toggle.setAttribute("aria-label", isDark ? "تغییر به پوسته روشن" : "تغییر به پوسته تاریک");
+  toggle.addEventListener("click", () => {
     const next = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
     document.documentElement.dataset.theme = next;
     localStorage.setItem("theme", next);
+    const nextIsDark = next === "dark";
+    toggle.setAttribute("aria-pressed", String(nextIsDark));
+    toggle.setAttribute("aria-label", nextIsDark ? "تغییر به پوسته روشن" : "تغییر به پوسته تاریک");
+  });
+}
+
+function trackFilterChanges() {
+  const form = elements.filters;
+  let timeout;
+  form.addEventListener("input", () => {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => {
+      const filters = currentFilters();
+      const hasActive = filters.query || filters.freeType || filters.access || filters.capability || filters.openai || filters.sort !== "name";
+      sendAnalytics(hasActive ? "filter_apply" : "filter_reset", {
+        free_type: filters.freeType || "all",
+        access_status: filters.access || "all",
+        capability: filters.capability || "all"
+      });
+    }, 800);
+  });
+  elements["reset-filters"].addEventListener("click", () => {
+    sendAnalytics("filter_reset", {});
   });
 }
 
@@ -261,6 +343,7 @@ async function init() {
   elements["advisor-usecase"].addEventListener("change", renderAdvisor);
   elements["advisor-priority"].addEventListener("change", renderAdvisor);
   elements.filters.addEventListener("reset", () => setTimeout(() => { elements.sort.value = "name"; render(); }, 0));
+  trackFilterChanges();
 
   try {
     const response = await fetch("./catalog.json", { cache: "no-cache" });

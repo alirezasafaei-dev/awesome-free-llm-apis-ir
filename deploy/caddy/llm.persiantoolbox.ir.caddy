@@ -10,8 +10,14 @@ llm.persiantoolbox.ir {
 	header @catalog Cache-Control "public, max-age=300, must-revalidate"
 	@buildmeta path /build-meta.json
 	header @buildmeta Cache-Control "no-store"
+	@static path *.js *.css *.png *.svg *.webmanifest
+	header @static Cache-Control "public, max-age=31536000, immutable"
 	@index path / /index.html
 	header @index Cache-Control "no-cache, must-revalidate"
+	@sitemap path /sitemap.xml /robots.txt /llms.txt
+	header @sitemap Cache-Control "public, max-age=300, must-revalidate"
+	@notfound path /404.html
+	header @notfound Cache-Control "no-store"
 
 	header {
 		Strict-Transport-Security "max-age=31536000"
@@ -22,8 +28,13 @@ llm.persiantoolbox.ir {
 		Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'; upgrade-insecure-requests"
 	}
 
-	try_files {path} {path}/ /index.html
+	try_files {path} {path}/ =404
 	file_server
+
+	handle_errors {
+		rewrite * /404.html
+		file_server
+	}
 
 	log {
 		output file /var/log/caddy/llm.persiantoolbox.ir.access.log
