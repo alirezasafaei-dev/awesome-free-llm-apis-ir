@@ -1,0 +1,52 @@
+name: Rebuild brand v2 on current main
+
+on:
+  push:
+    branches:
+      - agent/brand-v2-current-main-20260718
+
+permissions:
+  contents: write
+
+concurrency:
+  group: brand-v2-current-main-rebuild
+  cancel-in-progress: false
+
+jobs:
+  rebuild-and-validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.2.1
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.3.0
+        with:
+          node-version: 22
+      - name: Install dependencies
+        run: npm ci
+      - name: Apply current-main brand integration
+        run: node scripts/apply-brand-v2.mjs
+      - name: Validate complete repository contract
+        run: npm test
+      - name: Validate production build
+        run: |
+          npm run site:build
+          npm run site:check
+      - name: Validate patch hygiene
+        run: git diff --check
+      - name: Commit clean rebuilt candidate
+        env:
+          BRANCH_NAME: ${{ github.ref_name }}
+        run: |
+          set -Eeuo pipefail
+          rm -f scripts/apply-brand-v2.mjs .github/workflows/brand-v2-rebuild.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No rebuilt changes were produced." >&2
+            exit 1
+          fi
+          git commit -m "feat(brand): rebuild logo integration on current main"
+          git push origin "HEAD:${BRANCH_NAME}"
