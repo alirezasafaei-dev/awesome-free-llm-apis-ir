@@ -1,0 +1,51 @@
+{
+  "schema_version": "1.0.0",
+  "provider_id": "groq",
+  "intent_fa": "Groq برای توسعه‌دهنده‌ای مناسب است که یک API سازگار با OpenAI برای چت، تولید متن، استدلال، Tool Calling یا خروجی ساخت‌یافته می‌خواهد و سرعت پاسخ برای نمونه‌سازی، ابزارهای برنامه‌نویسی یا سرویس‌های تعاملی اهمیت دارد. وضعیت سهمیه و دسترسی ایران باید از خلاصه فنی و Evidence تاریخ‌دار همین صفحه خوانده شود.",
+  "signup_steps_fa": [
+    "از صفحه رسمی GroqCloud وارد حساب شوید و در بخش API Keys یک کلید جدید بسازید.",
+    "کلید را در متغیر محیطی GROQ_API_KEY یا Secret Manager سمت سرور ذخیره کنید و آن را در کد، مرورگر یا مخزن Git قرار ندهید.",
+    "پیش از انتخاب مدل، صفحه Models و Limits حساب را بررسی کنید؛ محدودیت‌ها در سطح Organization و به‌ازای مدل اعمال می‌شوند."
+  ],
+  "first_request": {
+    "language": "curl",
+    "code": "curl https://api.groq.com/openai/v1/chat/completions \\\n  -H \"Authorization: Bearer ${GROQ_API_KEY}\" \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\"model\":\"llama-3.1-8b-instant\",\"messages\":[{\"role\":\"user\",\"content\":\"یک پاسخ کوتاه فارسی بنویس\"}]}'",
+    "notes_fa": "نمونه از Endpoint سازگار با OpenAI و متغیر محیطی استفاده می‌کند. شناسه مدل باید با صفحه Models و مجوزهای حساب شما تطبیق داده شود.",
+    "source_url": "https://console.groq.com/docs/quickstart",
+    "checked_at": "2026-07-16"
+  },
+  "common_errors": [
+    {
+      "code": "401",
+      "title_fa": "کلید API نامعتبر یا ارسال‌نشده",
+      "resolution_fa": "وجود متغیر GROQ_API_KEY را در همان محیط اجرای برنامه بررسی کنید، هدر Bearer را درست بسازید و در صورت لغو یا افشای کلید، آن را جایگزین کنید.",
+      "source_url": "https://console.groq.com/docs/errors",
+      "checked_at": "2026-07-16"
+    },
+    {
+      "code": "403",
+      "title_fa": "درخواست مجاز نیست یا محدودیت دسترسی وجود دارد",
+      "resolution_fa": "مجوز مدل و حساب را بررسی کنید و وضعیت دسترسی ایران را با Evidence همین صفحه تطبیق دهید. چند بار تکرار درخواست، مشکل مجوز یا محدودیت جغرافیایی را رفع نمی‌کند.",
+      "source_url": "https://console.groq.com/docs/errors",
+      "checked_at": "2026-07-16"
+    },
+    {
+      "code": "429",
+      "title_fa": "عبور از Rate Limit سازمان یا مدل",
+      "resolution_fa": "هدر Retry-After و هدرهای x-ratelimit را بخوانید، درخواست‌ها را صف‌بندی کنید و Retry را با Backoff و Jitter انجام دهید؛ ساخت کلید جدید سهمیه Organization را افزایش نمی‌دهد.",
+      "source_url": "https://console.groq.com/docs/rate-limits",
+      "checked_at": "2026-07-16"
+    }
+  ],
+  "when_not_to_use_fa": [
+    "وقتی وضعیت دسترسی نمایش‌داده‌شده در همین صفحه با مسیر شبکه و الزامات پروژه شما سازگار نیست.",
+    "وقتی بدون بررسی مدل و محدودیت حساب، به ظرفیت ثابت و SLA تضمین‌شده برای بار تولیدی نیاز دارید.",
+    "وقتی برنامه باید کلید API را مستقیماً در مرورگر یا اپلیکیشن موبایل نگهداری کند؛ در این حالت یک Backend امن لازم است."
+  ],
+  "related_guides": [
+    "openai-sdk-custom-base-url",
+    "llm-api-rate-limit-429",
+    "free-coding-api"
+  ],
+  "last_reviewed": "2026-07-16"
+}
