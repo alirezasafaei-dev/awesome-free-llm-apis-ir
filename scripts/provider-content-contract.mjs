@@ -6,6 +6,8 @@ const suspiciousSecretPatterns = [
 ];
 
 export const PROVIDER_CONTENT_KEYS = Object.freeze([
+  "schema_version",
+  "provider_id",
   "intent_fa",
   "signup_steps_fa",
   "first_request",
@@ -82,64 +84,65 @@ function validateTextArray(value, label, errors, { minItems = 1, minLength = 4 }
   });
 }
 
-export function validateProviderContent(content, { verificationDate, today = new Date() } = {}) {
-  if (content === undefined) return [];
+export function validateProviderContent(content, { verificationDate, knownProviderIds, today = new Date() } = {}) {
   const errors = [];
+  if (!isObject(content)) return ["provider content must be an object"];
 
-  if (!isObject(content)) return ["content must be an object"];
+  for (const key of unknownKeys(content, allowedContentKeys)) errors.push(`${key} is not allowed`);
+  for (const key of missingKeys(content, requiredContentKeys)) errors.push(`missing ${key}`);
 
-  for (const key of unknownKeys(content, allowedContentKeys)) errors.push(`content.${key} is not allowed`);
-  for (const key of missingKeys(content, requiredContentKeys)) errors.push(`missing content.${key}`);
+  if (content.schema_version !== "1.0.0") errors.push("schema_version must be 1.0.0");
+  if (typeof content.provider_id !== "string" || !slugPattern.test(content.provider_id)) {
+    errors.push("provider_id must be a lowercase provider slug");
+  } else if (knownProviderIds && !knownProviderIds.has(content.provider_id)) {
+    errors.push(`provider_id does not exist in the catalog: ${content.provider_id}`);
+  }
 
-  if (!hasText(content.intent_fa, 80)) errors.push("content.intent_fa must contain at least 80 characters");
-  validateTextArray(content.signup_steps_fa, "content.signup_steps_fa", errors, { minItems: 2, minLength: 8 });
-  validateTextArray(content.when_not_to_use_fa, "content.when_not_to_use_fa", errors, { minItems: 1, minLength: 8 });
+  if (!hasText(content.intent_fa, 80)) errors.push("intent_fa must contain at least 80 characters");
+  validateTextArray(content.signup_steps_fa, "signup_steps_fa", errors, { minItems: 2, minLength: 8 });
+  validateTextArray(content.when_not_to_use_fa, "when_not_to_use_fa", errors, { minItems: 1, minLength: 8 });
 
   if (!Array.isArray(content.related_guides) || content.related_guides.length < 1) {
-    errors.push("content.related_guides must contain at least one guide slug");
+    errors.push("related_guides must contain at least one guide slug");
   } else {
-    if (new Set(content.related_guides).size !== content.related_guides.length) {
-      errors.push("content.related_guides must be unique");
-    }
+    if (new Set(content.related_guides).size !== content.related_guides.length) errors.push("related_guides must be unique");
     content.related_guides.forEach((slug, index) => {
-      if (typeof slug !== "string" || !slugPattern.test(slug)) {
-        errors.push(`content.related_guides[${index}] must be a lowercase slug`);
-      }
+      if (typeof slug !== "string" || !slugPattern.test(slug)) errors.push(`related_guides[${index}] must be a lowercase slug`);
     });
   }
 
   if (!validDate(content.last_reviewed)) {
-    errors.push("content.last_reviewed must be a valid date");
+    errors.push("last_reviewed must be a valid date");
   } else {
     const reviewedAt = new Date(`${content.last_reviewed}T00:00:00Z`);
-    if (reviewedAt > today) errors.push("content.last_reviewed cannot be in the future");
+    if (reviewedAt > today) errors.push("last_reviewed cannot be in the future");
     if (validDate(verificationDate) && content.last_reviewed > verificationDate) {
-      errors.push("content.last_reviewed cannot be newer than verification.last_checked");
+      errors.push("last_reviewed cannot be newer than provider verification.last_checked");
     }
   }
 
   const first = content.first_request;
   if (!isObject(first)) {
-    errors.push("content.first_request must be an object");
+    errors.push("first_request must be an object");
   } else {
-    for (const key of unknownKeys(first, allowedFirstRequestKeys)) errors.push(`content.first_request.${key} is not allowed`);
-    for (const key of missingKeys(first, requiredFirstRequestKeys)) errors.push(`missing content.first_request.${key}`);
-    if (!allowedLanguages.has(first.language)) errors.push("content.first_request.language must be curl, python, or javascript");
-    if (!hasText(first.code, 20)) errors.push("content.first_request.code must contain at least 20 characters");
-    if (!hasText(first.notes_fa, 20)) errors.push("content.first_request.notes_fa must contain at least 20 characters");
-    if (!validHttps(first.source_url)) errors.push("content.first_request.source_url must be an HTTPS URL");
-    if (!validDate(first.checked_at)) errors.push("content.first_request.checked_at must be a valid date");
+    for (const key of unknownKeys(first, allowedFirstRequestKeys)) errors.push(`first_request.${key} is not allowed`);
+    for (const key of missingKeys(first, requiredFirstRequestKeys)) errors.push(`missing first_request.${key}`);
+    if (!allowedLanguages.has(first.language)) errors.push("first_request.language must be curl, python, or javascript");
+    if (!hasText(first.code, 20)) errors.push("first_request.code must contain at least 20 characters");
+    if (!hasText(first.notes_fa, 20)) errors.push("first_request.notes_fa must contain at least 20 characters");
+    if (!validHttps(first.source_url)) errors.push("first_request.source_url must be an HTTPS URL");
+    if (!validDate(first.checked_at)) errors.push("first_request.checked_at must be a valid date");
     if (validDate(first.checked_at) && validDate(verificationDate) && first.checked_at > verificationDate) {
-      errors.push("content.first_request.checked_at cannot be newer than verification.last_checked");
+      errors.push("first_request.checked_at cannot be newer than provider verification.last_checked");
     }
-    if (containsSuspiciousSecret(first.code)) errors.push("content.first_request.code appears to contain a credential or private key");
+    if (containsSuspiciousSecret(first.code)) errors.push("first_request.code appears to contain a credential or private key");
   }
 
   if (!Array.isArray(content.common_errors) || content.common_errors.length < 1) {
-    errors.push("content.common_errors must contain at least one item");
+    errors.push("common_errors must contain at least one item");
   } else {
     content.common_errors.forEach((item, index) => {
-      const prefix = `content.common_errors[${index}]`;
+      const prefix = `common_errors[${index}]`;
       if (!isObject(item)) {
         errors.push(`${prefix} must be an object`);
         return;
@@ -154,7 +157,7 @@ export function validateProviderContent(content, { verificationDate, today = new
       if (hasSource && !validHttps(item.source_url)) errors.push(`${prefix}.source_url must be an HTTPS URL`);
       if (hasDate && !validDate(item.checked_at)) errors.push(`${prefix}.checked_at must be a valid date`);
       if (hasDate && validDate(item.checked_at) && validDate(verificationDate) && item.checked_at > verificationDate) {
-        errors.push(`${prefix}.checked_at cannot be newer than verification.last_checked`);
+        errors.push(`${prefix}.checked_at cannot be newer than provider verification.last_checked`);
       }
       if (containsSuspiciousSecret(item.resolution_fa)) errors.push(`${prefix}.resolution_fa appears to contain a credential`);
     });
