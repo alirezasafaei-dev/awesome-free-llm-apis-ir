@@ -1,6 +1,6 @@
 {
   "schema_version": "1.1.0",
-  "last_updated": "2026-07-16",
+  "last_updated": "2026-07-18",
   "provider_count": 22,
   "providers": [
     {
@@ -230,12 +230,12 @@
       "free_tier": {
         "status": "trial",
         "type": "trial",
-        "requires_payment_method": null,
+        "requires_payment_method": true,
         "limits": [
           {
             "scope": "free trial",
             "model": "gpt-oss-120b",
-            "condition": null,
+            "condition": "$5 free credits after adding a verified payment method; credits expire after 30 days",
             "rpm": 5,
             "tpm": 30000,
             "tph": 1000000,
@@ -245,17 +245,17 @@
           {
             "scope": "free trial",
             "model": "zai-glm-4.7",
-            "condition": null,
+            "condition": "$5 free credits after adding a verified payment method; credits expire after 30 days",
             "rpm": 5,
             "tpm": 30000,
             "tph": 1000000,
             "tpd": 1000000,
-            "notes_fa": null
+            "notes_fa": "مدل Preview است و طبق مستندات رسمی برای ۱۷ اوت ۲۰۲۶ برنامهٔ deprecation دارد."
           },
           {
             "scope": "free trial",
             "model": "gemma-4-31b",
-            "condition": null,
+            "condition": "$5 free credits after adding a verified payment method; credits expire after 30 days",
             "rpm": 5,
             "tpm": 30000,
             "tph": 1000000,
@@ -263,7 +263,7 @@
             "notes_fa": "مدل Preview است و محدودیت تصویر هم دارد."
           }
         ],
-        "notes_fa": "مستندات نرخ، این سطح را Free Trial می‌نامند؛ بنابراین به‌عنوان رایگان دائمی برچسب نخورده است."
+        "notes_fa": "حساب جدید پس از افزودن روش پرداخت تأییدشده، ۵ دلار اعتبار آزمایشی دریافت می‌کند که ۳۰ روز اعتبار دارد. بدون روش پرداخت، Playground و API فعال نمی‌شوند؛ بنابراین این سطح رایگان دائمی نیست."
       },
       "iran_access": {
         "status": "verified_blocked",
@@ -311,14 +311,15 @@
       },
       "verification": {
         "level": "live_verified",
-        "last_checked": "2026-07-16",
+        "last_checked": "2026-07-18",
         "checked_by": "maintainers",
         "stale_after_days": 30
       },
-      "notes_fa": "محدودیت دقیق حساب در بخش Limits کنسول مرجع نهایی است.",
+      "notes_fa": "محدودیت دقیق حساب در بخش Limits کنسول مرجع نهایی است. شرایط Free Trial، روش پرداخت و مدل‌های عمومی در ۱۸ ژوئیه ۲۰۲۶ با مستندات رسمی تطبیق داده شدند؛ Evidence دسترسی ایران بدون تغییر حفظ شده است.",
       "sources": [
         "https://inference-docs.cerebras.ai/support/rate-limits",
-        "https://inference-docs.cerebras.ai/models/overview"
+        "https://inference-docs.cerebras.ai/models/overview",
+        "https://www.cerebras.ai/pricing"
       ]
     },
     {
@@ -890,36 +891,36 @@
         "limits": [
           {
             "scope": "model",
-            "model": "llama-3.1-8b-instant",
+            "model": "openai/gpt-oss-20b",
             "condition": "Free Plan",
             "rpm": 30,
-            "rpd": 14400,
-            "tpm": 6000,
-            "tpd": 500000,
+            "rpd": 1000,
+            "tpm": 8000,
+            "tpd": 200000,
             "notes_fa": null
           },
           {
             "scope": "model",
-            "model": "llama-3.3-70b-versatile",
+            "model": "openai/gpt-oss-120b",
             "condition": "Free Plan",
             "rpm": 30,
             "rpd": 1000,
-            "tpm": 12000,
-            "tpd": 100000,
+            "tpm": 8000,
+            "tpd": 200000,
             "notes_fa": null
           },
           {
             "scope": "model",
-            "model": "qwen/qwen3-32b",
+            "model": "qwen/qwen3.6-27b",
             "condition": "Free Plan",
-            "rpm": 60,
+            "rpm": 30,
             "rpd": 1000,
-            "tpm": 6000,
-            "tpd": 500000,
+            "tpm": 8000,
+            "tpd": 200000,
             "notes_fa": null
           }
         ],
-        "notes_fa": "سهمیه‌ها در سطح Organization اعمال می‌شوند و مدل‌به‌مدل متفاوت‌اند. صفحه Limits حساب مرجع نهایی است."
+        "notes_fa": "سهمیه‌ها در سطح Organization اعمال می‌شوند و مدل‌به‌مدل متفاوت‌اند. مدل qwen/qwen3-32b طبق صفحه رسمی Deprecation در ۱۷ ژوئیه ۲۰۲۶ خاموش شد و از فهرست نمونه حذف شده است؛ صفحه Limits حساب مرجع نهایی است."
       },
       "iran_access": {
         "status": "verified_blocked",
@@ -971,21 +972,22 @@
         "dynamic": true,
         "source": "https://console.groq.com/docs/models",
         "notable": [
-          "llama-3.1-8b-instant",
-          "llama-3.3-70b-versatile",
-          "qwen/qwen3-32b"
+          "openai/gpt-oss-20b",
+          "openai/gpt-oss-120b",
+          "qwen/qwen3.6-27b"
         ]
       },
       "verification": {
         "level": "live_verified",
-        "last_checked": "2026-07-16",
+        "last_checked": "2026-07-18",
         "checked_by": "maintainers",
         "stale_after_days": 30
       },
-      "notes_fa": "درخواست زنده از مسیر مستقیم ایران پاسخ ۴۰۳ داد و همان کلید از منطقهٔ پشتیبانی‌شده پاسخ ۲۰۰ گرفت؛ مسدودیت جغرافیایی در تاریخ ثبت‌شده تأیید شد.",
+      "notes_fa": "درخواست زنده از مسیر مستقیم ایران پاسخ ۴۰۳ داد و همان کلید از منطقهٔ پشتیبانی‌شده پاسخ ۲۰۰ گرفت؛ مسدودیت جغرافیایی در تاریخ ثبت‌شده تأیید شد. مدل‌ها و سهمیه‌های نمونه در ۱۸ ژوئیه ۲۰۲۶ با صفحات رسمی Limits و Deprecation تطبیق داده شدند.",
       "sources": [
         "https://console.groq.com/docs/rate-limits",
-        "https://console.groq.com/docs/models"
+        "https://console.groq.com/docs/models",
+        "https://console.groq.com/docs/deprecations"
       ]
     },
     {

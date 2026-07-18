@@ -21,12 +21,12 @@
   "free_tier": {
     "status": "trial",
     "type": "trial",
-    "requires_payment_method": null,
+    "requires_payment_method": true,
     "limits": [
       {
         "scope": "free trial",
         "model": "gpt-oss-120b",
-        "condition": null,
+        "condition": "$5 free credits after adding a verified payment method; credits expire after 30 days",
         "rpm": 5,
         "tpm": 30000,
         "tph": 1000000,
@@ -36,17 +36,17 @@
       {
         "scope": "free trial",
         "model": "zai-glm-4.7",
-        "condition": null,
+        "condition": "$5 free credits after adding a verified payment method; credits expire after 30 days",
         "rpm": 5,
         "tpm": 30000,
         "tph": 1000000,
         "tpd": 1000000,
-        "notes_fa": null
+        "notes_fa": "مدل Preview است و طبق مستندات رسمی برای ۱۷ اوت ۲۰۲۶ برنامهٔ deprecation دارد."
       },
       {
         "scope": "free trial",
         "model": "gemma-4-31b",
-        "condition": null,
+        "condition": "$5 free credits after adding a verified payment method; credits expire after 30 days",
         "rpm": 5,
         "tpm": 30000,
         "tph": 1000000,
@@ -54,7 +54,7 @@
         "notes_fa": "مدل Preview است و محدودیت تصویر هم دارد."
       }
     ],
-    "notes_fa": "مستندات نرخ، این سطح را Free Trial می‌نامند؛ بنابراین به‌عنوان رایگان دائمی برچسب نخورده است."
+    "notes_fa": "حساب جدید پس از افزودن روش پرداخت تأییدشده، ۵ دلار اعتبار آزمایشی دریافت می‌کند که ۳۰ روز اعتبار دارد. بدون روش پرداخت، Playground و API فعال نمی‌شوند؛ بنابراین این سطح رایگان دائمی نیست."
   },
   "iran_access": {
     "status": "verified_blocked",
@@ -102,13 +102,14 @@
   },
   "verification": {
     "level": "live_verified",
-    "last_checked": "2026-07-16",
+    "last_checked": "2026-07-18",
     "checked_by": "maintainers",
     "stale_after_days": 30
   },
-  "notes_fa": "محدودیت دقیق حساب در بخش Limits کنسول مرجع نهایی است.",
+  "notes_fa": "محدودیت دقیق حساب در بخش Limits کنسول مرجع نهایی است. شرایط Free Trial، روش پرداخت و مدل‌های عمومی در ۱۸ ژوئیه ۲۰۲۶ با مستندات رسمی تطبیق داده شدند؛ Evidence دسترسی ایران بدون تغییر حفظ شده است.",
   "sources": [
     "https://inference-docs.cerebras.ai/support/rate-limits",
-    "https://inference-docs.cerebras.ai/models/overview"
+    "https://inference-docs.cerebras.ai/models/overview",
+    "https://www.cerebras.ai/pricing"
   ]
 }
