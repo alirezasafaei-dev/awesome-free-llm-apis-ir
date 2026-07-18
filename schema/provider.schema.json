@@ -128,22 +128,10 @@
               "notes_fa": { "type": ["string", "null"] }
             },
             "allOf": [
-              {
-                "if": { "properties": { "type": { "const": "official_docs" } } },
-                "then": { "required": ["url", "checked_at", "notes_fa"] }
-              },
-              {
-                "if": { "properties": { "type": { "const": "community_report" } } },
-                "then": { "required": ["url", "checked_at", "notes_fa"] }
-              },
-              {
-                "if": { "properties": { "type": { "const": "live_test" } } },
-                "then": { "required": ["timestamp", "http_status", "latency_ms", "model_tested", "endpoint", "source"] }
-              },
-              {
-                "if": { "properties": { "type": { "const": "connectivity_test" } } },
-                "then": { "required": ["checked_at", "endpoint", "source", "connectivity_result", "notes_fa"] }
-              },
+              { "if": { "properties": { "type": { "const": "official_docs" } } }, "then": { "required": ["url", "checked_at", "notes_fa"] } },
+              { "if": { "properties": { "type": { "const": "community_report" } } }, "then": { "required": ["url", "checked_at", "notes_fa"] } },
+              { "if": { "properties": { "type": { "const": "live_test" } } }, "then": { "required": ["timestamp", "http_status", "latency_ms", "model_tested", "endpoint", "source"] } },
+              { "if": { "properties": { "type": { "const": "connectivity_test" } } }, "then": { "required": ["checked_at", "endpoint", "source", "connectivity_result", "notes_fa"] } },
               {
                 "if": {
                   "properties": {
@@ -154,14 +142,8 @@
                 },
                 "then": { "required": ["http_status"] }
               },
-              {
-                "if": { "required": ["credential_validated_from"] },
-                "then": { "required": ["credential_validated_status"] }
-              },
-              {
-                "if": { "required": ["credential_validated_status"] },
-                "then": { "required": ["credential_validated_from"] }
-              }
+              { "if": { "required": ["credential_validated_from"] }, "then": { "required": ["credential_validated_status"] } },
+              { "if": { "required": ["credential_validated_status"] }, "then": { "required": ["credential_validated_from"] } }
             ]
           }
         },
@@ -187,6 +169,63 @@
         "last_checked": { "type": "string", "format": "date" },
         "checked_by": { "type": "string" },
         "stale_after_days": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "content": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["intent_fa", "signup_steps_fa", "first_request", "common_errors", "when_not_to_use_fa", "related_guides", "last_reviewed"],
+      "properties": {
+        "intent_fa": { "type": "string", "minLength": 80 },
+        "signup_steps_fa": {
+          "type": "array",
+          "minItems": 2,
+          "items": { "type": "string", "minLength": 8 }
+        },
+        "first_request": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["language", "code", "notes_fa", "source_url", "checked_at"],
+          "properties": {
+            "language": { "enum": ["curl", "python", "javascript"] },
+            "code": { "type": "string", "minLength": 20 },
+            "notes_fa": { "type": "string", "minLength": 20 },
+            "source_url": { "type": "string", "format": "uri" },
+            "checked_at": { "type": "string", "format": "date" }
+          }
+        },
+        "common_errors": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["code", "title_fa", "resolution_fa"],
+            "properties": {
+              "code": { "type": "string", "minLength": 2 },
+              "title_fa": { "type": "string", "minLength": 12 },
+              "resolution_fa": { "type": "string", "minLength": 12 },
+              "source_url": { "type": "string", "format": "uri" },
+              "checked_at": { "type": "string", "format": "date" }
+            },
+            "dependentRequired": {
+              "source_url": ["checked_at"],
+              "checked_at": ["source_url"]
+            }
+          }
+        },
+        "when_not_to_use_fa": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 8 }
+        },
+        "related_guides": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$" }
+        },
+        "last_reviewed": { "type": "string", "format": "date" }
       }
     },
     "notes_fa": { "type": "string" },
