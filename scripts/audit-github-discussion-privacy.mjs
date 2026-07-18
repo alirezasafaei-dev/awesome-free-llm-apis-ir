@@ -41,20 +41,17 @@ function detectViolations(text, location) {
   for (const target of text.matchAll(sshTargetPattern)) {
     const ipPart = target[0].split("@")[1];
     if (isNonPublicIpv4(ipPart)) continue;
-    const sanitized = target[0].replace(/^[^@]+/, "<user>");
-    violations.push({ location, type: "ssh_target", sanitized });
+    violations.push({ location, type: "ssh_target" });
   }
 
   for (const match of text.matchAll(ipv4Pattern)) {
     const address = match[0];
     if (!parseIpv4(address) || isNonPublicIpv4(address)) continue;
-    const sanitized = address.replace(/\.\d+$/, ".x");
-    violations.push({ location, type: "public_ipv4", sanitized });
+    violations.push({ location, type: "public_ipv4" });
   }
 
   for (const match of text.matchAll(sshUsernamePattern)) {
-    const username = match[1];
-    violations.push({ location, type: "ssh_username", sanitized: `<redacted operator>` });
+    violations.push({ location, type: "ssh_username" });
   }
 
   return violations;
@@ -80,6 +77,9 @@ async function fetchWithPagination(url, token) {
     }
 
     const data = await response.json();
+    if (!Array.isArray(data)) {
+      throw new Error("GitHub API returned a non-array pagination response");
+    }
     if (data.length === 0) break;
 
     results.push(...data);
@@ -94,17 +94,20 @@ async function fetchWithPagination(url, token) {
 async function auditFixtureMode(fixturePath) {
   const fixture = JSON.parse(readFileSync(fixturePath, "utf8"));
   const violations = [];
+  let checkedLocations = 0;
 
   if (fixture.issues) {
     for (const issue of fixture.issues) {
       const location = `issue #${issue.number}`;
       if (issue.body) {
+        checkedLocations++;
         violations.push(...detectViolations(issue.body, location));
       }
       if (issue.comments) {
         for (const comment of issue.comments) {
           const commentLocation = `${location} comment ${comment.id}`;
           if (comment.body) {
+            checkedLocations++;
             violations.push(...detectViolations(comment.body, commentLocation));
           }
         }
@@ -116,12 +119,14 @@ async function auditFixtureMode(fixturePath) {
     for (const pr of fixture.pull_requests) {
       const location = `pr #${pr.number}`;
       if (pr.body) {
+        checkedLocations++;
         violations.push(...detectViolations(pr.body, location));
       }
       if (pr.comments) {
         for (const comment of pr.comments) {
           const commentLocation = `${location} comment ${comment.id}`;
           if (comment.body) {
+            checkedLocations++;
             violations.push(...detectViolations(comment.body, commentLocation));
           }
         }
@@ -130,6 +135,7 @@ async function auditFixtureMode(fixturePath) {
         for (const comment of pr.review_comments) {
           const commentLocation = `${location} review_comment ${comment.id}`;
           if (comment.body) {
+            checkedLocations++;
             violations.push(...detectViolations(comment.body, commentLocation));
           }
         }
@@ -137,7 +143,7 @@ async function auditFixtureMode(fixturePath) {
     }
   }
 
-  return violations;
+  return { violations, checkedLocations };
 }
 
 async function auditLiveMode() {
@@ -153,7 +159,7 @@ async function auditLiveMode() {
   }
 
   const violations = [];
-  const checkedLocations = 0;
+  let checkedLocations = 0;
 
   const issues = await fetchWithPagination(
     `https://api.github.com/repos/${repository}/issues?state=all`,
@@ -163,6 +169,7 @@ async function auditLiveMode() {
   for (const issue of issues) {
     const location = `issue #${issue.number}`;
     if (issue.body) {
+      checkedLocations++;
       violations.push(...detectViolations(issue.body, location));
     }
 
@@ -174,6 +181,7 @@ async function auditLiveMode() {
     for (const comment of comments) {
       const commentLocation = `${location} comment ${comment.id}`;
       if (comment.body) {
+        checkedLocations++;
         violations.push(...detectViolations(comment.body, commentLocation));
       }
     }
@@ -187,13 +195,14 @@ async function auditLiveMode() {
       for (const comment of prComments) {
         const commentLocation = `pr #${issue.number} review_comment ${comment.id}`;
         if (comment.body) {
+          checkedLocations++;
           violations.push(...detectViolations(comment.body, commentLocation));
         }
       }
     }
   }
 
-  return { violations, checkedLocations: issues.length };
+  return { violations, checkedLocations };
 }
 
 async function main() {
@@ -205,8 +214,9 @@ async function main() {
 
   if (fixtureIndex >= 0 && args[fixtureIndex + 1]) {
     const fixturePath = args[fixtureIndex + 1];
-    violations = await auditFixtureMode(fixturePath);
-    checkedLocations = violations.length > 0 ? 1 : 0;
+    const result = await auditFixtureMode(fixturePath);
+    violations = result.violations;
+    checkedLocations = result.checkedLocations;
   } else {
     const result = await auditLiveMode();
     violations = result.violations;
