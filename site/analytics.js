@@ -43,9 +43,10 @@ function safeCampaignValue(value) {
 function trackPersianCampaignLanding() {
   const url = new URL(window.location.href);
   const campaign = safeCampaignValue(url.searchParams.get("utm_campaign"));
-  if (campaign !== "persian_growth") return;
+  if (!new Set(["persian_growth", "offsite_articles"]).has(campaign)) return;
 
   sendEvent("persian_campaign_landing", {
+    campaign,
     guide_slug: currentPathValue("guides") ?? "home",
     source: safeCampaignValue(url.searchParams.get("utm_source")) ?? "unknown",
     medium: safeCampaignValue(url.searchParams.get("utm_medium")) ?? "unknown",

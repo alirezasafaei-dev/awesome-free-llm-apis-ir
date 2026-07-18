@@ -61,7 +61,7 @@
         "model_tested": "gemini-2.5-flash-lite",
         "endpoint": "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions",
         "source": "LOCAL_PC — Iran mobile network (MCI AS44244)",
-        "notes_fa": "پاسخ ۴۰۳ از مسیر مستقیم و خروجی آلمان مشاهده شد؛ همراه با فهرست رسمی مناطق، این نتیجه محدودیت سطح حساب/منطقه را تأیید می‌کند."
+        "notes_fa": "پاسخ ۴۰۳ از مسیر مستقیم ایران مشاهده شد؛ همراه با فهرست رسمی مناطق، این نتیجه محدودیت منطقه‌ای را تأیید می‌کند."
       }
     ]
   },

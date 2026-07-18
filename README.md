@@ -49,7 +49,7 @@
 | [GitHub Models](https://github.com/marketplace/models) | Gateway رسمی | سهمیه دائمی | 15 RPM · 150 RPD | ✅ | ✅ مستقیم تست‌شده | 2026-07-15 |
 | [Google Gemini API](https://ai.google.dev/) | Provider رسمی | سهمیه دائمی | وابسته به حساب/مدل | ✅ | 🚫 پشتیبانی‌نشده رسمی | 2026-07-16 |
 | [Groq](https://groq.com/) | Gateway رسمی | سهمیه دائمی | 30 RPM · 14400 RPD | ✅ | ⛔ مسدود | 2026-07-16 |
-| [Hugging Face Inference Providers](https://huggingface.co/inference-providers) | Gateway رسمی | اعتبار ماهانه | $0.1/month | ✅ | ✅ مستقیم تست‌شده | 2026-07-16 |
+| [Hugging Face Inference Providers](https://huggingface.co/docs/inference-providers/index) | Gateway رسمی | اعتبار ماهانه | $0.1/month | ✅ | ✅ مستقیم تست‌شده | 2026-07-16 |
 | [Kilo Gateway](https://kilo.ai/) | Gateway رسمی | مدل‌های رایگان | 200 RPH | ✅ | ✅ مستقیم تست‌شده | 2026-07-16 |
 | [LLM7.io](https://llm7.io/) | Gateway اجتماعی | مدل‌های رایگان | 30 RPM | ✅ | ✅ مستقیم تست‌شده | 2026-07-16 |
 | [Mistral AI](https://mistral.ai/) | Provider رسمی | سهمیه دائمی | وابسته به حساب/مدل | ✅ | ✅ مستقیم تست‌شده | 2026-07-16 |

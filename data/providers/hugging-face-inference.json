@@ -3,7 +3,7 @@
   "service_type": "official_gateway",
   "id": "hugging-face-inference",
   "name": "Hugging Face Inference Providers",
-  "website": "https://huggingface.co/inference-providers",
+  "website": "https://huggingface.co/docs/inference-providers/index",
   "docs": "https://huggingface.co/docs/inference-providers/",
   "signup": "https://huggingface.co/join",
   "api": {

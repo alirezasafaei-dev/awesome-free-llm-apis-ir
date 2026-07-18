@@ -233,6 +233,12 @@ function validateProvider(p, file) {
   }
   if (p.iran_access?.network?.country != null && !validCountryCode(p.iran_access.network.country)) fail(file, "network.country must be an uppercase ISO-2 code");
   if (p.iran_access?.network?.exit_country != null && !validCountryCode(p.iran_access.network.exit_country)) fail(file, "network.exit_country must be an uppercase ISO-2 code");
+  if (p.iran_access?.network?.route === "direct" && p.iran_access.network?.exit_country != null && p.iran_access.network.exit_country !== "IR") {
+    fail(file, "direct Iran evidence cannot have a non-IR network.exit_country");
+  }
+  if (p.iran_access?.network?.route === "vpn" && p.iran_access.network?.exit_country === "IR") {
+    fail(file, "VPN evidence requires a non-IR network.exit_country");
+  }
   if (p.iran_access?.status === "officially_unsupported" && p.iran_access?.official_policy !== "unsupported") {
     fail(file, "officially_unsupported requires official_policy=unsupported");
   }
@@ -257,6 +263,9 @@ function validateProvider(p, file) {
   if (p.iran_access?.status === "verified_blocked") {
     const hasValidatedBlock = liveEvidence.some((item) => !isSuccessStatus(item.http_status) && isSuccessStatus(item.credential_validated_status));
     if (!hasValidatedBlock) fail(file, "verified_blocked requires a failed Iran live_test plus successful credential validation from a supported route");
+  }
+  if (claimsLiveResult && typeof p.notes_fa === "string" && /(هنوز.{0,40}آزمایش نشده|نیاز به کلید معتبر|نیاز به.{0,40}اعتبارسنجی)/u.test(p.notes_fa)) {
+    fail(file, "top-level notes contradict the verified Iran status; summarize the latest evidence instead");
   }
 
   if (!allowed.verification.has(p.verification?.level)) fail(file, "invalid verification.level");
