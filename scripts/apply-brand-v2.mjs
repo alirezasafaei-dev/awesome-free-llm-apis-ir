@@ -3,16 +3,16 @@ import path from "node:path";
 import process from "node:process";
 
 const root = process.cwd();
+const brandPattern = /<span class="brand-mark" aria-hidden="true">[\s\S]*?<\/span>/g;
 
-async function replaceExactlyOnce(file, needle, replacement) {
+async function replaceBrandExactlyOnce(file, replacement) {
   const filePath = path.join(root, file);
   const source = await readFile(filePath, "utf8");
-  const count = source.split(needle).length - 1;
-  if (count !== 1) throw new Error(`${file}: expected exactly one brand placeholder, found ${count}`);
-  await writeFile(filePath, source.replace(needle, replacement));
+  const matches = source.match(brandPattern) ?? [];
+  if (matches.length !== 1) throw new Error(`${file}: expected exactly one brand mark, found ${matches.length}`);
+  await writeFile(filePath, source.replace(brandPattern, replacement));
 }
 
-const placeholder = '<span class="brand-mark" aria-hidden="true">AI</span>';
 const brandMarkup = (src) => `<span class="brand-mark" aria-hidden="true"><img src="${src}" alt="" width="40" height="40"></span>`;
 
 const replacements = [
@@ -25,7 +25,7 @@ const replacements = [
 ];
 
 for (const [file, src] of replacements) {
-  await replaceExactlyOnce(file, placeholder, brandMarkup(src));
+  await replaceBrandExactlyOnce(file, brandMarkup(src));
 }
 
 for (const asset of ["logo-symbol.svg", "favicon.svg", "mask-icon.svg", "social-avatar.svg"]) {
