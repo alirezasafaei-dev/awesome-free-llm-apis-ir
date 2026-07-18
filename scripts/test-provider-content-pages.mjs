@@ -30,18 +30,20 @@ const contentFiles = (await readdir(path.join(root, "content", "providers"), { w
   .filter((entry) => entry.isFile() && entry.name.endsWith(".json"))
   .map((entry) => entry.name)
   .sort();
-const enrichedProviderIds = [];
+const contentByProviderId = new Map();
 
 for (const file of contentFiles) {
   const content = JSON.parse(await readFile(path.join(root, "content", "providers", file), "utf8"));
-  if (content.provider_id) enrichedProviderIds.push(content.provider_id);
+  if (!content.provider_id) continue;
+  if (contentByProviderId.has(content.provider_id)) {
+    throw new Error(`Provider-page integration test discovered duplicate provider content ID: ${content.provider_id}`);
+  }
+  contentByProviderId.set(content.provider_id, content);
 }
 
+const enrichedProviderIds = [...contentByProviderId.keys()];
 if (enrichedProviderIds.length < 1) {
   throw new Error("Provider-page integration test did not discover any editorial content records");
-}
-if (new Set(enrichedProviderIds).size !== enrichedProviderIds.length) {
-  throw new Error("Provider-page integration test discovered duplicate provider content IDs");
 }
 
 const requiredSections = ["intent", "signup", "first-request", "errors", "when-not-to-use", "links"];
@@ -50,6 +52,7 @@ const endMarker = "<!-- PROVIDER_EDITORIAL_CONTENT_END -->";
 
 for (const providerId of enrichedProviderIds) {
   const provider = providerById.get(providerId);
+  const content = contentByProviderId.get(providerId);
   if (!provider) throw new Error(`${providerId}: content record has no Catalog provider`);
 
   const pagePath = path.join(root, ".site-dist", "providers", providerId, "index.html");
@@ -69,8 +72,12 @@ for (const providerId of enrichedProviderIds) {
   if (html.indexOf(startMarker) > html.indexOf('<section class="provider-sources">')) {
     throw new Error(`${providerId}: editorial content must appear before official sources`);
   }
-  if (!html.includes("../../guides/openai-sdk-custom-base-url/")) {
-    throw new Error(`${providerId}: internal related-guide link is missing`);
+
+  for (const guideSlug of content.related_guides ?? []) {
+    const expectedLink = `../../guides/${guideSlug}/`;
+    if (!html.includes(expectedLink)) {
+      throw new Error(`${providerId}: declared internal related-guide link is missing: ${guideSlug}`);
+    }
   }
 
   const expectedAccessLabel = accessLabels[provider.iran_access.status];
