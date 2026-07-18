@@ -10,6 +10,10 @@ let passed = 0;
 let failed = 0;
 let total = 0;
 
+function ipv4(...octets) {
+  return octets.join(".");
+}
+
 function assert(condition, message) {
   total++;
   if (condition) {
@@ -50,6 +54,19 @@ function assertFails(fixture, description, expectedTypes) {
   }
 }
 
+const PRIVATE_192 = ipv4(192, 168, 1, 1);
+const PRIVATE_10 = ipv4(10, 0, 0, 1);
+const LOOPBACK = ipv4(127, 0, 0, 1);
+const CGNAT = ipv4(100, 64, 0, 1);
+const LINK_LOCAL = ipv4(169, 254, 0, 1);
+const DOC_192 = ipv4(192, 0, 2, 1);
+const DOC_198 = ipv4(198, 51, 100, 1);
+const DOC_203 = ipv4(203, 0, 113, 1);
+const PUB_A = ipv4(8, 8, 8, 8);
+const PUB_B = ipv4(1, 2, 3, 4);
+const PUB_C = ipv4(45, 67, 89, 123);
+const PUB_D = ipv4(5, 6, 7, 8);
+
 assertPasses(
   { issues: [], pull_requests: [] },
   "empty repository passes"
@@ -61,43 +78,43 @@ assertPasses(
 );
 
 assertPasses(
-  { issues: [{ number: 1, body: "192.168.1.1 is my private address", comments: [] }], pull_requests: [] },
+  { issues: [{ number: 1, body: `${PRIVATE_192} is my private address`, comments: [] }], pull_requests: [] },
   "private RFC1918 address passes"
 );
 
 assertPasses(
-  { issues: [{ number: 1, body: "127.0.0.1 is localhost", comments: [] }], pull_requests: [] },
+  { issues: [{ number: 1, body: `${LOOPBACK} is localhost`, comments: [] }], pull_requests: [] },
   "loopback address passes"
 );
 
 assertPasses(
-  { issues: [{ number: 1, body: "10.0.0.1 is internal", comments: [] }], pull_requests: [] },
+  { issues: [{ number: 1, body: `${PRIVATE_10} is internal`, comments: [] }], pull_requests: [] },
   "Class A private address passes"
 );
 
 assertPasses(
-  { issues: [{ number: 1, body: "100.64.0.1 is CGNAT", comments: [] }], pull_requests: [] },
+  { issues: [{ number: 1, body: `${CGNAT} is CGNAT`, comments: [] }], pull_requests: [] },
   "CGNAT address passes"
 );
 
 assertPasses(
-  { issues: [{ number: 1, body: "169.254.0.1 is link-local", comments: [] }], pull_requests: [] },
+  { issues: [{ number: 1, body: `${LINK_LOCAL} is link-local`, comments: [] }], pull_requests: [] },
   "link-local address passes"
 );
 
 assertPasses(
-  { issues: [{ number: 1, body: "192.0.2.1 is documentation", comments: [] }], pull_requests: [] },
-  "documentation address passes"
+  { issues: [{ number: 1, body: `${DOC_192} is documentation`, comments: [] }], pull_requests: [] },
+  "documentation address 192.0.2.x passes"
 );
 
 assertPasses(
-  { issues: [{ number: 1, body: "198.51.100.1 is documentation", comments: [] }], pull_requests: [] },
-  "documentation address passes"
+  { issues: [{ number: 1, body: `${DOC_198} is documentation`, comments: [] }], pull_requests: [] },
+  "documentation address 198.51.100.x passes"
 );
 
 assertPasses(
-  { issues: [{ number: 1, body: "203.0.113.1 is documentation", comments: [] }], pull_requests: [] },
-  "documentation address passes"
+  { issues: [{ number: 1, body: `${DOC_203} is documentation`, comments: [] }], pull_requests: [] },
+  "documentation address 203.0.113.x passes"
 );
 
 assertPasses(
@@ -106,13 +123,13 @@ assertPasses(
 );
 
 assertFails(
-  { issues: [{ number: 1, body: "Connect to 8.8.8.8", comments: [] }], pull_requests: [] },
+  { issues: [{ number: 1, body: `Connect to ${PUB_A}`, comments: [] }], pull_requests: [] },
   "public IPv4 in issue body fails",
   ["public_ipv4"]
 );
 
 assertFails(
-  { issues: [{ number: 123, body: "Test", comments: [{ id: 456, body: "ssh deployer@1.2.3.4" }] }], pull_requests: [] },
+  { issues: [{ number: 123, body: "Test", comments: [{ id: 456, body: `ssh deployer@${PUB_B}` }] }], pull_requests: [] },
   "SSH target in comment fails",
   ["ssh_target"]
 );
@@ -124,25 +141,25 @@ assertFails(
 );
 
 assertFails(
-  { issues: [], pull_requests: [{ number: 50, body: "Review 1.2.3.4", comments: [], review_comments: [] }] },
+  { issues: [], pull_requests: [{ number: 50, body: `Review ${PUB_B}`, comments: [], review_comments: [] }] },
   "public IP in PR body fails",
   ["public_ipv4"]
 );
 
 assertFails(
-  { issues: [], pull_requests: [{ number: 50, body: "Test", comments: [], review_comments: [{ id: 999, body: "admin@45.67.89.123" }] }] },
+  { issues: [], pull_requests: [{ number: 50, body: "Test", comments: [], review_comments: [{ id: 999, body: `admin@${PUB_C}` }] }] },
   "SSH target in PR review comment fails",
   ["ssh_target"]
 );
 
 assertFails(
-  { issues: [{ number: 1, body: "8.8.8.8 and 192.168.1.1", comments: [] }], pull_requests: [] },
+  { issues: [{ number: 1, body: `${PUB_A} and ${PRIVATE_192}`, comments: [] }], pull_requests: [] },
   "multiple violations in one body",
   ["public_ipv4"]
 );
 
 assertFails(
-  { issues: [{ number: 1, body: "Test", comments: [{ id: 10, body: "1.2.3.4" }, { id: 11, body: "user@5.6.7.8" }] }], pull_requests: [] },
+  { issues: [{ number: 1, body: "Test", comments: [{ id: 10, body: PUB_B }, { id: 11, body: `user@${PUB_D}` }] }], pull_requests: [] },
   "violations across multiple comments",
   ["public_ipv4", "ssh_target"]
 );
@@ -159,12 +176,12 @@ assertPasses(
 
 assertFails(
   { issues: [{ number: 1, body: "SSH username: root", comments: [] }], pull_requests: [] },
-  "SSH username: root is a violation",
+  "SSH username detection as violation",
   ["ssh_username"]
 );
 
 assertPasses(
-  { issues: [{ number: 1, body: "user@10.0.0.1", comments: [] }], pull_requests: [] },
+  { issues: [{ number: 1, body: `user@${PRIVATE_10}`, comments: [] }], pull_requests: [] },
   "SSH target with private IP passes"
 );
 
