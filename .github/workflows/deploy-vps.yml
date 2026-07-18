@@ -3,6 +3,19 @@ name: Deploy VPS mirrors
 on:
   push:
     branches: [main]
+    paths:
+      - 'data/**'
+      - 'site/**'
+      - 'content/**'
+      - 'deploy/**'
+      - 'scripts/build-site*.mjs'
+      - 'scripts/build-persian*.mjs'
+      - 'scripts/generate-*.mjs'
+      - 'catalog.json'
+      - 'data.json'
+      - 'package.json'
+      - 'package-lock.json'
+      - '.github/workflows/deploy-vps.yml'
   workflow_dispatch:
     inputs:
       target:
