@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title">
+  <title id="title">Free LLM APIs IR favicon</title>
+  <path d="M13 8V40C13 49 18 54 27 54H53"
+        fill="none" stroke="#2563EB" stroke-width="8"
+        stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M28 30L40 20M28 30L45 36M28 30L32 44"
+        fill="none" stroke="#06B6D4" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="28" cy="30" r="5" fill="#06B6D4"/>
+  <circle cx="40" cy="20" r="4" fill="#06B6D4"/>
+  <circle cx="45" cy="36" r="4" fill="#06B6D4"/>
+  <circle cx="32" cy="44" r="4" fill="#06B6D4"/>
+</svg>
