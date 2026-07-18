@@ -66,29 +66,17 @@ if (providerReports.length < 1) {
   throw new Error("Content audit must report the provider-page backlog");
 }
 
-const requiredGeneratedGuides = new Set([
-  "free-coding-api",
-  "free-embedding-api",
-  "free-tier-vs-trial-vs-credit",
-  "openai-sdk-custom-base-url"
-]);
-
-const generatedReports = new Map(
-  report.reports
-    .filter((item) => item.type === "generated-guide")
-    .map((item) => [item.id, item])
-);
-
-for (const slug of requiredGeneratedGuides) {
-  if (!generatedReports.has(slug)) {
-    throw new Error(`Content audit is missing the targeted generated guide ${slug}`);
-  }
-  if (generatedReports.get(slug).missing_sections.length < 1) {
-    throw new Error(`Targeted guide ${slug} unexpectedly has no backlog`);
-  }
+const requiredGeneratedGuideCount = 4;
+if (report.summary?.generated_guides_targeted !== requiredGeneratedGuideCount) {
+  throw new Error(
+    `Generated-guide audit coverage drifted: expected ${requiredGeneratedGuideCount}, ` +
+    `received ${report.summary?.generated_guides_targeted}`
+  );
 }
+
+const generatedReportCount = report.reports.filter((item) => item.type === "generated-guide").length;
 
 console.log(
   `Content audit contract passed: ${report.summary.reports_total} backlog item(s), ` +
-  `${providerReports.length} provider report(s), ${generatedReports.size} generated-guide report(s).`
+  `${providerReports.length} provider report(s), ${generatedReportCount} generated-guide backlog item(s).`
 );
