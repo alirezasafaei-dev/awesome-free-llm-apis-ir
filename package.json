@@ -16,6 +16,7 @@
     "content:fa:build": "node scripts/build-persian-content.mjs",
     "content:en:test": "node scripts/validate-english-content.mjs",
     "content:en:build": "node scripts/build-english-content.mjs",
+    "seo:translations:test": "node scripts/test-seo-translation-pairs.mjs",
     "content:providers:validate": "node scripts/validate-provider-content.mjs",
     "content:providers:test": "node scripts/test-provider-content-contract.mjs",
     "content:providers:pages:test": "node scripts/test-provider-content-pages.mjs",
@@ -73,7 +74,7 @@
     "tools:test": "node scripts/test-tool-classification.mjs",
     "validate:repo-audits": "node scripts/validate-repository-audits.mjs",
     "hermes:pilot:test": "node scripts/test-hermes-pilot.mjs",
-    "test": "npm run validate && npm run providers:normalize && npm run roadmap:test && npm run privacy:test && npm run privacy:github:test && npm run workflow-pins:test && npm run content:fa:test && npm run content:en:test && npm run content:providers:validate && npm run content:providers:test && npm run content:providers:pages:test && npm run content:audit:test && npm run content:guides:test && npm run content:fa:live:verify:dry && npm run launch:links:test && npm run links:test && npm run launch:log:test && npm run verification:backlog:test && npm run generate:check && npm run catalog:check && npm run data:test && npm run brand:test && npm run site:data:test && npm run verify:iran:dry && npm run upstreams:test && npm run advisor:test && npm run benchmark:validate && npm run benchmark:dry && npm run benchmark:test && npm run production:smoke:test && npm run post-launch:ops:test && npm run pages:paths:test && npm run site:check && npm run analytics:production:test && npm run deploy:check && npm run deploy:test && npm run validate:tools && npm run generate:tools:check && npm run tools:test && npm run validate:repo-audits && npm run hermes:pilot:test",
+    "test": "npm run validate && npm run providers:normalize && npm run roadmap:test && npm run privacy:test && npm run privacy:github:test && npm run workflow-pins:test && npm run content:fa:test && npm run content:en:test && npm run seo:translations:test && npm run content:providers:validate && npm run content:providers:test && npm run content:providers:pages:test && npm run content:audit:test && npm run content:guides:test && npm run content:fa:live:verify:dry && npm run launch:links:test && npm run links:test && npm run launch:log:test && npm run verification:backlog:test && npm run generate:check && npm run catalog:check && npm run data:test && npm run brand:test && npm run site:data:test && npm run verify:iran:dry && npm run upstreams:test && npm run advisor:test && npm run benchmark:validate && npm run benchmark:dry && npm run benchmark:test && npm run production:smoke:test && npm run post-launch:ops:test && npm run pages:paths:test && npm run site:check && npm run analytics:production:test && npm run deploy:check && npm run deploy:test && npm run validate:tools && npm run generate:tools:check && npm run tools:test && npm run validate:repo-audits && npm run hermes:pilot:test",
     "brand:test": "node scripts/test-brand-assets.mjs"
   },
   "engines": {
