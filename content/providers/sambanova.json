@@ -1,0 +1,51 @@
+{
+  "schema_version": "1.0.0",
+  "provider_id": "sambanova",
+  "intent_fa": "SambaNova Cloud برای اجرای سریع Chat Completions، Responses و قابلیت‌های سازگار با OpenAI روی مدل‌های میزبانی‌شده مناسب است. این راهنما ساخت API Key، اولین درخواست امن، تفاوت Free Tier و Developer Tier و مدیریت خطاهای رسمی 401، 410 و 429 را پوشش می‌دهد؛ وضعیت ایران از Evidence تاریخ‌دار Catalog حفظ می‌شود.",
+  "signup_steps_fa": [
+    "در SambaCloud حساب بسازید و از بخش API یک کلید جدید ایجاد کنید. کلید پس از ساخت دوباره نمایش داده نمی‌شود؛ آن را فوراً در secret manager یا متغیر محیطی SAMBANOVA_API_KEY ذخیره کنید.",
+    "مدل را از فهرست رسمی SambaCloud انتخاب کنید و مشخص کنید Production است یا Preview. Preview برای ارزیابی و آزمایش است و می‌تواند با ظرفیت محدود یا حذف کوتاه‌مدت همراه باشد.",
+    "پیش از مصرف واقعی، Rate Limits همان tier و پاسخ headerهای محدودیت را بررسی کنید. Free Tier برای حساب بدون روش پرداخت اعمال می‌شود و محدودیت RPM، RPD و TPD می‌تواند مدل‌به‌مدل متفاوت باشد."
+  ],
+  "first_request": {
+    "language": "curl",
+    "code": "curl https://api.sambanova.ai/v1/chat/completions \\\n  -H \"Authorization: Bearer $SAMBANOVA_API_KEY\" \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\"model\":\"gpt-oss-120b\",\"messages\":[{\"role\":\"user\",\"content\":\"سلام! در یک جمله پاسخ بده.\"}]}'",
+    "notes_fa": "مدل gpt-oss-120b در فهرست رسمی و Evidence فعلی Catalog ثبت شده است. API Key واقعی فقط از متغیر محیطی خوانده شود و پیش از استقرار، مدل و tier حساب دوباره کنترل شوند.",
+    "source_url": "https://docs.sambanova.ai/docs/en/get-started/quickstart",
+    "checked_at": "2026-07-16"
+  },
+  "common_errors": [
+    {
+      "code": "401",
+      "title_fa": "کلید نامعتبر، منقضی یا ارسال‌نشده",
+      "resolution_fa": "هدر Bearer و SAMBANOVA_API_KEY را بررسی کنید. کلید افشاشده را از Portal حذف و کلید جدید بسازید؛ مقدار کلید یا پاسخ کامل دارای اطلاعات حساس را در issue عمومی قرار ندهید.",
+      "source_url": "https://docs.sambanova.ai/docs/en/api-reference/using-the-api/api-error-codes",
+      "checked_at": "2026-07-16"
+    },
+    {
+      "code": "410",
+      "title_fa": "مدل حذف یا منسوخ شده است",
+      "resolution_fa": "فهرست مدل‌های SambaCloud و صفحه Deprecations را بررسی کنید و شناسه درخواست را به مدل پشتیبانی‌شده تغییر دهید. به نام مدل‌های قدیمی در نمونه‌کدهای cache‌شده تکیه نکنید.",
+      "source_url": "https://docs.sambanova.ai/docs/en/api-reference/using-the-api/api-error-codes",
+      "checked_at": "2026-07-16"
+    },
+    {
+      "code": "429",
+      "title_fa": "Rate limit، quota یا queue پر شده است",
+      "resolution_fa": "RPM، RPD و TPD را از headerهای پاسخ و جدول رسمی tier بخوانید، concurrency را کم کنید و retry را با exponential backoff و jitter اجرا کنید. queue_full را با ارسال هم‌زمان بیشتر تشدید نکنید.",
+      "source_url": "https://docs.sambanova.ai/docs/en/models/rate-limits",
+      "checked_at": "2026-07-16"
+    }
+  ],
+  "when_not_to_use_fa": [
+    "زمانی که پروژه به تعداد زیاد درخواست روزانه در پلن رایگان نیاز دارد؛ RPD می‌تواند پیش از RPM یا TPD محدودکننده شود.",
+    "زمانی که ویژگی‌های OpenAI بدون اختلاف رفتاری لازم‌اند؛ بعضی پارامترها پشتیبانی نمی‌شوند یا محدودیت متفاوت دارند و باید با Compatibility Guide تطبیق داده شوند.",
+    "زمانی که پروژه نمی‌تواند تغییر یا حذف مدل‌های Preview را تحمل کند؛ برای production فقط مدل و tier مناسب با برنامه مهاجرت انتخاب شود."
+  ],
+  "related_guides": [
+    "openai-sdk-custom-base-url",
+    "free-tier-vs-trial-vs-credit",
+    "free-coding-api"
+  ],
+  "last_reviewed": "2026-07-16"
+}

@@ -1,0 +1,51 @@
+{
+  "schema_version": "1.0.0",
+  "provider_id": "opencode-zen",
+  "intent_fa": "OpenCode Zen یک Gateway بهینه‌شده برای coding agentهاست که مدل‌ها و Providerهای انتخاب‌شده را از یک API ارائه می‌کند. بعضی مدل‌ها فقط برای دوره محدود رایگان‌اند و سیاست نگهداری یا استفاده از داده میان مدل‌ها متفاوت است؛ بنابراین مدل رایگان را نباید معادل سرویس دائمی یا مناسب داده محرمانه دانست. دسترسی مستقیم ایران در Evidence فعلی موفق ثبت شده است.",
+  "signup_steps_fa": [
+    "در OpenCode Zen وارد شوید و شرایط فعلی حساب، billing و مدل‌های رایگان را در Dashboard بررسی کنید. مدل‌های free و شرایط پرداخت پویا هستند؛ Issue #104 برای refresh دقیق داده Catalog باز است.",
+    "API Key شخصی بسازید و آن را فقط در OPENCODE_ZEN_API_KEY یا secret manager نگهداری کنید. برای هر عضو Team کلید جدا و در صورت امکان سقف مصرف مستقل تعیین کنید.",
+    "پیش از ارسال prompt، بخش Privacy مدل انتخابی را بخوانید. برای مدل‌هایی که داده را برای بهبود جمع‌آوری می‌کنند، اطلاعات شخصی، محرمانه، کلیدها و کد مالکیتی حساس ارسال نکنید."
+  ],
+  "first_request": {
+    "language": "curl",
+    "code": "curl https://opencode.ai/zen/v1/chat/completions \\\n  -H \"Authorization: Bearer $OPENCODE_ZEN_API_KEY\" \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\"model\":\"deepseek-v4-flash-free\",\"messages\":[{\"role\":\"user\",\"content\":\"یک تابع کوتاه پایتون برای مرتب‌سازی بنویس.\"}]}'",
+    "notes_fa": "مدل نمونه با تست تاریخ‌دار Catalog هماهنگ است، اما مدل‌های رایگان محدودمدت‌اند و ممکن است حذف یا جایگزین شوند. endpoint و مدل فعال را از مستندات Zen و /models دوباره کنترل کنید.",
+    "source_url": "https://opencode.ai/docs/zen/",
+    "checked_at": "2026-07-16"
+  },
+  "common_errors": [
+    {
+      "code": "401/403",
+      "title_fa": "API Key، Workspace یا دسترسی مدل معتبر نیست",
+      "resolution_fa": "OPENCODE_ZEN_API_KEY و هدر Bearer را بررسی کنید، مطمئن شوید مدل در Workspace فعال است و کلید افشاشده را revoke کنید. Admin می‌تواند دسترسی برخی مدل‌ها را برای Team غیرفعال کرده باشد.",
+      "source_url": "https://opencode.ai/docs/zen/",
+      "checked_at": "2026-07-16"
+    },
+    {
+      "code": "402/limit",
+      "title_fa": "اعتبار، billing یا سقف ماهانه اجازه ادامه نمی‌دهد",
+      "resolution_fa": "موجودی، auto-reload و monthly limit را در Dashboard کنترل کنید. auto-reload را آگاهانه فعال یا غیرفعال کنید؛ retry خودکار نباید باعث خرید ناخواسته Credit شود.",
+      "source_url": "https://opencode.ai/docs/zen/",
+      "checked_at": "2026-07-16"
+    },
+    {
+      "code": "404/model",
+      "title_fa": "مدل رایگان منسوخ یا از فهرست حذف شده است",
+      "resolution_fa": "فهرست /models و جدول Deprecated Models را بررسی کنید و شناسه فعال جایگزین را انتخاب کنید. availability مدل‌های free را دائمی فرض نکنید و fallback کنترل‌شده داشته باشید.",
+      "source_url": "https://opencode.ai/docs/zen/",
+      "checked_at": "2026-07-16"
+    }
+  ],
+  "when_not_to_use_fa": [
+    "زمانی که prompt یا کد حاوی داده شخصی، محرمانه یا مالکیتی است و مدل رایگان انتخابی اجازه جمع‌آوری یا استفاده برای بهبود را دارد.",
+    "زمانی که پروژه به مدل رایگان دائمی، قیمت ثابت یا availability تضمین‌شده نیاز دارد؛ free models و deprecationها پویا هستند.",
+    "زمانی که auto-reload، billing چندارائه‌دهنده‌ای یا routing Gateway برای کنترل مالی و انطباق سازمانی قابل‌قبول نیست."
+  ],
+  "related_guides": [
+    "openai-sdk-custom-base-url",
+    "free-tier-vs-trial-vs-credit",
+    "free-coding-api"
+  ],
+  "last_reviewed": "2026-07-16"
+}

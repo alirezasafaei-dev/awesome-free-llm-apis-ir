@@ -18,6 +18,12 @@ Schema:
 schema/provider-content.schema.json
 ```
 
+## پوشش فعلی
+
+Catalog فعلی برای هر ۲۲ Provider یک فایل محتوای تحریریه‌ای متناظر دارد. تست‌ها فایل‌ها را به‌صورت پویا کشف می‌کنند؛ افزودن یا حذف Provider باید همراه با فایل محتوا، Evidence و به‌روزرسانی Catalog انجام شود.
+
+صفرشدن Provider backlog یک وضعیت معتبر و مطلوب است. تست audit باید ساختار، شمارش و شناسه‌های گزارش را کنترل کند و نباید برای همیشه وجود حداقل یک Provider ناقص را الزام کند.
+
 ## مرز داده و محتوا
 
 در این فایل‌ها نباید مقدار سهمیه، وضعیت ایران، مدل فعال، نیاز به پرداخت یا نتیجه تست جدید ساخته یا بازتعریف شود. این موارد از رکورد Provider و Evidence تاریخ‌دار خوانده می‌شوند.
@@ -44,6 +50,7 @@ schema/provider-content.schema.json
 ```bash
 npm run content:providers:validate
 npm run content:providers:test
+npm run content:providers:pages:test
 npm run content:audit -- --json
 npm test
 ```

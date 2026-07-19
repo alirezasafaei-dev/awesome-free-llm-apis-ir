@@ -1,0 +1,51 @@
+{
+  "schema_version": "1.0.0",
+  "provider_id": "fireworks-ai",
+  "intent_fa": "Fireworks AI برای آزمایش سریع مدل‌های متن‌باز با endpoint سازگار با OpenAI، streaming، Tool Calling و Structured Output مناسب است. حساب بدون روش پرداخت اعتبار اولیه محدود و Rate Limit پایین‌تری دارد؛ پس از پایان اعتبار، مصرف متوقف می‌شود مگر حساب ارتقا یابد. وضعیت ایران در Catalog نامشخص باقی می‌ماند، زیرا Evidence فعلی میان تعلیق حساب و محدودیت شبکه تفکیک قطعی ایجاد نمی‌کند.",
+  "signup_steps_fa": [
+    "در Fireworks حساب بسازید و از Dashboard یک API Key ایجاد کنید. مقدار کلید را در FIREWORKS_API_KEY یا secret manager قرار دهید و هرگز آن را در کد frontend، فایل عمومی یا log چاپ نکنید.",
+    "مدل Serverless فعال را از Model Library انتخاب کنید و شناسه کامل `accounts/fireworks/models/...` را کپی کنید. نام کوتاه یا شناسه مدل سایر Gatewayها الزاماً در Fireworks معتبر نیست.",
+    "قبل از workload اصلی، اعتبار باقی‌مانده، Billing و Rate Limit حساب را کنترل کنید. حساب بدون روش پرداخت محدودتر است و retryهای زیاد می‌توانند همان اعتبار اولیه را سریع مصرف کنند."
+  ],
+  "first_request": {
+    "language": "curl",
+    "code": "curl https://api.fireworks.ai/inference/v1/chat/completions \\\n  -H \"Authorization: Bearer $FIREWORKS_API_KEY\" \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\"model\":\"accounts/fireworks/models/deepseek-v3p1\",\"messages\":[{\"role\":\"user\",\"content\":\"سلام! در یک جمله پاسخ بده.\"}]}'",
+    "notes_fa": "Fireworks با OpenAI SDK سازگار است، اما شناسه مدل باید از Catalog رسمی خود Fireworks برداشته شود. موجودبودن مدل، قیمت و اعتبار حساب را پیش از اجرای مجدد بررسی کنید.",
+    "source_url": "https://docs.fireworks.ai/getting-started/quickstart",
+    "checked_at": "2026-07-16"
+  },
+  "common_errors": [
+    {
+      "code": "400",
+      "title_fa": "درخواست یا شناسه مدل نامعتبر است",
+      "resolution_fa": "ساختار messages و پارامترها را با Chat Completions تطبیق دهید، شناسه کامل مدل را از Model Library بگیرید و برای تشخیص خطا ابتدا درخواست را به model و messages حداقلی کاهش دهید.",
+      "source_url": "https://docs.fireworks.ai/guides/inference-error-codes",
+      "checked_at": "2026-07-16"
+    },
+    {
+      "code": "401/403",
+      "title_fa": "کلید، مجوز یا وضعیت حساب مشکل دارد",
+      "resolution_fa": "هدر Bearer و FIREWORKS_API_KEY را بررسی کنید و وضعیت فعال‌بودن حساب را در Dashboard ببینید. Evidence فعلی پروژه وضعیت ایران را قطعی نمی‌کند؛ بنابراین 403 را بدون مقایسه Credential فعال به Geo-block نسبت ندهید.",
+      "source_url": "https://docs.fireworks.ai/guides/inference-error-codes",
+      "checked_at": "2026-07-16"
+    },
+    {
+      "code": "402/429",
+      "title_fa": "اعتبار یا Rate Limit تمام شده است",
+      "resolution_fa": "Billing، اعتبار باقی‌مانده و quota را کنترل کنید، concurrency را کاهش دهید و برای 429 از backoff استفاده کنید. 402 یا پایان اعتبار با retry خودکار رفع نمی‌شود و نباید loop نامحدود ایجاد کند.",
+      "source_url": "https://docs.fireworks.ai/guides/inference-error-codes",
+      "checked_at": "2026-07-16"
+    }
+  ],
+  "when_not_to_use_fa": [
+    "زمانی که پروژه به Free Tier دائمی نیاز دارد؛ اعتبار اولیه محدود است و پس از مصرف، حساب بدون ارتقا ادامه نمی‌دهد.",
+    "زمانی که دسترسی مستقیم تأییدشده از ایران شرط انتخاب است؛ Evidence فعلی به‌دلیل تعلیق حساب و نتایج متناقض برای طبقه‌بندی قطعی کافی نیست.",
+    "زمانی که برنامه به رفتار کاملاً یکسان OpenAI نیاز دارد؛ Fireworks سازگار است اما در context-length، usage streaming و برخی پارامترها تفاوت‌های مستند دارد."
+  ],
+  "related_guides": [
+    "openai-sdk-custom-base-url",
+    "free-tier-vs-trial-vs-credit",
+    "free-coding-api"
+  ],
+  "last_reviewed": "2026-07-16"
+}

@@ -1,0 +1,51 @@
+{
+  "schema_version": "1.0.0",
+  "provider_id": "agnes-ai",
+  "intent_fa": "Agnes AI یک Gateway رسمی و سازگار با OpenAI برای متن، تصویر و ویدئو است که چند مدل عمومی با محدودیت‌های متفاوت ارائه می‌کند. این راهنما ساخت API Key، ارسال درخواست متنی اولیه و تفاوت میان Public Request RPM و ظرفیت واقعاً قابل اجرا را توضیح می‌دهد. وضعیت پرداخت و موفقیت inference مستقیم از ایران هنوز قطعی نیست و Reachability پاسخ 401 به‌تنهایی موفقیت مدل را ثابت نمی‌کند.",
+  "signup_steps_fa": [
+    "در پلتفرم Agnes AI حساب بسازید و از Settings → API Keys یک کلید جدید ایجاد کنید. نیاز یا عدم نیاز به روش پرداخت را از Dashboard همان حساب کنترل کنید، زیرا در منابع رسمی بررسی‌شده صریح و قطعی ثبت نشده است.",
+    "کلید را فقط در متغیر محیطی AGNES_API_KEY یا secret manager نگهداری کنید. کلید را داخل frontend، مخزن، Notebook عمومی، screenshot یا log قرار ندهید و برای هر محیط کلید جدا بسازید.",
+    "مدل را از Model Catalog رسمی انتخاب کنید و محدودیت Actual Executable RPM همان نوع خروجی را بخوانید. Public Request RPM فقط نرخ پذیرش اولیه است و الزاماً به همان تعداد اجرای موفق تبدیل نمی‌شود."
+  ],
+  "first_request": {
+    "language": "curl",
+    "code": "curl https://apihub.agnes-ai.com/v1/chat/completions \\\n  -H \"Authorization: Bearer $AGNES_API_KEY\" \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\"model\":\"agnes-2.0-flash\",\"messages\":[{\"role\":\"user\",\"content\":\"سلام! در یک جمله پاسخ بده.\"}],\"stream\":false}'",
+    "notes_fa": "مدل نمونه در Catalog رسمی فعلی ثبت شده است. فهرست مدل‌ها، context window و محدودیت اجرای واقعی پویا هستند؛ پیش از استفاده، Model Catalog و Dashboard حساب را دوباره بررسی کنید.",
+    "source_url": "https://agnes-ai.com/doc/overview",
+    "checked_at": "2026-07-16"
+  },
+  "common_errors": [
+    {
+      "code": "401/403",
+      "title_fa": "API Key ارسال نشده یا حساب اجازه دسترسی ندارد",
+      "resolution_fa": "وجود AGNES_API_KEY و هدر Bearer را بررسی کنید، کلید افشاشده را rotate کنید و وضعیت حساب را در پلتفرم ببینید. پاسخ 401 endpoint از ایران فقط Reachability و نیاز به احراز هویت را نشان می‌دهد.",
+      "source_url": "https://agnes-ai.com/doc/overview",
+      "checked_at": "2026-07-16"
+    },
+    {
+      "code": "404/model",
+      "title_fa": "مدل حذف شده یا شناسه نادرست است",
+      "resolution_fa": "شناسه مدل را از Model Catalog رسمی کپی کنید و به نمونه‌های قدیمی یا نام‌های cache‌شده تکیه نکنید. مدل‌های متن، تصویر و ویدئو endpoint و پارامترهای یکسانی ندارند.",
+      "source_url": "https://github.com/AgnesAI-Labs/AgnesAI-Models/blob/main/MODEL_CATALOG.md",
+      "checked_at": "2026-07-16"
+    },
+    {
+      "code": "429/capacity",
+      "title_fa": "نرخ درخواست یا ظرفیت اجرای واقعی پر شده است",
+      "resolution_fa": "Actual Executable RPM همان مدل و کیفیت خروجی را مبنا قرار دهید، concurrency را کم و retry را با backoff و jitter اجرا کنید. رسیدن درخواست به Public RPM تضمین اجرای موفق نیست.",
+      "source_url": "https://github.com/AgnesAI-Labs/AgnesAI-Models/blob/main/docs/FAQ.md",
+      "checked_at": "2026-07-16"
+    }
+  ],
+  "when_not_to_use_fa": [
+    "زمانی که پروژه به سرویس قطعاً بدون روش پرداخت نیاز دارد؛ وضعیت payment requirement در منابع رسمی فعلی صریح نیست و باید در حساب واقعی بررسی شود.",
+    "زمانی که inference مستقیم تأییدشده از ایران شرط انتخاب است؛ Evidence فعلی فقط پاسخ احراز هویت endpoint را ثبت کرده و درخواست مدل با کلید معتبر انجام نشده است.",
+    "زمانی که workload به context ثابت، مدل دائمی یا ظرفیت تضمین‌شده برای متن، تصویر یا ویدئو نیاز دارد؛ Catalog و محدودیت‌ها پویا هستند."
+  ],
+  "related_guides": [
+    "openai-sdk-custom-base-url",
+    "free-tier-vs-trial-vs-credit",
+    "free-coding-api"
+  ],
+  "last_reviewed": "2026-07-16"
+}
