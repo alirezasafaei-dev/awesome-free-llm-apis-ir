@@ -27,12 +27,62 @@ function parseFrontmatter(source, filename) {
   if (end === -1) throw new Error(`${filename}: unterminated frontmatter`);
 
   const metadata = {};
-  for (const line of source.slice(4, end).split("\n")) {
+  const yamlBlock = source.slice(4, end);
+  for (const line of yamlBlock.split("\n")) {
     const match = line.match(/^([a-z_]+):\s*["']?(.*?)["']?\s*$/);
     if (match) metadata[match[1]] = match[2];
+
+    const listMatch = line.match(/^([a-z_]+):\s*$/);
+    if (listMatch) {
+      metadata[listMatch[1]] = [];
+    }
+
+    const listItemMatch = line.match(/^\s+-\s+"(.*)"$/);
+    if (listItemMatch) {
+      const keys = Object.keys(metadata);
+      const lastKey = keys[keys.length - 1];
+      if (Array.isArray(metadata[lastKey])) {
+        metadata[lastKey].push(listItemMatch[1]);
+      }
+    }
   }
 
   return { metadata, body: source.slice(end + 5).trim() };
+}
+
+function extractFaq(body) {
+  const items = [];
+  const lines = body.replaceAll("\r\n", "\n").split("\n");
+  let inFaq = false;
+  let currentQuestion = null;
+  let currentAnswer = [];
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i].trim();
+    if (line === "## Frequently Asked Questions") {
+      inFaq = true;
+      continue;
+    }
+    if (!inFaq) continue;
+    if (line.startsWith("## ")) break;
+
+    const h3Match = line.match(/^### (.+)$/);
+    if (h3Match) {
+      if (currentQuestion) {
+        items.push({ question: currentQuestion, answer: currentAnswer.join(" ").trim() });
+      }
+      currentQuestion = h3Match[1];
+      currentAnswer = [];
+      continue;
+    }
+    if (currentQuestion && line) {
+      currentAnswer.push(line);
+    }
+  }
+  if (currentQuestion) {
+    items.push({ question: currentQuestion, answer: currentAnswer.join(" ").trim() });
+  }
+  return items;
 }
 
 function renderInline(value) {
@@ -154,36 +204,51 @@ function articlePage(article) {
   const translationKey = metadata.translation_key;
   const pair = translationKey ? getTranslationPair(translationKey) : null;
   const faUrl = pair ? resolveUrl(pair.fa) : null;
-  const structuredData = {
-    "@context": "https://schema.org",
-    "@graph": [
-      {
-        "@type": "Organization",
-        "@id": organizationId,
-        "name": "Awesome Free LLM APIs IR",
-        "url": canonicalOrigin,
-        "sameAs": [repositoryUrl]
-      },
-      {
-        "@type": "TechArticle",
-        headline: title,
-        description,
-        inLanguage: "en-US",
-        dateModified: metadata.updated_at,
-        mainEntityOfPage: canonicalUrl,
-        author: { "@id": organizationId },
-        publisher: { "@id": organizationId }
-      },
-      {
-        "@type": "BreadcrumbList",
-        itemListElement: [
-          { "@type": "ListItem", position: 1, name: "Home", item: `${canonicalOrigin}/` },
-          { "@type": "ListItem", position: 2, name: "English Guides", item: `${canonicalOrigin}/en/#english-guides` },
-          { "@type": "ListItem", position: 3, name: title, item: canonicalUrl }
-        ]
-      }
-    ]
-  };
+  const bodyHtml = markdownToHtml(body);
+  const faqItems = extractFaq(body);
+  const graph = [
+    {
+      "@type": "Organization",
+      "@id": organizationId,
+      "name": "Awesome Free LLM APIs IR",
+      "url": canonicalOrigin,
+      "sameAs": [repositoryUrl]
+    },
+    {
+      "@type": "TechArticle",
+      headline: title,
+      description,
+      inLanguage: "en-US",
+      dateModified: metadata.updated_at,
+      mainEntityOfPage: canonicalUrl,
+      author: { "@id": organizationId },
+      publisher: { "@id": organizationId }
+    },
+    {
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Home", item: `${canonicalOrigin}/` },
+        { "@type": "ListItem", position: 2, name: "English Guides", item: `${canonicalOrigin}/en/#english-guides` },
+        { "@type": "ListItem", position: 3, name: title, item: canonicalUrl }
+      ]
+    }
+  ];
+
+  if (faqItems.length > 0) {
+    graph.push({
+      "@type": "FAQPage",
+      mainEntity: faqItems.map((item) => ({
+        "@type": "Question",
+        name: item.question,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: item.answer
+        }
+      }))
+    });
+  }
+
+  const structuredData = { "@context": "https://schema.org", "@graph": graph };
 
   const hreflang = pair
     ? hreflangLinks([
@@ -234,7 +299,7 @@ function articlePage(article) {
       <h1>${escapeHtml(title)}</h1>
       <p class="provider-lead">${escapeHtml(description)}</p>
       <div class="freshness-badge">Last reviewed: ${escapeHtml(metadata.updated_at)}</div>
-      <div class="guide-content">${markdownToHtml(body)}</div>
+      <div class="guide-content">${bodyHtml}</div>
       <aside class="guide-cta">
         <h2>Help improve Iran-access data</h2>
         <p>If you tested a provider from Iran, submit a dated result without API keys, cookies, or personal information.</p>
