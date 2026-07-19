@@ -2,6 +2,7 @@ import { spawnSync } from "node:child_process";
 import { readFile, readdir, access } from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
+import { shouldEnforceMinimumWordCount } from "./seo-page-policy.mjs";
 
 const root = process.cwd();
 const siteDir = path.join(root, ".site-dist");
@@ -90,7 +91,7 @@ async function scanPage(filePath, urlPath) {
     issues.push({ severity: "medium", category: "missing_alt_text", page, detail: `${imagesWithoutAlt} image(s) missing alt text` });
   }
 
-  if (wc < 300) {
+  if (wc < 300 && shouldEnforceMinimumWordCount(html)) {
     issues.push({ severity: "low", category: "low_word_count", page, detail: `Low word count: ${wc} words (threshold: 300)` });
   }
 
@@ -198,6 +199,7 @@ async function main() {
   const pagesToScan = [
     { file: "index.html", path: "/" },
     { file: "en/index.html", path: "/en/" },
+    { file: "api-finder/index.html", path: "/api-finder/" },
     { file: "404.html", path: "/404.html" }
   ];
 
@@ -229,7 +231,7 @@ async function main() {
     missing_canonical: "Pages missing canonical URL",
     missing_json_ld: "Pages missing JSON-LD structured data",
     missing_alt_text: "Pages with images missing alt text",
-    low_word_count: "Pages with low word count (<300 words)",
+    low_word_count: "Indexable content pages with low word count (<300 words)",
     duplicate_title: "Pages with duplicate titles",
     broken_internal_link: "Broken internal links",
     page_not_found: "Pages that could not be read"
