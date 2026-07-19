@@ -1,0 +1,51 @@
+{
+  "schema_version": "1.0.0",
+  "provider_id": "nvidia-nim",
+  "intent_fa": "NVIDIA NIM API Catalog برای Prototype، تحقیق، توسعه و آزمایش مدل‌های میزبانی‌شده NVIDIA با APIهای سازگار با OpenAI مناسب است. عضویت رایگان Developer Program دسترسی ارزیابی می‌دهد، اما استفاده Production به NVIDIA AI Enterprise License نیاز دارد و سقف عمومی ثابتی برای سهمیه رایگان در Catalog ثبت نشده است. وضعیت ایران نیز فقط Reachability endpoint مدل‌ها را دارد و درخواست استنتاج با کلید معتبر هنوز تأیید نشده است.",
+  "signup_steps_fa": [
+    "در build.nvidia.com یک مدل را باز کنید و گزینه Get API Key را بزنید. با ورود یا ساخت حساب، عضو NVIDIA Developer Program می‌شوید و کلید Developer دریافت می‌کنید.",
+    "کلید را بلافاصله در متغیر محیطی NVIDIA_API_KEY یا secret manager ذخیره کنید؛ آن را در Notebook عمومی، URL، تصویر یا log قرار ندهید. کد نمونه هر مدل را از همان صفحه Model دریافت کنید.",
+    "پیش از توسعه، شرایط مدل ثالث، endpoint و مجوز استفاده را بررسی کنید. Hosted endpointهای Developer Program برای Prototype و ارزیابی‌اند؛ Production یا سرویس‌دهی به کاربر نهایی مجوز تجاری جدا می‌خواهد."
+  ],
+  "first_request": {
+    "language": "curl",
+    "code": "curl https://integrate.api.nvidia.com/v1/chat/completions \\\n  -H \"Authorization: Bearer $NVIDIA_API_KEY\" \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\"model\":\"openai/gpt-oss-20b\",\"messages\":[{\"role\":\"user\",\"content\":\"سلام! در یک جمله پاسخ بده.\"}],\"stream\":false}'",
+    "notes_fa": "شناسه مدل و پارامترها را از صفحه همان NIM بردارید؛ قابلیت‌ها میان مدل‌ها متفاوت‌اند. این نمونه اثبات دسترسی از ایران نیست و برای نتیجه منطقه‌ای باید درخواست مجاز تاریخ‌دار جداگانه ثبت شود.",
+    "source_url": "https://docs.api.nvidia.com/nim/reference/openai-gpt-oss-20b-infer",
+    "checked_at": "2026-07-16"
+  },
+  "common_errors": [
+    {
+      "code": "401/403",
+      "title_fa": "کلید Developer ارسال نشده یا دسترسی مدل مجاز نیست",
+      "resolution_fa": "NVIDIA_API_KEY و هدر Bearer را بررسی کنید، شرایط مدل ثالث را در Model Page بپذیرید و کلید افشاشده را تعویض کنید. پاسخ موفق /models به‌تنهایی اعتبار کلید یا امکان inference را ثابت نمی‌کند.",
+      "source_url": "https://docs.api.nvidia.com/nim/docs/api-quickstart",
+      "checked_at": "2026-07-16"
+    },
+    {
+      "code": "402/422",
+      "title_fa": "مجوز، مدل یا بدنه درخواست پذیرفته نشده است",
+      "resolution_fa": "شناسه مدل، messages و محدودیت‌های schema همان NIM را با API Reference تطبیق دهید. مدل‌های مختلف response code و قابلیت متفاوت دارند؛ نمونه یک مدل را به مدل دیگر تعمیم ندهید.",
+      "source_url": "https://docs.api.nvidia.com/nim/reference/openai-gpt-oss-20b-infer",
+      "checked_at": "2026-07-16"
+    },
+    {
+      "code": "429/500",
+      "title_fa": "ظرفیت endpoint یا سرویس موقتاً در دسترس نیست",
+      "resolution_fa": "هم‌زمانی را کاهش دهید، retry محدود با backoff و jitter اجرا کنید و وضعیت مدل را در Catalog بررسی کنید. Hosted Developer endpoint را برای SLA تولیدی یا ظرفیت تضمین‌شده فرض نکنید.",
+      "source_url": "https://docs.api.nvidia.com/nim/docs/product",
+      "checked_at": "2026-07-16"
+    }
+  ],
+  "when_not_to_use_fa": [
+    "زمانی که workload رایگان مستقیماً به کاربران نهایی سرویس می‌دهد؛ Developer Program برای Prototype، تحقیق، توسعه و آزمایش است و Production مجوز NVIDIA AI Enterprise می‌خواهد.",
+    "زمانی که پروژه به سهمیه عددی ثابت و عمومی نیاز دارد؛ محدودیت نهایی به مدل، حساب و ظرفیت hosted endpoint وابسته است.",
+    "زمانی که دسترسی عملی مستقیم از ایران باید از قبل تأیید شده باشد؛ Evidence فعلی فقط پاسخ endpoint مدل‌ها را ثبت کرده و inference معتبر هنوز آزمایش نشده است."
+  ],
+  "related_guides": [
+    "openai-sdk-custom-base-url",
+    "free-tier-vs-trial-vs-credit",
+    "free-coding-api"
+  ],
+  "last_reviewed": "2026-07-16"
+}

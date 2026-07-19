@@ -1,0 +1,51 @@
+{
+  "schema_version": "1.0.0",
+  "provider_id": "hugging-face-inference",
+  "intent_fa": "Hugging Face Inference Providers برای آزمایش مدل‌های چند ارائه‌دهنده از یک حساب و یک Token مناسب است. endpoint سازگار با OpenAI برای Chat Completions مسیر مهاجرت ساده‌ای می‌دهد، اما اعتبار رایگان ماهانه دلاری است و مقدار قابل استفاده به مدل، قیمت Provider و سیاست انتخاب :fastest یا :cheapest وابسته می‌ماند.",
+  "signup_steps_fa": [
+    "یک حساب Hugging Face بسازید و از Settings → Access Tokens یک Token با حداقل مجوز لازم برای Inference ایجاد کنید. Token را فقط در متغیر محیطی HF_TOKEN نگهداری کنید و آن را در Notebook عمومی، URL یا مخزن ثبت نکنید.",
+    "در صفحه Inference Providers بررسی کنید مدل موردنظر حداقل یک Provider فعال دارد. برای انتخاب خودکار سریع‌ترین مسیر از پسوند :fastest، برای کم‌هزینه‌ترین مسیر از :cheapest و برای ترتیب تنظیم‌شده حساب از :preferred استفاده کنید.",
+    "قبل از بار اصلی، یک درخواست کوتاه ارسال و بخش Billing/Usage را کنترل کنید. اعتبار ماهانه Free User کوچک و subject to change است؛ بنابراین پاسخ موفق یک مدل تضمین نمی‌کند مدل دیگر یا حجم بزرگ نیز داخل اعتبار باقی بماند."
+  ],
+  "first_request": {
+    "language": "curl",
+    "code": "curl https://router.huggingface.co/v1/chat/completions \\\n  -H \"Authorization: Bearer $HF_TOKEN\" \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\"model\":\"openai/gpt-oss-20b:fastest\",\"messages\":[{\"role\":\"user\",\"content\":\"سلام! در یک جمله پاسخ بده.\"}]}'",
+    "notes_fa": "endpoint سازگار با OpenAI در حال حاضر برای Chat Completion است. مدل نمونه با تست تاریخ‌دار Catalog هماهنگ شده؛ موجودبودن Provider و قیمت همان مدل را پیش از اجرای مجدد بررسی کنید.",
+    "source_url": "https://huggingface.co/docs/inference-providers/en/index",
+    "checked_at": "2026-07-16"
+  },
+  "common_errors": [
+    {
+      "code": "401",
+      "title_fa": "HF Token ارسال نشده یا نامعتبر است",
+      "resolution_fa": "وجود HF_TOKEN و هدر Authorization را بررسی کنید، Token منقضی یا افشاشده را revoke و جایگزین کنید و از قرار دادن آن در کد client-side یا log خودداری کنید.",
+      "source_url": "https://huggingface.co/docs/inference-providers/en/index",
+      "checked_at": "2026-07-16"
+    },
+    {
+      "code": "402/quota",
+      "title_fa": "اعتبار ماهانه کافی نیست",
+      "resolution_fa": "Usage و Billing حساب را بررسی کنید، مدل یا policy کم‌هزینه‌تر انتخاب کنید و در نظر بگیرید اعتبار Free User دلاری است، نه تعداد تضمین‌شده درخواست. Custom Provider Key نیز از اعتبار Hugging Face استفاده نمی‌کند.",
+      "source_url": "https://huggingface.co/docs/inference-providers/main/en/pricing",
+      "checked_at": "2026-07-16"
+    },
+    {
+      "code": "404/429",
+      "title_fa": "مدل یا Provider در دسترس نیست یا محدود شده است",
+      "resolution_fa": "شناسه مدل و suffix انتخاب Provider را کنترل کنید، GET /v1/models یا صفحه مدل را بررسی کنید و برای خطای موقت با backoff به Provider دیگر یا policy دیگری سوییچ کنید. retry بدون محدودیت می‌تواند اعتبار را سریع‌تر مصرف کند.",
+      "source_url": "https://huggingface.co/docs/inference-providers/en/index",
+      "checked_at": "2026-07-16"
+    }
+  ],
+  "when_not_to_use_fa": [
+    "زمانی که پروژه به سهمیه رایگان بزرگ یا تعداد درخواست تضمین‌شده نیاز دارد؛ Free User اعتبار ماهانه بسیار محدود و قابل تغییر دریافت می‌کند.",
+    "زمانی که workload غیرچت باید الزاماً از endpoint سازگار با OpenAI عبور کند؛ این endpoint برای Chat Completion است و وظایف دیگر باید از clientهای Inference Providers استفاده کنند.",
+    "زمانی که انتخاب خودکار Provider، تغییر قیمت یا تفاوت سیاست‌های پردازش داده میان Providerهای بالادستی برای پروژه قابل‌قبول نیست."
+  ],
+  "related_guides": [
+    "openai-sdk-custom-base-url",
+    "free-tier-vs-trial-vs-credit",
+    "free-coding-api"
+  ],
+  "last_reviewed": "2026-07-16"
+}

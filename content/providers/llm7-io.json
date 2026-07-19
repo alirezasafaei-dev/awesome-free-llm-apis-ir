@@ -1,0 +1,51 @@
+{
+  "schema_version": "1.0.0",
+  "provider_id": "llm7-io",
+  "intent_fa": "LLM7.io یک Community Gateway سازگار با OpenAI است که مسیر پایه بدون ثبت‌نام و Token رایگان برای محدودیت بالاتر ارائه می‌کند. مستندات فعلی استفاده از selectorهای پویا مانند `default`، `fast` و `pro` را به‌جای وابستگی به شناسه‌های ثابت مدل توصیه می‌کنند. دسترسی ناشناس مستقیم از ایران در یک تست تاریخ‌دار موفق بوده، اما availability مدل و کیفیت Provider بالادستی تضمین دائمی نیست.",
+  "signup_steps_fa": [
+    "برای تست پایه می‌توانید بدون ثبت‌نام از endpoint استفاده کنید و selector فعلی `default` را انتخاب کنید. در SDKهایی که API Key اجباری است، فقط placeholder غیرحساس مستندشده استفاده شود و Credential واقعی ساختگی تولید نکنید.",
+    "برای Rate Limit بالاتر، از مسیر رسمی token.llm7.io یک Token رایگان دریافت و آن را فقط در LLM7_API_KEY یا secret manager نگهداری کنید. Token را در URL، frontend، مخزن یا log قرار ندهید.",
+    "پیش از workload، مستندات Models و وضعیت selectorهای `default`، `fast` و `pro` را کنترل کنید. شناسه‌های concrete می‌توانند phase out شوند و routing پشت selectorها پویا است."
+  ],
+  "first_request": {
+    "language": "curl",
+    "code": "curl https://api.llm7.io/v1/chat/completions \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\"model\":\"default\",\"messages\":[{\"role\":\"user\",\"content\":\"سلام! در یک جمله پاسخ بده.\"}],\"stream\":false}'",
+    "notes_fa": "این نمونه مسیر anonymous و selector عمومی `default` را نشان می‌دهد. برای محدودیت بالاتر می‌توان هدر Bearer با LLM7_API_KEY افزود. مدل واقعی پشت selector پویاست و نباید برای داده حساس یا خروجی قابل تکرار فرض شود.",
+    "source_url": "https://docs.llm7.io/quickstart",
+    "checked_at": "2026-07-16"
+  },
+  "common_errors": [
+    {
+      "code": "401/403",
+      "title_fa": "Token برای مسیر یا مدل انتخابی لازم یا نامعتبر است",
+      "resolution_fa": "برای مسیر پایه anonymous هدر Authorization را حذف کنید؛ برای محدودیت بالاتر LLM7_API_KEY معتبر را از مسیر رسمی بگیرید. Token افشاشده را جایگزین و در گزارش عمومی منتشر نکنید.",
+      "source_url": "https://docs.llm7.io/quickstart",
+      "checked_at": "2026-07-16"
+    },
+    {
+      "code": "404/model",
+      "title_fa": "شناسه concrete مدل دیگر پشتیبانی نمی‌شود",
+      "resolution_fa": "به‌جای نام‌های قدیمی از selectorهای مستند `default`، `fast` یا `pro` استفاده کنید و صفحه Models را دوباره بخوانید. به فهرست مدل cache‌شده وابسته نمانید.",
+      "source_url": "https://docs.llm7.io/guides/models",
+      "checked_at": "2026-07-16"
+    },
+    {
+      "code": "429/5xx",
+      "title_fa": "Rate Limit یا Provider بالادستی موقتاً در دسترس نیست",
+      "resolution_fa": "نرخ anonymous یا Token account را رعایت کنید، concurrency را کم و retry را با backoff و jitter اجرا کنید. برای خطای upstream، selector یا زمان دیگری را امتحان کنید و loop نامحدود نسازید.",
+      "source_url": "https://docs.llm7.io/quickstart",
+      "checked_at": "2026-07-16"
+    }
+  ],
+  "when_not_to_use_fa": [
+    "زمانی که پروژه به مدل ثابت، خروجی کاملاً قابل تکرار یا routing قابل ممیزی نیاز دارد؛ selectorهای Gateway به Provider پویا نگاشت می‌شوند.",
+    "زمانی که prompt شامل داده شخصی، محرمانه یا کد حساس است و سیاست کامل همه Providerهای بالادستی برای تیم روشن نیست.",
+    "زمانی که workload به SLA، ظرفیت تضمین‌شده یا پشتیبانی قراردادی نیاز دارد؛ موفقیت یک تست ناشناس از ایران تضمین availability آینده نیست."
+  ],
+  "related_guides": [
+    "openai-sdk-custom-base-url",
+    "free-tier-vs-trial-vs-credit",
+    "free-coding-api"
+  ],
+  "last_reviewed": "2026-07-16"
+}
