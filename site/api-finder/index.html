@@ -1,0 +1,596 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#111827">
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+    <meta name="description" content="ابزار هوشمند پیدا کردن API رایگان LLM بر اساس نیاز شما: کاربرد، زبان، بودجه، سرعت و منطقه. با امتیازدهی شفاف و مقایسه دقیق.">
+    <meta property="og:title" content="API Finder | پیدا کردن API رایگان LLM">
+    <meta property="og:description" content="ابزار هوشمند جست‌وجو و مقایسه APIهای رایگان LLM با فیلترهای دقیق و سیستم امتیازدهی شفاف.">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="fa_IR">
+    <meta property="og:site_name" content="Awesome Free LLM APIs IR">
+    <meta property="og:url" content="https://llm.persiantoolbox.ir/api-finder/">
+    <meta property="og:image" content="https://llm.persiantoolbox.ir/assets/social/og-default.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="API Finder | پیدا کردن API رایگان LLM">
+    <meta name="twitter:description" content="ابزار هوشمند جست‌وجو و مقایسه APIهای رایگان LLM.">
+    <meta name="twitter:image" content="https://llm.persiantoolbox.ir/assets/social/og-default.png">
+    <link rel="canonical" href="https://llm.persiantoolbox.ir/api-finder/">
+    <link rel="alternate" hreflang="fa" href="https://llm.persiantoolbox.ir/api-finder/">
+    <link rel="alternate" hreflang="x-default" href="https://llm.persiantoolbox.ir/api-finder/">
+    <link rel="alternate" type="application/json" href="../catalog.json" title="Machine-readable provider catalog">
+    <link rel="alternate" type="text/plain" href="../llms.txt" title="LLM-readable project summary">
+    <link rel="manifest" href="../manifest.webmanifest">
+    <link rel="stylesheet" href="../styles.css">
+    <title>API Finder | پیدا کردن API رایگان LLM | Awesome Free LLM APIs IR</title>
+    <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+    <link rel="mask-icon" href="../assets/mask-icon.svg" color="#2563EB">
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/apple-touch-icon.png">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Organization",
+          "@id": "https://llm.persiantoolbox.ir/#organization",
+          "name": "Awesome Free LLM APIs IR",
+          "url": "https://llm.persiantoolbox.ir/",
+          "sameAs": ["https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir"]
+        },
+        {
+          "@type": "WebApplication",
+          "@id": "https://llm.persiantoolbox.ir/api-finder/#webapp",
+          "url": "https://llm.persiantoolbox.ir/api-finder/",
+          "name": "API Finder — ابزار پیدا کردن API رایگان LLM",
+          "inLanguage": ["fa", "en"],
+          "description": "ابزار هوشمند جست‌وجو و مقایسه APIهای رایگان LLM با فیلترهای دقیق و سیستم امتیازدهی شفاف.",
+          "applicationCategory": "DeveloperApplication",
+          "operatingSystem": "All",
+          "browserRequirements": "Requires JavaScript",
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+          },
+          "publisher": { "@id": "https://llm.persiantoolbox.ir/#organization" }
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": "https://llm.persiantoolbox.ir/api-finder/#breadcrumb",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "صفحه اصلی", "item": "https://llm.persiantoolbox.ir/" },
+            { "@type": "ListItem", "position": 2, "name": "API Finder", "item": "https://llm.persiantoolbox.ir/api-finder/" }
+          ]
+        }
+      ]
+    }
+    </script>
+    <style>
+      .api-finder-hero { position: relative; overflow: hidden; border-radius: 34px; padding: clamp(24px, 5vw, 52px); margin-bottom: 40px; background: linear-gradient(135deg, #111827 0%, #1e293b 100%); color: #fff; display: flex; flex-direction: column; gap: 20px; }
+      .api-finder-hero::before { content: ""; position: absolute; width: 380px; height: 380px; left: -120px; top: -160px; border-radius: 50%; background: radial-gradient(circle, rgba(109,61,245,.7), transparent 68%); }
+      .api-finder-hero::after { content: ""; position: absolute; width: 260px; height: 260px; right: 10%; bottom: -220px; border-radius: 50%; background: rgba(16,185,129,.3); filter: blur(50px); }
+      .api-finder-hero > * { position: relative; z-index: 1; }
+      .api-finder-hero .eyebrow { color: #a78bfa; }
+      .api-finder-hero h1 { margin: 0; font-size: clamp(28px, 4vw, 52px); line-height: 1.15; letter-spacing: -.04em; }
+      .api-finder-hero h1 span { color: #34d399; }
+      .api-finder-hero p { max-width: 720px; margin: 0; color: #cbd5e1; font-size: clamp(14px, 1.6vw, 17px); }
+
+      .finder-form { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 14px; padding: 24px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); box-shadow: var(--shadow); margin-bottom: 24px; }
+      .finder-form label { display: flex; flex-direction: column; gap: 6px; color: var(--muted); font-size: 12px; font-weight: 700; }
+      .finder-form select, .finder-form button { width: 100%; min-height: 46px; border: 1px solid var(--border); border-radius: 12px; background: var(--surface-soft); color: var(--text); padding: 8px 12px; outline: none; font-size: 14px; }
+      .finder-form select:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(109,61,245,.15); }
+      .finder-form .finder-actions { display: flex; align-items: end; gap: 10px; grid-column: 1 / -1; }
+      .finder-form .button.primary { min-height: 46px; border: 0; font-size: 15px; }
+      .finder-form .button.secondary { min-height: 46px; border: 1px solid var(--border); background: var(--surface); color: var(--muted); font-size: 13px; }
+
+      .finder-status { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 16px; }
+      .finder-status p { color: var(--muted); font-size: 14px; margin: 0; }
+
+      .finder-results { display: grid; gap: 18px; margin-bottom: 32px; }
+      .finder-card { display: flex; flex-direction: column; padding: 20px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: 0 8px 28px rgba(17,24,39,.05); }
+      .finder-card-header { display: flex; align-items: center; gap: 12px; }
+      .finder-rank { flex: 0 0 auto; display: grid; place-items: center; width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, var(--primary), color-mix(in srgb, var(--primary) 70%, var(--accent))); color: #fff; font-weight: 900; font-size: 15px; }
+      .finder-card-title { flex: 1; }
+      .finder-card-title h3 { margin: 0; font-size: 19px; }
+      .finder-card-title .finder-id { color: var(--muted); font-size: 11px; direction: ltr; }
+      .finder-total-score { flex: 0 0 auto; text-align: center; padding: 8px 16px; border-radius: 12px; background: var(--surface-soft); }
+      .finder-total-score strong { display: block; font-size: 24px; font-weight: 900; color: var(--primary); }
+      .finder-total-score small { color: var(--muted); font-size: 11px; }
+      .finder-breakdown { margin-top: 14px; display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 8px; }
+      .finder-breakdown-item { padding: 8px 10px; border-radius: 10px; background: var(--surface-soft); font-size: 12px; display: flex; justify-content: space-between; align-items: center; }
+      .finder-breakdown-item .label { color: var(--muted); }
+      .finder-breakdown-item .value { font-weight: 800; direction: ltr; }
+      .finder-breakdown-item .value.positive { color: var(--accent); }
+      .finder-breakdown-item .value.negative { color: var(--danger); }
+      .finder-card-extra { margin-top: 14px; display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+      .finder-card-extra .access-badge { background: var(--surface-soft); display: inline-flex; align-items: center; width: fit-content; border-radius: 999px; padding: 4px 9px; font-size: 11px; font-weight: 800; }
+      .finder-card-extra .limit-label { color: var(--muted); font-size: 12px; }
+      .finder-card-actions { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border); display: flex; gap: 8px; }
+      .finder-card-actions a { padding: 8px 16px; border-radius: 10px; text-align: center; text-decoration: none; font-size: 12px; font-weight: 800; }
+      .finder-detail-link { background: var(--surface-soft); color: var(--text); border: 1px solid var(--border); }
+      .finder-detail-link:hover { background: color-mix(in srgb, var(--primary) 12%, var(--surface)); border-color: var(--primary); color: var(--primary); }
+      .finder-docs-link { background: var(--primary); color: #fff; }
+      .finder-evidence-link { background: transparent; color: var(--muted); border: 1px solid var(--border); }
+
+      .finder-empty { padding: 48px; text-align: center; color: var(--muted); border: 1px dashed var(--border); border-radius: var(--radius); background: var(--surface); }
+      .finder-empty p { margin: 8px 0; }
+
+      .finder-disclosure { margin-top: 12px; padding: 18px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); }
+      .finder-disclosure summary { color: var(--primary); font-weight: 800; cursor: pointer; font-size: 13px; }
+      .finder-disclosure-content { margin-top: 12px; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
+      .finder-disclosure-content div { padding: 10px; border-radius: 10px; background: var(--surface-soft); font-size: 12px; }
+      .finder-disclosure-content div strong { display: block; margin-bottom: 4px; color: var(--text); }
+
+      .finder-contribute { margin-top: 40px; padding: clamp(24px, 4vw, 40px); border-radius: 30px; background: linear-gradient(135deg, color-mix(in srgb, var(--primary) 13%, var(--surface)), var(--surface)); border: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+      .finder-contribute h2 { margin: 0; font-size: clamp(22px, 3vw, 32px); }
+      .finder-contribute p { color: var(--muted); max-width: 600px; margin: 8px 0 0; font-size: 14px; }
+
+      @media (max-width: 640px) {
+        .finder-form { grid-template-columns: 1fr; }
+        .finder-form .finder-actions { flex-direction: column; }
+        .finder-card-header { flex-wrap: wrap; }
+        .finder-breakdown { grid-template-columns: 1fr 1fr; }
+        .finder-contribute { flex-direction: column; text-align: center; }
+        .finder-card-actions { flex-direction: column; }
+      }
+    </style>
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">رفتن به محتوای اصلی</a>
+
+    <header class="topbar">
+      <a class="brand" href="../" aria-label="صفحه اصلی">
+        <span class="brand-mark" aria-hidden="true"><img src="../assets/logo-symbol.svg" alt="" width="40" height="40"></span>
+        <span>Awesome Free LLM APIs IR</span>
+      </a>
+      <nav aria-label="پیوندهای اصلی">
+        <a href="../">کاتالوگ</a>
+        <a href="https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir">GitHub</a>
+        <a href="https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir/issues/new/choose">ثبت گزارش</a>
+        <button id="theme-toggle" class="icon-button" type="button" aria-pressed="false" aria-label="تغییر به پوسته روشن">◐</button>
+      </nav>
+    </header>
+
+    <main id="main-content">
+      <section class="api-finder-hero" aria-labelledby="finder-hero-title">
+        <p class="eyebrow">ابزار هوشمند انتخاب</p>
+        <h1 id="finder-hero-title">بهترین API رایگان LLM<br>را <span>برای نیازت پیدا کن.</span></h1>
+        <p>کاربرد، زبان، بودجه، سرعت و منطقه را مشخص کن تا با امتیازدهی شفاف، مناسب‌ترین گزینه‌ها را ببینی. همه داده‌ها از کاتالوگ اصلی با شواهد تاریخ‌دار استفاده می‌کنند.</p>
+      </section>
+
+      <form id="finder-form" class="finder-form" role="search" aria-label="فرم جست‌وجوی API">
+        <label>کاربرد / Use Case
+          <select id="finder-usecase">
+            <option value="chat">چت و تولید متن / Chat</option>
+            <option value="coding">کدنویسی / Coding</option>
+            <option value="reasoning">استدلال / Reasoning</option>
+            <option value="embeddings">Embedding و جست‌وجو</option>
+          </select>
+        </label>
+        <label>زبان / Language
+          <select id="finder-language">
+            <option value="persian">فارسی / Persian</option>
+            <option value="english">انگلیسی / English</option>
+            <option value="multilingual">چندزبانه / Multilingual</option>
+          </select>
+        </label>
+        <label>بودجه / Budget
+          <select id="finder-budget">
+            <option value="no-card">بدون کارت بانکی / No credit card</option>
+            <option value="free-only">فقط رایگان / Free only</option>
+            <option value="any">هر نوع / Any</option>
+          </select>
+        </label>
+        <label>سرعت / Latency
+          <select id="finder-latency">
+            <option value="low">کم اهمیت / Low priority</option>
+            <option value="important">مهم / Important</option>
+            <option value="critical">بحرانی / Critical</option>
+          </select>
+        </label>
+        <label>منطقه / Region
+          <select id="finder-region">
+            <option value="iran">ایران مستقیم / Iran direct</option>
+            <option value="iran-vpn">ایران با VPN / Iran VPN</option>
+            <option value="any">هر منطقه / Any</option>
+          </select>
+        </label>
+        <div class="finder-actions">
+          <button class="button primary" type="submit" id="finder-submit">🔍 پیدا کن / Find</button>
+          <button class="button secondary" type="reset" id="finder-reset">پاک‌کردن / Reset</button>
+        </div>
+      </form>
+
+      <div id="finder-status" class="finder-status" hidden>
+        <p id="finder-status-text"></p>
+      </div>
+
+      <div id="finder-results" class="finder-results"></div>
+      <div id="finder-loading" class="message-card">در حال بارگذاری داده‌ها…</div>
+      <div id="finder-error" class="message-card error" hidden>دریافت داده ناموفق بود. صفحه را دوباره بارگذاری کنید.</div>
+      <div id="finder-empty" class="finder-empty" hidden>
+        <p><strong>موردی مطابق فیلترهای شما پیدا نشد.</strong></p>
+        <p>معیارهای دیگری را امتحان کنید یا <a href="https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir/issues/new/choose">گزارش دهید</a> که چه سرویسی نیاز دارید.</p>
+      </div>
+
+      <details id="finder-disclosure" class="finder-disclosure">
+        <summary>چرا این امتیاز؟ / Why this score?</summary>
+        <div class="finder-disclosure-content">
+          <div><strong>🎯 تطابق قابلیت (+۳۵)</strong><span>اگر Provider قابلیت‌های موردنیاز کاربرد انتخاب‌شده (چت، کدنویسی، استدلال، Embedding) را داشته باشد.</span></div>
+          <div><strong>🌐 پشتیبانی فارسی (+۱۵)</strong><span>اگر Provider یادداشت فارسی (<code>notes_fa</code>) داشته و از ایران قابل دسترس باشد.</span></div>
+          <div><strong>💳 بودجه (تا +۲۰)</strong><span>بدون کارت بانکی +۲۰، فقط مدل رایگان +۱۵، هر نوع +۵.</span></div>
+          <div><strong>⚡ سرعت (تا +۱۵)</strong><span>بر اساس بیشترین RPM ثبت‌شده. بحرانی = امتیاز بالاتر برای RPM بیشتر.</span></div>
+          <div><strong>📍 منطقه (تا +۳۰)</strong><span>ایران مستقیم +۳۰، ایران با VPN +۱۵، هر منطقه +۵.</span></div>
+          <div><strong>⛔ جریمه‌ها (۰ تا -۳۰)</strong><span>Gateway اجتماعی -۱۵، مسدود -۳۰، نامشخص -۵.</span></div>
+        </div>
+      </details>
+
+      <section class="finder-contribute">
+        <div>
+          <p class="eyebrow">کمک به بهبود</p>
+          <h2>این ابزار با مشارکت شما بهتر می‌شود.</h2>
+          <p>آیا امتیازدهی منصفانه است؟ معیار دیگری پیشنهاد داری؟ یا داده‌ای اشتباه می‌بینی؟ گزارش تو به بهبود این ابزار برای همه کمک می‌کند.</p>
+        </div>
+        <a class="button primary" href="https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir/issues/new/choose">ثبت پیشنهاد در GitHub</a>
+      </section>
+    </main>
+
+    <footer>
+      <p>داده‌ها تحت MIT License — هیچ وابستگی تجاری به سرویس‌های فهرست‌شده وجود ندارد.</p>
+      <p><a href="../catalog.json">داده JSON</a> · <a href="../sitemap.xml">Sitemap</a> · <a href="../llms.txt">llms.txt</a> · <a href="../">کاتالوگ اصلی</a></p>
+      <a href="https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir">Source on GitHub</a>
+    </footer>
+
+    <script>
+      const accessLabels = {
+        verified_working: "مستقیم تست‌شده",
+        verified_working_vpn: "با VPN تست‌شده",
+        direct_blocked_vpn_working: "مستقیم مسدود / VPN موفق",
+        verified_blocked: "مستقیم مسدود",
+        officially_unsupported: "پشتیبانی‌نشده رسمی",
+        intermittent: "ناپایدار",
+        signup_blocked: "ثبت‌نام مسدود",
+        unknown: "نامشخص"
+      };
+      const accessEmoji = {
+        verified_working: "✅",
+        verified_working_vpn: "🛡️",
+        direct_blocked_vpn_working: "🛡️",
+        verified_blocked: "⛔",
+        officially_unsupported: "🚫",
+        intermittent: "⚠️",
+        signup_blocked: "🧾",
+        unknown: "❔"
+      };
+      const serviceLabels = {
+        official_provider: "Provider رسمی",
+        official_gateway: "Gateway رسمی",
+        community_gateway: "Gateway اجتماعی",
+        session_bridge: "Session bridge",
+        self_hosted: "Self-hosted"
+      };
+      const freeLabels = {
+        permanent_allowance: "سهمیه دائمی",
+        free_models: "مدل‌های رایگان",
+        monthly_credit: "اعتبار ماهانه",
+        trial: "آزمایشی",
+        unknown: "نامشخص"
+      };
+      const capabilityLabels = {
+        chat: "چت",
+        text_generation: "تولید متن",
+        reasoning: "Reasoning",
+        embeddings: "Embedding",
+        tool_calling: "Tool calling",
+        structured_output: "Structured output"
+      };
+      const usecaseCapabilityMap = {
+        chat: ["chat", "text_generation"],
+        coding: ["tool_calling", "structured_output"],
+        reasoning: ["reasoning"],
+        embeddings: ["embeddings"]
+      };
+      const iranScorePenalties = ["officially_unsupported", "verified_blocked", "signup_blocked"];
+      const iranAccessibleStatuses = ["verified_working", "verified_working_vpn", "direct_blocked_vpn_working", "intermittent"];
+
+      let providers = [];
+      const elements = {
+        form: document.getElementById("finder-form"),
+        usecase: document.getElementById("finder-usecase"),
+        language: document.getElementById("finder-language"),
+        budget: document.getElementById("finder-budget"),
+        latency: document.getElementById("finder-latency"),
+        region: document.getElementById("finder-region"),
+        submit: document.getElementById("finder-submit"),
+        reset: document.getElementById("finder-reset"),
+        results: document.getElementById("finder-results"),
+        status: document.getElementById("finder-status"),
+        statusText: document.getElementById("finder-status-text"),
+        loading: document.getElementById("finder-loading"),
+        error: document.getElementById("finder-error"),
+        empty: document.getElementById("finder-empty"),
+        disclosure: document.getElementById("finder-disclosure"),
+        themeToggle: document.getElementById("theme-toggle")
+      };
+
+      function isStale(provider) {
+        const checked = new Date(`${provider.verification.last_checked}T00:00:00Z`);
+        return (Date.now() - checked.getTime()) / 86_400_000 > provider.verification.stale_after_days;
+      }
+
+      function maxRpm(provider) {
+        return Math.max(...provider.free_tier.limits.map((l) => l.rpm ?? 0), 0);
+      }
+
+      function scoreProvider(provider, filters) {
+        const capabilities = usecaseCapabilityMap[filters.usecase] ?? usecaseCapabilityMap.chat;
+        let score = 0;
+        const breakdown = {};
+
+        const hasCapability = capabilities.some((c) => provider.capabilities.includes(c));
+        const capabilityScore = hasCapability ? 35 : 0;
+        score += capabilityScore;
+        breakdown.capability = { label: "تطابق قابلیت", value: capabilityScore, max: 35 };
+
+        const hasFaNotes = !!(provider.notes_fa || provider.free_tier.notes_fa);
+        const isIranAccessible = iranAccessibleStatuses.includes(provider.iran_access.status);
+        let langScore = 0;
+        if (filters.language === "persian" && hasFaNotes && isIranAccessible) {
+          langScore = 15;
+        } else if (filters.language === "persian" && hasFaNotes) {
+          langScore = 5;
+        } else if (filters.language === "multilingual") {
+          langScore = 8;
+        } else {
+          langScore = 3;
+        }
+        score += langScore;
+        breakdown.language = { label: "پشتیبانی زبان", value: langScore, max: 15 };
+
+        let budgetScore = 0;
+        if (filters.budget === "no-card") {
+          if (provider.free_tier.requires_payment_method === false) budgetScore = 20;
+          else if (provider.free_tier.requires_payment_method === null) budgetScore = 10;
+          else budgetScore = 0;
+        } else if (filters.budget === "free-only") {
+          if (provider.free_tier.type === "free_models" || provider.free_tier.type === "permanent_allowance") budgetScore = 15;
+          else budgetScore = 5;
+        } else {
+          budgetScore = 5;
+        }
+        score += budgetScore;
+        breakdown.budget = { label: "بودجه", value: budgetScore, max: 20 };
+
+        let latencyScore = 0;
+        const rpm = maxRpm(provider);
+        if (filters.latency === "critical") {
+          latencyScore = Math.min(15, Math.round(rpm / 40));
+        } else if (filters.latency === "important") {
+          latencyScore = Math.min(10, Math.round(rpm / 60));
+        } else {
+          latencyScore = rpm > 0 ? 3 : 0;
+        }
+        score += latencyScore;
+        breakdown.latency = { label: "سرعت", value: latencyScore, max: 15, rpm };
+
+        let regionScore = 0;
+        const status = provider.iran_access.status;
+        if (filters.region === "iran") {
+          if (status === "verified_working") regionScore = 30;
+          else if (status === "verified_working_vpn" || status === "direct_blocked_vpn_working") regionScore = 10;
+          else if (status === "intermittent") regionScore = 8;
+          else if (iranScorePenalties.includes(status)) regionScore = -30;
+          else regionScore = 0;
+        } else if (filters.region === "iran-vpn") {
+          if (status === "verified_working" || status === "verified_working_vpn" || status === "direct_blocked_vpn_working") regionScore = 15;
+          else if (status === "intermittent") regionScore = 10;
+          else if (iranScorePenalties.includes(status)) regionScore = -15;
+          else regionScore = 5;
+        } else {
+          if (status !== "unknown" && !iranScorePenalties.includes(status)) regionScore = 5;
+          else if (iranScorePenalties.includes(status)) regionScore = -5;
+          else regionScore = 0;
+        }
+        score += regionScore;
+        breakdown.region = { label: "منطقه", value: regionScore, max: 30 };
+
+        let penaltyScore = 0;
+        if (provider.service_type === "community_gateway") penaltyScore = -15;
+        else if (provider.service_type === "session_bridge") penaltyScore = -25;
+        if (status === "unknown") penaltyScore += -5;
+        score += penaltyScore;
+        breakdown.penalty = { label: "جریمه", value: penaltyScore, max: 0 };
+
+        return { score, breakdown };
+      }
+
+      function renderResults(results, filters) {
+        if (results.length === 0) {
+          elements.results.innerHTML = "";
+          elements.status.hidden = true;
+          elements.empty.hidden = false;
+          return;
+        }
+
+        elements.empty.hidden = true;
+        elements.status.hidden = false;
+        elements.statusText.textContent = `${results.length} مورد از ${providers.length} ارائه‌دهنده — ${filters.usecase === "chat" ? "چت" : filters.usecase === "coding" ? "کدنویسی" : filters.usecase === "reasoning" ? "استدلال" : "Embedding"} · ${filters.budget === "no-card" ? "بدون کارت" : filters.budget === "free-only" ? "فقط رایگان" : "هر نوع"} · ${filters.region === "iran" ? "ایران مستقیم" : filters.region === "iran-vpn" ? "ایران با VPN" : "هر منطقه"}`;
+
+        const cards = results.map(({ provider, score, breakdown }, index) => {
+          const card = document.createElement("div");
+          card.className = "finder-card";
+
+          const statusStyle = provider.iran_access.status === "verified_working" ? "background:#065f46;color:#fff" : "";
+
+          card.innerHTML = `
+            <div class="finder-card-header">
+              <div class="finder-rank">${index + 1}</div>
+              <div class="finder-card-title">
+                <h3>${provider.name}</h3>
+                <span class="finder-id">${provider.id} · ${serviceLabels[provider.service_type] ?? provider.service_type}</span>
+              </div>
+              <div class="finder-total-score">
+                <strong>${score}</strong>
+                <small>از ۱۳۰</small>
+              </div>
+            </div>
+            <div class="finder-breakdown">
+              ${Object.entries(breakdown).map(([key, b]) => {
+                const cls = b.value > 0 ? "positive" : b.value < 0 ? "negative" : "";
+                return `<div class="finder-breakdown-item"><span class="label">${b.label}</span><span class="value ${cls}">${b.value > 0 ? "+" : ""}${b.value}</span></div>`;
+              }).join("")}
+            </div>
+            <div class="finder-card-extra">
+              <span class="access-badge" style="${statusStyle}">${accessEmoji[provider.iran_access.status] ?? ""} ${accessLabels[provider.iran_access.status] ?? provider.iran_access.status}</span>
+              <span class="limit-label">${limitText(provider)}</span>
+              ${isStale(provider) ? '<span class="freshness-badge stale" style="font-size:11px;padding:2px 8px">نیازمند بررسی</span>' : ""}
+            </div>
+            <div class="finder-card-actions">
+              <a class="finder-detail-link" href="../providers/${provider.id}/">جزئیات و شواهد</a>
+              <a class="finder-docs-link" href="${provider.docs}" target="_blank" rel="noopener noreferrer">مستندات</a>
+              ${provider.iran_access.evidence?.length ? `<a class="finder-evidence-link" href="../providers/${provider.id}/#evidence">${provider.iran_access.evidence.length} شاهد</a>` : ""}
+            </div>
+          `;
+          return card;
+        });
+
+        elements.results.replaceChildren(...cards);
+      }
+
+      function limitText(provider) {
+        const first = provider.free_tier.limits[0];
+        if (!first) return "وابسته به مدل/حساب";
+        const values = [];
+        if (first.rpm != null) values.push(`${first.rpm.toLocaleString("en-US")} RPM`);
+        if (first.rph != null) values.push(`${first.rph.toLocaleString("en-US")} RPH`);
+        if (first.rpd != null) values.push(`${first.rpd.toLocaleString("en-US")} RPD`);
+        if (first.tpm != null) values.push(`${first.tpm.toLocaleString("en-US")} TPM`);
+        if (first.daily_units != null) values.push(`${first.daily_units.toLocaleString("en-US")} ${first.unit_name ?? "unit"}/day`);
+        if (first.monthly_credit_usd != null) values.push(`$${first.monthly_credit_usd}/month`);
+        if (first.monthly_requests != null) values.push(`${first.monthly_requests.toLocaleString("en-US")} request/month`);
+        return values.slice(0, 2).join(" · ") || "مدل‌محور";
+      }
+
+      function getFilters() {
+        return {
+          usecase: elements.usecase.value,
+          language: elements.language.value,
+          budget: elements.budget.value,
+          latency: elements.latency.value,
+          region: elements.region.value
+        };
+      }
+
+      function runFinder() {
+        const filters = getFilters();
+        const scored = providers.map((provider) => {
+          const { score, breakdown } = scoreProvider(provider, filters);
+          return { provider, score, breakdown };
+        });
+        scored.sort((a, b) => b.score - a.score || a.provider.name.localeCompare(b.provider.name, "en"));
+        const top = scored.slice(0, 5);
+        renderResults(top, filters);
+      }
+
+      function setupTheme() {
+        const stored = localStorage.getItem("theme");
+        const preferred = matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+        const current = stored || preferred;
+        document.documentElement.dataset.theme = current;
+        const toggle = elements.themeToggle;
+        const isDark = current === "dark";
+        toggle.setAttribute("aria-pressed", String(isDark));
+        toggle.setAttribute("aria-label", isDark ? "تغییر به پوسته روشن" : "تغییر به پوسته تاریک");
+        toggle.addEventListener("click", () => {
+          const next = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
+          document.documentElement.dataset.theme = next;
+          localStorage.setItem("theme", next);
+          const nextIsDark = next === "dark";
+          toggle.setAttribute("aria-pressed", String(nextIsDark));
+          toggle.setAttribute("aria-label", nextIsDark ? "تغییر به پوسته روشن" : "تغییر به پوسته تاریک");
+        });
+      }
+
+      function loadUrlFilters() {
+        const params = new URLSearchParams(location.search);
+        if (params.has("usecase")) elements.usecase.value = params.get("usecase");
+        if (params.has("language")) elements.language.value = params.get("language");
+        if (params.has("budget")) elements.budget.value = params.get("budget");
+        if (params.has("latency")) elements.latency.value = params.get("latency");
+        if (params.has("region")) elements.region.value = params.get("region");
+      }
+
+      function updateUrl(filters) {
+        const params = new URLSearchParams();
+        if (filters.usecase !== "chat") params.set("usecase", filters.usecase);
+        if (filters.language !== "persian") params.set("language", filters.language);
+        if (filters.budget !== "no-card") params.set("budget", filters.budget);
+        if (filters.latency !== "low") params.set("latency", filters.latency);
+        if (filters.region !== "iran") params.set("region", filters.region);
+        history.replaceState(null, "", `${location.pathname}${params.size ? `?${params}` : ""}${location.hash}`);
+      }
+
+      function onFind(event) {
+        event.preventDefault();
+        const filters = getFilters();
+        updateUrl(filters);
+        runFinder();
+        if (typeof window.plausible === "function") {
+          window.plausible("api_finder_search", {
+            props: {
+              usecase: filters.usecase,
+              language: filters.language,
+              budget: filters.budget,
+              latency: filters.latency,
+              region: filters.region
+            }
+          });
+        }
+      }
+
+      async function init() {
+        setupTheme();
+        loadUrlFilters();
+
+        elements.form.addEventListener("submit", onFind);
+        elements.reset.addEventListener("click", () => {
+          elements.usecase.value = "chat";
+          elements.language.value = "persian";
+          elements.budget.value = "no-card";
+          elements.latency.value = "low";
+          elements.region.value = "iran";
+          history.replaceState(null, "", location.pathname);
+          elements.results.innerHTML = "";
+          elements.status.hidden = true;
+          elements.empty.hidden = true;
+        });
+
+        try {
+          elements.loading.hidden = false;
+          const response = await fetch("../catalog.json", { cache: "no-cache" });
+          if (!response.ok) throw new Error(`HTTP ${response.status}`);
+          const catalog = await response.json();
+          providers = catalog.providers;
+          elements.loading.hidden = true;
+
+          if (location.search.includes("usecase=") || location.search.includes("budget=") || location.search.includes("region=")) {
+            runFinder();
+          }
+        } catch (err) {
+          console.error(err);
+          elements.loading.hidden = true;
+          elements.error.hidden = false;
+        }
+      }
+
+      init();
+    </script>
+    <script defer data-domain="llm.persiantoolbox.ir" src="../plausible.js"></script>
+  </body>
+</html>

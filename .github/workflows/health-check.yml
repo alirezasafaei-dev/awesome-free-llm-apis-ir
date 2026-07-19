@@ -1,0 +1,104 @@
+name: API health check
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 5 * * 4"
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: api-health-check
+  cancel-in-progress: false
+
+jobs:
+  health:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.2.1
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.3.0
+        with:
+          node-version: 22
+      - run: npm ci
+
+      - name: Check API health
+        id: health
+        shell: bash
+        run: |
+          set +e
+          npm run check:api-health > api-health-report.md 2>&1
+          code=$?
+          cat api-health-report.md
+          if [ "$code" -ne 0 ]; then
+            echo "down=true" >> "$GITHUB_OUTPUT"
+          fi
+          exit 0
+
+      - name: Check links
+        id: links
+        shell: bash
+        run: |
+          set +e
+          npm run check:links > link-check-report.md 2>&1
+          code=$?
+          cat link-check-report.md
+          if [ "$code" -ne 0 ]; then
+            echo "broken=true" >> "$GITHUB_OUTPUT"
+          fi
+          exit 0
+
+      - name: Build site for SEO check
+        run: npm run site:build
+
+      - name: Check SEO opportunities
+        id: seo
+        shell: bash
+        run: |
+          set +e
+          npm run check:seo > seo-report.md 2>&1
+          code=$?
+          cat seo-report.md
+          if [ "$code" -ne 0 ]; then
+            echo "issues=true" >> "$GITHUB_OUTPUT"
+          fi
+          exit 0
+
+      - name: Create or update health report issue
+        if: steps.health.outputs.down == 'true' || steps.links.outputs.broken == 'true' || steps.seo.outputs.issues == 'true'
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7.1.0
+        with:
+          script: |
+            const fs = require('fs');
+            const marker = '<!-- automated-api-health-check -->';
+            const parts = [];
+
+            if (fs.existsSync('api-health-report.md')) {
+              parts.push('## API Health', '', fs.readFileSync('api-health-report.md', 'utf8'), '');
+            }
+            if (fs.existsSync('link-check-report.md')) {
+              parts.push('## Link Check', '', fs.readFileSync('link-check-report.md', 'utf8'), '');
+            }
+            if (fs.existsSync('seo-report.md')) {
+              parts.push('## SEO Opportunities', '', fs.readFileSync('seo-report.md', 'utf8'), '');
+            }
+
+            const body = `${marker}\n# Health Check Report\n\n${parts.join('\n')}\n\nThis issue is updated automatically by the weekly health check workflow.`;
+            const q = `repo:${context.repo.owner}/${context.repo.repo} is:issue is:open in:body "${marker}"`;
+            const found = await github.rest.search.issuesAndPullRequests({ q, per_page: 1 });
+            if (found.data.items.length) {
+              await github.rest.issues.update({
+                ...context.repo,
+                issue_number: found.data.items[0].number,
+                title: '[Maintenance] Weekly health check report',
+                body
+              });
+            } else {
+              await github.rest.issues.create({
+                ...context.repo,
+                title: '[Maintenance] Weekly health check report',
+                body
+              });
+            }

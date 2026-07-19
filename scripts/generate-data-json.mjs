@@ -3,12 +3,20 @@ import { join } from "node:path";
 import process from "node:process";
 
 const PROVIDERS_DIR = join(import.meta.dirname, "..", "data", "providers");
+const HEALTH_FILE = join(import.meta.dirname, "..", "data", "api-health.json");
 const OUTPUT = join(import.meta.dirname, "..", "data.json");
 
 const checkFlag = process.argv.includes("--check");
 
 const files = readdirSync(PROVIDERS_DIR).filter((f) => f.endsWith(".json")).sort();
 const providers = files.map((f) => JSON.parse(readFileSync(join(PROVIDERS_DIR, f), "utf8")));
+
+let healthData = null;
+try {
+  healthData = JSON.parse(readFileSync(HEALTH_FILE, "utf8"));
+} catch {
+  // api-health.json may not exist yet during bootstrap
+}
 
 const lastUpdated = providers
   .map((p) => p.verification.last_checked)
@@ -23,6 +31,13 @@ const iranLabels = {
   officially_unsupported: "🚫 پشتیبانی‌نشده رسمی",
   unknown: "❔ نامشخص"
 };
+
+const healthMap = {};
+if (healthData) {
+  for (const entry of healthData.entries) {
+    healthMap[entry.provider_id] = entry;
+  }
+}
 
 const output = {
   lastUpdated,
@@ -63,7 +78,8 @@ const output = {
         level: p.verification?.level,
         lastChecked: p.verification?.last_checked,
         staleAfterDays: p.verification?.stale_after_days
-      }
+      },
+      health: healthMap[p.id] || null
     };
   })
 };

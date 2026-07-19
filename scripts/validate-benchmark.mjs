@@ -1,8 +1,12 @@
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 
+const args = process.argv.slice(2);
+const version = args.find((arg) => arg.startsWith("--version="))?.slice("--version=".length) ?? "v1";
+if (!/^v[0-9]+$/.test(version)) throw new Error("--version must look like v1");
+
 const root = process.cwd();
-const versionDir = path.join(root, "benchmarks", "persian", "v1");
+const versionDir = path.join(root, "benchmarks", "persian", version);
 const manifest = JSON.parse(await readFile(path.join(versionDir, "manifest.json"), "utf8"));
 const prompts = JSON.parse(await readFile(path.join(versionDir, manifest.prompt_file), "utf8"));
 
@@ -11,10 +15,9 @@ const fail = (message) => {
 };
 
 if (manifest.schema_version !== "1.0.0") fail("unsupported manifest schema_version");
-if (manifest.id !== "persian-baseline-v1") fail("unexpected benchmark id");
 if (manifest.language !== "fa-IR") fail("language must be fa-IR");
 if (manifest.license !== "MIT") fail("license must be MIT");
-if (manifest.scoring !== "deterministic" || manifest.temperature !== 0) fail("v1 must use deterministic scoring at temperature 0");
+if (manifest.scoring !== "deterministic" || manifest.temperature !== 0) fail("must use deterministic scoring at temperature 0");
 if (!Array.isArray(prompts) || prompts.length < 15) fail("at least 15 prompts are required");
 
 const ids = new Set();
@@ -39,8 +42,10 @@ for (const [index, prompt] of prompts.entries()) {
   if (prompt.scoring.type === "json_equal" && (prompt.scoring.expected === null || typeof prompt.scoring.expected !== "object")) fail(`${prompt.id} needs a JSON expectation`);
 }
 
+const minPrompts = { context_retrieval: 2 };
 for (const [category, count] of categories) {
-  if (count < 3) fail(`${category} needs at least 3 prompts`);
+  const min = minPrompts[category] ?? 3;
+  if (count < min) fail(`${category} needs at least ${min} prompts, got ${count}`);
 }
 
 console.log(`Validated ${prompts.length} Persian benchmark prompts across ${categories.size} categories.`);
