@@ -25,6 +25,30 @@ const TRANSLATION_MAP = {
   "use-free-llm-api-nodejs": {
     fa: "/guides/use-free-llm-api-nodejs/",
     en: "/guides/en/en-use-free-llm-api-nodejs/"
+  },
+  "free-ai-api": {
+    fa: "/guides/free-ai-api/",
+    en: "/guides/en/en-free-ai-api/"
+  },
+  "free-llm-api": {
+    fa: "/guides/free-llm-api/",
+    en: "/guides/en/en-free-llm-api/"
+  },
+  "chatgpt-api-alternative": {
+    fa: "/guides/chatgpt-api-alternative/",
+    en: "/guides/en/en-chatgpt-api-alternative/"
+  },
+  "openai-api-alternative": {
+    fa: "/guides/openai-api-alternative/",
+    en: "/guides/en/en-openai-api-alternative/"
+  },
+  "ai-api-iran": {
+    fa: "/guides/ai-api-iran/",
+    en: "/guides/en/en-ai-api-iran/"
+  },
+  "free-gpt-api-no-credit-card": {
+    fa: "/guides/free-gpt-api-no-credit-card/",
+    en: "/guides/en/en-free-gpt-api-no-credit-card/"
   }
 };
 
