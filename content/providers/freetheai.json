@@ -1,0 +1,51 @@
+{
+  "schema_version": "1.0.0",
+  "provider_id": "freetheai",
+  "intent_fa": "FreeTheAI یک Community Gateway سازگار با OpenAI است که دسترسی به مدل‌های پویا را با ثبت‌نام Discord و Tierهای مبتنی بر فعالیت اجتماعی فراهم می‌کند. این سرویس Provider اصلی مدل نیست و availability، routing، محدودیت و سیاست‌های آن می‌توانند سریع‌تر تغییر کنند. Evidence فعلی ایران فقط پاسخ موفق Health endpoint را ثبت کرده و درخواست مدل با کلید معتبر هنوز تأیید نشده است.",
+  "signup_steps_fa": [
+    "از سرور Discord رسمی پروژه وارد شوید و فرمان `/signup` را فقط در کانال یا Bot رسمی اجرا کنید. کلید دریافتی را در پیام عمومی بازنشر نکنید و به Botها یا لینک‌های غیررسمی اعتماد نکنید.",
+    "API Key را فقط در FREETHEAI_API_KEY یا secret manager نگهداری کنید. برای حفظ Tier رایگان، شرایط check-in روزانه و محدودیت حساب را از مستندات فعلی بررسی کنید؛ اتوماسیون برخلاف قوانین جامعه انجام ندهید.",
+    "پیش از workload، فهرست `/models` و ظرفیت همان لحظه را بخوانید و یک درخواست کوتاه بفرستید. مدل‌های پشت alias، queue و Provider بالادستی پویا هستند و پاسخ Health endpoint موفقیت inference را ثابت نمی‌کند."
+  ],
+  "first_request": {
+    "language": "curl",
+    "code": "curl https://api.freetheai.xyz/v1/chat/completions \\\n  -H \"Authorization: Bearer $FREETHEAI_API_KEY\" \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\"model\":\"bbg/moonshotai/Kimi-K2.5\",\"messages\":[{\"role\":\"user\",\"content\":\"سلام! در یک جمله پاسخ بده.\"}],\"stream\":false}'",
+    "notes_fa": "مدل نمونه از مستندات جاری پروژه گرفته شده، اما routing و فهرست مدل‌ها پویا هستند. ابتدا `/models` را بررسی کنید و از ارسال کلید، داده شخصی یا محتوای محرمانه در prompt خودداری کنید.",
+    "source_url": "https://github.com/vibheksoni/free-ai",
+    "checked_at": "2026-07-16"
+  },
+  "common_errors": [
+    {
+      "code": "401/403",
+      "title_fa": "کلید Discord معتبر نیست یا check-in حساب منقضی شده است",
+      "resolution_fa": "FREETHEAI_API_KEY، فرمان signup و وضعیت check-in را فقط از مسیر رسمی بررسی کنید. کلید افشاشده را تعویض کنید و هرگز Credential را در issue یا پیام عمومی منتشر نکنید.",
+      "source_url": "https://freetheai.xyz/docs",
+      "checked_at": "2026-07-16"
+    },
+    {
+      "code": "429",
+      "title_fa": "RPM، سقف روزانه یا concurrency Tier پر شده است",
+      "resolution_fa": "Tier فعلی، تعداد پاسخ‌های موفق روزانه و concurrency را بررسی کنید، درخواست‌ها را صف‌بندی و retry را با backoff اجرا کنید. فعالیت مصنوعی برای افزایش Tier یا دورزدن محدودیت انجام ندهید.",
+      "source_url": "https://github.com/vibheksoni/free-ai",
+      "checked_at": "2026-07-16"
+    },
+    {
+      "code": "5xx/upstream",
+      "title_fa": "Provider بالادستی یا مدل پویا موقتاً در دسترس نیست",
+      "resolution_fa": "فهرست مدل‌ها و وضعیت سرویس را دوباره بخوانید، پس از تأخیر محدود مدل دیگری انتخاب کنید و loop بی‌پایان retry نسازید. خطای upstream را به‌عنوان تضمین خرابی دائمی یک Provider اصلی گزارش نکنید.",
+      "source_url": "https://freetheai.xyz/docs",
+      "checked_at": "2026-07-16"
+    }
+  ],
+  "when_not_to_use_fa": [
+    "زمانی که پروژه به SLA، مدل ثابت، ظرفیت رزروشده یا پشتیبانی قراردادی نیاز دارد؛ این یک Community Gateway با routing و ظرفیت پویاست.",
+    "زمانی که prompt شامل داده شخصی، محرمانه، کلید، اسناد سازمانی یا کد مالکیتی حساس است؛ حتی با ادعای عدم ذخیره متن، metadata و Provider بالادستی باید جداگانه ارزیابی شوند.",
+    "زمانی که دسترسی عملی مستقیم از ایران باید از قبل اثبات شده باشد؛ Evidence فعلی فقط Health endpoint را پوشش می‌دهد و inference با کلید Discord هنوز ثبت نشده است."
+  ],
+  "related_guides": [
+    "openai-sdk-custom-base-url",
+    "free-tier-vs-trial-vs-credit",
+    "free-coding-api"
+  ],
+  "last_reviewed": "2026-07-16"
+}
