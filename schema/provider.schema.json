@@ -40,7 +40,7 @@
       "type": "array",
       "minItems": 1,
       "uniqueItems": true,
-      "items": { "enum": ["chat", "text_generation", "reasoning", "embeddings", "tool_calling", "structured_output"] }
+      "items": { "enum": ["chat", "text_generation", "reasoning", "embeddings", "tool_calling", "structured_output", "image_generation", "json_mode"] }
     },
     "free_tier": {
       "type": "object",

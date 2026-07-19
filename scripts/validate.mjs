@@ -5,7 +5,7 @@ import process from "node:process";
 const root = process.cwd();
 const providersDir = path.join(root, "data", "providers");
 const allowed = {
-  capabilities: new Set(["chat", "text_generation", "reasoning", "embeddings", "tool_calling", "structured_output"]),
+  capabilities: new Set(["chat", "text_generation", "reasoning", "embeddings", "tool_calling", "structured_output", "image_generation", "json_mode"]),
   freeStatus: new Set(["active", "limited", "trial", "none", "unknown"]),
   freeType: new Set(["permanent_allowance", "free_models", "monthly_credit", "trial", "unknown"]),
   serviceType: new Set(["official_provider", "official_gateway", "community_gateway", "session_bridge", "self_hosted"]),
