@@ -1,0 +1,217 @@
+name: Post-launch operations
+
+on:
+  workflow_dispatch:
+    inputs:
+      target:
+        description: Deployment target to smoke-test
+        required: true
+        default: all
+        type: choice
+        options:
+          - all
+          - global
+          - iran
+          - pages
+      expected_revision:
+        description: Optional deployed Git SHA to require
+        required: false
+        type: string
+  schedule:
+    - cron: "37 5 * * 4"
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: post-launch-operations
+  cancel-in-progress: false
+
+jobs:
+  operations:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    env:
+      SMOKE_TARGET: ${{ github.event.inputs.target || 'all' }}
+      EXPECTED_REVISION_INPUT: ${{ github.event.inputs.expected_revision || '' }}
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.2.1
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.3.0
+        with:
+          node-version: 22
+      - run: npm ci
+
+      - name: Validate production smoke checker
+        run: npm run production:smoke:test
+
+      - name: Build and regression gate
+        id: regression
+        shell: bash
+        run: |
+          set +e
+          {
+            npm run site:build &&
+            npm run site:check &&
+            npm run check:regression
+          } > regression-report.md 2>&1
+          code=$?
+          cat regression-report.md
+          if [ "$code" -ne 0 ]; then
+            echo "failed=true" >> "$GITHUB_OUTPUT"
+          fi
+          exit 0
+
+      - name: Smoke-test production deployments
+        id: smoke
+        shell: bash
+        run: |
+          set +e
+          args=("--report=production-smoke-report.json")
+          if [ -n "$EXPECTED_REVISION_INPUT" ]; then
+            args+=("--expected-revision=$EXPECTED_REVISION_INPUT")
+          fi
+          if [ "$SMOKE_TARGET" != "all" ]; then
+            args+=("--target=$SMOKE_TARGET")
+          fi
+          npm run production:smoke -- "${args[@]}" > production-smoke-report.md 2>&1
+          code=$?
+          cat production-smoke-report.md
+          if [ "$code" -ne 0 ]; then
+            echo "failed=true" >> "$GITHUB_OUTPUT"
+          fi
+          exit 0
+
+      - name: Check provider endpoint health
+        id: health
+        shell: bash
+        run: |
+          set +e
+          npm run check:api-health > api-health-report.md 2>&1
+          code=$?
+          cat api-health-report.md
+          if [ "$code" -ne 0 ]; then
+            echo "failed=true" >> "$GITHUB_OUTPUT"
+          fi
+          exit 0
+
+      - name: Check provider documentation drift
+        id: drift
+        shell: bash
+        run: |
+          set +e
+          npm run check:drift > provider-drift-report.md 2>&1
+          code=$?
+          cat provider-drift-report.md
+          if [ "$code" -ne 0 ]; then
+            echo "failed=true" >> "$GITHUB_OUTPUT"
+          fi
+          exit 0
+
+      - name: Run strict SEO audit
+        id: seo
+        shell: bash
+        run: |
+          set +e
+          npm run check:seo -- --strict > seo-report.md 2>&1
+          code=$?
+          cat seo-report.md
+          if [ "$code" -ne 0 ]; then
+            echo "failed=true" >> "$GITHUB_OUTPUT"
+          fi
+          exit 0
+
+      - name: Publish job summary
+        if: always()
+        shell: bash
+        run: |
+          {
+            echo "# Post-launch operations"
+            echo
+            echo "| Gate | Result |"
+            echo "|---|---|"
+            echo "| Build and regression | ${{ steps.regression.outputs.failed == 'true' && 'FAIL' || 'PASS' }} |"
+            echo "| Production smoke | ${{ steps.smoke.outputs.failed == 'true' && 'FAIL' || 'PASS' }} |"
+            echo "| Provider health | ${{ steps.health.outputs.failed == 'true' && 'FAIL' || 'PASS' }} |"
+            echo "| Provider drift | ${{ steps.drift.outputs.failed == 'true' && 'FAIL' || 'PASS' }} |"
+            echo "| Strict SEO | ${{ steps.seo.outputs.failed == 'true' && 'FAIL' || 'PASS' }} |"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Create, update or close operations incident
+        if: always()
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7.1.0
+        env:
+          REGRESSION_FAILED: ${{ steps.regression.outputs.failed || 'false' }}
+          SMOKE_FAILED: ${{ steps.smoke.outputs.failed || 'false' }}
+          HEALTH_FAILED: ${{ steps.health.outputs.failed || 'false' }}
+          DRIFT_FAILED: ${{ steps.drift.outputs.failed || 'false' }}
+          SEO_FAILED: ${{ steps.seo.outputs.failed || 'false' }}
+        with:
+          script: |
+            const fs = require('fs');
+            const marker = '<!-- automated-post-launch-operations -->';
+            const failed = [
+              process.env.REGRESSION_FAILED,
+              process.env.SMOKE_FAILED,
+              process.env.HEALTH_FAILED,
+              process.env.DRIFT_FAILED,
+              process.env.SEO_FAILED
+            ].includes('true');
+            const files = [
+              ['Build and regression', 'regression-report.md'],
+              ['Production smoke', 'production-smoke-report.md'],
+              ['Provider health', 'api-health-report.md'],
+              ['Provider drift', 'provider-drift-report.md'],
+              ['Strict SEO', 'seo-report.md']
+            ];
+            const clip = (value, max = 12000) => value.length > max ? `${value.slice(0, max)}\n\n[truncated]` : value;
+            const sections = files.map(([title, file]) => {
+              const report = fs.existsSync(file) ? clip(fs.readFileSync(file, 'utf8')) : 'Report was not produced.';
+              return `## ${title}\n\n\`\`\`text\n${report}\n\`\`\``;
+            });
+            const q = `repo:${context.repo.owner}/${context.repo.repo} is:issue is:open in:body "${marker}"`;
+            const found = await github.rest.search.issuesAndPullRequests({ q, per_page: 1 });
+            const existing = found.data.items[0];
+
+            if (failed) {
+              const body = `${marker}\n# Post-launch operations incident\n\nRun: ${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}\nCommit: \`${context.sha}\`\n\n${sections.join('\n\n')}\n\nGenerated automatically. Treat reachability, signup, credential issuance and successful inference as separate evidence layers.`;
+              if (existing) {
+                await github.rest.issues.update({
+                  ...context.repo,
+                  issue_number: existing.number,
+                  title: '[Maintenance] Post-launch operations incident',
+                  body
+                });
+              } else {
+                await github.rest.issues.create({
+                  ...context.repo,
+                  title: '[Maintenance] Post-launch operations incident',
+                  body
+                });
+              }
+            } else if (existing) {
+              await github.rest.issues.createComment({
+                ...context.repo,
+                issue_number: existing.number,
+                body: `Recovered on run ${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}. All post-launch gates passed.`
+              });
+              await github.rest.issues.update({
+                ...context.repo,
+                issue_number: existing.number,
+                state: 'closed',
+                state_reason: 'completed'
+              });
+            }
+
+      - name: Enforce gate result
+        if: always()
+        shell: bash
+        run: |
+          if [ "${{ steps.regression.outputs.failed }}" = "true" ] || \
+             [ "${{ steps.smoke.outputs.failed }}" = "true" ] || \
+             [ "${{ steps.health.outputs.failed }}" = "true" ] || \
+             [ "${{ steps.drift.outputs.failed }}" = "true" ] || \
+             [ "${{ steps.seo.outputs.failed }}" = "true" ]; then
+            echo "One or more post-launch operations gates failed."
+            exit 1
+          fi
