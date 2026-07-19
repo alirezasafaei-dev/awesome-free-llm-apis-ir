@@ -49,6 +49,18 @@
         "level": "live_verified",
         "lastChecked": "2026-07-16",
         "staleAfterDays": 30
+      },
+      "health": {
+        "provider_id": "agnes-ai",
+        "last_verification_date": null,
+        "endpoint_status": "unknown",
+        "endpoint_tested": null,
+        "documentation_change_detected": false,
+        "documentation_last_checked": null,
+        "broken_links": [],
+        "latency_ms": null,
+        "notes": "Initial entry — awaiting first health check",
+        "checked_by": "system"
       }
     },
     {
@@ -96,6 +108,18 @@
         "level": "live_verified",
         "lastChecked": "2026-07-16",
         "staleAfterDays": 30
+      },
+      "health": {
+        "provider_id": "aion-labs",
+        "last_verification_date": null,
+        "endpoint_status": "unknown",
+        "endpoint_tested": null,
+        "documentation_change_detected": false,
+        "documentation_last_checked": null,
+        "broken_links": [],
+        "latency_ms": null,
+        "notes": "Initial entry — awaiting first health check",
+        "checked_by": "system"
       }
     },
     {
@@ -143,6 +167,18 @@
         "level": "live_verified",
         "lastChecked": "2026-07-18",
         "staleAfterDays": 30
+      },
+      "health": {
+        "provider_id": "cerebras",
+        "last_verification_date": null,
+        "endpoint_status": "unknown",
+        "endpoint_tested": null,
+        "documentation_change_detected": false,
+        "documentation_last_checked": null,
+        "broken_links": [],
+        "latency_ms": null,
+        "notes": "Initial entry — awaiting first health check",
+        "checked_by": "system"
       }
     },
     {
@@ -188,6 +224,18 @@
         "level": "live_verified",
         "lastChecked": "2026-07-16",
         "staleAfterDays": 30
+      },
+      "health": {
+        "provider_id": "cloudflare-workers-ai",
+        "last_verification_date": null,
+        "endpoint_status": "unknown",
+        "endpoint_tested": null,
+        "documentation_change_detected": false,
+        "documentation_last_checked": null,
+        "broken_links": [],
+        "latency_ms": null,
+        "notes": "Initial entry — awaiting first health check",
+        "checked_by": "system"
       }
     },
     {
@@ -234,6 +282,18 @@
         "level": "live_verified",
         "lastChecked": "2026-07-16",
         "staleAfterDays": 30
+      },
+      "health": {
+        "provider_id": "cohere",
+        "last_verification_date": null,
+        "endpoint_status": "unknown",
+        "endpoint_tested": null,
+        "documentation_change_detected": false,
+        "documentation_last_checked": null,
+        "broken_links": [],
+        "latency_ms": null,
+        "notes": "Initial entry — awaiting first health check",
+        "checked_by": "system"
       }
     },
     {
@@ -284,6 +344,18 @@
         "level": "live_verified",
         "lastChecked": "2026-07-16",
         "staleAfterDays": 30
+      },
+      "health": {
+        "provider_id": "fireworks-ai",
+        "last_verification_date": null,
+        "endpoint_status": "unknown",
+        "endpoint_tested": null,
+        "documentation_change_detected": false,
+        "documentation_last_checked": null,
+        "broken_links": [],
+        "latency_ms": null,
+        "notes": "Initial entry — awaiting first health check",
+        "checked_by": "system"
       }
     },
     {
@@ -327,6 +399,18 @@
         "level": "live_verified",
         "lastChecked": "2026-07-16",
         "staleAfterDays": 14
+      },
+      "health": {
+        "provider_id": "freetheai",
+        "last_verification_date": null,
+        "endpoint_status": "unknown",
+        "endpoint_tested": null,
+        "documentation_change_detected": false,
+        "documentation_last_checked": null,
+        "broken_links": [],
+        "latency_ms": null,
+        "notes": "Initial entry — awaiting first health check",
+        "checked_by": "system"
       }
     },
     {
@@ -371,6 +455,18 @@
         "level": "live_verified",
         "lastChecked": "2026-07-15",
         "staleAfterDays": 30
+      },
+      "health": {
+        "provider_id": "github-models",
+        "last_verification_date": null,
+        "endpoint_status": "unknown",
+        "endpoint_tested": null,
+        "documentation_change_detected": false,
+        "documentation_last_checked": null,
+        "broken_links": [],
+        "latency_ms": null,
+        "notes": "Initial entry — awaiting first health check",
+        "checked_by": "system"
       }
     },
     {
@@ -415,6 +511,18 @@
         "level": "live_verified",
         "lastChecked": "2026-07-16",
         "staleAfterDays": 30
+      },
+      "health": {
+        "provider_id": "google-gemini",
+        "last_verification_date": null,
+        "endpoint_status": "unknown",
+        "endpoint_tested": null,
+        "documentation_change_detected": false,
+        "documentation_last_checked": null,
+        "broken_links": [],
+        "latency_ms": null,
+        "notes": "Initial entry — awaiting first health check",
+        "checked_by": "system"
       }
     },
     {
@@ -462,6 +570,18 @@
         "level": "live_verified",
         "lastChecked": "2026-07-18",
         "staleAfterDays": 30
+      },
+      "health": {
+        "provider_id": "groq",
+        "last_verification_date": null,
+        "endpoint_status": "unknown",
+        "endpoint_tested": null,
+        "documentation_change_detected": false,
+        "documentation_last_checked": null,
+        "broken_links": [],
+        "latency_ms": null,
+        "notes": "Initial entry — awaiting first health check",
+        "checked_by": "system"
       }
     },
     {
@@ -506,6 +626,18 @@
         "level": "live_verified",
         "lastChecked": "2026-07-16",
         "staleAfterDays": 30
+      },
+      "health": {
+        "provider_id": "hugging-face-inference",
+        "last_verification_date": null,
+        "endpoint_status": "unknown",
+        "endpoint_tested": null,
+        "documentation_change_detected": false,
+        "documentation_last_checked": null,
+        "broken_links": [],
+        "latency_ms": null,
+        "notes": "Initial entry — awaiting first health check",
+        "checked_by": "system"
       }
     },
     {
@@ -551,6 +683,18 @@
         "level": "live_verified",
         "lastChecked": "2026-07-16",
         "staleAfterDays": 14
+      },
+      "health": {
+        "provider_id": "kilo-gateway",
+        "last_verification_date": null,
+        "endpoint_status": "unknown",
+        "endpoint_tested": null,
+        "documentation_change_detected": false,
+        "documentation_last_checked": null,
+        "broken_links": [],
+        "latency_ms": null,
+        "notes": "Initial entry — awaiting first health check",
+        "checked_by": "system"
       }
     },
     {
@@ -598,6 +742,18 @@
         "level": "live_verified",
         "lastChecked": "2026-07-16",
         "staleAfterDays": 30
+      },
+      "health": {
+        "provider_id": "llm7-io",
+        "last_verification_date": null,
+        "endpoint_status": "unknown",
+        "endpoint_tested": null,
+        "documentation_change_detected": false,
+        "documentation_last_checked": null,
+        "broken_links": [],
+        "latency_ms": null,
+        "notes": "Initial entry — awaiting first health check",
+        "checked_by": "system"
       }
     },
     {
@@ -644,6 +800,18 @@
         "level": "live_verified",
         "lastChecked": "2026-07-16",
         "staleAfterDays": 30
+      },
+      "health": {
+        "provider_id": "mistral",
+        "last_verification_date": null,
+        "endpoint_status": "unknown",
+        "endpoint_tested": null,
+        "documentation_change_detected": false,
+        "documentation_last_checked": null,
+        "broken_links": [],
+        "latency_ms": null,
+        "notes": "Initial entry — awaiting first health check",
+        "checked_by": "system"
       }
     },
     {
@@ -697,6 +865,18 @@
         "level": "live_verified",
         "lastChecked": "2026-07-16",
         "staleAfterDays": 30
+      },
+      "health": {
+        "provider_id": "modelscope",
+        "last_verification_date": null,
+        "endpoint_status": "unknown",
+        "endpoint_tested": null,
+        "documentation_change_detected": false,
+        "documentation_last_checked": null,
+        "broken_links": [],
+        "latency_ms": null,
+        "notes": "Initial entry — awaiting first health check",
+        "checked_by": "system"
       }
     },
     {
@@ -741,6 +921,18 @@
         "level": "live_verified",
         "lastChecked": "2026-07-16",
         "staleAfterDays": 30
+      },
+      "health": {
+        "provider_id": "nvidia-nim",
+        "last_verification_date": null,
+        "endpoint_status": "unknown",
+        "endpoint_tested": null,
+        "documentation_change_detected": false,
+        "documentation_last_checked": null,
+        "broken_links": [],
+        "latency_ms": null,
+        "notes": "Initial entry — awaiting first health check",
+        "checked_by": "system"
       }
     },
     {
@@ -790,6 +982,18 @@
         "level": "live_verified",
         "lastChecked": "2026-07-16",
         "staleAfterDays": 30
+      },
+      "health": {
+        "provider_id": "opencode-zen",
+        "last_verification_date": null,
+        "endpoint_status": "unknown",
+        "endpoint_tested": null,
+        "documentation_change_detected": false,
+        "documentation_last_checked": null,
+        "broken_links": [],
+        "latency_ms": null,
+        "notes": "Initial entry — awaiting first health check",
+        "checked_by": "system"
       }
     },
     {
@@ -833,6 +1037,18 @@
         "level": "live_verified",
         "lastChecked": "2026-07-16",
         "staleAfterDays": 30
+      },
+      "health": {
+        "provider_id": "openrouter",
+        "last_verification_date": null,
+        "endpoint_status": "unknown",
+        "endpoint_tested": null,
+        "documentation_change_detected": false,
+        "documentation_last_checked": null,
+        "broken_links": [],
+        "latency_ms": null,
+        "notes": "Initial entry — awaiting first health check",
+        "checked_by": "system"
       }
     },
     {
@@ -881,6 +1097,18 @@
         "level": "live_verified",
         "lastChecked": "2026-07-16",
         "staleAfterDays": 30
+      },
+      "health": {
+        "provider_id": "ovhcloud-ai-endpoints",
+        "last_verification_date": null,
+        "endpoint_status": "unknown",
+        "endpoint_tested": null,
+        "documentation_change_detected": false,
+        "documentation_last_checked": null,
+        "broken_links": [],
+        "latency_ms": null,
+        "notes": "Initial entry — awaiting first health check",
+        "checked_by": "system"
       }
     },
     {
@@ -929,6 +1157,18 @@
         "level": "live_verified",
         "lastChecked": "2026-07-16",
         "staleAfterDays": 30
+      },
+      "health": {
+        "provider_id": "sambanova",
+        "last_verification_date": null,
+        "endpoint_status": "unknown",
+        "endpoint_tested": null,
+        "documentation_change_detected": false,
+        "documentation_last_checked": null,
+        "broken_links": [],
+        "latency_ms": null,
+        "notes": "Initial entry — awaiting first health check",
+        "checked_by": "system"
       }
     },
     {
@@ -977,6 +1217,18 @@
         "level": "live_verified",
         "lastChecked": "2026-07-16",
         "staleAfterDays": 30
+      },
+      "health": {
+        "provider_id": "siliconflow",
+        "last_verification_date": null,
+        "endpoint_status": "unknown",
+        "endpoint_tested": null,
+        "documentation_change_detected": false,
+        "documentation_last_checked": null,
+        "broken_links": [],
+        "latency_ms": null,
+        "notes": "Initial entry — awaiting first health check",
+        "checked_by": "system"
       }
     },
     {
@@ -1021,6 +1273,18 @@
         "level": "live_verified",
         "lastChecked": "2026-07-16",
         "staleAfterDays": 30
+      },
+      "health": {
+        "provider_id": "vercel-ai-gateway",
+        "last_verification_date": null,
+        "endpoint_status": "unknown",
+        "endpoint_tested": null,
+        "documentation_change_detected": false,
+        "documentation_last_checked": null,
+        "broken_links": [],
+        "latency_ms": null,
+        "notes": "Initial entry — awaiting first health check",
+        "checked_by": "system"
       }
     }
   ]

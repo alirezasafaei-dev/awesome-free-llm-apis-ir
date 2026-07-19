@@ -1,0 +1,20 @@
+{
+  "schema_version": "1.0.0",
+  "id": "persian-baseline-v2",
+  "title_fa": "بنچمارک جامع فارسی ۲۰۲۶",
+  "title_en": "Comprehensive Persian AI Benchmark 2026",
+  "language": "fa-IR",
+  "license": "MIT",
+  "prompt_file": "prompts.json",
+  "scoring": "deterministic",
+  "temperature": 0,
+  "categories": [
+    "instruction_following",
+    "reading_comprehension",
+    "numeric_reasoning",
+    "structured_output",
+    "persian_text",
+    "translation",
+    "context_retrieval"
+  ]
+}

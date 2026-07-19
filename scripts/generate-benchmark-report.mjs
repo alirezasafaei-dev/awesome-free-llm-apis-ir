@@ -1,0 +1,225 @@
+import { mkdir, readFile, readdir, writeFile } from "node:fs/promises";
+import path from "node:path";
+
+const resultsDir = path.join(process.cwd(), "benchmarks", "results", "local");
+const outputDir = path.join(process.cwd(), ".site-dist", "benchmark");
+
+function escapeHtml(value) {
+  return String(value).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+}
+
+function loadResults(runs) {
+  return runs.map((report) => {
+    const scored = report.results.filter((result) => result.status === "scored");
+    const passed = scored.filter((result) => result.passed).length;
+    const byCategory = {};
+    for (const result of report.results) {
+      const category = result.category;
+      if (!byCategory[category]) byCategory[category] = { passed: 0, scored: 0, total: 0 };
+      byCategory[category].total++;
+      if (result.status === "scored") {
+        byCategory[category].scored++;
+        if (result.passed) byCategory[category].passed++;
+      }
+    }
+    const avgLatency = scored.length
+      ? Number((scored.reduce((sum, result) => sum + result.latency_ms, 0) / scored.length).toFixed(1))
+      : null;
+    return {
+      file: report.run_id,
+      provider: report.provider_id,
+      model: report.model,
+      benchmark: report.benchmark_id,
+      runAt: report.run_at,
+      complete: report.complete,
+      passed,
+      scored: scored.length,
+      total: report.results.length,
+      scorePercent: scored.length ? Number(((passed / scored.length) * 100).toFixed(2)) : 0,
+      errors: report.results.length - scored.length,
+      avgLatency,
+      byCategory
+    };
+  });
+}
+
+function generateHtml(summary) {
+  const sorted = [...summary].sort((a, b) => b.scorePercent - a.scorePercent || (a.avgLatency ?? Infinity) - (b.avgLatency ?? Infinity));
+  const allCategories = [...new Set(summary.flatMap((r) => Object.keys(r.byCategory)))].sort();
+  const rows = sorted.map((run, i) => {
+    const categoryCells = allCategories.map((category) => {
+      const cat = run.byCategory[category];
+      if (!cat) return "<td class=\"na\">—</td>";
+      const pct = cat.scored ? Number(((cat.passed / cat.scored) * 100).toFixed(0)) : 0;
+      return `<td>${cat.passed}/${cat.scored} <small>(${pct}%)</small></td>`;
+    }).join("\n          ");
+    return `
+      <tr>
+        <td>${i + 1}</td>
+        <td><strong>${escapeHtml(run.provider)}</strong></td>
+        <td><code>${escapeHtml(run.model)}</code></td>
+        <td class="score">${run.scorePercent}<small>%</small></td>
+        <td>${run.passed}/${run.scored}</td>
+        <td>${run.avgLatency !== null ? run.avgLatency + "ms" : "—"}</td>
+        <td>${run.complete ? "✓" : "✗"}</td>
+        ${categoryCells}
+      </tr>`;
+  }).join("\n");
+
+  const categoryHeaders = allCategories.map((category) => `<th>${escapeHtml(category)}</th>`).join("\n          ");
+
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI API Benchmark 2026 — Results</title>
+<style>
+  body { font-family: system-ui, -apple-system, sans-serif; max-width: 1200px; margin: 2rem auto; padding: 0 1rem; background: #0d1117; color: #e6edf3; }
+  h1, h2, h3 { color: #f0f6fc; }
+  a { color: #58a6ff; }
+  table { border-collapse: collapse; width: 100%; margin: 1rem 0; font-size: 0.9rem; }
+  th, td { border: 1px solid #30363d; padding: 0.5rem 0.75rem; text-align: left; }
+  th { background: #161b22; color: #8b949e; font-weight: 600; white-space: nowrap; }
+  tr:nth-child(even) { background: #161b22; }
+  tr:hover { background: #1c2128; }
+  .score { font-weight: 700; font-size: 1.1rem; color: #3fb950; }
+  .na { color: #484f58; text-align: center; }
+  small { color: #8b949e; font-weight: 400; }
+  .meta { color: #8b949e; font-size: 0.85rem; }
+  .warn { color: #d29922; }
+  .badge { display: inline-block; background: #1f6feb; color: #fff; padding: 0.15rem 0.5rem; border-radius: 0.25rem; font-size: 0.75rem; }
+  footer { margin-top: 3rem; border-top: 1px solid #30363d; padding-top: 1rem; color: #484f58; font-size: 0.8rem; }
+</style>
+</head>
+<body>
+<h1>AI API Benchmark 2026</h1>
+<p class="meta">Generated from benchmark reports in <code>benchmarks/results/local/</code>.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Provider</th>
+      <th>Model</th>
+      <th>Overall</th>
+      <th>Passed</th>
+      <th>Avg Latency</th>
+      <th>Complete</th>
+      ${categoryHeaders}
+    </tr>
+  </thead>
+  <tbody>
+    ${rows}
+  </tbody>
+</table>
+
+<h2>Raw result files</h2>
+<ul>
+  ${summary.map((run) => `<li><code>${escapeHtml(run.provider)}-${escapeHtml(run.model)}</code> — <span class="meta">${escapeHtml(run.benchmark)}, ${new Date(run.runAt).toISOString().slice(0, 10)}</span> <span class="badge">${run.scorePercent}%</span></li>`).join("\n  ")}
+</ul>
+
+<p class="meta">Runs with incomplete results (✗) should not appear on a leaderboard.</p>
+
+<footer>Generated by <code>generate-benchmark-report.mjs</code> &mdash; ${new Date().toISOString().slice(0, 10)}</footer>
+</body>
+</html>`;
+}
+
+function generateMarkdown(summary) {
+  const sorted = [...summary].sort((a, b) => b.scorePercent - a.scorePercent || (a.avgLatency ?? Infinity) - (b.avgLatency ?? Infinity));
+  const lines = [
+    "# AI API Benchmark 2026 — Results",
+    "",
+    `Generated from benchmark reports in \`benchmarks/results/local/\` on ${new Date().toISOString().slice(0, 10)}.`,
+    "",
+    "## Overall Ranking",
+    "",
+    "| # | Provider | Model | Overall | Passed | Avg Latency | Complete |",
+    "|---|----------|-------|---------|--------|-------------|----------|"
+  ];
+
+  for (const [i, run] of sorted.entries()) {
+    lines.push(`| ${i + 1} | ${run.provider} | \`${run.model}\` | ${run.scorePercent}% | ${run.passed}/${run.scored} | ${run.avgLatency !== null ? run.avgLatency + "ms" : "—"} | ${run.complete ? "✓" : "✗"} |`);
+  }
+
+  lines.push("", "## Per-Category Breakdown", "");
+  const allCategories = [...new Set(summary.flatMap((r) => Object.keys(r.byCategory)))].sort();
+  const header = "| Provider | Model | " + allCategories.join(" | ") + " |";
+  const sep = "|----------|-------|" + allCategories.map(() => "---|").join("");
+  lines.push(header, sep);
+  for (const run of sorted) {
+    const cells = allCategories.map((category) => {
+      const cat = run.byCategory[category];
+      if (!cat) return "—";
+      const pct = cat.scored ? Number(((cat.passed / cat.scored) * 100).toFixed(0)) : 0;
+      return `${cat.passed}/${cat.scored} (${pct}%)`;
+    });
+    lines.push(`| ${run.provider} | \`${run.model}\` | ${cells.join(" | ")} |`);
+  }
+
+  lines.push("", "## Raw result files", "");
+  for (const run of summary) {
+    lines.push(`- \`${run.provider}-${run.model}\` — ${run.benchmark}, ${new Date(run.runAt).toISOString().slice(0, 10)} — **${run.scorePercent}%**`);
+  }
+
+  lines.push("", "---", "", "*Runs with incomplete results (✗) should not appear on a leaderboard.*");
+  return lines.join("\n");
+}
+
+async function main() {
+  let files;
+  try {
+    files = (await readdir(resultsDir)).filter((file) => file.endsWith(".json"));
+  } catch {
+    console.error("No benchmark results found in", resultsDir);
+    process.exit(1);
+  }
+
+  if (!files.length) {
+    console.error("No benchmark result files found.");
+    process.exit(1);
+  }
+
+  const runs = [];
+  for (const file of files) {
+    try {
+      const content = await readFile(path.join(resultsDir, file), "utf8");
+      runs.push(JSON.parse(content));
+    } catch (error) {
+      console.warn(`Skipping ${file}: ${error.message}`);
+    }
+  }
+
+  if (!runs.length) {
+    console.error("No valid benchmark results could be read.");
+    process.exit(1);
+  }
+
+  const summary = loadResults(runs);
+
+  await mkdir(outputDir, { recursive: true });
+
+  const html = generateHtml(summary);
+  await writeFile(path.join(outputDir, "index.html"), html, "utf8");
+  console.log(`Wrote HTML report: ${path.join(outputDir, "index.html")}`);
+
+  const markdown = generateMarkdown(summary);
+  const mdPath = path.join(outputDir, "REPORT.md");
+  await writeFile(mdPath, markdown, "utf8");
+  console.log(`Wrote Markdown report: ${mdPath}`);
+
+  console.log(`Reports generated for ${runs.length} result file(s).`);
+
+  const worst = summary.reduce((min, run) => run.scorePercent < min.scorePercent ? run : min, summary[0]);
+  const best = summary.reduce((max, run) => run.scorePercent > max.scorePercent ? run : max, summary[0]);
+  console.log(`Best: ${best.provider}/${best.model} (${best.scorePercent}%)`);
+  if (worst.scorePercent < best.scorePercent) {
+    console.log(`Worst: ${worst.provider}/${worst.model} (${worst.scorePercent}%)`);
+  }
+}
+
+main().catch((error) => {
+  console.error(error.message);
+  process.exitCode = 1;
+});

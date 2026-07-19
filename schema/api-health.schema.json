@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir/schema/api-health.schema.json",
+  "title": "API Health Record",
+  "description": "Tracks API endpoint health over time for each provider",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "entries"
+  ],
+  "properties": {
+    "schema_version": { "const": "1.0.0" },
+    "entries": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "provider_id",
+          "endpoint_status",
+          "documentation_change_detected",
+          "checked_by"
+        ],
+        "properties": {
+          "provider_id": { "type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$" },
+          "last_verification_date": { "type": ["string", "null"], "format": "date" },
+          "endpoint_status": { "enum": ["operational", "degraded", "down", "unknown"] },
+          "endpoint_tested": { "type": ["string", "null"], "format": "uri" },
+          "documentation_change_detected": { "type": "boolean" },
+          "documentation_last_checked": { "type": ["string", "null"], "format": "date" },
+          "broken_links": {
+            "type": "array",
+            "items": { "type": "string", "format": "uri" }
+          },
+          "latency_ms": { "type": ["integer", "null"], "minimum": 0 },
+          "notes": { "type": ["string", "null"] },
+          "checked_by": { "type": "string" }
+        }
+      }
+    }
+  }
+}

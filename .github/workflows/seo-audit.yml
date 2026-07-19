@@ -1,0 +1,67 @@
+name: SEO audit
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 5 1 * *"
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: seo-audit
+  cancel-in-progress: false
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.2.1
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.3.0
+        with:
+          node-version: 22
+      - run: npm ci
+
+      - name: Build site
+        run: npm run site:build
+
+      - name: Check SEO opportunities
+        id: seo
+        shell: bash
+        run: |
+          set +e
+          npm run check:seo -- --strict > seo-audit-report.md 2>&1
+          code=$?
+          cat seo-audit-report.md
+          if [ "$code" -ne 0 ]; then
+            echo "issues=true" >> "$GITHUB_OUTPUT"
+          fi
+          exit 0
+
+      - name: Create or update SEO audit issue
+        if: steps.seo.outputs.issues == 'true'
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7.1.0
+        with:
+          script: |
+            const fs = require('fs');
+            const marker = '<!-- automated-seo-audit -->';
+            const report = fs.readFileSync('seo-audit-report.md', 'utf8');
+            const body = `${marker}\n# SEO Audit Report\n\n${report}\n\nThis issue is updated automatically by the monthly SEO audit workflow.`;
+            const q = `repo:${context.repo.owner}/${context.repo.repo} is:issue is:open in:body "${marker}"`;
+            const found = await github.rest.search.issuesAndPullRequests({ q, per_page: 1 });
+            if (found.data.items.length) {
+              await github.rest.issues.update({
+                ...context.repo,
+                issue_number: found.data.items[0].number,
+                title: '[Maintenance] Monthly SEO audit report',
+                body
+              });
+            } else {
+              await github.rest.issues.create({
+                ...context.repo,
+                title: '[Maintenance] Monthly SEO audit report',
+                body
+              });
+            }
