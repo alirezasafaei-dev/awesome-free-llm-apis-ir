@@ -98,6 +98,23 @@ Reputable providers do not store prompt content. Check each provider's privacy p
 
 Browse all 22 providers in the [live catalog](https://llm.persiantoolbox.ir/).
 
+## Quick Start Code Example
+
+```python
+from openai import OpenAI
+
+client = OpenAI(
+    api_key="YOUR_API_KEY",
+    base_url="https://models.inference.ai.azure.com",  # GitHub Models
+)
+
+response = client.chat.completions.create(
+    model="gpt-4o-mini",
+    messages=[{"role": "user", "content": "List three free AI APIs."}],
+)
+print(response.choices[0].message.content)
+```
+
 ## Summary
 
 The free AI API landscape in 2026 offers 22 verified providers with diverse capabilities. GitHub Models offers the best balance of accessibility and features for most developers. For Iranian users, Cloudflare Workers AI and Mistral AI provide confirmed direct access. Always verify the latest status on the catalog page before building production systems.

@@ -84,6 +84,23 @@ Rate limits vary from 5 RPM (Cerebras) to 30 RPM (Groq, LLM7.io, SiliconFlow). D
 
 Free tiers are suitable for prototyping, personal projects, and low-traffic applications. For production workloads, consider the provider's SLA, rate limits, and whether they reserve the right to change terms.
 
+## Quick Start Code Example
+
+```python
+from openai import OpenAI
+
+client = OpenAI(
+    api_key="YOUR_API_KEY",
+    base_url="https://models.inference.ai.azure.com",  # GitHub Models
+)
+
+response = client.chat.completions.create(
+    model="gpt-4o-mini",
+    messages=[{"role": "user", "content": "Which free LLM API should I use?"}],
+)
+print(response.choices[0].message.content)
+```
+
 ## Compare All Providers
 
 Browse the complete [interactive catalog](https://llm.persiantoolbox.ir/) with filtering by capability, Iran access, free type, and OpenAI compatibility. Star the [GitHub repository](https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir) to support this project.
