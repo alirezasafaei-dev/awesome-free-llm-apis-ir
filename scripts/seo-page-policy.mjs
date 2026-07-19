@@ -11,12 +11,16 @@ export function isNoindexPage(html) {
     .includes("noindex");
 }
 
+export function shouldEnforceIndexMetadata(html) {
+  return !isNoindexPage(html);
+}
+
 export function isInteractiveApplication(html) {
   return /["']@type["']\s*:\s*["'](?:WebApplication|SoftwareApplication)["']/i.test(html);
 }
 
 export function shouldEnforceMinimumWordCount(html) {
-  if (isNoindexPage(html)) return false;
+  if (!shouldEnforceIndexMetadata(html)) return false;
   if (isInteractiveApplication(html)) return false;
   return true;
 }
