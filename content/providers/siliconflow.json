@@ -1,0 +1,51 @@
+{
+  "schema_version": "1.0.0",
+  "provider_id": "siliconflow",
+  "intent_fa": "SiliconFlow برای دسترسی OpenAI-compatible به مدل‌های رایگان و پولی مناسب است، اما فعال‌سازی حساب و استفاده از مدل‌های رایگان به تأیید هویت رسمی پلتفرم وابسته است. endpoint از ایران Reachable ثبت شده، ولی مانع فعلی دریافت Credential است؛ این راهنما فقط مسیر رسمی حساب و API Key را توضیح می‌دهد و هیچ روش دورزدن شماره تلفن یا احراز هویت ارائه نمی‌کند.",
+  "signup_steps_fa": [
+    "در SiliconFlow حساب بسازید و فرآیند رسمی تأیید حساب را کامل کنید. اگر شماره، هویت یا شرایط موردنیاز سرویس را ندارید، این Provider را گزینه عملی فرض نکنید و کنترل پلتفرم را دور نزنید.",
+    "پس از فعال‌شدن حساب، API Key را از Account → API Keys بسازید و فقط در SILICONFLOW_API_KEY یا secret manager نگهداری کنید. Key را در frontend، URL، screenshot یا log قرار ندهید.",
+    "مدل رایگان را از صفحه Models انتخاب کنید و تفاوت نام بدون پیشوند با نسخه `Pro/` را بررسی کنید. Rate Limit در سطح حساب و مدل اعمال می‌شود و مقدار واقعی هر مدل باید در Dashboard یا صفحه Model کنترل شود."
+  ],
+  "first_request": {
+    "language": "curl",
+    "code": "curl https://api.siliconflow.cn/v1/chat/completions \\\n  -H \"Authorization: Bearer $SILICONFLOW_API_KEY\" \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\"model\":\"Qwen/Qwen3-8B\",\"messages\":[{\"role\":\"user\",\"content\":\"سلام! در یک جمله پاسخ بده.\"}],\"stream\":false}'",
+    "notes_fa": "مدل بدون پیشوند Pro به‌عنوان نمونه free ثبت شده است. مدل‌ها و قابلیت thinking می‌توانند تغییر کنند؛ شناسه، context window و پارامترهای پشتیبانی‌شده را پیش از اجرا در صفحه رسمی مدل بررسی کنید.",
+    "source_url": "https://docs.siliconflow.cn/en/api-reference/chat-completions/chat-completions",
+    "checked_at": "2026-07-16"
+  },
+  "common_errors": [
+    {
+      "code": "401/403",
+      "title_fa": "API Key یا وضعیت تأیید حساب معتبر نیست",
+      "resolution_fa": "SILICONFLOW_API_KEY و هدر Bearer را کنترل کنید و وضعیت فعال‌بودن حساب را از مسیر رسمی بررسی کنید. پاسخ 401 endpoint از ایران فقط Reachability را نشان می‌دهد و مانع تأیید حساب را رفع نمی‌کند.",
+      "source_url": "https://docs.siliconflow.cn/en/api-reference/chat-completions/chat-completions",
+      "checked_at": "2026-07-16"
+    },
+    {
+      "code": "400/model",
+      "title_fa": "مدل، پارامتر یا context معتبر نیست",
+      "resolution_fa": "نام مدل را از Models کپی کنید، تفاوت نسخه free و Pro را حفظ کنید و مجموع input و max_tokens را پایین‌تر از context window نگه دارید. قابلیت‌هایی مانند thinking برای همه مدل‌ها یکسان نیستند.",
+      "source_url": "https://docs.siliconflow.cn/en/api-reference/chat-completions/chat-completions",
+      "checked_at": "2026-07-16"
+    },
+    {
+      "code": "429/503/504",
+      "title_fa": "Rate Limit یا بار بالای سرویس",
+      "resolution_fa": "نوع محدودیت RPM، TPM یا TPD را از پیام خطا بخوانید، concurrency را کم و retry را با backoff و jitter اجرا کنید. برای بار موقت، stream می‌تواند کمک کند؛ retry نامحدود انجام ندهید.",
+      "source_url": "https://docs.siliconflow.cn/en/faqs/error-code",
+      "checked_at": "2026-07-16"
+    }
+  ],
+  "when_not_to_use_fa": [
+    "زمانی که تیم نمی‌تواند فرآیند رسمی تأیید حساب را کامل کند؛ Reachability شبکه به معنی امکان دریافت API Key نیست.",
+    "زمانی که پروژه به Free Tier بدون تغییر مدل یا quota ثابت نیاز دارد؛ فهرست مدل‌ها، نسخه‌های Pro و محدودیت مدل‌محور پویا هستند.",
+    "زمانی که الزامات حوزه قضایی، حاکمیت داده یا سیاست سازمانی با پلتفرم و فرآیند هویتی آن سازگار نیست."
+  ],
+  "related_guides": [
+    "openai-sdk-custom-base-url",
+    "free-tier-vs-trial-vs-credit",
+    "free-coding-api"
+  ],
+  "last_reviewed": "2026-07-16"
+}

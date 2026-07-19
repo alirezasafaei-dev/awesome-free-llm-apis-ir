@@ -1,0 +1,51 @@
+{
+  "schema_version": "1.0.0",
+  "provider_id": "vercel-ai-gateway",
+  "intent_fa": "Vercel AI Gateway برای استفاده از مدل‌های چند Provider با یک API Key، endpoint سازگار با OpenAI، fallback و مشاهده مصرف مناسب است. هر Team واجد شرایط اعتبار ماهانه محدود دارد، هزینه بر اساس مدل و توکن از Credits کم می‌شود و خرید Credit حساب را به حالت پولی منتقل می‌کند. وضعیت ایران در Catalog نامشخص است: endpoint مدل‌ها Reachable بوده، اما درخواست مدل با Gateway Key معتبر هنوز ثبت نشده است.",
+  "signup_steps_fa": [
+    "یک حساب و Team در Vercel بسازید، AI Gateway را باز کنید و از بخش API Keys یک کلید جدید ایجاد کنید. کلید را فقط در AI_GATEWAY_API_KEY یا secret manager نگهداری کنید.",
+    "برای جلوگیری از مصرف ناخواسته، هنگام ساخت یا ویرایش کلید یک Spend Quota متناسب با Prototype تعیین کنید. سقف کلید جای کنترل هزینه در سطح Team و انتخاب مدل کم‌هزینه را نمی‌گیرد.",
+    "مدل را از Catalog رسمی Gateway انتخاب و یک درخواست کوتاه ارسال کنید. اعتبار رایگان پس از اولین درخواست در چرخه ۳۰روزه اعمال می‌شود؛ موجودی و مدل‌های قابل استفاده را از Dashboard همان Team کنترل کنید."
+  ],
+  "first_request": {
+    "language": "curl",
+    "code": "curl https://ai-gateway.vercel.sh/v1/chat/completions \\\n  -H \"Authorization: Bearer $AI_GATEWAY_API_KEY\" \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\"model\":\"openai/gpt-5.4\",\"messages\":[{\"role\":\"user\",\"content\":\"سلام! در یک جمله پاسخ بده.\"}],\"stream\":false}'",
+    "notes_fa": "شناسه مدل و قیمت آن را از Catalog رسمی Vercel بردارید. مدل نمونه ممکن است در Free Credit یا منطقه حساب محدود شود؛ پیش از استفاده، موجودی Credits و دسترسی واقعی همان Team را بررسی کنید.",
+    "source_url": "https://vercel.com/docs/ai-gateway/openai-compat/rest-api",
+    "checked_at": "2026-07-16"
+  },
+  "common_errors": [
+    {
+      "code": "401/403",
+      "title_fa": "کلید، مجوز Team یا مدل قابل استفاده نیست",
+      "resolution_fa": "AI_GATEWAY_API_KEY و هدر Bearer را بررسی کنید، کلید را در Team درست بسازید و محدودیت مدل یا Free Credit را از Dashboard ببینید. پاسخ ۲۰۰ /models از ایران فقط Reachability است و نتیجه inference را ثابت نمی‌کند.",
+      "source_url": "https://vercel.com/docs/ai-gateway/authentication-and-byok",
+      "checked_at": "2026-07-16"
+    },
+    {
+      "code": "402/budget",
+      "title_fa": "Credits یا بودجه کلید تمام شده است",
+      "resolution_fa": "موجودی AI Gateway Credits و Spend Quota کلید را بررسی کنید. retry خودکار موجودی یا budget را افزایش نمی‌دهد؛ مدل ارزان‌تر انتخاب کنید یا مصرف را تا reset اعتبار متوقف کنید.",
+      "source_url": "https://vercel.com/docs/ai-gateway/pricing",
+      "checked_at": "2026-07-16"
+    },
+    {
+      "code": "404/429/5xx",
+      "title_fa": "مدل یافت نشد، Rate Limit یا Provider بالادستی خطا داد",
+      "resolution_fa": "شناسه مدل را با Catalog رسمی تطبیق دهید، concurrency را کم و retry را با backoff اجرا کنید. fallback و ترتیب Provider را آگاهانه تنظیم کنید؛ loop بی‌پایان می‌تواند Credits را مصرف یا خطای Provider را پنهان کند.",
+      "source_url": "https://vercel.com/docs/ai-gateway/sdks-and-apis/openresponses",
+      "checked_at": "2026-07-16"
+    }
+  ],
+  "when_not_to_use_fa": [
+    "زمانی که پروژه به Provider ثابت، قرارداد مستقیم یا کنترل کامل مسیر پردازش داده نیاز دارد و routing چندارائه‌دهنده‌ای پذیرفتنی نیست.",
+    "زمانی که اعتبار رایگان باید برای همیشه بدون تغییر وضعیت حساب باقی بماند؛ خرید Credits حساب را به pay-as-you-go منتقل می‌کند و Free Credit ماهانه متوقف می‌شود.",
+    "زمانی که دسترسی مستقیم تأییدشده از ایران شرط انتخاب است؛ Evidence فعلی فقط Reachability /models را نشان می‌دهد و درخواست مدل معتبر هنوز انجام نشده است."
+  ],
+  "related_guides": [
+    "openai-sdk-custom-base-url",
+    "free-tier-vs-trial-vs-credit",
+    "free-coding-api"
+  ],
+  "last_reviewed": "2026-07-16"
+}

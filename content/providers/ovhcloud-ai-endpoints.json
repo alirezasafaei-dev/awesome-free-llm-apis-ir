@@ -1,0 +1,51 @@
+{
+  "schema_version": "1.0.0",
+  "provider_id": "ovhcloud-ai-endpoints",
+  "intent_fa": "OVHcloud AI Endpoints برای آزمایش ناشناس مدل‌های open-weight با endpoint سازگار با OpenAI مناسب است. مسیر پایه بدون ثبت‌نام و API Key کار می‌کند، اما Rate Limit ناشناس بسیار پایین و مدل‌به‌مدل است؛ برای ظرفیت بیشتر باید Public Cloud project و API access key رسمی داشت. دسترسی ناشناس مستقیم از ایران در Evidence فعلی موفق ثبت شده است.",
+  "signup_steps_fa": [
+    "برای تست پایه نیازی به ثبت‌نام نیست؛ ابتدا Catalog رسمی مدل‌ها را باز کنید، endpoint و شناسه دقیق مدل فعال را بردارید و یک درخواست کوتاه بدون Authorization بفرستید.",
+    "برای Rate Limit بیشتر، فقط از فرآیند رسمی OVHcloud Public Cloud و API access key استفاده کنید. Key را در OVH_AI_ENDPOINTS_ACCESS_TOKEN یا secret manager نگهداری کنید و آن را در frontend یا log قرار ندهید.",
+    "محدودیت anonymous به‌ازای IP و مدل اعمال می‌شود. پیش از workload، payload size، modality و Rate Limit همان مدل را بررسی کنید و برای مدل حذف‌شده مسیر مهاجرت داشته باشید."
+  ],
+  "first_request": {
+    "language": "curl",
+    "code": "curl https://oai.endpoints.kepler.ai.cloud.ovh.net/v1/chat/completions \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\"model\":\"gpt-oss-20b\",\"messages\":[{\"role\":\"user\",\"content\":\"سلام! در یک جمله پاسخ بده.\"}],\"stream\":false}'",
+    "notes_fa": "این نمونه anonymous است و Secret ندارد. مدل gpt-oss-20b با تست تاریخ‌دار Catalog هماهنگ شده؛ availability و endpoint مدل را پیش از اجرای مجدد در Catalog رسمی کنترل کنید.",
+    "source_url": "https://www.ovhcloud.com/en/public-cloud/ai-endpoints/catalog/",
+    "checked_at": "2026-07-16"
+  },
+  "common_errors": [
+    {
+      "code": "404/model",
+      "title_fa": "مدل یا endpoint دیگر در Catalog فعال نیست",
+      "resolution_fa": "شناسه و Base URL را از صفحه مدل فعلی کپی کنید. OVHcloud بازنشستگی مدل را از پیش اعلام می‌کند، اما کد باید fallback یا مسیر مهاجرت داشته باشد و به فهرست cache‌شده تکیه نکند.",
+      "source_url": "https://help.ovhcloud.com/csm/en-public-cloud-ai-endpoints-troubleshooting?id=kb_article_view&sysparm_article=KB0066992",
+      "checked_at": "2026-07-16"
+    },
+    {
+      "code": "413",
+      "title_fa": "Payload از سقف endpoint بزرگ‌تر است",
+      "resolution_fa": "اندازه prompt، تصویر یا فایل را کاهش دهید و محدودیت modality همان endpoint را بخوانید. شکستن payload به درخواست‌های کوچک‌تر باید با حفظ context و حریم خصوصی انجام شود.",
+      "source_url": "https://help.ovhcloud.com/csm/en-sg-public-cloud-ai-endpoints-capabilities?id=kb_article_view&sysparm_article=KB0065415",
+      "checked_at": "2026-07-16"
+    },
+    {
+      "code": "429",
+      "title_fa": "Rate Limit ناشناس یا احراز‌شده رد شده است",
+      "resolution_fa": "برای anonymous حداکثر ثبت‌شده به‌ازای IP و مدل را رعایت کنید، درخواست‌ها را صف‌بندی و retry را با backoff انجام دهید. برای ظرفیت بیشتر از access key رسمی Public Cloud استفاده کنید.",
+      "source_url": "https://help.ovhcloud.com/csm/en-public-cloud-ai-endpoints-troubleshooting?id=kb_article_view&sysparm_article=KB0066992",
+      "checked_at": "2026-07-16"
+    }
+  ],
+  "when_not_to_use_fa": [
+    "زمانی که workload به نرخ بالای ناشناس یا burst نیاز دارد؛ مسیر بدون کلید فقط برای آزمایش محدود مناسب است.",
+    "زمانی که پروژه به مدل ثابت بدون چرخه بازنشستگی یا SLA تولیدی روی endpoint anonymous نیاز دارد.",
+    "زمانی که prompt حساس است و تیم نمی‌تواند سیاست‌های پردازش داده، محل میزبانی و شرایط هر مدل را پیش از ارسال بررسی کند."
+  ],
+  "related_guides": [
+    "openai-sdk-custom-base-url",
+    "free-tier-vs-trial-vs-credit",
+    "free-coding-api"
+  ],
+  "last_reviewed": "2026-07-16"
+}

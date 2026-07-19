@@ -1,0 +1,51 @@
+{
+  "schema_version": "1.0.0",
+  "provider_id": "cloudflare-workers-ai",
+  "intent_fa": "Cloudflare Workers AI برای پروژه‌ای مناسب است که می‌خواهد چت، Embedding یا خروجی ساخت‌یافته را با API رسمی Cloudflare و endpoint سازگار با OpenAI اجرا کند. این صفحه مسیر ساخت Token کم‌اختیار، استفاده از Account ID، ارسال اولین درخواست و مدیریت سهمیه روزانه Neuron را توضیح می‌دهد؛ وضعیت ایران و اعداد سهمیه همچنان از Catalog تاریخ‌دار پروژه خوانده می‌شوند.",
+  "signup_steps_fa": [
+    "یک حساب Cloudflare بسازید و از داشبورد Workers AI گزینه Use REST API را باز کنید؛ Account ID را دقیقاً از همان صفحه بردارید و آن را به‌عنوان مقدار عمومی تنظیمات، نه Secret، نگهداری کنید.",
+    "با الگوی رسمی Workers AI یک API Token دارای مجوزهای ضروری Workers AI Read و Workers AI Edit بسازید. مقدار Token را فقط یک‌بار کپی کنید و در متغیر محیطی CLOUDFLARE_API_TOKEN قرار دهید؛ آن را در frontend، Git یا خروجی CI چاپ نکنید.",
+    "مدل فعال را از Catalog رسمی مدل‌ها انتخاب کنید و پیش از توسعه اصلی یک درخواست کوتاه با Account ID و Token همان حساب بفرستید. مصرف واقعی به مدل و تعداد توکن وابسته است و داشبورد Neuron مرجع نهایی مصرف روزانه است."
+  ],
+  "first_request": {
+    "language": "curl",
+    "code": "curl \"https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID/ai/v1/chat/completions\" \\\n  -H \"Authorization: Bearer $CLOUDFLARE_API_TOKEN\" \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\"model\":\"@cf/meta/llama-3.2-3b-instruct\",\"messages\":[{\"role\":\"user\",\"content\":\"سلام! کوتاه پاسخ بده.\"}]}'",
+    "notes_fa": "Account ID و Token از متغیر محیطی خوانده می‌شوند. مدل نمونه با Evidence فعلی Catalog هماهنگ است؛ پیش از استفاده طولانی، فعال‌بودن مدل را در فهرست رسمی مدل‌ها دوباره کنترل کنید.",
+    "source_url": "https://developers.cloudflare.com/workers-ai/configuration/open-ai-compatibility/",
+    "checked_at": "2026-07-16"
+  },
+  "common_errors": [
+    {
+      "code": "401/403",
+      "title_fa": "Token نامعتبر یا فاقد مجوز Workers AI",
+      "resolution_fa": "وجود هدر Bearer، معتبر بودن CLOUDFLARE_API_TOKEN و مجوزهای Workers AI Read/Edit را بررسی کنید. Token را rotate کنید، اما مقدار قبلی یا جدید را در گزارش خطا منتشر نکنید.",
+      "source_url": "https://developers.cloudflare.com/workers-ai/get-started/rest-api/",
+      "checked_at": "2026-07-16"
+    },
+    {
+      "code": "400/404",
+      "title_fa": "Account ID، endpoint یا مدل نادرست",
+      "resolution_fa": "Account ID را از داشبورد همان حساب بردارید، مسیر /ai/v1/chat/completions را حفظ کنید و شناسه مدل را با Catalog رسمی Workers AI تطبیق دهید. مدل منسوخ را با مدل فعال جایگزین کنید.",
+      "source_url": "https://developers.cloudflare.com/workers-ai/configuration/open-ai-compatibility/",
+      "checked_at": "2026-07-16"
+    },
+    {
+      "code": "429/quota",
+      "title_fa": "پایان سهمیه یا عبور از محدودیت",
+      "resolution_fa": "Neuron مصرفی را در داشبورد کنترل کنید، درخواست‌ها را کوچک‌تر و زمان‌بندی کنید و retry را فقط با backoff انجام دهید. تخصیص رایگان روزانه در ۰۰:۰۰ UTC reset می‌شود و مصرف بیشتر به Workers Paid نیاز دارد.",
+      "source_url": "https://developers.cloudflare.com/workers-ai/platform/pricing/",
+      "checked_at": "2026-07-16"
+    }
+  ],
+  "when_not_to_use_fa": [
+    "زمانی که پروژه به سهمیه‌ای بر حسب تعداد ثابت درخواست یا توکن نیاز دارد؛ Cloudflare مصرف را با Neuron و هزینه مدل‌محور اندازه‌گیری می‌کند.",
+    "زمانی که مدیریت Account ID، Tokenهای Cloudflare و مجوزهای حساب برای تیم قابل‌قبول نیست یا پروژه باید بدون حساب Cloudflare اجرا شود.",
+    "زمانی که استقرار تولیدی به یک مدل ثابت بدون چرخه deprecation وابسته است؛ فهرست مدل‌ها و اعلان‌های منسوخ‌شدن باید دوره‌ای پایش شوند."
+  ],
+  "related_guides": [
+    "openai-sdk-custom-base-url",
+    "free-tier-vs-trial-vs-credit",
+    "free-embedding-api"
+  ],
+  "last_reviewed": "2026-07-16"
+}

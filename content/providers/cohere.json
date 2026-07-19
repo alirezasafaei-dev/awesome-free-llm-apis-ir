@@ -1,0 +1,51 @@
+{
+  "schema_version": "1.0.0",
+  "provider_id": "cohere",
+  "intent_fa": "Cohere برای ارزیابی Chat، Embedding، Rerank و Tool Use با API اختصاصی v2 مناسب است. کلید Trial رایگان است اما برای ارزیابی و Proof of Concept طراحی شده، سقف ماهانه و محدودیت endpoint دارد و OpenAI-compatible نیست؛ بنابراین نمونه‌ها باید مستقیماً با قرارداد Cohere نوشته شوند. وضعیت دسترسی مستقیم ایران نیز طبق Evidence فعلی Catalog مسدود ثبت شده است.",
+  "signup_steps_fa": [
+    "در Dashboard Cohere حساب بسازید و یک Trial API Key دریافت کنید. این کلید را فقط برای ارزیابی در نظر بگیرید و مقدار آن را در متغیر محیطی COHERE_API_KEY یا secret manager نگهداری کنید.",
+    "مدل و endpoint مناسب را از مستندات v2 انتخاب کنید؛ محدودیت Chat با Embed و Rerank یکسان نیست. پیش از توسعه، سقف همان endpoint و محدودیت ۱۰۰۰ فراخوانی ماهانه Trial را کنترل کنید.",
+    "یک درخواست کوتاه آزمایشی بفرستید و پاسخ meta و billed_units را برای اندازه‌گیری مصرف ثبت کنید. برای Production باید کلید Production، شرایط استفاده و محدودیت‌های مناسب workload جداگانه بررسی شوند."
+  ],
+  "first_request": {
+    "language": "curl",
+    "code": "curl https://api.cohere.com/v2/chat \\\n  -H \"Authorization: Bearer $COHERE_API_KEY\" \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\"model\":\"command-a-03-2025\",\"messages\":[{\"role\":\"user\",\"content\":\"سلام! در یک جمله پاسخ بده.\"}]}'",
+    "notes_fa": "این API قرارداد اختصاصی Cohere v2 دارد و صرفاً با تغییر Base URL جای OpenAI SDK نمی‌نشیند. مدل نمونه با Catalog پروژه هماهنگ است؛ فهرست مدل‌های فعال را پیش از اجرای مجدد کنترل کنید.",
+    "source_url": "https://docs.cohere.com/v2/reference/chat",
+    "checked_at": "2026-07-16"
+  },
+  "common_errors": [
+    {
+      "code": "401/403",
+      "title_fa": "کلید نامعتبر یا درخواست از مسیر پشتیبانی‌نشده",
+      "resolution_fa": "وجود COHERE_API_KEY و هدر Bearer را بررسی کنید. کلید افشاشده را revoke کنید. با توجه به Evidence فعلی پروژه، درخواست مستقیم از ایران به‌عنوان گزینه قابل اتکا معرفی نمی‌شود و این متن هیچ روش دورزدن محدودیت ارائه نمی‌کند.",
+      "source_url": "https://docs.cohere.com/v2/reference/errors",
+      "checked_at": "2026-07-16"
+    },
+    {
+      "code": "400/404",
+      "title_fa": "بدنه درخواست یا مدل معتبر نیست",
+      "resolution_fa": "ساختار messages، نقش‌ها و شناسه مدل را با API v2 تطبیق دهید. نمونه‌های API v1 را بدون Migration استفاده نکنید و با یک درخواست حداقلی فیلد نامعتبر را جدا کنید.",
+      "source_url": "https://docs.cohere.com/v2/reference/chat",
+      "checked_at": "2026-07-16"
+    },
+    {
+      "code": "429",
+      "title_fa": "عبور از Rate Limit یا سقف Trial",
+      "resolution_fa": "محدودیت endpoint و مدل را از جدول رسمی بخوانید، concurrency را کاهش دهید و retry را با exponential backoff و jitter انجام دهید. محدودیت ماهانه Trial با retry بیشتر رفع نمی‌شود.",
+      "source_url": "https://docs.cohere.com/v2/docs/rate-limits",
+      "checked_at": "2026-07-16"
+    }
+  ],
+  "when_not_to_use_fa": [
+    "زمانی که پروژه به Free Tier دائمی یا workload تولیدی رایگان نیاز دارد؛ Trial برای ارزیابی است و Production قرارداد جدا دارد.",
+    "زمانی که کد موجود باید بدون Adapter با OpenAI SDK اجرا شود؛ Cohere v2 قرارداد و response structure اختصاصی دارد.",
+    "زمانی که اجرای مستقیم و قابل اتکا از ایران شرط اصلی است؛ Evidence تاریخ‌دار فعلی پروژه پاسخ ۴۰۳ با کلید معتبر را نشان می‌دهد."
+  ],
+  "related_guides": [
+    "free-tier-vs-trial-vs-credit",
+    "free-embedding-api",
+    "best-free-llm-api-iran"
+  ],
+  "last_reviewed": "2026-07-16"
+}

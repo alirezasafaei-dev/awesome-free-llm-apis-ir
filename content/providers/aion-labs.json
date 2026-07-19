@@ -1,0 +1,51 @@
+{
+  "schema_version": "1.0.0",
+  "provider_id": "aion-labs",
+  "intent_fa": "Aion Labs برای آزمایش مدل‌های reasoning و chat با endpoint سازگار با OpenAI و سهمیه رایگان روزانه مناسب است. حساب رایگان طبق مستندات فعلی به کارت نیاز ندارد، اما Evidence پروژه نشان می‌دهد همان Credential معتبر از مسیر مستقیم ایران پاسخ ناموفق و از منطقه پشتیبانی‌شده پاسخ موفق گرفته است؛ بنابراین این صفحه Aion را گزینه مستقیم ایران معرفی نمی‌کند و هیچ روش دورزدن محدودیت ارائه نمی‌دهد.",
+  "signup_steps_fa": [
+    "از وب‌سایت رسمی Aion Labs حساب بسازید و Free Tier را بدون افزودن روش پرداخت فعال کنید. مقدار دقیق RPM، TPM و TPD را در Pricing و Rate Limits همان تاریخ دوباره کنترل کنید.",
+    "API Key را از Dashboard بسازید و فقط در AION_API_KEY یا secret manager نگهداری کنید. برای محیط توسعه و Production کلید جدا داشته باشید و کلید را در frontend، مخزن یا log منتشر نکنید.",
+    "مدل فعال را از صفحه Models انتخاب کنید و یک درخواست کوچک از محیط مجاز ارسال کنید. مدل‌های قدیمی یا منقضی را از نمونه‌کد حذف کنید و reset روزانه سهمیه در ۰۰:۰۰ UTC را در زمان‌بندی لحاظ کنید."
+  ],
+  "first_request": {
+    "language": "curl",
+    "code": "curl https://api.aionlabs.ai/v1/chat/completions \\\n  -H \"Authorization: Bearer $AION_API_KEY\" \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\"model\":\"aion-labs/aion-3.0-mini\",\"messages\":[{\"role\":\"user\",\"content\":\"سلام! در یک جمله پاسخ بده.\"}],\"stream\":false}'",
+    "notes_fa": "مدل نمونه در فهرست فعلی پروژه ثبت شده است. این درخواست برای محیط پشتیبانی‌شده نوشته شده و نباید به‌عنوان روش استفاده مستقیم از ایران تفسیر شود.",
+    "source_url": "https://www.aionlabs.ai/docs/",
+    "checked_at": "2026-07-16"
+  },
+  "common_errors": [
+    {
+      "code": "400",
+      "title_fa": "بدنه درخواست یا شناسه مدل معتبر نیست",
+      "resolution_fa": "ساختار messages و پارامترها را به حداقل کاهش دهید، شناسه مدل را از صفحه Models بردارید و نمونه‌های مربوط به مدل‌های منقضی را استفاده نکنید.",
+      "source_url": "https://www.aionlabs.ai/docs/models/",
+      "checked_at": "2026-07-16"
+    },
+    {
+      "code": "401/403",
+      "title_fa": "کلید نامعتبر یا درخواست از مسیر محدودشده است",
+      "resolution_fa": "AION_API_KEY و هدر Bearer را بررسی کنید. طبق Evidence فعلی، همان کلید از ایران ناموفق و از منطقه پشتیبانی‌شده موفق بوده است؛ این صفحه محدودیت را دور نمی‌زند و Aion را گزینه مستقیم ایران معرفی نمی‌کند.",
+      "source_url": "https://www.aionlabs.ai/docs/",
+      "checked_at": "2026-07-16"
+    },
+    {
+      "code": "429/502",
+      "title_fa": "Rate Limit یا ظرفیت مدل اجازه ادامه نمی‌دهد",
+      "resolution_fa": "RPM و سقف توکن روزانه را کنترل کنید، concurrency را کم و retry را با backoff و jitter اجرا کنید. برای خطای موقت upstream، درخواست را بی‌نهایت تکرار نکنید.",
+      "source_url": "https://www.aionlabs.ai/docs/rate-limits/",
+      "checked_at": "2026-07-16"
+    }
+  ],
+  "when_not_to_use_fa": [
+    "زمانی که اجرای مستقیم از ایران الزام پروژه است؛ Evidence تاریخ‌دار فعلی محدودیت جغرافیایی را تأیید می‌کند.",
+    "زمانی که سهمیه روزانه محدود برای workload کافی نیست یا پروژه به SLA و ظرفیت رزروشده نیاز دارد.",
+    "زمانی که پروژه به مدل ثابت بدون چرخه تغییر یا انقضا وابسته است؛ فهرست Models باید دوره‌ای دوباره بررسی شود."
+  ],
+  "related_guides": [
+    "openai-sdk-custom-base-url",
+    "free-tier-vs-trial-vs-credit",
+    "best-free-llm-api-iran"
+  ],
+  "last_reviewed": "2026-07-16"
+}
