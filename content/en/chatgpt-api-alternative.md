@@ -109,4 +109,4 @@ Not in most cases. GitHub Models, Cloudflare Workers AI, Groq, Hugging Face, Kil
 
 ## Complete Provider List
 
-Browse all 22 providers in the [interactive catalog](https://llm.persiantoolbox.ir/) with filtering by ChatGPT API compatibility, free tier type, Iran access status, and capabilities.
+Browse all 22 providers in the [interactive catalog](https://llm.persiantoolbox.ir/) with filtering by ChatGPT API compatibility, free tier type, Iran access status, and capabilities. Star the [GitHub repository](https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir) to support this project.

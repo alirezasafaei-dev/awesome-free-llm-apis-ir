@@ -100,4 +100,4 @@ Free APIs have lower rate limits, fewer model choices, and no SLA guarantees. Th
 | Kilo Gateway | `https://api.kilo.ai/v1` | None or API Key |
 | SambaNova | `https://api.sambanova.ai/v1` | API Key |
 
-Browse the complete [live catalog](https://llm.persiantoolbox.ir/) for detailed information on all 22 providers.
+Browse the complete [live catalog](https://llm.persiantoolbox.ir/) for detailed information on all 22 providers. Star the [GitHub repository](https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir) to support this project.

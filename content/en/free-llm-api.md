@@ -86,7 +86,7 @@ Free tiers are suitable for prototyping, personal projects, and low-traffic appl
 
 ## Compare All Providers
 
-Browse the complete [interactive catalog](https://llm.persiantoolbox.ir/) with filtering by capability, Iran access, free type, and OpenAI compatibility.
+Browse the complete [interactive catalog](https://llm.persiantoolbox.ir/) with filtering by capability, Iran access, free type, and OpenAI compatibility. Star the [GitHub repository](https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir) to support this project.
 
 ## Summary
 

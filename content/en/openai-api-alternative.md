@@ -104,4 +104,4 @@ Not for most providers. GitHub Models, Cloudflare Workers AI, Groq, Hugging Face
 
 ## Ready to Switch?
 
-Browse all 22 providers in the [interactive catalog](https://llm.persiantoolbox.ir/) and filter by OpenAI compatibility, Iran access, and free tier type to find your ideal OpenAI API alternative.
+Browse all 22 providers in the [interactive catalog](https://llm.persiantoolbox.ir/) and filter by OpenAI compatibility, Iran access, and free tier type to find your ideal OpenAI API alternative. Star the [GitHub repository](https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir) to support this project.
