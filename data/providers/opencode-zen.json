@@ -21,15 +21,15 @@
   "free_tier": {
     "status": "active",
     "type": "free_models",
-    "requires_payment_method": false,
+    "requires_payment_method": true,
     "limits": [
       {
         "scope": "account",
-        "condition": "free signup, no credit card",
-        "notes_fa": "۵ مدل رایگان بدون نیاز به کارت بانکی. API Key رایگان. مدل‌های رایگان ممکن است داده را برای بهبود جمع‌آوری کنند."
+        "condition": "requires billing details for API key; 5 models free for limited time",
+        "notes_fa": "ثبت‌نام و افزودن اطلاعات صورتحساب (کارت بانکی) الزامی است. ۵ مدل رایگان با مدت محدود. مدل‌های رایگان ممکن است داده را برای بهبود جمع‌آوری کنند."
       }
     ],
-    "notes_fa": "پلتفرم OpenCode با ۵ مدل رایگان (مدت محدود): Big Pickle، DeepSeek V4 Flash، MiMo-V2.5، North Mini Code، Nemotron 3 Ultra. API Key رایگان بدون کارت بانکی."
+    "notes_fa": "پلتفرم OpenCode با ۵ مدل رایگان مدت‌محدود: Big Pickle، DeepSeek V4 Flash Free، MiMo-V2.5 Free، North Mini Code Free، Nemotron 3 Ultra Free. برای دریافت API Key باید اطلاعات صورتحساب اضافه کرد. مدل‌های رایگان ممکن است پس از دوره محدود حذف یا پولی شوند."
   },
   "iran_access": {
     "status": "verified_working",
@@ -66,18 +66,18 @@
       "mimo-v2.5-free",
       "north-mini-code-free",
       "nemotron-3-ultra-free",
-      "big-pickle-stealth"
+      "big-pickle"
     ]
   },
   "verification": {
     "level": "live_verified",
-    "last_checked": "2026-07-16",
+    "last_checked": "2026-07-19",
     "checked_by": "maintainers",
-    "stale_after_days": 30
+    "stale_after_days": 14
   },
   "sources": [
-    "https://opencode.ai/docs/zen",
-    "https://github.com/cheahjs/free-llm-api-resources",
-    "https://freellm.net/"
+    "https://opencode.ai/docs/zen/",
+    "https://opencode.ai/zen",
+    "https://github.com/anomalyco/opencode"
   ]
 }

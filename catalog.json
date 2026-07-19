@@ -1,6 +1,6 @@
 {
   "schema_version": "1.1.0",
-  "last_updated": "2026-07-18",
+  "last_updated": "2026-07-19",
   "provider_count": 22,
   "providers": [
     {
@@ -618,7 +618,8 @@
         "text_generation",
         "reasoning",
         "tool_calling",
-        "structured_output"
+        "structured_output",
+        "image_generation"
       ],
       "free_tier": {
         "status": "active",
@@ -635,7 +636,7 @@
             "notes_fa": "سقف روزانه پیش‌فرض برای پاسخ‌های موفق است؛ Tierهای بالاتر با فعالیت اجتماعی تا ۳۵ RPM و concurrency برابر ۳ می‌رسند."
           }
         ],
-        "notes_fa": "ثبت‌نام و check-in روزانه به Discord وابسته است. فهرست مدل‌ها و ظرفیت سرویس پویا است."
+        "notes_fa": "ثبت‌نام از طریق Discord (/signup) و check-in روزانه (/checkin) الزامی است. ۶۰+ مدل فعال. مدل‌های image generation و audio نیز موجود. اسلات‌های پولی اختیاری جداگانه برای مدل‌های قوی‌تر موجود است."
       },
       "iran_access": {
         "status": "unknown",
@@ -663,19 +664,25 @@
       "models": {
         "dynamic": true,
         "source": "https://freetheai.xyz/models",
-        "notable": []
+        "notable": [
+          "opc/deepseek-v4-flash-free",
+          "glm/glm-5.1",
+          "kai/qwen3.5-32b",
+          "eve/gpt-image-2"
+        ]
       },
       "verification": {
         "level": "live_verified",
-        "last_checked": "2026-07-16",
+        "last_checked": "2026-07-19",
         "checked_by": "maintainers",
         "stale_after_days": 14
       },
       "notes_fa": "این سرویس یک Gateway اجتماعی است، نه Provider اصلی مدل. پایداری، قوانین و ظرفیت آن باید مستقل از Providerهای رسمی پایش شود. ثبت‌نام از طریق Discord (/signup) امکان‌پذیر است و مانع باقی‌مانده دریافت کلید و اجرای درخواست مدل است.",
       "sources": [
-        "https://github.com/Free-The-Ai/free-ai/blob/master/README.md",
+        "https://github.com/Free-The-Ai/free-ai",
         "https://freetheai.xyz/docs",
-        "https://freetheai.xyz/models"
+        "https://freetheai.xyz/models",
+        "https://github.com/vibheksoni/free-ai"
       ]
     },
     {
@@ -1161,8 +1168,8 @@
       "id": "llm7-io",
       "name": "LLM7.io",
       "website": "https://llm7.io/",
-      "docs": "https://token.llm7.io",
-      "signup": "https://token.llm7.io",
+      "docs": "https://docs.llm7.io/quickstart",
+      "signup": "https://dash.llm7.io/",
       "api": {
         "base_url": "https://api.llm7.io/v1",
         "openai_compatible": true,
@@ -1171,7 +1178,9 @@
       "capabilities": [
         "chat",
         "text_generation",
-        "reasoning"
+        "reasoning",
+        "image_generation",
+        "json_mode"
       ],
       "free_tier": {
         "status": "active",
@@ -1180,12 +1189,12 @@
         "limits": [
           {
             "scope": "anonymous",
-            "condition": "no registration",
+            "condition": "no registration, use 'unused' as API key",
             "rpm": 30,
-            "notes_fa": "۳۰ RPM بدون ثبت‌نام (با توکن: ۱۲۰ RPM). ۳۰+ مدل. سازگار با GDPR، مستقر در UK"
+            "notes_fa": "۳۰ RPM ناشناس (با کلید 'unused'). با توکن dash.llm7.io: محدودیت بالاتر. ۳۰+ مدل. مدل‌سلکتورها: default، fast، pro."
           }
         ],
-        "notes_fa": "دروازه API با اصطکاک صفر. بدون نیاز به ثبت‌نام برای دسترسی پایه. ۳۰+ مدل شامل DeepSeek، Gemini، GPT-4o-mini، Mistral، Qwen."
+        "notes_fa": "دروازه API با اصطکاک صفر. بدون نیاز به ثبت‌نام برای دسترسی پایه با کلید 'unused'. ۳۰+ مدل. سلفکتورهای مدل: default (عمومی)، fast (سرعت بالا)، pro (پولی). تصویرسازی با gpt-image-2."
       },
       "iran_access": {
         "status": "verified_working",
@@ -1214,24 +1223,25 @@
       },
       "models": {
         "dynamic": true,
-        "source": "https://token.llm7.io",
+        "source": "https://api.llm7.io/v1/models",
         "notable": [
-          "codestral-latest",
-          "deepseek-v4-flash",
-          "gpt-5.4-mini",
-          "gpt-5.5",
-          "gpt-5.6-luna"
+          "default",
+          "fast",
+          "pro",
+          "gpt-5.4",
+          "gpt-5.4-mini"
         ]
       },
       "verification": {
         "level": "live_verified",
-        "last_checked": "2026-07-16",
+        "last_checked": "2026-07-19",
         "checked_by": "maintainers",
-        "stale_after_days": 30
+        "stale_after_days": 14
       },
       "sources": [
-        "https://token.llm7.io",
-        "https://github.com/mnfst/awesome-free-llm-apis"
+        "https://docs.llm7.io/quickstart",
+        "https://docs.llm7.io/guides/models",
+        "https://dash.llm7.io/"
       ]
     },
     {
@@ -1342,10 +1352,10 @@
             "scope": "account",
             "condition": "Alibaba Cloud account + real-name verification",
             "rpd": 2000,
-            "notes_fa": "۲,۰۰۰ RPD کل (حداکثر ۵۰۰ RPD per model). نیاز به حساب Alibaba Cloud + احراز هویت واقعی."
+            "notes_fa": "۲,۰۰۰ RPD کل. حداکثر ۲۰۰ RPD per model (پیش‌فرض). برخی مدل‌های بزرگ ۱۰۰ RPD. محدودیت‌ها پویا هستند و ممکن است تغییر کنند."
           }
         ],
-        "notes_fa": "پلتفرم چینی API-Inference رایگان. ۵۴+ مدل: DeepSeek-V4، Qwen3.5-397B، GLM-5.2، Kimi-K2.5 و غیره. نیاز به ثبت‌نام و احراز هویت."
+        "notes_fa": "پلتفرم چینی API-Inference رایگان. ۵۴+ مدل: DeepSeek-V4، Qwen3.5-397B، GLM-5.2، Kimi-K2.5 و غیره. نیاز به ثبت‌نام و احراز هویت. محدودیت per-model پویا و معمولاً ۱۰۰-۲۰۰ RPD."
       },
       "iran_access": {
         "status": "signup_blocked",
@@ -1393,13 +1403,14 @@
       },
       "verification": {
         "level": "live_verified",
-        "last_checked": "2026-07-16",
+        "last_checked": "2026-07-19",
         "checked_by": "maintainers",
-        "stale_after_days": 30
+        "stale_after_days": 14
       },
       "sources": [
-        "https://modelscope.cn/",
-        "https://github.com/mnfst/awesome-free-llm-apis"
+        "https://modelscope.cn/docs/model-service/API-Inference/limits",
+        "https://modelscope.cn/docs/model-service/API-Inference/intro",
+        "https://modelscope.cn/"
       ]
     },
     {
@@ -1493,15 +1504,15 @@
       "free_tier": {
         "status": "active",
         "type": "free_models",
-        "requires_payment_method": false,
+        "requires_payment_method": true,
         "limits": [
           {
             "scope": "account",
-            "condition": "free signup, no credit card",
-            "notes_fa": "۵ مدل رایگان بدون نیاز به کارت بانکی. API Key رایگان. مدل‌های رایگان ممکن است داده را برای بهبود جمع‌آوری کنند."
+            "condition": "requires billing details for API key; 5 models free for limited time",
+            "notes_fa": "ثبت‌نام و افزودن اطلاعات صورتحساب (کارت بانکی) الزامی است. ۵ مدل رایگان با مدت محدود. مدل‌های رایگان ممکن است داده را برای بهبود جمع‌آوری کنند."
           }
         ],
-        "notes_fa": "پلتفرم OpenCode با ۵ مدل رایگان (مدت محدود): Big Pickle، DeepSeek V4 Flash، MiMo-V2.5، North Mini Code، Nemotron 3 Ultra. API Key رایگان بدون کارت بانکی."
+        "notes_fa": "پلتفرم OpenCode با ۵ مدل رایگان مدت‌محدود: Big Pickle، DeepSeek V4 Flash Free، MiMo-V2.5 Free، North Mini Code Free، Nemotron 3 Ultra Free. برای دریافت API Key باید اطلاعات صورتحساب اضافه کرد. مدل‌های رایگان ممکن است پس از دوره محدود حذف یا پولی شوند."
       },
       "iran_access": {
         "status": "verified_working",
@@ -1538,19 +1549,19 @@
           "mimo-v2.5-free",
           "north-mini-code-free",
           "nemotron-3-ultra-free",
-          "big-pickle-stealth"
+          "big-pickle"
         ]
       },
       "verification": {
         "level": "live_verified",
-        "last_checked": "2026-07-16",
+        "last_checked": "2026-07-19",
         "checked_by": "maintainers",
-        "stale_after_days": 30
+        "stale_after_days": 14
       },
       "sources": [
-        "https://opencode.ai/docs/zen",
-        "https://github.com/cheahjs/free-llm-api-resources",
-        "https://freellm.net/"
+        "https://opencode.ai/docs/zen/",
+        "https://opencode.ai/zen",
+        "https://github.com/anomalyco/opencode"
       ]
     },
     {

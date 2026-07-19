@@ -27,10 +27,10 @@
         "scope": "account",
         "condition": "Alibaba Cloud account + real-name verification",
         "rpd": 2000,
-        "notes_fa": "۲,۰۰۰ RPD کل (حداکثر ۵۰۰ RPD per model). نیاز به حساب Alibaba Cloud + احراز هویت واقعی."
+        "notes_fa": "۲,۰۰۰ RPD کل. حداکثر ۲۰۰ RPD per model (پیش‌فرض). برخی مدل‌های بزرگ ۱۰۰ RPD. محدودیت‌ها پویا هستند و ممکن است تغییر کنند."
       }
     ],
-    "notes_fa": "پلتفرم چینی API-Inference رایگان. ۵۴+ مدل: DeepSeek-V4، Qwen3.5-397B، GLM-5.2، Kimi-K2.5 و غیره. نیاز به ثبت‌نام و احراز هویت."
+    "notes_fa": "پلتفرم چینی API-Inference رایگان. ۵۴+ مدل: DeepSeek-V4، Qwen3.5-397B، GLM-5.2، Kimi-K2.5 و غیره. نیاز به ثبت‌نام و احراز هویت. محدودیت per-model پویا و معمولاً ۱۰۰-۲۰۰ RPD."
   },
   "iran_access": {
     "status": "signup_blocked",
@@ -78,12 +78,13 @@
   },
   "verification": {
     "level": "live_verified",
-    "last_checked": "2026-07-16",
+    "last_checked": "2026-07-19",
     "checked_by": "maintainers",
-    "stale_after_days": 30
+    "stale_after_days": 14
   },
   "sources": [
-    "https://modelscope.cn/",
-    "https://github.com/mnfst/awesome-free-llm-apis"
+    "https://modelscope.cn/docs/model-service/API-Inference/limits",
+    "https://modelscope.cn/docs/model-service/API-Inference/intro",
+    "https://modelscope.cn/"
   ]
 }
