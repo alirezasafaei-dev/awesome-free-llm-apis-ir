@@ -11,7 +11,7 @@
     "openai_compatible": true,
     "auth": "api_key"
   },
-  "capabilities": ["chat", "text_generation", "reasoning", "tool_calling", "structured_output"],
+  "capabilities": ["chat", "text_generation", "reasoning", "tool_calling", "structured_output", "image_generation"],
   "free_tier": {
     "status": "active",
     "type": "free_models",
@@ -27,7 +27,7 @@
         "notes_fa": "سقف روزانه پیش‌فرض برای پاسخ‌های موفق است؛ Tierهای بالاتر با فعالیت اجتماعی تا ۳۵ RPM و concurrency برابر ۳ می‌رسند."
       }
     ],
-    "notes_fa": "ثبت‌نام و check-in روزانه به Discord وابسته است. فهرست مدل‌ها و ظرفیت سرویس پویا است."
+    "notes_fa": "ثبت‌نام از طریق Discord (/signup) و check-in روزانه (/checkin) الزامی است. ۶۰+ مدل فعال. مدل‌های image generation و audio نیز موجود. اسلات‌های پولی اختیاری جداگانه برای مدل‌های قوی‌تر موجود است."
   },
   "iran_access": {
     "status": "unknown",
@@ -55,18 +55,24 @@
   "models": {
     "dynamic": true,
     "source": "https://freetheai.xyz/models",
-    "notable": []
+    "notable": [
+      "opc/deepseek-v4-flash-free",
+      "glm/glm-5.1",
+      "kai/qwen3.5-32b",
+      "eve/gpt-image-2"
+    ]
   },
   "verification": {
     "level": "live_verified",
-    "last_checked": "2026-07-16",
+    "last_checked": "2026-07-19",
     "checked_by": "maintainers",
     "stale_after_days": 14
   },
   "notes_fa": "این سرویس یک Gateway اجتماعی است، نه Provider اصلی مدل. پایداری، قوانین و ظرفیت آن باید مستقل از Providerهای رسمی پایش شود. ثبت‌نام از طریق Discord (/signup) امکان‌پذیر است و مانع باقی‌مانده دریافت کلید و اجرای درخواست مدل است.",
   "sources": [
-    "https://github.com/Free-The-Ai/free-ai/blob/master/README.md",
+    "https://github.com/Free-The-Ai/free-ai",
     "https://freetheai.xyz/docs",
-    "https://freetheai.xyz/models"
+    "https://freetheai.xyz/models",
+    "https://github.com/vibheksoni/free-ai"
   ]
 }

@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-07-18",
+  "lastUpdated": "2026-07-19",
   "providerCount": 22,
   "providers": [
     {
@@ -373,14 +373,15 @@
         "type": "free_models",
         "requiresPaymentMethod": false,
         "limitExample": "10 RPM",
-        "notesFa": "ثبت‌نام و check-in روزانه به Discord وابسته است. فهرست مدل‌ها و ظرفیت سرویس پویا است."
+        "notesFa": "ثبت‌نام از طریق Discord (/signup) و check-in روزانه (/checkin) الزامی است. ۶۰+ مدل فعال. مدل‌های image generation و audio نیز موجود. اسلات‌های پولی اختیاری جداگانه برای مدل‌های قوی‌تر موجود است."
       },
       "capabilities": [
         "chat",
         "text_generation",
         "reasoning",
         "tool_calling",
-        "structured_output"
+        "structured_output",
+        "image_generation"
       ],
       "iranAccess": {
         "status": "unknown",
@@ -394,10 +395,15 @@
         "evidenceCount": 1,
         "notesFa": "Endpoint از ایران قابل دسترس است؛ برای تعیین وضعیت عملی سرویس، درخواست مدل با کلید مجاز دریافت‌شده از Discord لازم است."
       },
-      "models": [],
+      "models": [
+        "opc/deepseek-v4-flash-free",
+        "glm/glm-5.1",
+        "kai/qwen3.5-32b",
+        "eve/gpt-image-2"
+      ],
       "verification": {
         "level": "live_verified",
-        "lastChecked": "2026-07-16",
+        "lastChecked": "2026-07-19",
         "staleAfterDays": 14
       },
       "health": {
@@ -712,12 +718,14 @@
         "type": "free_models",
         "requiresPaymentMethod": false,
         "limitExample": "30 RPM",
-        "notesFa": "دروازه API با اصطکاک صفر. بدون نیاز به ثبت‌نام برای دسترسی پایه. ۳۰+ مدل شامل DeepSeek، Gemini، GPT-4o-mini، Mistral، Qwen."
+        "notesFa": "دروازه API با اصطکاک صفر. بدون نیاز به ثبت‌نام برای دسترسی پایه با کلید 'unused'. ۳۰+ مدل. سلفکتورهای مدل: default (عمومی)، fast (سرعت بالا)، pro (پولی). تصویرسازی با gpt-image-2."
       },
       "capabilities": [
         "chat",
         "text_generation",
-        "reasoning"
+        "reasoning",
+        "image_generation",
+        "json_mode"
       ],
       "iranAccess": {
         "status": "verified_working",
@@ -732,16 +740,16 @@
         "notesFa": "دسترسی ناشناس از ایران با مدل codestral-latest تأیید شد. برخی مدل‌ها نیاز به API Key دارند."
       },
       "models": [
-        "codestral-latest",
-        "deepseek-v4-flash",
-        "gpt-5.4-mini",
-        "gpt-5.5",
-        "gpt-5.6-luna"
+        "default",
+        "fast",
+        "pro",
+        "gpt-5.4",
+        "gpt-5.4-mini"
       ],
       "verification": {
         "level": "live_verified",
-        "lastChecked": "2026-07-16",
-        "staleAfterDays": 30
+        "lastChecked": "2026-07-19",
+        "staleAfterDays": 14
       },
       "health": {
         "provider_id": "llm7-io",
@@ -828,8 +836,8 @@
         "status": "active",
         "type": "free_models",
         "requiresPaymentMethod": false,
-        "limitExample": "۲,۰۰۰ RPD کل (حداکثر ۵۰۰ RPD per model). نیاز به حساب Alibaba Cloud + احراز هویت واقعی.",
-        "notesFa": "پلتفرم چینی API-Inference رایگان. ۵۴+ مدل: DeepSeek-V4، Qwen3.5-397B، GLM-5.2، Kimi-K2.5 و غیره. نیاز به ثبت‌نام و احراز هویت."
+        "limitExample": "۲,۰۰۰ RPD کل. حداکثر ۲۰۰ RPD per model (پیش‌فرض). برخی مدل‌های بزرگ ۱۰۰ RPD. محدودیت‌ها پویا هستند و ممکن است تغییر کنند.",
+        "notesFa": "پلتفرم چینی API-Inference رایگان. ۵۴+ مدل: DeepSeek-V4، Qwen3.5-397B، GLM-5.2، Kimi-K2.5 و غیره. نیاز به ثبت‌نام و احراز هویت. محدودیت per-model پویا و معمولاً ۱۰۰-۲۰۰ RPD."
       },
       "capabilities": [
         "chat",
@@ -863,8 +871,8 @@
       ],
       "verification": {
         "level": "live_verified",
-        "lastChecked": "2026-07-16",
-        "staleAfterDays": 30
+        "lastChecked": "2026-07-19",
+        "staleAfterDays": 14
       },
       "health": {
         "provider_id": "modelscope",
@@ -948,9 +956,9 @@
       "freeTier": {
         "status": "active",
         "type": "free_models",
-        "requiresPaymentMethod": false,
-        "limitExample": "۵ مدل رایگان بدون نیاز به کارت بانکی. API Key رایگان. مدل‌های رایگان ممکن است داده را برای بهبود جمع‌آوری کنند.",
-        "notesFa": "پلتفرم OpenCode با ۵ مدل رایگان (مدت محدود): Big Pickle، DeepSeek V4 Flash، MiMo-V2.5، North Mini Code، Nemotron 3 Ultra. API Key رایگان بدون کارت بانکی."
+        "requiresPaymentMethod": true,
+        "limitExample": "ثبت‌نام و افزودن اطلاعات صورتحساب (کارت بانکی) الزامی است. ۵ مدل رایگان با مدت محدود. مدل‌های رایگان ممکن است داده را برای بهبود جمع‌آوری کنند.",
+        "notesFa": "پلتفرم OpenCode با ۵ مدل رایگان مدت‌محدود: Big Pickle، DeepSeek V4 Flash Free، MiMo-V2.5 Free، North Mini Code Free، Nemotron 3 Ultra Free. برای دریافت API Key باید اطلاعات صورتحساب اضافه کرد. مدل‌های رایگان ممکن است پس از دوره محدود حذف یا پولی شوند."
       },
       "capabilities": [
         "chat",
@@ -976,12 +984,12 @@
         "mimo-v2.5-free",
         "north-mini-code-free",
         "nemotron-3-ultra-free",
-        "big-pickle-stealth"
+        "big-pickle"
       ],
       "verification": {
         "level": "live_verified",
-        "lastChecked": "2026-07-16",
-        "staleAfterDays": 30
+        "lastChecked": "2026-07-19",
+        "staleAfterDays": 14
       },
       "health": {
         "provider_id": "opencode-zen",
