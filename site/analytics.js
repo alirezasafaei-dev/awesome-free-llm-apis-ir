@@ -72,7 +72,9 @@ function trackHomepageJourney(target, href) {
   }
 
   if (target.closest(".developer-path")) {
-    sendEvent("ux_path_click", { path: "developer_finder" });
+    sendEvent("ux_path_click", {
+      path: href.includes("/quick-start/") ? "developer_quick_start" : "developer_finder"
+    });
     return true;
   }
 
@@ -94,9 +96,19 @@ function trackHomepageJourney(target, href) {
   return false;
 }
 
+function quickStartExample(button) {
+  const details = button.closest("details");
+  const label = details?.querySelector("summary span")?.textContent?.trim().toLowerCase() ?? "unknown";
+  if (label.includes("python")) return "python";
+  if (label.includes("node")) return "nodejs";
+  if (label.includes("curl")) return "curl";
+  if (label.includes("متغیر")) return "environment";
+  return "unknown";
+}
+
 async function copyFromButton(button) {
   const explicitValue = button.dataset.copyText;
-  if (!explicitValue) return;
+  if (!explicitValue) return false;
   try {
     await navigator.clipboard.writeText(explicitValue);
     const statusEl = button.querySelector(".copy-status");
@@ -110,9 +122,11 @@ async function copyFromButton(button) {
       if (statusEl) { statusEl.textContent = ""; statusEl.hidden = true; }
       if (textEl) textEl.textContent = "کپی";
     }, 1400);
+    return true;
   } catch {
     const textEl = button.querySelector(".copy-text");
     if (textEl) textEl.textContent = "ناموفق";
+    return false;
   }
 }
 
@@ -131,8 +145,16 @@ document.addEventListener("click", (event) => {
   const guideSlug = linkedGuideSlug || currentGuideSlug;
 
   if (target.classList.contains("copy-button")) {
-    void copyFromButton(target);
-    sendEvent("copy_base_url", { provider_id: providerId ?? "catalog" });
+    const pageType = document.body.dataset.pageType ?? "";
+    const example = pageType === "quick-start" ? quickStartExample(target) : "";
+    void copyFromButton(target).then((copied) => {
+      if (!copied) return;
+      if (pageType === "quick-start") {
+        sendEvent("quick_start_code_copy", { example });
+      } else {
+        sendEvent("copy_base_url", { provider_id: providerId ?? "catalog" });
+      }
+    });
     return;
   }
   if (target.classList.contains("docs-link")) {
@@ -164,7 +186,7 @@ document.addEventListener("click", (event) => {
   }
   if (href.includes("github.com")) {
     sendEvent("github_click", {
-      page_type: guideSlug ? "guide" : providerId ? "provider" : "home",
+      page_type: guideSlug ? "guide" : providerId ? "provider" : document.body.dataset.pageType || "home",
       guide_slug: guideSlug ?? ""
     });
     return;
