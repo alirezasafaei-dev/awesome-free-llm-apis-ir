@@ -7,6 +7,7 @@ const root = process.cwd();
 const sourcePage = path.join(root, "site", "quick-start", "index.html");
 const sourceStyles = path.join(root, "site", "quick-start", "quick-start.css");
 const destination = path.join(root, ".site-dist");
+const quickStartUrl = "https://llm.persiantoolbox.ir/quick-start/";
 
 await access(sourcePage);
 await access(sourceStyles);
@@ -15,7 +16,7 @@ const source = await readFile(sourcePage, "utf8");
 const styles = await readFile(sourceStyles, "utf8");
 
 const requiredSourceSignals = [
-  '<link rel="canonical" href="https://llm.persiantoolbox.ir/quick-start/">',
+  `<link rel="canonical" href="${quickStartUrl}">`,
   'hreflang="fa-IR"',
   'hreflang="x-default"',
   'application/ld+json',
@@ -73,10 +74,10 @@ try {
 
   if (!builtPage.includes('src="../analytics.js"')) throw new Error("Built quick-start page is missing analytics");
   if (!builtPage.includes('src="../plausible.js"')) throw new Error("Built quick-start page is missing the Plausible tracker");
-  if (!builtHomepage.includes('href="./quick-start/"')) throw new Error("Built homepage does not link to developer quick start");
+  if (!builtHomepage.includes(`href="${quickStartUrl}"`)) throw new Error("Built homepage does not link to developer quick start");
   if (!builtHomepage.includes("شروع مرحله‌ای و نمونه‌کد")) throw new Error("Developer journey is not connected to quick start");
-  if (!sitemap.includes("<loc>https://llm.persiantoolbox.ir/quick-start/</loc>")) throw new Error("Sitemap is missing quick-start route");
-  if (!llms.includes("Developer quick start: https://llm.persiantoolbox.ir/quick-start/")) throw new Error("llms.txt is missing quick-start route");
+  if (!sitemap.includes(`<loc>${quickStartUrl}</loc>`)) throw new Error("Sitemap is missing quick-start route");
+  if (!llms.includes(`Developer quick start: ${quickStartUrl}`)) throw new Error("llms.txt is missing quick-start route");
   if (!buildMeta.static_product_pages?.includes("/quick-start/")) throw new Error("build-meta.json is missing quick-start product route");
 } finally {
   await rm(destination, { recursive: true, force: true });
