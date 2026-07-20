@@ -11,7 +11,14 @@
     "openai_compatible": true,
     "auth": "api_key"
   },
-  "capabilities": ["chat", "text_generation", "reasoning", "embeddings", "tool_calling", "structured_output"],
+  "capabilities": [
+    "chat",
+    "text_generation",
+    "reasoning",
+    "embeddings",
+    "tool_calling",
+    "structured_output"
+  ],
   "free_tier": {
     "status": "active",
     "type": "monthly_credit",
@@ -31,7 +38,7 @@
     "status": "unknown",
     "official_policy": "not_documented",
     "tested_from_iran": true,
-    "tested_at": "2026-07-16",
+    "tested_at": "2026-07-20",
     "test_method": "connectivity_probe",
     "network": {
       "country": "IR",
@@ -46,6 +53,15 @@
         "source": "IRAN_SERVER — direct connectivity probe",
         "connectivity_result": "http_response",
         "notes_fa": "Endpoint مدل‌ها از مسیر مستقیم ایران پاسخ HTTP 200 داد؛ این نتیجه Reachability را نشان می‌دهد و جای درخواست مدل با Gateway key را نمی‌گیرد."
+      },
+      {
+        "type": "connectivity_test",
+        "checked_at": "2026-07-20",
+        "http_status": 401,
+        "endpoint": "https://ai-gateway.vercel.sh/v1/chat/completions",
+        "source": "IRAN_SERVER — direct connectivity probe",
+        "connectivity_result": "http_response",
+        "notes_fa": "Endpoint از ایران قابل دسترس است (HTTP 401). نیاز به API key معتبر."
       }
     ],
     "notes_fa": "Endpoint از ایران قابل دسترس است؛ برای تعیین وضعیت عملی سرویس، ساخت Gateway مجاز و اجرای درخواست مدل لازم است."
@@ -57,7 +73,7 @@
   },
   "verification": {
     "level": "live_verified",
-    "last_checked": "2026-07-16",
+    "last_checked": "2026-07-20",
     "checked_by": "maintainers",
     "stale_after_days": 30
   },

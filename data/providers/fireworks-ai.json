@@ -43,8 +43,8 @@
     "status": "unknown",
     "official_policy": "not_documented",
     "tested_from_iran": true,
-    "tested_at": "2026-07-16",
-    "test_method": "live_request",
+    "tested_at": "2026-07-20",
+    "test_method": "connectivity_probe",
     "network": {
       "country": "IR",
       "route": "direct"
@@ -69,6 +69,14 @@
         "source": "IRAN_SERVER — direct connectivity probe",
         "connectivity_result": "connection_refused",
         "notes_fa": "یک Probe از مسیر مستقیم ایران پیش از دریافت پاسخ HTTP با Connection refused شکست خورد؛ این نتیجه می‌تواند ناشی از Routing، Firewall یا وضعیت موقت سرویس باشد و به‌تنهایی اثبات انسداد جغرافیایی نیست."
+      },
+      {
+        "type": "connectivity_test",
+        "checked_at": "2026-07-20",
+        "endpoint": "https://api.fireworks.ai/inference/v1/chat/completions",
+        "source": "IRAN_SERVER — direct connectivity probe",
+        "connectivity_result": "timeout",
+        "notes_fa": "اتصال به api.fireworks.ai از ایران با Timeout ۱۵ ثانیه‌ای مواجه شد. هیچ پاسخی دریافت نشد. این تنها یک Probe شبکه است و برای تأیید مسدودیت به تست با API key معتبر نیاز است."
       }
     ],
     "notes_fa": "وضعیت نامشخص می‌ماند: حساب فعلی معلق است و یک Probe دیگر نیز بدون پاسخ HTTP شکست خورده است. تست با حساب فعال و مقایسه همان Credential از مسیر پشتیبانی‌شده ضروری است."
@@ -86,7 +94,7 @@
   },
   "verification": {
     "level": "live_verified",
-    "last_checked": "2026-07-16",
+    "last_checked": "2026-07-20",
     "checked_by": "maintainers",
     "stale_after_days": 30
   },

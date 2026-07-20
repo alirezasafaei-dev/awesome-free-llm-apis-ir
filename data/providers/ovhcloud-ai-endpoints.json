@@ -34,12 +34,11 @@
     "status": "verified_working",
     "official_policy": "not_documented",
     "tested_from_iran": true,
-    "tested_at": "2026-07-16",
+    "tested_at": "2026-07-20",
     "test_method": "live_request",
     "network": {
       "country": "IR",
-      "route": "direct",
-      "exit_country": null
+      "route": "direct"
     },
     "evidence": [
       {
@@ -52,6 +51,17 @@
         "auth_method": "anonymous",
         "source": "LOCAL_PC — Iran mobile network (MCI AS44244)",
         "notes_fa": "دسترسی ناشناس (بدون کلید API) از ایران موفق بود. مدل gpt-oss-20b پاسخ ۲۰۰ برگرداند."
+      },
+      {
+        "type": "live_test",
+        "checked_at": "2026-07-20",
+        "http_status": 200,
+        "endpoint": "https://oai.endpoints.kepler.ai.cloud.ovh.net/v1/chat/completions",
+        "source": "IRAN_SERVER — direct connectivity probe",
+        "latency_ms": 713,
+        "model_tested": "gpt-oss-20b",
+        "timestamp": "2026-07-20T12:30:00Z",
+        "notes_fa": "درخواست POST به /v1/chat/completions با مدل gpt-oss-20b از ایران موفق و پاسخ کامل دریافت شد."
       }
     ],
     "notes_fa": "دسترسی ناشناس بدون نیاز به کلید API. تست مستقیم از ایران موفق."
@@ -69,7 +79,7 @@
   },
   "verification": {
     "level": "live_verified",
-    "last_checked": "2026-07-16",
+    "last_checked": "2026-07-20",
     "checked_by": "maintainers",
     "stale_after_days": 30
   },
