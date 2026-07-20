@@ -153,6 +153,13 @@ Free Tier برای Proof of Concept مناسب است، ولی برای داده
 
 کلاینت را از Provider جدا کنید، تنظیمات را در محیط نگه دارید، Timeout و Retry محدود داشته باشید، مدل جایگزین تعریف کنید و وضعیت Provider را دوره‌ای بررسی کنید.
 
+## راهنماهای مرتبط
+
+- [لیست API رایگان LLM](https://llm.persiantoolbox.ir/guides/free-llm-api/) — مقایسه کامل همه APIهای رایگان LLM
+- [API هوش مصنوعی در ایران](https://llm.persiantoolbox.ir/guides/ai-api-iran/) — ارائه‌دهندگان تأییدشده قابل دسترس از ایران
+- [جایگزین ChatGPT API](https://llm.persiantoolbox.ir/guides/chatgpt-api-alternative/) — مقایسه تخصصی جایگزین‌های ChatGPT
+- [GPT API رایگان بدون کارت بانکی](https://llm.persiantoolbox.ir/guides/free-gpt-api-no-credit-card/) — دسترسی GPT بدون پرداخت
+
 ## جمع‌بندی
 
 API رایگان هوش مصنوعی ابزار قدرتمندی برای یادگیری، نمونه‌سازی و حتی برخی بارهای واقعی است، اما تصمیم حرفه‌ای باید بر داده تاریخ‌دار و تست قابل بازتولید تکیه کند. سهمیه، دسترسی، کیفیت، امنیت و پایداری را هم‌زمان ببینید. برای مشاهده آخرین وضعیت، به [کاتالوگ زنده](https://llm.persiantoolbox.ir/) مراجعه کنید و در صورت مشاهده تغییر مستند، از طریق [GitHub پروژه](https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir) گزارش Sanitized ثبت کنید.

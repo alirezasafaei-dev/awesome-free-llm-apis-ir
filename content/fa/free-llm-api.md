@@ -206,6 +206,13 @@ Fallback کورکورانه خطر دارد. اگر درخواست مالی یا
 
 مصرف توکن و درخواست را اندازه بگیرید، Queue و Backoff داشته باشید، پاسخ‌های قابل Cache را ذخیره کنید و برای 429 Retry-After را رعایت کنید.
 
+## راهنماهای مرتبط
+
+- [راهنمای API رایگان هوش مصنوعی](https://llm.persiantoolbox.ir/guides/free-ai-api/) — نمای کلی APIهای رایگان هوش مصنوعی
+- [API هوش مصنوعی در ایران](https://llm.persiantoolbox.ir/guides/ai-api-iran/) — ارائه‌دهندگان تأییدشده قابل دسترس از ایران
+- [جایگزین ChatGPT API](https://llm.persiantoolbox.ir/guides/chatgpt-api-alternative/) — مقایسه تخصصی جایگزین‌های ChatGPT
+- [GPT API رایگان بدون کارت بانکی](https://llm.persiantoolbox.ir/guides/free-gpt-api-no-credit-card/) — دسترسی GPT بدون پرداخت
+
 ## جمع‌بندی
 
 API رایگان LLM بهترین ابزار برای آزمایش و ساخت سریع است، به شرطی که قرارداد فنی و محدودیت آن دقیق فهمیده شود. Provider را براساس وظیفه واقعی، سهمیه، کیفیت، Region، Privacy و قابلیت مهاجرت انتخاب کنید. برای داده به‌روز به [کاتالوگ زنده](https://llm.persiantoolbox.ir/) مراجعه کنید و تغییرات مستند را در [GitHub پروژه](https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir) ثبت کنید.

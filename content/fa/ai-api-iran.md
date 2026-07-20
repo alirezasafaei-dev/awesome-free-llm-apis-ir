@@ -212,6 +212,13 @@ Secretها و شناسه‌های حساب را حذف کنید. فقط داده
 
 این وضعیت پویاست. Providerهایی را در اولویت بگذارید که Evidence مستقیم تازه، Signup قابل انجام، سهمیه روشن و کیفیت مناسب پروژه دارند. سپس تست مجاز خودتان را انجام دهید.
 
+## راهنماهای مرتبط
+
+- [راهنمای API رایگان هوش مصنوعی](https://llm.persiantoolbox.ir/guides/free-ai-api/) — نمای کلی APIهای رایگان هوش مصنوعی
+- [لیست API رایگان LLM](https://llm.persiantoolbox.ir/guides/free-llm-api/) — مقایسه کامل همه APIهای رایگان LLM
+- [GPT API رایگان بدون کارت بانکی](https://llm.persiantoolbox.ir/guides/free-gpt-api-no-credit-card/) — دسترسی GPT بدون پرداخت
+- [جایگزین OpenAI API](https://llm.persiantoolbox.ir/guides/openai-api-alternative/) — گزینه‌های سازگار با OpenAI
+
 ## جمع‌بندی
 
 ارزیابی API هوش مصنوعی در ایران باید دقیق، لایه‌ای و تاریخ‌دار باشد. Website، Signup، Credential، Model و Inference را جدا ببینید. هیچ نتیجه‌ای را از روی حدس یا یک Probe ناقص به کاتالوگ منتقل نکنید. برای آخرین وضعیت به [کاتالوگ زنده](https://llm.persiantoolbox.ir/) مراجعه کنید و گزارش Sanitized را در [GitHub پروژه](https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir) ثبت کنید.
