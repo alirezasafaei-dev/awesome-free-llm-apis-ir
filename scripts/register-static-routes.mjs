@@ -7,6 +7,7 @@ const destination = path.join(root, ".site-dist");
 const sitemapPath = path.join(destination, "sitemap.xml");
 const llmsPath = path.join(destination, "llms.txt");
 const buildMetaPath = path.join(destination, "build-meta.json");
+const homepagePath = path.join(destination, "index.html");
 const canonicalOrigin = "https://llm.persiantoolbox.ir";
 const quickStartUrl = `${canonicalOrigin}/quick-start/`;
 
@@ -27,4 +28,17 @@ const buildMeta = JSON.parse(await readFile(buildMetaPath, "utf8"));
 buildMeta.static_product_pages = [...new Set([...(buildMeta.static_product_pages ?? []), "/quick-start/"])];
 await writeFile(buildMetaPath, `${JSON.stringify(buildMeta, null, 2)}\n`);
 
-console.log("Registered /quick-start/ in sitemap.xml, llms.txt and build-meta.json.");
+let homepage = await readFile(homepagePath, "utf8");
+if (!homepage.includes('href="./quick-start/"')) {
+  homepage = homepage.replace(
+    '<a href="./api-finder/">انتخاب API</a>',
+    '<a href="./api-finder/">انتخاب API</a>\n        <a href="./quick-start/">شروع برنامه‌نویسی</a>'
+  );
+  homepage = homepage.replace(
+    '<a class="path-link" href="./api-finder/">بازکردن API Finder ←</a>',
+    '<a class="path-link" href="./quick-start/">شروع مرحله‌ای و نمونه‌کد ←</a>'
+  );
+  await writeFile(homepagePath, homepage);
+}
+
+console.log("Registered /quick-start/ in homepage navigation, sitemap.xml, llms.txt and build-meta.json.");
