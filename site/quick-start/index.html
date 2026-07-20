@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1">
+  <meta name="description" content="شروع سریع استفاده از API رایگان هوش مصنوعی با curl، Python و Node.js؛ از انتخاب Provider و ساخت کلید تا اولین درخواست و رفع خطاهای 401، 404 و 429.">
+  <meta property="og:title" content="شروع سریع API رایگان هوش مصنوعی | curl، Python و Node.js">
+  <meta property="og:description" content="یک مسیر مرحله‌ای برای انتخاب سرویس، تنظیم امن کلید و ارسال اولین درخواست API هوش مصنوعی.">
+  <meta property="og:type" content="article">
+  <meta property="og:locale" content="fa_IR">
+  <meta property="og:url" content="https://llm.persiantoolbox.ir/quick-start/">
+  <meta property="og:image" content="https://llm.persiantoolbox.ir/assets/social/og-default.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://llm.persiantoolbox.ir/assets/social/og-default.png">
+  <link rel="canonical" href="https://llm.persiantoolbox.ir/quick-start/">
+  <link rel="alternate" hreflang="fa-IR" href="https://llm.persiantoolbox.ir/quick-start/">
+  <link rel="alternate" hreflang="x-default" href="https://llm.persiantoolbox.ir/quick-start/">
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../seo.css">
+  <link rel="stylesheet" href="../ux-clarity.css">
+  <link rel="stylesheet" href="./quick-start.css">
+  <title>شروع سریع API رایگان هوش مصنوعی | curl، Python و Node.js</title>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://llm.persiantoolbox.ir/#organization",
+        "name": "Awesome Free LLM APIs IR",
+        "url": "https://llm.persiantoolbox.ir/",
+        "sameAs": ["https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir"]
+      },
+      {
+        "@type": "TechArticle",
+        "headline": "شروع سریع API رایگان هوش مصنوعی با curl، Python و Node.js",
+        "description": "راهنمای مرحله‌ای انتخاب Provider، ساخت کلید، تنظیم متغیرهای محیطی و ارسال اولین درخواست سازگار با OpenAI.",
+        "inLanguage": "fa-IR",
+        "dateModified": "2026-07-20",
+        "mainEntityOfPage": "https://llm.persiantoolbox.ir/quick-start/",
+        "author": { "@id": "https://llm.persiantoolbox.ir/#organization" },
+        "publisher": { "@id": "https://llm.persiantoolbox.ir/#organization" }
+      },
+      {
+        "@type": "HowTo",
+        "name": "ارسال اولین درخواست API هوش مصنوعی",
+        "inLanguage": "fa-IR",
+        "step": [
+          { "@type": "HowToStep", "position": 1, "name": "انتخاب Provider مناسب" },
+          { "@type": "HowToStep", "position": 2, "name": "ساخت حساب و دریافت API Key" },
+          { "@type": "HowToStep", "position": 3, "name": "تنظیم Base URL، Model و Key" },
+          { "@type": "HowToStep", "position": 4, "name": "ارسال درخواست و بررسی پاسخ" }
+        ]
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "خانه", "item": "https://llm.persiantoolbox.ir/" },
+          { "@type": "ListItem", "position": 2, "name": "شروع سریع توسعه‌دهنده", "item": "https://llm.persiantoolbox.ir/quick-start/" }
+        ]
+      }
+    ]
+  }
+  </script>
+</head>
+<body data-page-type="quick-start">
+  <a class="skip-link" href="#quick-start-content">رفتن به محتوای اصلی</a>
+  <header class="topbar">
+    <a class="brand" href="../" aria-label="صفحه اصلی"><span class="brand-mark" aria-hidden="true"><img src="../assets/logo-symbol.svg" alt="" width="40" height="40"></span><span>Awesome Free LLM APIs IR</span></a>
+    <nav aria-label="پیوندهای اصلی"><a href="../api-finder/">انتخاب API</a><a href="../#catalog">فهرست کامل</a><a href="https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir">GitHub</a></nav>
+  </header>
+
+  <main id="quick-start-content" class="quick-start-shell">
+    <section class="quick-start-hero" aria-labelledby="quick-start-title">
+      <p class="eyebrow">برای برنامه‌نویس‌ها؛ از انتخاب تا اولین پاسخ</p>
+      <h1 id="quick-start-title">اولین درخواست API هوش مصنوعی را<br><span>بدون حدس‌زدن بساز.</span></h1>
+      <p>این راهنما برای سرویس‌هایی است که API سازگار با OpenAI ارائه می‌کنند. ابتدا Provider و مدل را از منبع رسمی انتخاب می‌کنی، بعد کلید را به‌صورت امن در متغیر محیطی قرار می‌دهی و درخواست را با curl، Python یا Node.js می‌فرستی.</p>
+      <div class="hero-actions"><a class="button primary" href="../api-finder/">اول Provider مناسب را پیدا کن</a><a class="button secondary" href="#code-examples">رفتن به نمونه‌کدها</a></div>
+      <nav class="quick-start-nav" aria-label="بخش‌های راهنما"><a href="#activation-flow">چهار مرحله</a><a href="#evidence">وضعیت ایران</a><a href="#environment">تنظیم متغیرها</a><a href="#code-examples">نمونه‌کد</a><a href="#errors">رفع خطا</a></nav>
+    </section>
+
+    <section id="activation-flow" class="quick-start-section" aria-labelledby="activation-title">
+      <p class="eyebrow">مسیر استاندارد</p>
+      <h2 id="activation-title">چهار مرحله‌ای که نباید با هم قاطی شوند</h2>
+      <p>بازشدن وب‌سایت یا پاسخ‌دادن یک Endpoint عمومی، اثبات نمی‌کند که حساب ساخته می‌شود یا درخواست مدل موفق خواهد بود. برای یک اتصال واقعی هر چهار مرحله باید جداگانه انجام و بررسی شوند.</p>
+      <ol class="activation-steps">
+        <li><span>۱</span><strong>Provider را انتخاب کن</strong><p>کاربرد، نوع سهمیه، محدودیت، مدل و وضعیت منطقه را مقایسه کن.</p></li>
+        <li><span>۲</span><strong>حساب و کلید بساز</strong><p>فقط از صفحه رسمی ثبت‌نام و داشبورد رسمی API Key استفاده کن.</p></li>
+        <li><span>۳</span><strong>سه مقدار را تنظیم کن</strong><p>API Key، Base URL و شناسه دقیق Model را از مستندات بردار.</p></li>
+        <li><span>۴</span><strong>درخواست واقعی بفرست</strong><p>HTTP status، بدنه JSON و محتوای پاسخ مدل را بررسی کن.</p></li>
+      </ol>
+    </section>
+
+    <section id="evidence" class="quick-start-section" aria-labelledby="evidence-title">
+      <p class="eyebrow">مخصوص کاربران ایران</p>
+      <h2 id="evidence-title">چهار نوع Evidence را جدا بخوان</h2>
+      <p>در صفحه هر Provider ممکن است یکی از لایه‌های زیر تأیید شده باشد. برچسب «سایت باز شد» یا پاسخ 401 به‌معنی کارکرد کامل سرویس نیست؛ 401 معمولاً فقط نشان می‌دهد مسیر شبکه به Endpoint رسیده اما اعتبارنامه معتبر ارائه نشده است.</p>
+      <div class="evidence-layers">
+        <div><strong>۱. Reachability</strong><span>DNS، TLS یا صفحه مستندات از شبکه موردنظر قابل دسترسی است.</span></div>
+        <div><strong>۲. Signup</strong><span>فرایند ساخت حساب و محدودیت کشور با موفقیت طی شده است.</span></div>
+        <div><strong>۳. Key issuance</strong><span>داشبورد اجازه ساخت API Key معتبر داده است.</span></div>
+        <div><strong>۴. Inference</strong><span>یک درخواست احراز‌شده به مدل پاسخ معتبر برگردانده است.</span></div>
+      </div>
+      <p>برای تصمیم نهایی، صفحه اختصاصی Provider، تاریخ آخرین بررسی و منبع رسمی را بخوان. وضعیت‌ها تضمین دائمی نیستند و ممکن است با سیاست سرویس، حساب یا مسیر شبکه تغییر کنند.</p>
+    </section>
+
+    <section id="environment" class="quick-start-section" aria-labelledby="environment-title">
+      <p class="eyebrow">قبل از کدنویسی</p>
+      <h2 id="environment-title">سه مقدار اصلی را از مستندات رسمی بردار</h2>
+      <div class="setup-grid">
+        <article class="setup-card"><h3>LLM_API_KEY</h3><p>کلید محرمانه حساب. آن را داخل Git، فایل عمومی، Screenshot یا فرانت‌اند مرورگر قرار نده.</p></article>
+        <article class="setup-card"><h3>LLM_BASE_URL</h3><p>آدرس پایه API؛ برای سرویس سازگار با OpenAI معمولاً به نسخه‌ای مانند <code>/v1</code> ختم می‌شود.</p></article>
+        <article class="setup-card"><h3>LLM_MODEL</h3><p>شناسه دقیق مدل، نه نام بازاریابی آن. شناسه را از مدل‌های فعال حساب یا مستندات کپی کن.</p></article>
+      </div>
+      <details class="code-example" open>
+        <summary><span>تنظیم متغیرهای محیطی</span><small>Linux / macOS / Git Bash</small></summary>
+        <pre><code>export LLM_API_KEY="YOUR_API_KEY"
+export LLM_BASE_URL="https://provider.example/v1"
+export LLM_MODEL="MODEL_ID"</code></pre>
+        <div class="code-actions"><span>مقادیر نمونه را با اطلاعات حساب خودت جایگزین کن.</span><button class="copy-button" type="button" data-copy-text="export LLM_API_KEY=&quot;YOUR_API_KEY&quot;&#10;export LLM_BASE_URL=&quot;https://provider.example/v1&quot;&#10;export LLM_MODEL=&quot;MODEL_ID&quot;"><span class="copy-text">کپی</span><span class="copy-status" role="status" aria-live="polite" hidden></span></button></div>
+      </details>
+    </section>
+
+    <section id="code-examples" class="quick-start-section" aria-labelledby="code-title">
+      <p class="eyebrow">نمونه‌های قابل‌کپی</p>
+      <h2 id="code-title">یک درخواست ساده Chat Completions بفرست</h2>
+      <p>این نمونه‌ها فقط برای Providerهایی هستند که در کاتالوگ با برچسب سازگار با OpenAI نمایش داده شده‌اند. اگر سرویس API اختصاصی دارد، Schema و SDK همان سرویس را استفاده کن. پیام آزمایشی کوتاه نگه داشته شده تا خطای اتصال، مدل و احراز هویت سریع‌تر مشخص شود.</p>
+
+      <details class="code-example" open>
+        <summary><span>curl</span><small>بدون نصب SDK</small></summary>
+        <pre><code>curl "$LLM_BASE_URL/chat/completions" \
+  -H "Authorization: Bearer $LLM_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "'"$LLM_MODEL"'",
+    "messages": [
+      {"role": "user", "content": "فقط بنویس: اتصال موفق بود"}
+    ]
+  }'</code></pre>
+        <div class="code-actions"><span>اول status code و سپس JSON پاسخ را بررسی کن.</span><button class="copy-button" type="button" data-copy-text="curl &quot;$LLM_BASE_URL/chat/completions&quot; \
+  -H &quot;Authorization: Bearer $LLM_API_KEY&quot; \
+  -H &quot;Content-Type: application/json&quot; \
+  -d '{&quot;model&quot;:&quot;'&quot;$LLM_MODEL&quot;'&quot;,&quot;messages&quot;:[{&quot;role&quot;:&quot;user&quot;,&quot;content&quot;:&quot;فقط بنویس: اتصال موفق بود&quot;}]}'"><span class="copy-text">کپی curl</span><span class="copy-status" role="status" aria-live="polite" hidden></span></button></div>
+      </details>
+
+      <details class="code-example">
+        <summary><span>Python</span><small>OpenAI SDK</small></summary>
+        <pre><code>import os
+from openai import OpenAI
+
+client = OpenAI(
+    api_key=os.environ["LLM_API_KEY"],
+    base_url=os.environ["LLM_BASE_URL"],
+)
+
+response = client.chat.completions.create(
+    model=os.environ["LLM_MODEL"],
+    messages=[
+        {"role": "user", "content": "فقط بنویس: اتصال موفق بود"}
+    ],
+)
+
+print(response.choices[0].message.content)</code></pre>
+        <div class="code-actions"><span>نصب: <code>python -m pip install openai</code></span><button class="copy-button" type="button" data-copy-text="import os&#10;from openai import OpenAI&#10;&#10;client = OpenAI(api_key=os.environ[&quot;LLM_API_KEY&quot;], base_url=os.environ[&quot;LLM_BASE_URL&quot;])&#10;response = client.chat.completions.create(model=os.environ[&quot;LLM_MODEL&quot;], messages=[{&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;فقط بنویس: اتصال موفق بود&quot;}])&#10;print(response.choices[0].message.content)"><span class="copy-text">کپی Python</span><span class="copy-status" role="status" aria-live="polite" hidden></span></button></div>
+      </details>
+
+      <details class="code-example">
+        <summary><span>Node.js</span><small>OpenAI SDK + ESM</small></summary>
+        <pre><code>import OpenAI from "openai";
+
+const client = new OpenAI({
+  apiKey: process.env.LLM_API_KEY,
+  baseURL: process.env.LLM_BASE_URL,
+});
+
+const response = await client.chat.completions.create({
+  model: process.env.LLM_MODEL,
+  messages: [
+    { role: "user", content: "فقط بنویس: اتصال موفق بود" },
+  ],
+});
+
+console.log(response.choices[0].message.content);</code></pre>
+        <div class="code-actions"><span>نصب: <code>npm install openai</code></span><button class="copy-button" type="button" data-copy-text="import OpenAI from &quot;openai&quot;;&#10;&#10;const client = new OpenAI({ apiKey: process.env.LLM_API_KEY, baseURL: process.env.LLM_BASE_URL });&#10;const response = await client.chat.completions.create({ model: process.env.LLM_MODEL, messages: [{ role: &quot;user&quot;, content: &quot;فقط بنویس: اتصال موفق بود&quot; }] });&#10;console.log(response.choices[0].message.content);"><span class="copy-text">کپی Node.js</span><span class="copy-status" role="status" aria-live="polite" hidden></span></button></div>
+      </details>
+    </section>
+
+    <section class="quick-start-section" aria-labelledby="success-title">
+      <p class="eyebrow">تعریف موفقیت</p>
+      <h2 id="success-title">از کجا بفهمم واقعاً وصل شده‌ام؟</h2>
+      <div class="success-checks">
+        <article><h3>HTTP موفق</h3><p>معمولاً status code در بازه 200 است؛ اما فقط status کافی نیست.</p></article>
+        <article><h3>JSON معتبر</h3><p>بدنه پاسخ باید JSON مورد انتظار API باشد، نه HTML صفحه ورود یا خطای CDN.</p></article>
+        <article><h3>Model معتبر</h3><p>پاسخ باید به شناسه مدلی مربوط باشد که در درخواست فرستاده‌ای.</p></article>
+        <article><h3>متن قابل‌خواندن</h3><p>محتوای پاسخ مدل باید در مسیر استاندارد SDK یا Schema سرویس موجود باشد.</p></article>
+      </div>
+    </section>
+
+    <section id="errors" class="quick-start-section" aria-labelledby="errors-title">
+      <p class="eyebrow">رفع خطای سریع</p>
+      <h2 id="errors-title">خطاهای رایج چه معنایی دارند؟</h2>
+      <div class="error-map">
+        <article><h3>401 Unauthorized</h3><p>کلید ارسال نشده، نامعتبر است یا برای این Endpoint پذیرفته نمی‌شود. نام متغیر و Header را بررسی کن.</p></article>
+        <article><h3>403 Forbidden</h3><p>حساب، منطقه، مدل یا سیاست سرویس اجازه دسترسی نمی‌دهد. این خطا را با مشکل شبکه یکی ندان.</p></article>
+        <article><h3>404 Not Found</h3><p>Base URL، نسخه API، مسیر <code>chat/completions</code> یا شناسه مدل ممکن است اشتباه باشد.</p></article>
+        <article><h3>429 Too Many Requests</h3><p>سهمیه یا Rate Limit پر شده است. Retry با backoff و Headerهای محدودیت را بررسی کن.</p></article>
+        <article><h3>Timeout / TLS</h3><p>مسئله احتمالاً قبل از لایه API است: DNS، مسیر شبکه، TLS یا فایروال را جدا بررسی کن.</p></article>
+        <article><h3>200 + HTML</h3><p>به‌جای API، صفحه وب یا fallback دریافت کرده‌ای. Content-Type و Base URL را کنترل کن.</p></article>
+      </div>
+      <p>برای جزئیات بیشتر، راهنماهای <a href="../guides/fix-llm-api-401-403-model-not-found/">خطاهای 401، 403 و مدل</a> و <a href="../guides/llm-api-rate-limit-429/">مدیریت Rate Limit 429</a> را بخوان.</p>
+    </section>
+
+    <section class="quick-start-cta">
+      <div><h2>حالا Provider مناسب را انتخاب کن.</h2><p>کاربرد، بودجه، سرعت، زبان و شرایط منطقه را وارد کن تا گزینه‌ها رتبه‌بندی شوند.</p></div>
+      <a class="button" href="../api-finder/">بازکردن API Finder</a>
+    </section>
+  </main>
+
+  <footer><p>کلید API را هرگز در کد عمومی یا فرانت‌اند قرار نده.</p><a href="../">بازگشت به صفحه اصلی</a></footer>
+  <script defer src="../analytics.js"></script>
+  <script defer data-domain="llm.persiantoolbox.ir" src="../plausible.js"></script>
+</body>
+</html>
