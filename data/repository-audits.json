@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0.0",
-  "last_updated": "2026-07-16",
+  "last_updated": "2026-07-20",
   "audits": [
     {
       "repository": "AgnesAI-Labs/AgnesAI-Models",
@@ -12,7 +12,9 @@
       "archived": false,
       "last_activity_at": "2026-06-29",
       "openai_compatible": "yes",
-      "auth_surface": ["api_key"],
+      "auth_surface": [
+        "api_key"
+      ],
       "free_api_evidence": "verified",
       "license": "unknown",
       "risk": "low",
@@ -43,7 +45,9 @@
       "archived": false,
       "last_activity_at": "2026-07-16",
       "openai_compatible": "yes",
-      "auth_surface": ["api_key"],
+      "auth_surface": [
+        "api_key"
+      ],
       "free_api_evidence": "claimed",
       "license": "unknown",
       "risk": "medium",
@@ -74,7 +78,10 @@
       "archived": true,
       "last_activity_at": null,
       "openai_compatible": "no",
-      "auth_surface": ["cookie", "browser_session"],
+      "auth_surface": [
+        "cookie",
+        "browser_session"
+      ],
       "free_api_evidence": "not_applicable",
       "license": "MIT",
       "risk": "high",
@@ -104,7 +111,10 @@
       "archived": false,
       "last_activity_at": "2026-07-16",
       "openai_compatible": "not_applicable",
-      "auth_surface": ["api_key", "account_balance"],
+      "auth_surface": [
+        "api_key",
+        "account_balance"
+      ],
       "free_api_evidence": "none",
       "license": "MIT",
       "risk": "low",
@@ -134,7 +144,10 @@
       "archived": false,
       "last_activity_at": "2026-07-16",
       "openai_compatible": "not_applicable",
-      "auth_surface": ["third_party_keys", "api_key"],
+      "auth_surface": [
+        "third_party_keys",
+        "api_key"
+      ],
       "free_api_evidence": "none",
       "license": "unknown",
       "risk": "low",
@@ -164,7 +177,9 @@
       "archived": false,
       "last_activity_at": "2024-05-04",
       "openai_compatible": "not_applicable",
-      "auth_surface": ["none"],
+      "auth_surface": [
+        "none"
+      ],
       "free_api_evidence": "not_applicable",
       "license": "unknown",
       "risk": "low",
@@ -194,7 +209,9 @@
       "archived": false,
       "last_activity_at": "2026-06-19",
       "openai_compatible": "partial",
-      "auth_surface": ["api_key"],
+      "auth_surface": [
+        "api_key"
+      ],
       "free_api_evidence": "none",
       "license": "unknown",
       "risk": "low",
