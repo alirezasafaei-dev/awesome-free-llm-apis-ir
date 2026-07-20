@@ -156,6 +156,12 @@ The Iran-access badge on each provider's page shows the most recent verified sta
 - Rotate keys periodically and on suspected leaks.
 - Have a fallback provider tested and ready.
 
+## Related Guides
+
+- [Free AI API guide](https://llm.persiantoolbox.ir/guides/en/en-free-ai-api/) — complete overview of free AI APIs
+- [LLM API rate limit 429 handling](https://llm.persiantoolbox.ir/guides/en/en-llm-api-rate-limit-429/) — managing rate limits and quotas
+- [Practical free LLM API guide for Iran](https://llm.persiantoolbox.ir/guides/en/en-practical-free-llm-api-iran/) — full guide from signup to first request
+
 ## Summary
 
 Most LLM API errors fall into a few categories: authentication, permission, endpoint, or model identification. Systematic diagnosis by error code, credential verification, endpoint inspection, and minimal request testing resolves the vast majority of issues.
