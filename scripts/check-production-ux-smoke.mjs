@@ -58,7 +58,7 @@ async function fetchWithTimeout(url, timeoutMs) {
       redirect: "follow",
       signal: controller.signal,
       headers: {
-        "user-agent": "awesome-free-llm-apis-ir-ux-smoke/1.1",
+        "user-agent": "awesome-free-llm-apis-ir-ux-smoke/1.2",
         accept: "text/html,application/json,application/xml,text/xml;q=0.9,*/*;q=0.8"
       }
     });
@@ -113,7 +113,7 @@ async function checkTarget(target, options) {
     {
       path: "api-finder/",
       kind: "api-finder",
-      signals: ["finder-form", "application/ld+json", "finder-clarity.css", "finder-clarity.js"]
+      signals: ["finder-form", "application/ld+json", "finder-clarity.css", "finder-clarity.js", "shortlist.css", "shortlist.js"]
     },
     {
       path: "quick-start/",
@@ -124,6 +124,11 @@ async function checkTarget(target, options) {
       path: "tools/",
       kind: "tools",
       signals: ["tools-title", "tools-controls", "tool-card", "tools.css", "tools.js", "ریسک Terms", "امنیت Credential", "application/ld+json"]
+    },
+    {
+      path: "compare/",
+      kind: "compare",
+      signals: ["compare-title", "compare-grid", "compare-empty", "compare.css", "compare.js", "catalog.json", "application/ld+json"]
     }
   ];
 
@@ -157,7 +162,7 @@ async function checkTarget(target, options) {
       result.metadata.sourceRevision = revision || null;
       const productPages = Array.isArray(meta.static_product_pages) ? meta.static_product_pages : [];
       result.metadata.staticProductPages = productPages;
-      for (const route of ["/api-finder/", "/quick-start/", "/tools/"]) {
+      for (const route of ["/api-finder/", "/quick-start/", "/tools/", "/compare/"]) {
         if (!productPages.includes(route)) addFailure(metaCheck, `build metadata is missing product route ${route}`);
       }
       if (!Number.isInteger(meta.tool_count) || meta.tool_count < 1) addFailure(metaCheck, "build metadata is missing a valid tool_count");
@@ -181,7 +186,7 @@ async function checkTarget(target, options) {
     sitemapCheck.status = response.status;
     sitemapCheck.elapsedMs = response.elapsedMs;
     if (!response.ok) addFailure(sitemapCheck, `expected 2xx, received HTTP ${response.status}`);
-    for (const route of ["api-finder/", "quick-start/", "tools/"]) {
+    for (const route of ["api-finder/", "quick-start/", "tools/", "compare/"]) {
       if (!response.body.includes(route)) addFailure(sitemapCheck, `sitemap is missing ${route}`);
     }
   } catch (error) {
@@ -228,7 +233,7 @@ async function main() {
       expectedRevision: options.expectedRevision || null,
       timeoutMs: options.timeoutMs,
       targets: selectedTargets,
-      requiredRoutes: ["/", "/api-finder/", "/quick-start/", "/tools/", "/build-meta.json", "/sitemap.xml"]
+      requiredRoutes: ["/", "/api-finder/", "/quick-start/", "/tools/", "/compare/", "/build-meta.json", "/sitemap.xml"]
     }, null, 2));
     return;
   }
