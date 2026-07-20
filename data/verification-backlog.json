@@ -24,10 +24,10 @@
       "status": "open",
       "providers": [
         "agnes-ai",
-        "fireworks-ai",
         "freetheai",
         "nvidia-nim",
-        "vercel-ai-gateway"
+        "vercel-ai-gateway",
+        "fireworks-ai"
       ],
       "blocker_type": "account_access"
     },
@@ -77,14 +77,6 @@
       "automatable": false
     },
     {
-      "provider_id": "fireworks-ai",
-      "track_issue": 33,
-      "blocker_type": "inactive_account_and_inconclusive_network_failure",
-      "next_action": "Repeat the direct and supported-route comparison with an active authorized account; do not classify connection refusal alone as blocking.",
-      "requires_local_execution": true,
-      "automatable": false
-    },
-    {
       "provider_id": "freetheai",
       "track_issue": 33,
       "blocker_type": "community_key_required",
@@ -105,6 +97,14 @@
       "track_issue": 33,
       "blocker_type": "account_access",
       "next_action": "Create an authorized gateway configuration and run a minimal model request from the direct Iran route.",
+      "requires_local_execution": true,
+      "automatable": false
+    },
+    {
+      "provider_id": "fireworks-ai",
+      "track_issue": 33,
+      "blocker_type": "inactive_account_and_inconclusive_network_failure",
+      "next_action": "Endpoint connection timed out from Iran. Repeat with an active authorized account to determine if it's truly geo-blocked.",
       "requires_local_execution": true,
       "automatable": false
     }

@@ -113,7 +113,7 @@
   },
   "verification": {
     "level": "live_verified",
-    "last_checked": "2026-07-18",
+    "last_checked": "2026-07-20",
     "checked_by": "maintainers",
     "stale_after_days": 30
   },
