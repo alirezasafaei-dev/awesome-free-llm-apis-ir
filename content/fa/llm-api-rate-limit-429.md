@@ -361,6 +361,12 @@ Retry Storm زمانی رخ می‌دهد که تعداد زیادی Client بع
 - Fallback میان مدل‌هایی با خروجی ناسازگار
 - استفاده از سهمیه رایگان بدون کنترل مصرف
 
+## راهنماهای مرتبط
+
+- [لیست API رایگان LLM](https://llm.persiantoolbox.ir/guides/free-llm-api/) — مقایسه کامل همه APIهای رایگان LLM
+- [رفع خطاهای ۴۰۱/۴۰۳/model-not-found](https://llm.persiantoolbox.ir/guides/fix-llm-api-401-403-model-not-found/) — عیب‌یابی خطاهای API رایگان
+- [راهنمای عملی API رایگان در ایران](https://llm.persiantoolbox.ir/guides/practical-free-llm-api-iran/) — از ثبت‌نام تا اولین درخواست
+
 ## جمع‌بندی
 
 رفع خطای 429 فقط افزودن `sleep` نیست. باید نوع محدودیت را بفهمید، ترافیک را قبل از ارسال کنترل کنید، Retry محدود و تصادفی داشته باشید، Context را کوچک نگه دارید و Provider جایگزین تست‌شده تعریف کنید.

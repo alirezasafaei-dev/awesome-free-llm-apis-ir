@@ -378,6 +378,12 @@ export async function generateText({ messages }) {
 - Provider جایگزین و مسیر Failover تست شده است.
 - Dashboard مصرف و خطا دارید.
 
+## راهنماهای مرتبط
+
+- [راهنمای API رایگان هوش مصنوعی](https://llm.persiantoolbox.ir/guides/free-ai-api/) — نمای کلی APIهای رایگان هوش مصنوعی
+- [ساخت چت‌بات فارسی با Python](https://llm.persiantoolbox.ir/guides/build-persian-chatbot-python/) — آموزش چت‌بات Python
+- [راهنمای عملی API رایگان در ایران](https://llm.persiantoolbox.ir/guides/practical-free-llm-api-iran/) — از ثبت‌نام تا اولین درخواست
+
 ## جمع‌بندی
 
 اتصال Node.js به یک API سازگار با OpenAI ساده است، اما یک Integration قابل اتکا به مدیریت Secret، خطا، Timeout، Rate Limit و Context نیاز دارد. با جداکردن `LLM_API_KEY`، `LLM_BASE_URL` و `LLM_MODEL` می‌توانید Provider را با هزینه کمتری عوض کنید.

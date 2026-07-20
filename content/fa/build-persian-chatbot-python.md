@@ -376,6 +376,12 @@ LLM_MODEL=new-model-id
 - Provider جایگزین تست شده است.
 - مصرف و خطاها به‌صورت Aggregate پایش می‌شوند.
 
+## راهنماهای مرتبط
+
+- [راهنمای API رایگان هوش مصنوعی](https://llm.persiantoolbox.ir/guides/free-ai-api/) — نمای کلی APIهای رایگان هوش مصنوعی
+- [استفاده از API رایگان LLM در Node.js](https://llm.persiantoolbox.ir/guides/use-free-llm-api-nodejs/) — راهنمای یکپارچه‌سازی Node.js
+- [رفع خطاهای ۴۰۱/۴۰۳/model-not-found](https://llm.persiantoolbox.ir/guides/fix-llm-api-401-403-model-not-found/) — عیب‌یابی خطاهای API رایگان
+
 ## جمع‌بندی
 
 با OpenAI SDK و یک Base URL سفارشی می‌توان یک Client قابل تعویض برای چند Provider ساخت. مهم‌ترین بخش فقط ارسال درخواست نیست؛ مدیریت Secret، محدودکردن Context، تشخیص خطا و جلوگیری از وابستگی شدید به یک سرویس است.

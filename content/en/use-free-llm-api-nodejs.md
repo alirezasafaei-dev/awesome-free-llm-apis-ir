@@ -211,6 +211,12 @@ Test tool calling, streaming, and parameter differences before fully switching.
 - Circuit breaker for provider failures.
 - Graceful degradation with fallback provider.
 
+## Related Guides
+
+- [Free AI API guide](https://llm.persiantoolbox.ir/guides/en/en-free-ai-api/) — complete overview of free AI APIs
+- [Build Persian chatbot with Python](https://llm.persiantoolbox.ir/guides/en/en-build-persian-chatbot-python/) — Python chatbot tutorial
+- [Practical free LLM API guide for Iran](https://llm.persiantoolbox.ir/guides/en/en-practical-free-llm-api-iran/) — full guide from signup to first request
+
 ## Summary
 
 With the OpenAI Node.js SDK and environment-based configuration, you can build a maintainable, swappable LLM client. Focus on error handling, secret management, and provider independence — not just sending requests.

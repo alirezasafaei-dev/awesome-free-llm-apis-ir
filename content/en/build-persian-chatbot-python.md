@@ -372,6 +372,12 @@ Before switching, test differences in tool calling, streaming, parameters, and c
 - Fallback provider tested.
 - Usage and errors monitored through aggregate metrics.
 
+## Related Guides
+
+- [Free AI API guide](https://llm.persiantoolbox.ir/guides/en/en-free-ai-api/) — complete overview of free AI APIs
+- [Use free LLM API in Node.js](https://llm.persiantoolbox.ir/guides/en/en-use-free-llm-api-nodejs/) — Node.js integration guide
+- [Practical free LLM API guide for Iran](https://llm.persiantoolbox.ir/guides/en/en-practical-free-llm-api-iran/) — full guide from signup to first request
+
 ## Summary
 
 With the OpenAI SDK and a custom Base URL, you can build a swappable client for multiple providers. The most important parts are not just sending requests: secret management, context bounding, error identification, and avoiding tight coupling to a single service.
