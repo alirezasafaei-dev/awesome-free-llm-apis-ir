@@ -16,5 +16,10 @@ Publication safety:
 - publish only the minimum evidence required to explain the classification;
 - include the check date, request layer and evidence limitation.
 
+Operational use:
+- deploy and UX smoke checks are read-only and do not upgrade Provider evidence;
+- a healthy website deployment does not prove a Provider account, key or inference path works;
+- research sessions must test the deployed revision rather than an unverified local or stale build.
+
 Canonical project: https://llm.persiantoolbox.ir/
 Source policy: https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir/blob/main/docs/IRAN_VERIFICATION_2026-07-20.md
