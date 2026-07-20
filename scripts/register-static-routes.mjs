@@ -112,4 +112,15 @@ if (!quickStart.includes('src="./provider-context.js"')) {
 }
 await writeFile(quickStartPath, quickStart);
 
+if (existsSync(enQuickStartPath)) {
+  let enQuickStart = await readFile(enQuickStartPath, "utf8");
+  if (!enQuickStart.includes('src="./provider-context-en.js"')) {
+    enQuickStart = enQuickStart.replace(
+      "</body>",
+      '  <script defer src="./provider-context-en.js"></script>\n</body>'
+    );
+  }
+  await writeFile(enQuickStartPath, enQuickStart);
+}
+
 console.log("Registered static product routes (FA + EN) and applied Finder/Quick Start activation layers.");
