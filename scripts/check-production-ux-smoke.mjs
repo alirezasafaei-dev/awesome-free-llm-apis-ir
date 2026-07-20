@@ -58,7 +58,7 @@ async function fetchWithTimeout(url, timeoutMs) {
       redirect: "follow",
       signal: controller.signal,
       headers: {
-        "user-agent": "awesome-free-llm-apis-ir-ux-smoke/1.0",
+        "user-agent": "awesome-free-llm-apis-ir-ux-smoke/1.1",
         accept: "text/html,application/json,application/xml,text/xml;q=0.9,*/*;q=0.8"
       }
     });
@@ -108,7 +108,7 @@ async function checkTarget(target, options) {
     {
       path: "",
       kind: "homepage",
-      signals: ["API رایگان هوش مصنوعی", "audience-paths", "/api-finder/", "/quick-start/"]
+      signals: ["API رایگان هوش مصنوعی", "audience-paths", "/api-finder/", "/quick-start/", "/tools/"]
     },
     {
       path: "api-finder/",
@@ -119,6 +119,11 @@ async function checkTarget(target, options) {
       path: "quick-start/",
       kind: "quick-start",
       signals: ["quick-start-title", "LLM_API_KEY", "LLM_BASE_URL", "LLM_MODEL", "from openai import OpenAI", "import OpenAI from", "application/ld+json"]
+    },
+    {
+      path: "tools/",
+      kind: "tools",
+      signals: ["tools-title", "tools-controls", "tool-card", "tools.css", "tools.js", "ریسک Terms", "امنیت Credential", "application/ld+json"]
     }
   ];
 
@@ -152,9 +157,10 @@ async function checkTarget(target, options) {
       result.metadata.sourceRevision = revision || null;
       const productPages = Array.isArray(meta.static_product_pages) ? meta.static_product_pages : [];
       result.metadata.staticProductPages = productPages;
-      for (const route of ["/api-finder/", "/quick-start/"]) {
+      for (const route of ["/api-finder/", "/quick-start/", "/tools/"]) {
         if (!productPages.includes(route)) addFailure(metaCheck, `build metadata is missing product route ${route}`);
       }
+      if (!Number.isInteger(meta.tool_count) || meta.tool_count < 1) addFailure(metaCheck, "build metadata is missing a valid tool_count");
       if (options.expectedRevision) {
         const expected = normalizeRevision(options.expectedRevision);
         if (!revision) addFailure(metaCheck, "build-meta.json does not expose source_revision");
@@ -175,7 +181,7 @@ async function checkTarget(target, options) {
     sitemapCheck.status = response.status;
     sitemapCheck.elapsedMs = response.elapsedMs;
     if (!response.ok) addFailure(sitemapCheck, `expected 2xx, received HTTP ${response.status}`);
-    for (const route of ["api-finder/", "quick-start/"]) {
+    for (const route of ["api-finder/", "quick-start/", "tools/"]) {
       if (!response.body.includes(route)) addFailure(sitemapCheck, `sitemap is missing ${route}`);
     }
   } catch (error) {
@@ -222,7 +228,7 @@ async function main() {
       expectedRevision: options.expectedRevision || null,
       timeoutMs: options.timeoutMs,
       targets: selectedTargets,
-      requiredRoutes: ["/", "/api-finder/", "/quick-start/", "/build-meta.json", "/sitemap.xml"]
+      requiredRoutes: ["/", "/api-finder/", "/quick-start/", "/tools/", "/build-meta.json", "/sitemap.xml"]
     }, null, 2));
     return;
   }
