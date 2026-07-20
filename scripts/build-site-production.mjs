@@ -9,6 +9,7 @@ const dataPath = path.join(root, "data.json");
 await import("./build-site.mjs");
 await cp(dataPath, path.join(destination, "data.json"));
 await import("./enrich-seo-pages.mjs");
+await import("./register-static-routes.mjs");
 
 async function normalizeNestedTrackerPaths(section) {
   const sectionRoot = path.join(destination, section);
@@ -41,4 +42,4 @@ const guidePages = await normalizeNestedTrackerPaths("guides");
 
 await import("./enrich-provider-pages.mjs");
 
-console.log(`Published data.json, applied SEO enrichments and normalized Plausible tracker paths for ${providerPages} provider pages and ${guidePages} Persian guide pages.`);
+console.log(`Published data.json, registered static product routes, applied SEO enrichments and normalized Plausible tracker paths for ${providerPages} provider pages and ${guidePages} Persian guide pages.`);
