@@ -1,0 +1,88 @@
+.finder-card-actions {
+  align-items: stretch;
+}
+
+.finder-card-actions .finder-quick-start-link {
+  order: -1;
+  flex: 1 1 100%;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 11px 16px;
+  background: linear-gradient(135deg, var(--primary), color-mix(in srgb, var(--primary) 72%, var(--accent)));
+  color: #fff;
+  box-shadow: 0 8px 20px color-mix(in srgb, var(--primary) 20%, transparent);
+}
+
+.finder-card-actions .finder-secondary-link,
+.finder-card-actions .finder-docs-link {
+  flex: 1 1 132px;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border);
+  background: var(--surface-soft);
+  color: var(--text);
+}
+
+.finder-share-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin: -14px 0 28px;
+  padding: 14px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--surface);
+}
+
+.finder-share-actions[hidden] {
+  display: none;
+}
+
+.finder-share-actions button {
+  min-height: 44px;
+  padding: 9px 14px;
+  border: 1px solid var(--border);
+  border-radius: 11px;
+  background: var(--surface-soft);
+  color: var(--text);
+  cursor: pointer;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.finder-share-actions button:hover,
+.finder-share-actions button:focus-visible {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.finder-share-button {
+  background: color-mix(in srgb, var(--primary) 10%, var(--surface)) !important;
+}
+
+.finder-share-status {
+  min-height: 1.5em;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.finder-card[hidden] {
+  display: none;
+}
+
+@media (max-width: 560px) {
+  .finder-share-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .finder-share-actions button {
+    width: 100%;
+  }
+}
