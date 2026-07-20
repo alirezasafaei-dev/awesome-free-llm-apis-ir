@@ -31,10 +31,10 @@ npm run production:smoke -- --target=pages
 ```bash
 npm run production:smoke -- \
   --expected-revision=FULL_GIT_SHA \
-  --report=production-smoke-report.json
+  --report=production-smoke-report.md
 ```
 
-Smoke Check موارد زیر را کنترل می‌کند:
+Smoke Check عمومی موارد زیر را کنترل می‌کند:
 
 - صفحهٔ اصلی، صفحهٔ انگلیسی و API Finder؛
 - `catalog.json`، `data.json` و `build-meta.json` با Content-Type واقعی JSON؛
@@ -54,6 +54,41 @@ Smoke Check موارد زیر را کنترل می‌کند:
 npm run production:smoke:test
 ```
 
+## گیت Production UX Smoke
+
+Smoke عمومی ممکن است HTML سالم دریافت کند، اما متوجه نشود که نسخهٔ قدیمی Homepage، API Finder یا Quick Start منتشر شده است. گیت UX به‌صورت جدا این قرارداد محصول را کنترل می‌کند:
+
+```bash
+npm run production:ux-smoke
+```
+
+برای الزام SHA و Target مشخص:
+
+```bash
+npm run production:ux-smoke -- \
+  --target=global \
+  --expected-revision=FULL_GIT_SHA \
+  --report=production-ux-smoke-report.md
+```
+
+این گیت روی هر سه Deployment موارد زیر را بررسی می‌کند:
+
+- وجود پیام سادهٔ «API رایگان هوش مصنوعی» و مسیرهای کاربر عادی/برنامه‌نویس در Homepage؛
+- وجود لینک‌های `/api-finder/` و `/quick-start/`؛
+- وجود فرم امتیازدهی، Structured Data و Assetهای `finder-clarity.css` و `finder-clarity.js` در API Finder؛
+- وجود `LLM_API_KEY`، `LLM_BASE_URL`، `LLM_MODEL` و نمونه‌های Python/Node.js در Quick Start؛
+- ثبت `/api-finder/` و `/quick-start/` در `build-meta.json`؛
+- وجود هر دو Route در Sitemap؛
+- تطابق SHA منتشرشده با Revision موردانتظار.
+
+تست Fixture بدون شبکه:
+
+```bash
+npm run production:ux-smoke:test
+```
+
+Healthy بودن Deployment هیچ Provider را به `verified_working` ارتقا نمی‌دهد. سلامت سایت، Reachability سرویس، Signup، صدور Key و Inference لایه‌های مستقل هستند.
+
 ## Workflow عملیاتی
 
 Workflow با نام **Post-launch operations** به‌صورت هفتگی و دستی قابل اجراست. اجرای دستی این ورودی‌ها را دارد:
@@ -63,13 +98,15 @@ Workflow با نام **Post-launch operations** به‌صورت هفتگی و د
 
 Workflow این گیت‌ها را به ترتیب اجرا می‌کند:
 
-1. Build، Site Check و Regression Check؛
-2. Production Smoke؛
-3. Provider Endpoint Health؛
-4. Provider Documentation Drift؛
-5. Strict SEO Audit.
+1. Contract Test هر دو Smoke Checker؛
+2. Build، Site Check و Regression Check؛
+3. Production Smoke عمومی؛
+4. Production UX Smoke؛
+5. Provider Endpoint Health؛
+6. Provider Documentation Drift؛
+7. Strict SEO Audit.
 
-اگر هر گیت شکست بخورد، یک Issue واحد با Marker پایدار ساخته یا به‌روزرسانی می‌شود. پس از Recovery کامل، همان Issue با Evidence اجرای موفق بسته می‌شود. این رفتار از ایجاد Issueهای تکراری جلوگیری می‌کند.
+اگر هر گیت شکست بخورد، یک Issue واحد با Marker پایدار ساخته یا به‌روزرسانی می‌شود. گزارش UX Smoke نیز داخل همان Incident قرار می‌گیرد. پس از Recovery کامل، همان Issue با Evidence اجرای موفق بسته می‌شود. این رفتار از ایجاد Issueهای تکراری جلوگیری می‌کند.
 
 ## تفسیر درست Health و Iran Access
 
@@ -126,6 +163,7 @@ npm run benchmark:report
 | Product | API Finder starts |  | ۷ روز | Privacy-preserving analytics |
 | Product | API Finder completions |  | ۷ روز | Privacy-preserving analytics |
 | Product | Completion rate |  | ۷ روز | محاسبه‌شده |
+| Product | Quick Start code copies |  | ۷ روز | Privacy-preserving analytics |
 | Engagement | Provider page views |  | ۷ روز | Analytics |
 | Engagement | Outbound Provider clicks |  | ۷ روز | Analytics |
 | Engagement | Returning visitors |  | ۷ روز | Analytics |
@@ -134,16 +172,17 @@ npm run benchmark:report
 
 ```text
 API Finder completion rate = completions / starts
+Quick Start activation rate = sessions with code copy / Quick Start sessions
 Provider outbound CTR = outbound provider clicks / provider page views
 Organic CTR = organic clicks / impressions
 ```
 
-هر Snapshot باید تاریخ شروع و پایان، Timezone، منبع، روش استخراج و هر تغییر Tracking را ثبت کند. مقایسهٔ قبل و بعد بدون Baseline معتبر، Evidence رشد محسوب نمی‌شود.
+هر Snapshot باید تاریخ شروع و پایان، Timezone، منبع، روش استخراج و هر تغییر Tracking را ثبت کند. مقایسهٔ قبل و بعد بدون Baseline معتبر، Evidence رشد محسوب نمی‌شود. مقدار ناموجود نباید صفر ثبت شود؛ از `UNAVAILABLE — ACCESS REQUIRED` استفاده شود.
 
 ## چرخهٔ هفتگی پیشنهادی
 
-1. اجرای Workflow عملیات؛
-2. بررسی Incidentهای خودکار؛
+1. اجرای Workflow عملیات با SHA موردانتظار؛
+2. بررسی Incidentهای خودکار، شامل UX Smoke؛
 3. Triage تغییرات Provider Drift؛
 4. ثبت KPI Snapshot؛
 5. انتخاب حداکثر سه اقدام با بیشترین Impact؛
@@ -154,7 +193,8 @@ Organic CTR = organic clicks / impressions
 
 Issue پس از تحقق همهٔ موارد زیر بسته می‌شود:
 
-- هر سه Deployment Smoke Check موفق و SHA نهایی تأیید شده باشد؛
+- هر سه Deployment در Production Smoke عمومی و UX Smoke موفق باشند و SHA نهایی تأیید شده باشد؛
+- Homepage، API Finder و Quick Start روی نسخهٔ منتشرشده Contract مورد انتظار را داشته باشند؛
 - Drift و Health خروجی بازبینی‌شده داشته باشند؛
 - Benchmark واقعی منتشر شده باشد یا نبود Credential/Data به‌صراحت ثبت شود؛
 - شش Landing Page فارسی واقعی اضافه و Hreflangها معتبر باشند؛
