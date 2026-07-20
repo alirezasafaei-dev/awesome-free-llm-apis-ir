@@ -8,6 +8,7 @@ const sitemapPath = path.join(destination, "sitemap.xml");
 const llmsPath = path.join(destination, "llms.txt");
 const buildMetaPath = path.join(destination, "build-meta.json");
 const homepagePath = path.join(destination, "index.html");
+const apiFinderPath = path.join(destination, "api-finder", "index.html");
 const canonicalOrigin = "https://llm.persiantoolbox.ir";
 const quickStartUrl = `${canonicalOrigin}/quick-start/`;
 
@@ -25,7 +26,7 @@ if (!llms.includes(`Developer quick start: ${quickStartUrl}`)) {
 }
 
 const buildMeta = JSON.parse(await readFile(buildMetaPath, "utf8"));
-buildMeta.static_product_pages = [...new Set([...(buildMeta.static_product_pages ?? []), "/quick-start/"])];
+buildMeta.static_product_pages = [...new Set([...(buildMeta.static_product_pages ?? []), "/api-finder/", "/quick-start/"])];
 await writeFile(buildMetaPath, `${JSON.stringify(buildMeta, null, 2)}\n`);
 
 let homepage = await readFile(homepagePath, "utf8");
@@ -41,4 +42,19 @@ if (!homepage.includes(`href="${quickStartUrl}"`)) {
   await writeFile(homepagePath, homepage);
 }
 
-console.log("Registered /quick-start/ in homepage navigation, sitemap.xml, llms.txt and build-meta.json.");
+let apiFinder = await readFile(apiFinderPath, "utf8");
+if (!apiFinder.includes('href="./finder-clarity.css"')) {
+  apiFinder = apiFinder.replace(
+    "</head>",
+    '  <link rel="stylesheet" href="./finder-clarity.css">\n</head>'
+  );
+}
+if (!apiFinder.includes('src="./finder-clarity.js"')) {
+  apiFinder = apiFinder.replace(
+    "</body>",
+    '    <script defer src="./finder-clarity.js"></script>\n  </body>'
+  );
+}
+await writeFile(apiFinderPath, apiFinder);
+
+console.log("Registered static product routes and applied the API Finder clarity layer.");
