@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1">
+  <meta name="description" content="مقایسه دو یا سه API رایگان هوش مصنوعی از نظر نوع سهمیه، نیاز به کارت، محدودیت، مدل‌ها، سازگاری OpenAI و وضعیت دسترسی ایران.">
+  <meta property="og:title" content="مقایسه APIهای رایگان هوش مصنوعی | سهمیه، مدل و وضعیت ایران">
+  <meta property="og:description" content="دو یا سه Provider را با داده‌های تاریخ‌دار و منبع‌محور کنار هم مقایسه کنید.">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="fa_IR">
+  <meta property="og:url" content="https://llm.persiantoolbox.ir/compare/">
+  <meta property="og:image" content="https://llm.persiantoolbox.ir/assets/social/og-default.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://llm.persiantoolbox.ir/assets/social/og-default.png">
+  <link rel="canonical" href="https://llm.persiantoolbox.ir/compare/">
+  <link rel="alternate" hreflang="fa-IR" href="https://llm.persiantoolbox.ir/compare/">
+  <link rel="alternate" hreflang="x-default" href="https://llm.persiantoolbox.ir/compare/">
+  <link rel="alternate" type="application/json" href="../catalog.json" title="Machine-readable provider catalog">
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="./compare.css">
+  <title>مقایسه APIهای رایگان هوش مصنوعی | سهمیه، مدل و وضعیت ایران</title>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebApplication",
+        "@id": "https://llm.persiantoolbox.ir/compare/#app",
+        "url": "https://llm.persiantoolbox.ir/compare/",
+        "name": "مقایسه APIهای رایگان هوش مصنوعی",
+        "description": "ابزار مقایسه دو یا سه Provider براساس داده‌های کاتالوگ منبع‌محور.",
+        "applicationCategory": "DeveloperApplication",
+        "operatingSystem": "All",
+        "inLanguage": "fa-IR",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "APIهای رایگان LLM", "item": "https://llm.persiantoolbox.ir/" },
+          { "@type": "ListItem", "position": 2, "name": "مقایسه Providerها", "item": "https://llm.persiantoolbox.ir/compare/" }
+        ]
+      }
+    ]
+  }
+  </script>
+</head>
+<body data-page-type="compare">
+  <a class="skip-link" href="#compare-content">رفتن به محتوای اصلی</a>
+  <header class="topbar">
+    <a class="brand" href="../" aria-label="صفحه اصلی"><span class="brand-mark" aria-hidden="true"><img src="../assets/logo-symbol.svg" alt="" width="40" height="40"></span><span>Awesome Free LLM APIs IR</span></a>
+    <nav aria-label="پیوندهای اصلی"><a href="../api-finder/">انتخاب Provider</a><a href="../quick-start/">شروع برنامه‌نویسی</a><a href="../tools/">CLI و ابزارها</a><a href="https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir">GitHub</a></nav>
+  </header>
+
+  <main id="compare-content" class="compare-shell">
+    <section class="compare-hero" aria-labelledby="compare-title">
+      <p class="eyebrow">تصمیم با داده‌های یکسان</p>
+      <h1 id="compare-title">Providerهای انتخاب‌شده را<br><span>کنار هم مقایسه کن.</span></h1>
+      <p>نوع سهمیه رایگان، نیاز به کارت، محدودیت، Base URL، مدل‌های ثبت‌شده و وضعیت ایران از همان <code>catalog.json</code> خوانده می‌شود. این صفحه کیفیت قطعی یا دسترسی دائمی را تضمین نمی‌کند.</p>
+      <div class="hero-actions"><a class="button primary" href="../api-finder/">بازگشت و تغییر انتخاب‌ها</a><button id="compare-share" class="button secondary" type="button">کپی لینک مقایسه</button></div>
+      <p id="compare-share-status" class="compare-status" role="status" aria-live="polite"></p>
+    </section>
+
+    <section class="compare-boundary" aria-labelledby="compare-boundary-title">
+      <h2 id="compare-boundary-title">این مقایسه چه چیزی را ثابت نمی‌کند؟</h2>
+      <p>Reachability، ثبت‌نام، صدور کلید و Inference لایه‌های جدا هستند. وضعیت «نامشخص» به معنی کارکردن یا مسدودبودن نیست. پیش از ساخت حساب، شواهد تاریخ‌دار و مستندات رسمی هر Provider را بررسی کنید.</p>
+    </section>
+
+    <div id="compare-loading" class="message-card">در حال دریافت کاتالوگ…</div>
+    <div id="compare-error" class="message-card error" hidden>دریافت داده ناموفق بود. صفحه را دوباره بارگذاری کنید.</div>
+    <section id="compare-empty" class="compare-empty" hidden>
+      <h2>برای مقایسه حداقل دو Provider انتخاب کن</h2>
+      <p>در API Finder روی «افزودن به مقایسه» بزن. فهرست فقط روی همین دستگاه ذخیره می‌شود.</p>
+      <a class="button primary" href="../api-finder/">بازکردن API Finder</a>
+    </section>
+
+    <section id="compare-results" aria-labelledby="compare-results-title" hidden>
+      <div class="compare-heading">
+        <div><p class="eyebrow">حداکثر سه گزینه</p><h2 id="compare-results-title">مقایسه ویژگی‌ها و محدودیت‌ها</h2></div>
+        <button id="compare-clear" class="button secondary" type="button">پاک‌کردن همه</button>
+      </div>
+      <div id="compare-grid" class="compare-grid"></div>
+    </section>
+  </main>
+
+  <footer><p>داده‌ها منبع‌محور و تاریخ‌دارند، اما شرایط Providerها ممکن است تغییر کند.</p><p><a href="../catalog.json">Catalog JSON</a> · <a href="https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir/issues/new/choose">گزارش داده نادرست</a></p></footer>
+  <script defer src="./compare.js"></script>
+  <script defer src="../analytics.js"></script>
+  <script defer data-domain="llm.persiantoolbox.ir" src="../plausible.js"></script>
+</body>
+</html>
