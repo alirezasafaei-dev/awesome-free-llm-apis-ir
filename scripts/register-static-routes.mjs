@@ -29,14 +29,14 @@ buildMeta.static_product_pages = [...new Set([...(buildMeta.static_product_pages
 await writeFile(buildMetaPath, `${JSON.stringify(buildMeta, null, 2)}\n`);
 
 let homepage = await readFile(homepagePath, "utf8");
-if (!homepage.includes('href="./quick-start/"')) {
+if (!homepage.includes(`href="${quickStartUrl}"`)) {
   homepage = homepage.replace(
     '<a href="./api-finder/">انتخاب API</a>',
-    '<a href="./api-finder/">انتخاب API</a>\n        <a href="./quick-start/">شروع برنامه‌نویسی</a>'
+    `<a href="./api-finder/">انتخاب API</a>\n        <a href="${quickStartUrl}">شروع برنامه‌نویسی</a>`
   );
   homepage = homepage.replace(
     '<a class="path-link" href="./api-finder/">بازکردن API Finder ←</a>',
-    '<a class="path-link" href="./quick-start/">شروع مرحله‌ای و نمونه‌کد ←</a>'
+    `<a class="path-link" href="${quickStartUrl}">شروع مرحله‌ای و نمونه‌کد ←</a>`
   );
   await writeFile(homepagePath, homepage);
 }
