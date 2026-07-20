@@ -1,0 +1,20 @@
+Awesome Free LLM APIs IR — verification evidence policy
+
+A Provider classification may distinguish these layers:
+
+1. Reachability: DNS/TLS/HTTP path is reachable.
+2. Signup: an account can be created through the official flow.
+3. Key issuance: the official dashboard issues an authorized API key.
+4. Inference: an authorized or intentionally anonymous model request returns a valid model response.
+
+HTTP 401, 403, 404, TLS success, website access, timeout or connection refusal alone do not prove successful or blocked model inference.
+
+Direct Iran, authorized VPN/supported-route and credential results are recorded as separate evidence classes. Unknown remains unknown until evidence is conclusive.
+
+Publication safety:
+- never publish API keys, Authorization headers, account identities, complete test-host IP addresses or private infrastructure details;
+- publish only the minimum evidence required to explain the classification;
+- include the check date, request layer and evidence limitation.
+
+Canonical project: https://llm.persiantoolbox.ir/
+Source policy: https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir/blob/main/docs/IRAN_VERIFICATION_2026-07-20.md
