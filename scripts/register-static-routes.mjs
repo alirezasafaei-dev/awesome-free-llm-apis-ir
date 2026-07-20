@@ -9,6 +9,7 @@ const llmsPath = path.join(destination, "llms.txt");
 const buildMetaPath = path.join(destination, "build-meta.json");
 const homepagePath = path.join(destination, "index.html");
 const apiFinderPath = path.join(destination, "api-finder", "index.html");
+const quickStartPath = path.join(destination, "quick-start", "index.html");
 const canonicalOrigin = "https://llm.persiantoolbox.ir";
 const apiFinderUrl = `${canonicalOrigin}/api-finder/`;
 const quickStartUrl = `${canonicalOrigin}/quick-start/`;
@@ -55,6 +56,12 @@ if (!apiFinder.includes('href="./finder-clarity.css"')) {
     '  <link rel="stylesheet" href="./finder-clarity.css">\n</head>'
   );
 }
+if (!apiFinder.includes('href="./funnel-activation.css"')) {
+  apiFinder = apiFinder.replace(
+    "</head>",
+    '  <link rel="stylesheet" href="./funnel-activation.css">\n</head>'
+  );
+}
 if (!apiFinder.includes('src="./finder-clarity.js"')) {
   apiFinder = apiFinder.replace(
     "</body>",
@@ -63,4 +70,13 @@ if (!apiFinder.includes('src="./finder-clarity.js"')) {
 }
 await writeFile(apiFinderPath, apiFinder);
 
-console.log("Registered static product routes and applied the API Finder clarity layer.");
+let quickStart = await readFile(quickStartPath, "utf8");
+if (!quickStart.includes('src="./provider-context.js"')) {
+  quickStart = quickStart.replace(
+    "</body>",
+    '  <script defer src="./provider-context.js"></script>\n</body>'
+  );
+}
+await writeFile(quickStartPath, quickStart);
+
+console.log("Registered static product routes and applied Finder/Quick Start activation layers.");

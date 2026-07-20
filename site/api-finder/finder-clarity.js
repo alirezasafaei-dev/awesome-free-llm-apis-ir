@@ -12,8 +12,25 @@ runWhenReady(() => {
   const hero = document.querySelector(".api-finder-hero");
   if (!form || !results || !loading || !status || !disclosure || !hero) return;
 
+  const allowed = {
+    usecase: new Set(["chat", "coding", "reasoning", "embeddings"]),
+    language: new Set(["persian", "english", "multilingual"]),
+    budget: new Set(["no-card", "free-only", "any"]),
+    latency: new Set(["low", "important", "critical"]),
+    region: new Set(["iran", "iran-vpn", "any"])
+  };
+  const defaults = { usecase: "chat", language: "persian", budget: "no-card", latency: "low", region: "iran" };
+  const safeCampaignPattern = /^[a-zA-Z0-9_-]{1,64}$/;
+
   const plausible = (name, props = {}) => {
-    if (typeof window.plausible === "function") window.plausible(name, { props });
+    if (typeof window.plausible !== "function") return;
+    const safeProps = {};
+    for (const [key, value] of Object.entries(props)) {
+      if (!["provider_id", "usecase", "region", "result_count", "source"].includes(key)) continue;
+      if (typeof value !== "string" || !/^[a-zA-Z0-9_-]{1,64}$/.test(value)) continue;
+      safeProps[key] = value;
+    }
+    window.plausible(name, { props: safeProps });
   };
 
   const fields = {
@@ -85,12 +102,53 @@ runWhenReady(() => {
     return label;
   }
 
+  function sanitizeSelections() {
+    for (const [key, select] of Object.entries(fields)) {
+      if (!select) continue;
+      if (!allowed[key].has(select.value)) select.value = defaults[key];
+    }
+  }
+
+  function currentFilters() {
+    sanitizeSelections();
+    return Object.fromEntries(Object.entries(fields).map(([key, select]) => [key, select?.value ?? defaults[key]]));
+  }
+
+  function filterSignature(filters = currentFilters()) {
+    return [filters.usecase, filters.language, filters.budget, filters.latency, filters.region].join("|");
+  }
+
+  function shareUrl(filters = currentFilters()) {
+    const url = new URL(location.pathname, location.origin);
+    for (const [key, value] of Object.entries(filters)) {
+      if (allowed[key].has(value) && value !== defaults[key]) url.searchParams.set(key, value);
+    }
+    return url.toString();
+  }
+
+  function sanitizeLocationQuery() {
+    const current = new URL(location.href);
+    const next = new URL(location.pathname, location.origin);
+    const filters = currentFilters();
+    for (const [key, value] of Object.entries(filters)) {
+      if (value !== defaults[key]) next.searchParams.set(key, value);
+    }
+    for (const key of ["utm_source", "utm_medium", "utm_campaign", "utm_content"]) {
+      const value = current.searchParams.get(key);
+      if (value && safeCampaignPattern.test(value)) next.searchParams.set(key, value);
+    }
+    if (`${current.pathname}${current.search}` !== `${next.pathname}${next.search}`) {
+      history.replaceState(null, "", `${next.pathname}${next.search}${location.hash}`);
+    }
+  }
+
   form.classList.add("clarity-form");
   const usecaseLabel = improveLabel(fields.usecase, "usecase");
   const languageLabel = improveLabel(fields.language, "language");
   const budgetLabel = improveLabel(fields.budget, "budget");
   const latencyLabel = improveLabel(fields.latency, "latency");
   const regionLabel = improveLabel(fields.region, "region");
+  sanitizeLocationQuery();
 
   const advanced = document.createElement("details");
   advanced.className = "finder-advanced";
@@ -116,7 +174,7 @@ runWhenReady(() => {
   const heroTitle = hero.querySelector("h1");
   const heroDescription = hero.querySelector("p:not(.eyebrow)");
   if (heroTitle) heroTitle.innerHTML = "برای پروژه‌ات چند API مناسب<br><span>پیدا کن و دلیلش را ببین.</span>";
-  if (heroDescription) heroDescription.textContent = "سه سؤال اصلی را جواب بده. پنج پیشنهاد اولیه با توضیح ساده نمایش داده می‌شود؛ بعد می‌توانی شواهد، محدودیت و مستندات رسمی هر سرویس را بررسی کنی.";
+  if (heroDescription) heroDescription.textContent = "سه سؤال اصلی را جواب بده. سه پیشنهاد اصلی با توضیح ساده نمایش داده می‌شود؛ بعد می‌توانی گزینه‌های بیشتر، شواهد و محدودیت هر سرویس را بررسی کنی.";
 
   const intro = document.createElement("section");
   intro.className = "finder-clarity-intro";
@@ -124,12 +182,12 @@ runWhenReady(() => {
   intro.innerHTML = `
     <article><span>۱</span><strong>کار پروژه را بگو</strong><p>چت‌بات، کدنویسی، استدلال یا جست‌وجوی معنایی.</p></article>
     <article><span>۲</span><strong>محدودیت را مشخص کن</strong><p>زبان و نوع گزینه رایگان برایت چقدر مهم است؟</p></article>
-    <article><span>۳</span><strong>دلیل پیشنهاد را بخوان</strong><p>رتبه اولیه است؛ شواهد و مستندات را قبل از ثبت‌نام کنترل کن.</p></article>`;
+    <article><span>۳</span><strong>یک گزینه را فعال کن</strong><p>Provider را انتخاب کن و نمونه‌کد همان سرویس را بساز.</p></article>`;
   hero.after(intro);
 
   const hint = document.createElement("p");
   hint.className = "finder-start-hint";
-  hint.textContent = "پیشنهاد اولیه با تنظیمات رایج کاربران فارسی‌زبان به‌صورت خودکار نمایش داده می‌شود. هر انتخاب را تغییر بده تا نتایج دوباره محاسبه شوند.";
+  hint.textContent = "سه پیشنهاد اولیه با تنظیمات رایج کاربران فارسی‌زبان نمایش داده می‌شود. این نمایش خودکار به‌عنوان تکمیل Finder شمرده نمی‌شود.";
   form.after(hint);
   status.classList.add("clarity-status");
 
@@ -149,19 +207,67 @@ runWhenReady(() => {
     </ul>`;
   disclosure.before(limitations);
 
+  const resultTools = document.createElement("div");
+  resultTools.className = "finder-share-actions";
+  resultTools.hidden = true;
+  const showMore = document.createElement("button");
+  showMore.className = "finder-show-more";
+  showMore.type = "button";
+  const shareButton = document.createElement("button");
+  shareButton.className = "finder-share-button";
+  shareButton.type = "button";
+  shareButton.textContent = "کپی لینک این پیشنهادها";
+  const shareStatus = document.createElement("span");
+  shareStatus.className = "finder-share-status";
+  shareStatus.setAttribute("role", "status");
+  shareStatus.setAttribute("aria-live", "polite");
+  resultTools.append(showMore, shareButton, shareStatus);
+  results.after(resultTools);
+
   let finderStarted = false;
-  form.addEventListener("focusin", () => {
-    if (finderStarted) return;
+  const markStarted = (event) => {
+    if (finderStarted || event.isTrusted === false) return;
+    const target = event.target;
+    if (!(target instanceof HTMLElement) || !target.closest("select, button")) return;
     finderStarted = true;
-    plausible("api_finder_started", { source: "guided_form" });
+    const filters = currentFilters();
+    plausible("api_finder_started", { usecase: filters.usecase, region: filters.region, source: "guided_form" });
+  };
+  form.addEventListener("pointerdown", markStarted, { passive: true });
+  form.addEventListener("keydown", (event) => {
+    if (["Enter", " ", "ArrowDown", "ArrowUp", "ArrowLeft", "ArrowRight"].includes(event.key)) markStarted(event);
   });
+  form.addEventListener("change", markStarted);
   advanced.addEventListener("toggle", () => {
     if (advanced.open) plausible("api_finder_advanced_open", { source: "guided_form" });
   });
 
+  let expanded = false;
+  let visibleCards = [];
+  function applyResultLimit() {
+    visibleCards.forEach((card, index) => { card.hidden = !expanded && index >= 3; });
+    const hiddenCount = Math.max(0, visibleCards.length - 3);
+    showMore.hidden = hiddenCount === 0;
+    showMore.textContent = expanded ? "نمایش فقط ۳ پیشنهاد اصلی" : `نمایش ${hiddenCount} گزینه بیشتر`;
+    showMore.setAttribute("aria-expanded", String(expanded));
+  }
+  showMore.addEventListener("click", () => {
+    expanded = !expanded;
+    applyResultLimit();
+  });
+
+  function providerIdFromCard(card) {
+    const raw = card.querySelector(".finder-id")?.textContent?.trim() ?? "";
+    const id = raw.split("·")[0]?.trim() ?? "";
+    return /^[a-z0-9-]{1,64}$/.test(id) ? id : null;
+  }
+
   function enhanceCard(card) {
     if (card.dataset.clarityEnhanced === "true") return;
     card.dataset.clarityEnhanced = "true";
+    const providerId = providerIdFromCard(card);
+    if (providerId) card.dataset.providerId = providerId;
+
     const scoreLabel = card.querySelector(".finder-total-score small");
     if (scoreLabel) scoreLabel.textContent = "امتیاز تطابق؛ نه تضمین";
 
@@ -190,33 +296,101 @@ runWhenReady(() => {
     }
 
     const actionsElement = card.querySelector(".finder-card-actions");
-    if (actionsElement && !actionsElement.querySelector(".finder-quick-start-link")) {
+    if (actionsElement && providerId && !actionsElement.querySelector(".finder-quick-start-link")) {
+      const filters = currentFilters();
       const quickStart = document.createElement("a");
       quickStart.className = "finder-quick-start-link";
-      quickStart.href = "../quick-start/";
-      quickStart.textContent = "ساخت اولین درخواست";
-      actionsElement.append(quickStart);
+      const params = new URLSearchParams({ provider: providerId, usecase: filters.usecase, region: filters.region });
+      quickStart.href = `../quick-start/?${params.toString()}`;
+      quickStart.textContent = "انتخاب و ساخت اولین درخواست";
+      quickStart.addEventListener("click", () => {
+        plausible("api_finder_provider_selected", {
+          provider_id: providerId,
+          usecase: filters.usecase,
+          region: filters.region,
+          source: "result_card"
+        });
+      });
+      for (const link of actionsElement.querySelectorAll("a")) link.classList.add("finder-secondary-link");
+      actionsElement.prepend(quickStart);
     }
   }
 
+  let renderMode = "default";
+  let defaultResultsReported = false;
+  let pendingCompletionSignature = null;
   let lastCompletionSignature = "";
+  let lastResultCount = "0";
+
+  form.addEventListener("submit", (event) => {
+    if (event.isTrusted === false) return;
+    const filters = currentFilters();
+    const signature = filterSignature(filters);
+    renderMode = "explicit";
+    pendingCompletionSignature = signature === lastCompletionSignature ? null : signature;
+  });
+
   const resultObserver = new MutationObserver(() => {
     const cards = [...results.querySelectorAll(".finder-card")];
     cards.forEach(enhanceCard);
     if (!cards.length) return;
-    const signature = cards.map((card) => card.querySelector(".finder-id")?.textContent?.trim()).join("|");
-    if (signature && signature !== lastCompletionSignature) {
-      lastCompletionSignature = signature;
-      plausible("api_finder_completed", { result_count: String(cards.length) });
+    visibleCards = cards;
+    expanded = false;
+    applyResultLimit();
+    resultTools.hidden = false;
+    lastResultCount = String(cards.length);
+    const filters = currentFilters();
+
+    if (renderMode === "explicit" && pendingCompletionSignature) {
+      lastCompletionSignature = pendingCompletionSignature;
+      pendingCompletionSignature = null;
+      plausible("api_finder_completed", {
+        usecase: filters.usecase,
+        region: filters.region,
+        result_count: lastResultCount,
+        source: "explicit_submit"
+      });
+      renderMode = "idle";
+      return;
+    }
+
+    if (!defaultResultsReported) {
+      defaultResultsReported = true;
+      plausible("api_finder_default_results_viewed", {
+        usecase: filters.usecase,
+        region: filters.region,
+        result_count: lastResultCount,
+        source: "default_render"
+      });
     }
   });
   resultObserver.observe(results, { childList: true });
 
-  let autoSubmitted = false;
+  shareButton.addEventListener("click", async () => {
+    const filters = currentFilters();
+    try {
+      await navigator.clipboard.writeText(shareUrl(filters));
+      shareStatus.textContent = "لینک امن کپی شد";
+      plausible("api_finder_share", {
+        usecase: filters.usecase,
+        region: filters.region,
+        result_count: lastResultCount,
+        source: "results_toolbar"
+      });
+    } catch {
+      shareStatus.textContent = "کپی ناموفق بود؛ آدرس مرورگر را کپی کنید";
+    }
+  });
+
+  let defaultRenderRequested = false;
   const runInitialRecommendation = () => {
-    if (autoSubmitted || !loading.hidden || location.search) return;
-    autoSubmitted = true;
-    form.requestSubmit();
+    if (defaultRenderRequested || !loading.hidden) return;
+    defaultRenderRequested = true;
+    renderMode = "default";
+    sanitizeSelections();
+    if (!results.querySelector(".finder-card") && typeof window.runFinder === "function") {
+      window.runFinder();
+    }
   };
   const loadingObserver = new MutationObserver(runInitialRecommendation);
   loadingObserver.observe(loading, { attributes: true, attributeFilter: ["hidden"] });
