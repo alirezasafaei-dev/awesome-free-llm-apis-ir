@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir/schema/api-health.schema.json",
   "title": "API Health Record",
-  "description": "Tracks API endpoint health over time for each provider",
+  "description": "Tracks API reachability and infrastructure health without treating expected authentication responses as outages",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -11,6 +11,7 @@
   ],
   "properties": {
     "schema_version": { "const": "1.0.0" },
+    "last_updated": { "type": "string", "format": "date" },
     "entries": {
       "type": "array",
       "uniqueItems": true,
@@ -26,7 +27,17 @@
         "properties": {
           "provider_id": { "type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$" },
           "last_verification_date": { "type": ["string", "null"], "format": "date" },
-          "endpoint_status": { "enum": ["operational", "degraded", "down", "unknown"] },
+          "endpoint_status": {
+            "enum": [
+              "operational",
+              "auth_required",
+              "reachable",
+              "rate_limited",
+              "degraded",
+              "down",
+              "unknown"
+            ]
+          },
           "endpoint_tested": { "type": ["string", "null"], "format": "uri" },
           "documentation_change_detected": { "type": "boolean" },
           "documentation_last_checked": { "type": ["string", "null"], "format": "date" },
