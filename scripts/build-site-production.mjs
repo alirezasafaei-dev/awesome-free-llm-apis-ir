@@ -12,6 +12,7 @@ await import("./enrich-seo-pages.mjs");
 await import("./register-static-routes.mjs");
 await import("./build-tools-pages.mjs");
 await import("./normalize-tools-home-links.mjs");
+await import("./register-compare-route.mjs");
 
 async function normalizeNestedTrackerPaths(section) {
   const sectionRoot = path.join(destination, section);
@@ -44,4 +45,4 @@ const guidePages = await normalizeNestedTrackerPaths("guides");
 
 await import("./enrich-provider-pages.mjs");
 
-console.log(`Published data.json and catalog-tools.json, registered static product routes, applied SEO enrichments and normalized Plausible tracker paths for ${providerPages} provider pages and ${guidePages} Persian guide pages.`);
+console.log(`Published data catalogs, registered product routes including Compare, applied SEO enrichments and normalized Plausible tracker paths for ${providerPages} provider pages and ${guidePages} Persian guide pages.`);
