@@ -363,6 +363,12 @@ def classify_error(exc):
 - خطاهای شبکه، حساب و سیاست منطقه‌ای جدا تحلیل شده‌اند.
 - Secretها در Log یا Issue قرار نگرفته‌اند.
 
+## راهنماهای مرتبط
+
+- [راهنمای API رایگان هوش مصنوعی](https://llm.persiantoolbox.ir/guides/free-ai-api/) — نمای کلی APIهای رایگان هوش مصنوعی
+- [مدیریت محدودیت نرخ 429](https://llm.persiantoolbox.ir/guides/llm-api-rate-limit-429/) — راهنمای مدیریت Rate limit
+- [راهنمای عملی API رایگان در ایران](https://llm.persiantoolbox.ir/guides/practical-free-llm-api-iran/) — از ثبت‌نام تا اولین درخواست
+
 ## جمع‌بندی
 
 برای رفع `401`، اول کلید و روش Authentication را بررسی کنید. برای `403`، مجوز حساب، مدل، Plan و سیاست منطقه‌ای را ببینید. برای `404` و `model_not_found`، Base URL، Endpoint و Model ID را با نمونه رسمی Provider مقایسه کنید.
