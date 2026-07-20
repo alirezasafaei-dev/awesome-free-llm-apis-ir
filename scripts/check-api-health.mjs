@@ -1,6 +1,13 @@
 import { readdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
+import {
+  classifyEndpointStatus,
+  classifyProbe,
+  collectBrokenUrls,
+  statusNote,
+  statusSymbol
+} from "./lib/api-health-classification.mjs";
 
 const PROVIDERS_DIR = path.join(process.cwd(), "data", "providers");
 const HEALTH_FILE = path.join(process.cwd(), "data", "api-health.json");
@@ -14,8 +21,8 @@ async function fetchUrl(url) {
     const response = await fetch(url, {
       method: "GET",
       redirect: "follow",
-      signal: AbortSignal.timeout(15_000),
-      headers: { "user-agent": "awesome-free-llm-apis-ir-health-checker/1.0" }
+      signal: AbortSignal.timeout(30_000),
+      headers: { "user-agent": "awesome-free-llm-apis-ir-health-checker/1.1" }
     });
     const latency = Date.now() - start;
     await response.body?.cancel();
@@ -26,37 +33,12 @@ async function fetchUrl(url) {
   }
 }
 
-function classifyEndpointStatus(results) {
-  const { api, website, docs } = results;
-  const checks = [api, website, docs].filter(Boolean);
-
-  if (checks.length && checks.every((r) => r.error === null && r.status >= 200 && r.status < 400)) {
-    return "operational";
-  }
-
-  if (checks.some((r) => r.error !== null || (r.status !== null && (r.status >= 500 || r.status === 408 || r.status === 425)))) {
-    return "down";
-  }
-
-  if (checks.some((r) => r.status !== null && (r.status === 401 || r.status === 403 || r.status === 429))) {
-    return "degraded";
-  }
-
-  return "unknown";
-}
-
-function collectBrokenUrls(results) {
-  return Object.values(results)
-    .filter((r) => r && (r.error !== null || (r.status !== null && r.status >= 400)))
-    .map((r) => r.url);
-}
-
 function averageLatency(results) {
   const values = Object.values(results)
-    .filter((r) => r && r.latency != null && r.error === null)
-    .map((r) => r.latency);
+    .filter((result) => result && result.latency != null && result.error === null)
+    .map((result) => result.latency);
   if (!values.length) return null;
-  return Math.round(values.reduce((a, b) => a + b, 0) / values.length);
+  return Math.round(values.reduce((sum, value) => sum + value, 0) / values.length);
 }
 
 async function checkProvider(provider) {
@@ -75,40 +57,30 @@ async function checkProvider(provider) {
   const results = {};
 
   if (apiUrl) {
-    tasks.push(
-      fetchUrl(apiUrl).then((r) => { results.api = { ...r, url: apiUrl }; })
-    );
+    tasks.push(fetchUrl(apiUrl).then((result) => { results.api = { ...result, url: apiUrl }; }));
   }
   if (websiteUrl) {
-    tasks.push(
-      fetchUrl(websiteUrl).then((r) => { results.website = { ...r, url: websiteUrl }; })
-    );
+    tasks.push(fetchUrl(websiteUrl).then((result) => { results.website = { ...result, url: websiteUrl }; }));
   }
   if (docsUrl) {
-    tasks.push(
-      fetchUrl(docsUrl).then((r) => { results.docs = { ...r, url: docsUrl }; })
-    );
+    tasks.push(fetchUrl(docsUrl).then((result) => { results.docs = { ...result, url: docsUrl }; }));
   }
 
   await Promise.all(tasks);
 
-  const statusSymbol = (r) =>
-    r.error ? "FAIL" : r.status >= 200 && r.status < 400 ? "OK" : r.status >= 400 && r.status < 500 ? "WARN" : "FAIL";
-
-  for (const [label, r] of Object.entries(results)) {
-    console.log(`  ${label.padEnd(5)} ${statusSymbol(r)} ${r.status ?? "-".padStart(3)} ${r.url}${r.error ? ` (${r.error})` : ""}`);
+  for (const [kind, result] of Object.entries(results)) {
+    const classification = classifyProbe(kind, result);
+    console.log(
+      `  ${kind.padEnd(7)} ${statusSymbol(kind, result).padEnd(9)} ${String(result.status ?? "-").padStart(3)} ${classification.padEnd(13)} ${result.url}${result.error ? ` (${result.error})` : ""}`
+    );
   }
 
   const endpointStatus = classifyEndpointStatus(results);
   const broken = collectBrokenUrls(results);
   const latency = averageLatency(results);
+  const statusTag = endpointStatus.toUpperCase();
 
-  const statusTag =
-    endpointStatus === "operational" ? "OK" :
-    endpointStatus === "degraded" ? "DEGRADED" :
-    endpointStatus === "down" ? "DOWN" : "UNKNOWN";
-
-  console.log(`  \u2192 ${statusTag} | latency=${latency ?? "N/A"}ms | broken=${broken.length} | stale=${stale}`);
+  console.log(`  → ${statusTag} | latency=${latency ?? "N/A"}ms | broken=${broken.length} | stale=${stale}`);
 
   return {
     provider_id: id,
@@ -119,14 +91,14 @@ async function checkProvider(provider) {
     documentation_last_checked: today,
     broken_links: broken,
     latency_ms: latency,
-    notes: null,
+    notes: statusNote(endpointStatus, results.api),
     checked_by: "system"
   };
 }
 
 async function main() {
   const providerFiles = (await readdir(PROVIDERS_DIR))
-    .filter((f) => f.endsWith(".json"))
+    .filter((file) => file.endsWith(".json"))
     .sort();
 
   const providers = [];
@@ -157,7 +129,8 @@ async function main() {
 
   const output = {
     schema_version: "1.0.0",
-    entries: results
+    entries: results,
+    last_updated: today
   };
 
   if (checkFlag) {
@@ -175,7 +148,7 @@ async function main() {
   }
 
   if (anyDown) {
-    console.error("\nOne or more providers are DOWN.");
+    console.error("\nOne or more API endpoints have an infrastructure-level DOWN result.");
     process.exit(1);
   }
 }
