@@ -77,7 +77,8 @@ for (const eventName of [
 }
 
 for (const signal of [
-  'document.body.dataset.pageType === "quick-start"',
+  'const pageType = document.body.dataset.pageType ?? ""',
+  'if (pageType === "quick-start")',
   'sendEvent("quick_start_code_copy", { example })',
   'path: href.includes("/quick-start/") ? "developer_quick_start" : "developer_finder"'
 ]) {
