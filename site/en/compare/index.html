@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1">
+  <meta name="description" content="Compare two or three free LLM APIs side by side: free-tier type, payment method, rate limits, models, OpenAI compatibility, and regional access evidence.">
+  <meta property="og:title" content="Compare Free LLM APIs — Side-by-Side Provider Comparison">
+  <meta property="og:description" content="Compare free AI providers by quota, models, signup requirements, and regional access. Evidence-based, sourced from official documentation.">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:url" content="https://llm.persiantoolbox.ir/en/compare/">
+  <meta property="og:image" content="https://llm.persiantoolbox.ir/assets/social/og-default.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://llm.persiantoolbox.ir/assets/social/og-default.png">
+  <link rel="canonical" href="https://llm.persiantoolbox.ir/en/compare/">
+  <link rel="alternate" hreflang="en" href="https://llm.persiantoolbox.ir/en/compare/">
+  <link rel="alternate" hreflang="fa" href="https://llm.persiantoolbox.ir/compare/">
+  <link rel="alternate" hreflang="x-default" href="https://llm.persiantoolbox.ir/en/compare/">
+  <link rel="alternate" type="application/json" href="../../catalog.json" title="Machine-readable provider catalog">
+  <link rel="stylesheet" href="../../styles.css">
+  <title>Compare Free LLM APIs — Side-by-Side | Awesome Free LLM APIs</title>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebApplication",
+        "@id": "https://llm.persiantoolbox.ir/en/compare/#app",
+        "url": "https://llm.persiantoolbox.ir/en/compare/",
+        "name": "Free LLM API Compare Tool",
+        "description": "Side-by-side comparison of free LLM providers based on evidence-based catalog data.",
+        "applicationCategory": "DeveloperApplication",
+        "operatingSystem": "All",
+        "inLanguage": "en",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Free LLM APIs", "item": "https://llm.persiantoolbox.ir/en/" },
+          { "@type": "ListItem", "position": 2, "name": "Compare Providers", "item": "https://llm.persiantoolbox.ir/en/compare/" }
+        ]
+      }
+    ]
+  }
+  </script>
+  <style>
+    .compare-en-hero { position: relative; overflow: hidden; border-radius: 34px; padding: clamp(24px,5vw,52px); margin-bottom: 40px; background: linear-gradient(135deg, #111827 0%, #1e293b 100%); color: #fff; }
+    .compare-en-hero > * { position: relative; z-index: 1; }
+    .compare-en-hero .eyebrow { color: #a78bfa; }
+    .compare-en-hero h1 { margin: 0; font-size: clamp(28px, 4vw, 52px); line-height: 1.15; letter-spacing: -.04em; }
+    .compare-en-hero h1 span { color: #34d399; }
+    .compare-en-hero p { max-width: 720px; margin: 12px 0; color: #cbd5e1; font-size: clamp(14px,1.6vw,17px); }
+  </style>
+</head>
+<body data-page-type="compare">
+  <a class="skip-link" href="#compare-content">Skip to main content</a>
+  <header class="topbar">
+    <a class="brand" href="../" aria-label="Home"><span class="brand-mark" aria-hidden="true"><img src="../../assets/logo-symbol.svg" alt="" width="40" height="40"></span><span>Awesome Free LLM APIs</span></a>
+    <nav aria-label="Main links"><a href="../api-finder/">API Finder</a><a href="../quick-start/">Quick Start</a><a href="https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir">GitHub</a></nav>
+  </header>
+
+  <main id="compare-content" class="compare-shell">
+    <section class="compare-en-hero" aria-labelledby="compare-title">
+      <p class="eyebrow">Decisions with the same data</p>
+      <h1 id="compare-title">Compare providers<br><span>side by side.</span></h1>
+      <p>Free-tier type, payment method, rate limits, Base URL, models, and regional access — all read from the same <code>catalog.json</code>. This page does not guarantee quality or permanent availability.</p>
+      <div class="hero-actions"><a class="button primary" href="../api-finder/">Back to API Finder</a></div>
+    </section>
+
+    <section class="compare-boundary" aria-labelledby="compare-boundary-title">
+      <h2 id="compare-boundary-title">What this comparison does not prove</h2>
+      <p>Reachability, signup, key issuance, and inference are separate evidence layers. A status of "unknown" does not mean working or blocked. Before signing up, review each provider's timestamped evidence and official documentation.</p>
+    </section>
+
+    <div id="compare-loading" class="message-card">Loading catalog…</div>
+    <div id="compare-error" class="message-card error" hidden>Failed to load data. Reload the page.</div>
+    <section id="compare-empty" class="compare-empty" hidden>
+      <h2>Select at least two providers to compare</h2>
+      <p>Use the API Finder and click "Add to compare" to build your comparison list. The list is stored locally on your device.</p>
+      <a class="button primary" href="../api-finder/">Open API Finder</a>
+    </section>
+
+    <section id="compare-results" aria-labelledby="compare-results-title" hidden>
+      <div class="compare-heading">
+        <div><p class="eyebrow">Maximum three options</p><h2 id="compare-results-title">Feature & limit comparison</h2></div>
+        <button id="compare-clear" class="button secondary" type="button">Clear all</button>
+      </div>
+      <div id="compare-grid" class="compare-grid"></div>
+    </section>
+  </main>
+
+  <footer><p>Data is sourced from official documentation and dated. Provider terms may change.</p><p><a href="../../catalog.json">Catalog JSON</a> · <a href="https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir/issues/new/choose">Report incorrect data</a></p></footer>
+  <script defer src="./compare.js"></script>
+  <script defer data-domain="llm.persiantoolbox.ir" src="../../plausible.js"></script>
+</body>
+</html>

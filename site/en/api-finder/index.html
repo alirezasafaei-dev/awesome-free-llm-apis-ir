@@ -1,0 +1,579 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#111827">
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1">
+    <meta name="description" content="Find the best free LLM API for your project. Filter by use case, free-tier type, language, and region. Evidence-based scoring from official sources.">
+    <meta property="og:title" content="Free LLM API Finder — Find Your Ideal Free AI API">
+    <meta property="og:description" content="Guided tool to find free LLM APIs matching your use case, budget, and constraints. Compare providers by score, limits, and evidence.">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:site_name" content="Awesome Free LLM APIs">
+    <meta property="og:url" content="https://llm.persiantoolbox.ir/en/api-finder/">
+    <meta property="og:image" content="https://llm.persiantoolbox.ir/assets/social/og-default.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Free LLM API Finder">
+    <meta name="twitter:description" content="Find free AI APIs matching your use case, budget, and constraints.">
+    <meta name="twitter:image" content="https://llm.persiantoolbox.ir/assets/social/og-default.png">
+    <link rel="canonical" href="https://llm.persiantoolbox.ir/en/api-finder/">
+    <link rel="alternate" hreflang="en" href="https://llm.persiantoolbox.ir/en/api-finder/">
+    <link rel="alternate" hreflang="fa" href="https://llm.persiantoolbox.ir/api-finder/">
+    <link rel="alternate" hreflang="x-default" href="https://llm.persiantoolbox.ir/en/api-finder/">
+    <link rel="alternate" type="application/json" href="../../catalog.json" title="Machine-readable provider catalog">
+    <link rel="manifest" href="../../manifest.webmanifest">
+    <link rel="stylesheet" href="../../styles.css">
+    <title>Free LLM API Finder — Compare Free AI APIs | Awesome Free LLM APIs</title>
+    <link rel="icon" type="image/svg+xml" href="../../assets/favicon.svg">
+    <link rel="mask-icon" href="../../assets/mask-icon.svg" color="#2563EB">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../assets/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="../../assets/apple-touch-icon.png">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Organization",
+          "@id": "https://llm.persiantoolbox.ir/#organization",
+          "name": "Awesome Free LLM APIs",
+          "url": "https://llm.persiantoolbox.ir/",
+          "sameAs": ["https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir"]
+        },
+        {
+          "@type": "WebApplication",
+          "@id": "https://llm.persiantoolbox.ir/en/api-finder/#webapp",
+          "url": "https://llm.persiantoolbox.ir/en/api-finder/",
+          "name": "Free LLM API Finder",
+          "inLanguage": ["en"],
+          "description": "Guided tool to find free LLM APIs matching your use case, budget, and constraints.",
+          "applicationCategory": "DeveloperApplication",
+          "operatingSystem": "All",
+          "browserRequirements": "Requires JavaScript",
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+          },
+          "publisher": { "@id": "https://llm.persiantoolbox.ir/#organization" }
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": "https://llm.persiantoolbox.ir/en/api-finder/#breadcrumb",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://llm.persiantoolbox.ir/en/" },
+            { "@type": "ListItem", "position": 2, "name": "API Finder", "item": "https://llm.persiantoolbox.ir/en/api-finder/" }
+          ]
+        }
+      ]
+    }
+    </script>
+    <style>
+      .en-finder-hero { position: relative; overflow: hidden; border-radius: 34px; padding: clamp(24px, 5vw, 52px); margin-bottom: 40px; background: linear-gradient(135deg, #111827 0%, #1e293b 100%); color: #fff; display: flex; flex-direction: column; gap: 20px; }
+      .en-finder-hero::before { content: ""; position: absolute; width: 380px; height: 380px; left: -120px; top: -160px; border-radius: 50%; background: radial-gradient(circle, rgba(109,61,245,.7), transparent 68%); }
+      .en-finder-hero::after { content: ""; position: absolute; width: 260px; height: 260px; right: 10%; bottom: -220px; border-radius: 50%; background: rgba(16,185,129,.3); filter: blur(50px); }
+      .en-finder-hero > * { position: relative; z-index: 1; }
+      .en-finder-hero .eyebrow { color: #a78bfa; }
+      .en-finder-hero h1 { margin: 0; font-size: clamp(28px, 4vw, 52px); line-height: 1.15; letter-spacing: -.04em; }
+      .en-finder-hero h1 span { color: #34d399; }
+      .en-finder-hero p { max-width: 720px; margin: 0; color: #cbd5e1; font-size: clamp(14px, 1.6vw, 17px); }
+
+      .finder-form { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 14px; padding: 24px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); box-shadow: var(--shadow); margin-bottom: 24px; }
+      .finder-form label { display: flex; flex-direction: column; gap: 6px; color: var(--muted); font-size: 12px; font-weight: 700; }
+      .finder-form select, .finder-form button { width: 100%; min-height: 46px; border: 1px solid var(--border); border-radius: 12px; background: var(--surface-soft); color: var(--text); padding: 8px 12px; outline: none; font-size: 14px; }
+      .finder-form select:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(109,61,245,.15); }
+      .finder-form .finder-actions { display: flex; align-items: end; gap: 10px; grid-column: 1 / -1; }
+      .finder-form .button.primary { min-height: 46px; border: 0; font-size: 15px; }
+      .finder-form .button.secondary { min-height: 46px; border: 1px solid var(--border); background: var(--surface); color: var(--muted); font-size: 13px; }
+
+      .finder-advanced { grid-column: 1 / -1; }
+      .finder-advanced summary { cursor: pointer; color: var(--primary); font-weight: 700; font-size: 13px; padding: 8px 0; }
+      .finder-advanced-content { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 14px; padding-top: 12px; }
+
+      .finder-status { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 16px; }
+      .finder-status p { color: var(--muted); font-size: 14px; margin: 0; }
+
+      .finder-results { display: grid; gap: 18px; margin-bottom: 32px; }
+      .finder-card { display: flex; flex-direction: column; padding: 20px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: 0 8px 28px rgba(17,24,39,.05); }
+      .finder-card-header { display: flex; align-items: center; gap: 12px; }
+      .finder-rank { flex: 0 0 auto; display: grid; place-items: center; width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, var(--primary), color-mix(in srgb, var(--primary) 70%, var(--accent))); color: #fff; font-weight: 900; font-size: 15px; }
+      .finder-card-title { flex: 1; }
+      .finder-card-title h3 { margin: 0; font-size: 19px; }
+      .finder-card-title .finder-id { color: var(--muted); font-size: 11px; direction: ltr; }
+      .finder-total-score { flex: 0 0 auto; text-align: center; padding: 8px 16px; border-radius: 12px; background: var(--surface-soft); }
+      .finder-total-score strong { display: block; font-size: 24px; font-weight: 900; color: var(--primary); }
+      .finder-total-score small { color: var(--muted); font-size: 11px; }
+      .finder-breakdown { margin-top: 14px; display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 8px; }
+      .finder-breakdown-item { padding: 8px 10px; border-radius: 10px; background: var(--surface-soft); font-size: 12px; display: flex; justify-content: space-between; align-items: center; }
+      .finder-breakdown-item .label { color: var(--muted); }
+      .finder-breakdown-item .value { font-weight: 800; direction: ltr; }
+      .finder-breakdown-item .value.positive { color: var(--accent); }
+      .finder-breakdown-item .value.negative { color: var(--danger); }
+      .finder-card-extra { margin-top: 14px; display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+      .finder-card-extra .access-badge { background: var(--surface-soft); display: inline-flex; align-items: center; width: fit-content; border-radius: 999px; padding: 4px 9px; font-size: 11px; font-weight: 800; }
+      .finder-card-extra .limit-label { color: var(--muted); font-size: 12px; }
+      .finder-card-actions { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border); display: flex; gap: 8px; }
+      .finder-card-actions a { padding: 8px 16px; border-radius: 10px; text-align: center; text-decoration: none; font-size: 12px; font-weight: 800; }
+      .finder-detail-link { background: var(--surface-soft); color: var(--text); border: 1px solid var(--border); }
+      .finder-detail-link:hover { background: color-mix(in srgb, var(--primary) 12%, var(--surface)); border-color: var(--primary); color: var(--primary); }
+      .finder-docs-link { background: var(--primary); color: #fff; }
+      .finder-evidence-link { background: transparent; color: var(--muted); border: 1px solid var(--border); }
+      .finder-quick-start-link { background: var(--accent); color: #fff; }
+
+      .finder-empty { padding: 48px; text-align: center; color: var(--muted); border: 1px dashed var(--border); border-radius: var(--radius); background: var(--surface); }
+      .finder-empty p { margin: 8px 0; }
+
+      .finder-disclosure { margin-top: 12px; padding: 18px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); }
+      .finder-disclosure summary { color: var(--primary); font-weight: 800; cursor: pointer; font-size: 13px; }
+      .finder-disclosure-content { margin-top: 12px; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
+      .finder-disclosure-content div { padding: 10px; border-radius: 10px; background: var(--surface-soft); font-size: 12px; }
+      .finder-disclosure-content div strong { display: block; margin-bottom: 4px; color: var(--text); }
+
+      .finder-contribute { margin-top: 40px; padding: clamp(24px, 4vw, 40px); border-radius: 30px; background: linear-gradient(135deg, color-mix(in srgb, var(--primary) 13%, var(--surface)), var(--surface)); border: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+      .finder-contribute h2 { margin: 0; font-size: clamp(22px, 3vw, 32px); }
+      .finder-contribute p { color: var(--muted); max-width: 600px; margin: 8px 0 0; font-size: 14px; }
+
+      @media (max-width: 640px) {
+        .finder-form { grid-template-columns: 1fr; }
+        .finder-form .finder-actions { flex-direction: column; }
+        .finder-card-header { flex-wrap: wrap; }
+        .finder-breakdown { grid-template-columns: 1fr 1fr; }
+        .finder-contribute { flex-direction: column; text-align: center; }
+        .finder-card-actions { flex-direction: column; }
+      }
+    </style>
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+
+    <header class="topbar">
+      <a class="brand" href="../" aria-label="Home">
+        <span class="brand-mark" aria-hidden="true"><img src="../../assets/logo-symbol.svg" alt="" width="40" height="40"></span>
+        <span>Awesome Free LLM APIs</span>
+      </a>
+      <nav aria-label="Main links">
+        <a href="../">Home</a>
+        <a href="../quick-start/">Quick Start</a>
+        <a href="../compare/">Compare</a>
+        <a href="https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir">GitHub</a>
+      </nav>
+    </header>
+
+    <main id="main-content">
+      <section class="en-finder-hero" aria-labelledby="finder-hero-title">
+        <p class="eyebrow">Guided provider selection</p>
+        <h1 id="finder-hero-title">Find the best free LLM API<br><span>for your project.</span></h1>
+        <p>Answer three quick questions — use case, free-access constraint, and language — to get ranked results. Region and latency controls are available in Advanced settings. All data comes from the <a href="../../catalog.json" style="color:#a78bfa">evidence-based catalog</a>.</p>
+      </section>
+
+      <form id="finder-form" class="finder-form" role="search" aria-label="API finder form">
+        <label>Use case
+          <select id="finder-usecase">
+            <option value="chat">Chat & text generation</option>
+            <option value="coding">Coding & tool calling</option>
+            <option value="reasoning">Reasoning</option>
+            <option value="embeddings">Embeddings & search</option>
+          </select>
+        </label>
+        <label>Free-access constraint
+          <select id="finder-budget">
+            <option value="no-card">No credit card required</option>
+            <option value="free-only">Free tier only (any type)</option>
+            <option value="any">No preference</option>
+          </select>
+        </label>
+        <label>Language / output
+          <select id="finder-language">
+            <option value="any">Any language</option>
+            <option value="english">English</option>
+            <option value="multilingual">Multilingual</option>
+          </select>
+        </label>
+
+        <details class="finder-advanced">
+          <summary>Advanced settings — region, latency, etc.</summary>
+          <div class="finder-advanced-content">
+            <label>Region preference
+              <select id="finder-region">
+                <option value="any">Any region</option>
+                <option value="iran">Iran — direct connection</option>
+                <option value="iran-vpn">Iran — via VPN</option>
+              </select>
+            </label>
+            <label>Latency sensitivity
+              <select id="finder-latency">
+                <option value="low">Low priority</option>
+                <option value="important">Important</option>
+                <option value="critical">Critical</option>
+              </select>
+            </label>
+          </div>
+        </details>
+
+        <div class="finder-actions">
+          <button class="button primary" type="submit" id="finder-submit">Find APIs</button>
+          <button class="button secondary" type="reset" id="finder-reset">Reset filters</button>
+        </div>
+      </form>
+
+      <div id="finder-status" class="finder-status" hidden>
+        <p id="finder-status-text"></p>
+      </div>
+
+      <div id="finder-results" class="finder-results"></div>
+      <div id="finder-loading" class="message-card">Loading provider data…</div>
+      <div id="finder-error" class="message-card error" hidden>Failed to load catalog. Reload the page and try again.</div>
+      <div id="finder-empty" class="finder-empty" hidden>
+        <p><strong>No providers match your filters.</strong></p>
+        <p>Try different criteria or <a href="https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir/issues/new/choose">report a missing provider</a>.</p>
+      </div>
+
+      <details id="finder-disclosure" class="finder-disclosure">
+        <summary>How is the score calculated?</summary>
+        <div class="finder-disclosure-content">
+          <div><strong>Capability match (max +35)</strong><span>The provider supports the capabilities needed for your use case.</span></div>
+          <div><strong>Free-tier type and payment (max +20)</strong><span>No credit card required ranks highest, followed by free models, then anything.</span></div>
+          <div><strong>Latency (max +15)</strong><span>Based on reported RPM — critical sensitivity awards higher scores for faster endpoints.</span></div>
+          <div><strong>Region preference (max +30)</strong><span>Matches your region filter. Neutral by default; Iran direct and VPN options are scored separately.</span></div>
+          <div><strong>Language support (max +15)</strong><span>Providers with multilingual or English-optimized models score higher.</span></div>
+          <div><strong>Penalties (0 to -30)</strong><span>Community gateways, session bridges, or blocked/unknown statuses reduce the score.</span></div>
+        </div>
+      </details>
+
+      <section class="finder-contribute">
+        <div>
+          <p class="eyebrow">Help improve this tool</p>
+          <h2>Contributions make the finder more accurate.</h2>
+          <p>Is the scoring fair? Missing a constraint you need? Submit your feedback on GitHub.</p>
+        </div>
+        <a class="button primary" href="https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir/issues/new/choose">Submit feedback</a>
+      </section>
+    </main>
+
+    <footer>
+      <p>Data is sourced from official documentation and dated. Provider terms may change.</p>
+      <p><a href="../../catalog.json">Catalog JSON</a> · <a href="../../sitemap.xml">Sitemap</a> · <a href="../../llms.txt">llms.txt</a> · <a href="../../">Persian catalog</a></p>
+      <a href="https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir">Source on GitHub</a>
+    </footer>
+
+    <script>
+      const accessLabels = {
+        verified_working: "Direct — verified working",
+        verified_working_vpn: "VPN — verified working",
+        direct_blocked_vpn_working: "Direct blocked, VPN works",
+        verified_blocked: "Verified blocked",
+        officially_unsupported: "Officially unsupported",
+        intermittent: "Intermittent",
+        signup_blocked: "Signup blocked",
+        unknown: "Unknown"
+      };
+      const accessEmoji = {
+        verified_working: "✅",
+        verified_working_vpn: "🛡️",
+        direct_blocked_vpn_working: "🛡️",
+        verified_blocked: "⛔",
+        officially_unsupported: "🚫",
+        intermittent: "⚠️",
+        signup_blocked: "🧾",
+        unknown: "❔"
+      };
+      const serviceLabels = {
+        official_provider: "Official provider",
+        official_gateway: "Official gateway",
+        community_gateway: "Community gateway",
+        session_bridge: "Session bridge",
+        self_hosted: "Self-hosted"
+      };
+      const freeLabels = {
+        permanent_allowance: "Permanent allowance",
+        free_models: "Free models",
+        monthly_credit: "Monthly credit",
+        trial: "Trial",
+        unknown: "Unknown"
+      };
+      const usecaseCapabilityMap = {
+        chat: ["chat", "text_generation"],
+        coding: ["tool_calling", "structured_output"],
+        reasoning: ["reasoning"],
+        embeddings: ["embeddings"]
+      };
+      const iranAccessibleStatuses = ["verified_working", "verified_working_vpn", "direct_blocked_vpn_working", "intermittent"];
+      const iranBlockedStatuses = ["verified_blocked", "officially_unsupported", "signup_blocked"];
+
+      let providers = [];
+      const elements = {
+        form: document.getElementById("finder-form"),
+        usecase: document.getElementById("finder-usecase"),
+        language: document.getElementById("finder-language"),
+        budget: document.getElementById("finder-budget"),
+        latency: document.getElementById("finder-latency"),
+        region: document.getElementById("finder-region"),
+        submit: document.getElementById("finder-submit"),
+        reset: document.getElementById("finder-reset"),
+        results: document.getElementById("finder-results"),
+        status: document.getElementById("finder-status"),
+        statusText: document.getElementById("finder-status-text"),
+        loading: document.getElementById("finder-loading"),
+        error: document.getElementById("finder-error"),
+        empty: document.getElementById("finder-empty"),
+        disclosure: document.getElementById("finder-disclosure")
+      };
+
+      function isStale(provider) {
+        const checked = new Date(`${provider.verification.last_checked}T00:00:00Z`);
+        return (Date.now() - checked.getTime()) / 86_400_000 > provider.verification.stale_after_days;
+      }
+
+      function maxRpm(provider) {
+        return Math.max(...provider.free_tier.limits.map((l) => l.rpm ?? 0), 0);
+      }
+
+      function scoreProvider(provider, filters) {
+        const capabilities = usecaseCapabilityMap[filters.usecase] ?? usecaseCapabilityMap.chat;
+        let score = 0;
+        const breakdown = {};
+
+        const hasCapability = capabilities.some((c) => provider.capabilities.includes(c));
+        const capabilityScore = hasCapability ? 35 : 0;
+        score += capabilityScore;
+        breakdown.capability = { label: "Capability match", value: capabilityScore, max: 35 };
+
+        let langScore = 0;
+        if (filters.language === "multilingual") {
+          langScore = 15;
+        } else if (filters.language === "english") {
+          langScore = 10;
+        } else {
+          langScore = 5;
+        }
+        score += langScore;
+        breakdown.language = { label: "Language support", value: langScore, max: 15 };
+
+        let budgetScore = 0;
+        if (filters.budget === "no-card") {
+          if (provider.free_tier.requires_payment_method === false) budgetScore = 20;
+          else if (provider.free_tier.requires_payment_method === null) budgetScore = 10;
+          else budgetScore = 0;
+        } else if (filters.budget === "free-only") {
+          budgetScore = 10;
+        } else {
+          budgetScore = 5;
+        }
+        score += budgetScore;
+        breakdown.budget = { label: "Free tier & payment", value: budgetScore, max: 20 };
+
+        let latencyScore = 0;
+        const rpm = maxRpm(provider);
+        if (filters.latency === "critical") {
+          latencyScore = Math.min(15, Math.round(rpm / 40));
+        } else if (filters.latency === "important") {
+          latencyScore = Math.min(10, Math.round(rpm / 60));
+        } else {
+          latencyScore = rpm > 0 ? 3 : 0;
+        }
+        score += latencyScore;
+        breakdown.latency = { label: "Latency", value: latencyScore, max: 15, rpm };
+
+        let regionScore = 0;
+        const status = provider.iran_access.status;
+        if (filters.region === "iran") {
+          if (status === "verified_working") regionScore = 30;
+          else if (status === "verified_working_vpn" || status === "direct_blocked_vpn_working") regionScore = 10;
+          else if (status === "intermittent") regionScore = 8;
+          else if (iranBlockedStatuses.includes(status)) regionScore = -30;
+          else regionScore = 0;
+        } else if (filters.region === "iran-vpn") {
+          if (status === "verified_working" || status === "verified_working_vpn" || status === "direct_blocked_vpn_working") regionScore = 15;
+          else if (status === "intermittent") regionScore = 10;
+          else if (iranBlockedStatuses.includes(status)) regionScore = -15;
+          else regionScore = 5;
+        } else {
+          if (status !== "unknown" && !iranBlockedStatuses.includes(status)) regionScore = 10;
+          else if (iranBlockedStatuses.includes(status)) regionScore = -5;
+          else regionScore = 0;
+        }
+        score += regionScore;
+        breakdown.region = { label: "Region", value: regionScore, max: 30 };
+
+        let penaltyScore = 0;
+        if (provider.service_type === "community_gateway") penaltyScore = -15;
+        else if (provider.service_type === "session_bridge") penaltyScore = -25;
+        if (status === "unknown") penaltyScore += -5;
+        score += penaltyScore;
+        breakdown.penalty = { label: "Type penalties", value: penaltyScore, max: 0 };
+
+        return { score, breakdown };
+      }
+
+      function renderResults(results, filters) {
+        if (results.length === 0) {
+          elements.results.innerHTML = "";
+          elements.status.hidden = true;
+          elements.empty.hidden = false;
+          return;
+        }
+
+        elements.empty.hidden = true;
+        elements.status.hidden = false;
+        const usecaseLabel = { chat: "Chat & text", coding: "Coding", reasoning: "Reasoning", embeddings: "Embeddings" };
+        const budgetLabel = { "no-card": "No credit card", "free-only": "Free only", any: "Any" };
+        const regionLabel = { iran: "Iran direct", "iran-vpn": "Iran VPN", any: "Any region" };
+        elements.statusText.textContent = `${results.length} of ${providers.length} providers — ${usecaseLabel[filters.usecase] ?? "Chat"} · ${budgetLabel[filters.budget] ?? "Any"} · ${regionLabel[filters.region] ?? "Any"}`;
+
+        const cards = results.map(({ provider, score, breakdown }, index) => {
+          const card = document.createElement("div");
+          card.className = "finder-card";
+
+          const statusStyle = provider.iran_access.status === "verified_working" ? "background:#065f46;color:#fff" : "";
+
+          const quickStartUrl = `../quick-start/?provider=${encodeURIComponent(provider.id)}&usecase=${filters.usecase}&region=${filters.region}`;
+
+          card.innerHTML = `
+            <div class="finder-card-header">
+              <div class="finder-rank">${index + 1}</div>
+              <div class="finder-card-title">
+                <h3>${provider.name}</h3>
+                <span class="finder-id">${provider.id} · ${serviceLabels[provider.service_type] ?? provider.service_type}</span>
+              </div>
+              <div class="finder-total-score">
+                <strong>${score}</strong>
+                <small>/ 130</small>
+              </div>
+            </div>
+            <div class="finder-breakdown">
+              ${Object.entries(breakdown).map(([key, b]) => {
+                const cls = b.value > 0 ? "positive" : b.value < 0 ? "negative" : "";
+                return `<div class="finder-breakdown-item"><span class="label">${b.label}</span><span class="value ${cls}">${b.value > 0 ? "+" : ""}${b.value}</span></div>`;
+              }).join("")}
+            </div>
+            <div class="finder-card-extra">
+              <span class="access-badge" style="${statusStyle}">${accessEmoji[provider.iran_access.status] ?? ""} ${accessLabels[provider.iran_access.status] ?? provider.iran_access.status}</span>
+              <span class="limit-label">${limitText(provider)}</span>
+              ${isStale(provider) ? '<span class="freshness-badge stale" style="font-size:11px;padding:2px 8px">Needs review</span>' : ""}
+            </div>
+            <div class="finder-card-actions">
+              <a class="finder-quick-start-link" href="${quickStartUrl}">Select & build first request</a>
+              <a class="finder-docs-link" href="${provider.docs}" target="_blank" rel="noopener noreferrer">Official docs</a>
+              ${provider.iran_access.evidence?.length ? `<a class="finder-evidence-link" href="../../providers/${provider.id}/#evidence">${provider.iran_access.evidence.length} evidence items</a>` : ""}
+            </div>
+          `;
+          return card;
+        });
+
+        elements.results.replaceChildren(...cards);
+      }
+
+      function limitText(provider) {
+        const first = provider.free_tier.limits[0];
+        if (!first) return "Model/account dependent";
+        const values = [];
+        if (first.rpm != null) values.push(`${first.rpm.toLocaleString("en-US")} RPM`);
+        if (first.rph != null) values.push(`${first.rph.toLocaleString("en-US")} RPH`);
+        if (first.rpd != null) values.push(`${first.rpd.toLocaleString("en-US")} RPD`);
+        if (first.tpm != null) values.push(`${first.tpm.toLocaleString("en-US")} TPM`);
+        if (first.daily_units != null) values.push(`${first.daily_units.toLocaleString("en-US")} ${first.unit_name ?? "unit"}/day`);
+        if (first.monthly_credit_usd != null) values.push(`$${first.monthly_credit_usd}/month`);
+        if (first.monthly_requests != null) values.push(`${first.monthly_requests.toLocaleString("en-US")} req/month`);
+        return values.slice(0, 2).join(" · ") || "Model-specific";
+      }
+
+      function getFilters() {
+        return {
+          usecase: elements.usecase.value,
+          language: elements.language.value,
+          budget: elements.budget.value,
+          latency: elements.latency.value,
+          region: elements.region.value
+        };
+      }
+
+      function runFinder() {
+        const filters = getFilters();
+        const scored = providers.map((provider) => {
+          const { score, breakdown } = scoreProvider(provider, filters);
+          return { provider, score, breakdown };
+        });
+        scored.sort((a, b) => b.score - a.score || a.provider.name.localeCompare(b.provider.name, "en"));
+        const top = scored.slice(0, 5);
+        renderResults(top, filters);
+      }
+
+      function loadUrlFilters() {
+        const params = new URLSearchParams(location.search);
+        if (params.has("usecase")) elements.usecase.value = params.get("usecase");
+        if (params.has("language")) elements.language.value = params.get("language");
+        if (params.has("budget")) elements.budget.value = params.get("budget");
+        if (params.has("latency")) elements.latency.value = params.get("latency");
+        if (params.has("region")) elements.region.value = params.get("region");
+      }
+
+      function updateUrl(filters) {
+        const params = new URLSearchParams();
+        if (filters.usecase !== "chat") params.set("usecase", filters.usecase);
+        if (filters.language !== "any") params.set("language", filters.language);
+        if (filters.budget !== "no-card") params.set("budget", filters.budget);
+        if (filters.latency !== "low") params.set("latency", filters.latency);
+        if (filters.region !== "any") params.set("region", filters.region);
+        history.replaceState(null, "", `${location.pathname}${params.size ? `?${params}` : ""}${location.hash}`);
+      }
+
+      function onFind(event) {
+        event.preventDefault();
+        const filters = getFilters();
+        updateUrl(filters);
+        runFinder();
+        if (typeof window.plausible === "function") {
+          window.plausible("api_finder_search", {
+            props: {
+              usecase: filters.usecase,
+              language: filters.language,
+              budget: filters.budget,
+              latency: filters.latency,
+              region: filters.region
+            }
+          });
+        }
+      }
+
+      async function init() {
+        loadUrlFilters();
+
+        elements.form.addEventListener("submit", onFind);
+        elements.reset.addEventListener("click", () => {
+          elements.usecase.value = "chat";
+          elements.language.value = "any";
+          elements.budget.value = "no-card";
+          elements.latency.value = "low";
+          elements.region.value = "any";
+          history.replaceState(null, "", location.pathname);
+          elements.results.innerHTML = "";
+          elements.status.hidden = true;
+          elements.empty.hidden = true;
+        });
+
+        try {
+          elements.loading.hidden = false;
+          const response = await fetch("../../catalog.json", { cache: "no-cache" });
+          if (!response.ok) throw new Error(`HTTP ${response.status}`);
+          const catalog = await response.json();
+          providers = catalog.providers;
+          elements.loading.hidden = true;
+
+          if (location.search.includes("usecase=") || location.search.includes("budget=") || location.search.includes("region=")) {
+            runFinder();
+          }
+        } catch (err) {
+          console.error(err);
+          elements.loading.hidden = true;
+          elements.error.hidden = false;
+        }
+      }
+
+      init();
+    </script>
+    <script defer data-domain="llm.persiantoolbox.ir" src="../../plausible.js"></script>
+  </body>
+</html>
