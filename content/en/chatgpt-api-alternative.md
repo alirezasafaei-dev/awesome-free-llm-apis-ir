@@ -107,6 +107,13 @@ Most free tiers permit commercial use. Check each provider's terms of service. G
 
 Not in most cases. GitHub Models, Cloudflare Workers AI, Groq, Hugging Face, Kilo Gateway, LLM7.io, Mistral AI, and SambaNova Cloud do not require a credit card for free tier access.
 
+## Related Guides
+
+- [Free AI API guide](https://llm.persiantoolbox.ir/guides/en/en-free-ai-api/) — complete overview of free AI APIs
+- [Free LLM API list](https://llm.persiantoolbox.ir/guides/en/en-free-llm-api/) — full comparison of all free LLM APIs
+- [AI API Iran](https://llm.persiantoolbox.ir/guides/en/en-ai-api-iran/) — providers verified working from Iran
+- [OpenAI API alternatives](https://llm.persiantoolbox.ir/guides/en/en-openai-api-alternative/) — broader OpenAI-compatible options
+
 ## Complete Provider List
 
 Browse all 22 providers in the [interactive catalog](https://llm.persiantoolbox.ir/) with filtering by ChatGPT API compatibility, free tier type, Iran access status, and capabilities. Star the [GitHub repository](https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir) to support this project.

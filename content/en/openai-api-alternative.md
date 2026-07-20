@@ -102,6 +102,13 @@ Cloudflare Workers AI, GitHub Models, Kilo Gateway, LLM7.io, Mistral AI, OVHclou
 
 Not for most providers. GitHub Models, Cloudflare Workers AI, Groq, Hugging Face, Kilo Gateway, LLM7.io, Mistral AI, and SambaNova Cloud all offer free access without a credit card.
 
+## Related Guides
+
+- [Free AI API guide](https://llm.persiantoolbox.ir/guides/en/en-free-ai-api/) — complete overview of free AI APIs
+- [Free LLM API list](https://llm.persiantoolbox.ir/guides/en/en-free-llm-api/) — full comparison of all free LLM APIs
+- [Free GPT API no credit card](https://llm.persiantoolbox.ir/guides/en/en-free-gpt-api-no-credit-card/) — GPT access without payment
+- [ChatGPT API alternatives](https://llm.persiantoolbox.ir/guides/en/en-chatgpt-api-alternative/) — focused ChatGPT API comparison
+
 ## Ready to Switch?
 
 Browse all 22 providers in the [interactive catalog](https://llm.persiantoolbox.ir/) and filter by OpenAI compatibility, Iran access, and free tier type to find your ideal OpenAI API alternative. Star the [GitHub repository](https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir) to support this project.

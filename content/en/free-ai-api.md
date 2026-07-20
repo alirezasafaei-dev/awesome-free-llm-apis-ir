@@ -115,6 +115,13 @@ response = client.chat.completions.create(
 print(response.choices[0].message.content)
 ```
 
+## Related Guides
+
+- [Free LLM API list](https://llm.persiantoolbox.ir/guides/en/en-free-llm-api/) — full comparison of all free LLM APIs
+- [AI API Iran](https://llm.persiantoolbox.ir/guides/en/en-ai-api-iran/) — providers verified working from Iran
+- [ChatGPT API alternatives](https://llm.persiantoolbox.ir/guides/en/en-chatgpt-api-alternative/) — free OpenAI API alternatives
+- [Free GPT API no credit card](https://llm.persiantoolbox.ir/guides/en/en-free-gpt-api-no-credit-card/) — GPT models without payment
+
 ## Summary
 
 The free AI API landscape in 2026 offers 22 verified providers with diverse capabilities. GitHub Models offers the best balance of accessibility and features for most developers. For Iranian users, Cloudflare Workers AI and Mistral AI provide confirmed direct access. Always verify the latest status on the catalog page before building production systems.
