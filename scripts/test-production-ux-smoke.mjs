@@ -4,7 +4,8 @@ import process from "node:process";
 
 const buildMeta = {
   source_revision: "fixture-sha",
-  static_product_pages: ["/api-finder/", "/quick-start/"]
+  static_product_pages: ["/api-finder/", "/quick-start/", "/tools/"],
+  tool_count: 8
 };
 
 function send(response, status, contentType, body) {
@@ -22,7 +23,7 @@ function fixtureResponse(request, response) {
 
   if (relative === "") {
     const body = target === "good"
-      ? '<!doctype html><html><body><h1>API رایگان هوش مصنوعی</h1><section class="audience-paths"></section><a href="/api-finder/">finder</a><a href="/quick-start/">quick</a></body></html>'
+      ? '<!doctype html><html><body><h1>API رایگان هوش مصنوعی</h1><section class="audience-paths"></section><a href="/api-finder/">finder</a><a href="/quick-start/">quick</a><a href="/tools/">tools</a></body></html>'
       : '<!doctype html><html><body><h1>legacy</h1></body></html>';
     return send(response, 200, "text/html; charset=utf-8", body);
   }
@@ -41,6 +42,13 @@ function fixtureResponse(request, response) {
     return send(response, 200, "text/html; charset=utf-8", body);
   }
 
+  if (relative === "tools/") {
+    const body = target === "good"
+      ? '<!doctype html><html><head><link rel="stylesheet" href="tools.css"><script type="application/ld+json">{}</script></head><body><h1 id="tools-title">Tools</h1><section class="tools-controls"></section><article class="tool-card">ریسک Terms امنیت Credential</article><script src="tools.js"></script></body></html>'
+      : '<!doctype html><html><body>unsafe legacy list</body></html>';
+    return send(response, 200, "text/html; charset=utf-8", body);
+  }
+
   if (relative === "build-meta.json") {
     const payload = target === "good" ? buildMeta : { source_revision: "wrong", static_product_pages: ["/api-finder/"] };
     return send(response, 200, "application/json; charset=utf-8", JSON.stringify(payload));
@@ -48,7 +56,7 @@ function fixtureResponse(request, response) {
 
   if (relative === "sitemap.xml") {
     const body = target === "good"
-      ? "<?xml version=\"1.0\"?><urlset><url><loc>https://example.test/api-finder/</loc></url><url><loc>https://example.test/quick-start/</loc></url></urlset>"
+      ? "<?xml version=\"1.0\"?><urlset><url><loc>https://example.test/api-finder/</loc></url><url><loc>https://example.test/quick-start/</loc></url><url><loc>https://example.test/tools/</loc></url></urlset>"
       : "<?xml version=\"1.0\"?><urlset><url><loc>https://example.test/api-finder/</loc></url></urlset>";
     return send(response, 200, "application/xml; charset=utf-8", body);
   }
@@ -83,22 +91,22 @@ try {
   });
   if (positive.code !== 0) throw new Error(`Expected positive UX smoke fixture to pass.\n${positive.stdout}\n${positive.stderr}`);
   if (!positive.stdout.includes("Overall: PASS")) throw new Error("Positive UX smoke report did not pass");
-  if (!positive.stdout.includes("UX routes checked: 5")) throw new Error("Positive UX smoke report did not include all route checks");
+  if (!positive.stdout.includes("UX routes checked: 6")) throw new Error("Positive UX smoke report did not include all route checks");
 
   const negative = await runChecker(["--expected-revision=fixture-sha", "--timeout-ms=5000"], {
     UX_SMOKE_TARGETS_JSON: JSON.stringify([{ name: "bad", baseUrl: `${origin}/bad/` }])
   });
   if (negative.code === 0) throw new Error("Expected negative UX smoke fixture to fail");
-  for (const explanation of ["missing required UX signal", "missing product route /quick-start/", "sitemap is missing quick-start/"]) {
+  for (const explanation of ["missing required UX signal", "missing product route /tools/", "sitemap is missing tools/"]) {
     if (!negative.stdout.includes(explanation)) throw new Error(`Negative report did not include: ${explanation}\n${negative.stdout}\n${negative.stderr}`);
   }
 
   const dryRun = await runChecker(["--dry-run", "--target=good"], {
     UX_SMOKE_TARGETS_JSON: JSON.stringify([{ name: "good", baseUrl: `${origin}/good/` }])
   });
-  if (dryRun.code !== 0 || !dryRun.stdout.includes("/quick-start/")) throw new Error("UX smoke dry-run contract failed");
+  if (dryRun.code !== 0 || !dryRun.stdout.includes("/tools/")) throw new Error("UX smoke dry-run contract failed");
 
-  console.log("Production UX smoke checker fixture tests passed.");
+  console.log("Production UX smoke checker fixture tests passed, including the public tools catalog.");
 } finally {
   await new Promise((resolve, reject) => server.close((error) => error ? reject(error) : resolve()));
 }
