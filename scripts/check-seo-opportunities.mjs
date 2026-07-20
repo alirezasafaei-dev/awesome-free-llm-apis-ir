@@ -200,6 +200,9 @@ async function main() {
     { file: "index.html", path: "/" },
     { file: "en/index.html", path: "/en/" },
     { file: "api-finder/index.html", path: "/api-finder/" },
+    { file: "en/api-finder/index.html", path: "/en/api-finder/" },
+    { file: "en/quick-start/index.html", path: "/en/quick-start/" },
+    { file: "en/compare/index.html", path: "/en/compare/" },
     { file: "404.html", path: "/404.html" }
   ];
 

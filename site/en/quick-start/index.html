@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1">
+  <meta name="description" content="Quick start guide for free LLM APIs with curl, Python, and Node.js. Choose a provider, set environment variables, send your first request, and fix common errors.">
+  <meta property="og:title" content="Free LLM API Quick Start — curl, Python, Node.js">
+  <meta property="og:description" content="Step-by-step guide to choose a provider, set up credentials securely, and make your first API request with code examples.">
+  <meta property="og:type" content="article">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:url" content="https://llm.persiantoolbox.ir/en/quick-start/">
+  <meta property="og:image" content="https://llm.persiantoolbox.ir/assets/social/og-default.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://llm.persiantoolbox.ir/assets/social/og-default.png">
+  <link rel="canonical" href="https://llm.persiantoolbox.ir/en/quick-start/">
+  <link rel="alternate" hreflang="en" href="https://llm.persiantoolbox.ir/en/quick-start/">
+  <link rel="alternate" hreflang="fa" href="https://llm.persiantoolbox.ir/quick-start/">
+  <link rel="alternate" hreflang="x-default" href="https://llm.persiantoolbox.ir/en/quick-start/">
+  <link rel="stylesheet" href="../../styles.css">
+  <link rel="stylesheet" href="../../seo.css">
+  <link rel="stylesheet" href="../../ux-clarity.css">
+  <title>Free LLM API Quick Start — curl, Python, Node.js | Awesome Free LLM APIs</title>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://llm.persiantoolbox.ir/#organization",
+        "name": "Awesome Free LLM APIs",
+        "url": "https://llm.persiantoolbox.ir/en/",
+        "sameAs": ["https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir"]
+      },
+      {
+        "@type": "TechArticle",
+        "headline": "Free LLM API Quick Start — curl, Python, Node.js",
+        "description": "Step-by-step guide to choose a provider, set up credentials securely, and make your first API request.",
+        "inLanguage": "en",
+        "dateModified": "2026-07-20",
+        "mainEntityOfPage": "https://llm.persiantoolbox.ir/en/quick-start/",
+        "author": { "@id": "https://llm.persiantoolbox.ir/#organization" },
+        "publisher": { "@id": "https://llm.persiantoolbox.ir/#organization" }
+      },
+      {
+        "@type": "HowTo",
+        "name": "Send your first LLM API request",
+        "inLanguage": "en",
+        "step": [
+          { "@type": "HowToStep", "position": 1, "name": "Choose a provider" },
+          { "@type": "HowToStep", "position": 2, "name": "Sign up and get an API key" },
+          { "@type": "HowToStep", "position": 3, "name": "Set Base URL, Model, and Key" },
+          { "@type": "HowToStep", "position": 4, "name": "Send a request and verify the response" }
+        ]
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://llm.persiantoolbox.ir/en/" },
+          { "@type": "ListItem", "position": 2, "name": "Quick Start", "item": "https://llm.persiantoolbox.ir/en/quick-start/" }
+        ]
+      }
+    ]
+  }
+  </script>
+  <style>
+    .qs-en-hero { position: relative; overflow: hidden; border-radius: 34px; padding: clamp(24px,5vw,52px); margin-bottom: 40px; background: linear-gradient(135deg, #111827 0%, #1e293b 100%); color: #fff; }
+    .qs-en-hero > * { position: relative; z-index: 1; }
+    .qs-en-hero .eyebrow { color: #a78bfa; }
+    .qs-en-hero h1 { margin: 0; font-size: clamp(28px, 4vw, 52px); line-height: 1.15; letter-spacing: -.04em; }
+    .qs-en-hero h1 span { color: #34d399; }
+    .qs-en-hero p { max-width: 720px; margin: 12px 0; color: #cbd5e1; font-size: clamp(14px,1.6vw,17px); }
+
+    .provider-context-error { margin: 20px 0; padding: 16px; border: 1px solid var(--warning); border-radius: 16px; background: color-mix(in srgb, var(--warning) 8%, var(--surface)); }
+  </style>
+</head>
+<body data-page-type="quick-start">
+  <a class="skip-link" href="#quick-start-content">Skip to main content</a>
+  <header class="topbar">
+    <a class="brand" href="../" aria-label="Home"><span class="brand-mark" aria-hidden="true"><img src="../../assets/logo-symbol.svg" alt="" width="40" height="40"></span><span>Awesome Free LLM APIs</span></a>
+    <nav aria-label="Main links"><a href="../api-finder/">API Finder</a><a href="../compare/">Compare</a><a href="https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir">GitHub</a></nav>
+  </header>
+
+  <main id="quick-start-content" class="quick-start-shell">
+    <section class="qs-en-hero" aria-labelledby="quick-start-title">
+      <p class="eyebrow">From selection to first response</p>
+      <h1 id="quick-start-title">Build your first free LLM API request<br><span>without guessing.</span></h1>
+      <p>This guide is for providers with OpenAI-compatible APIs. Select a provider, get your key from the official dashboard, set environment variables, and send a request with curl, Python, or Node.js.</p>
+      <div class="hero-actions"><a class="button primary" href="../api-finder/">First, find a provider</a><a class="button secondary" href="#code-examples">Skip to code examples</a></div>
+      <nav class="quick-start-nav" aria-label="Guide sections"><a href="#activation-flow">Four steps</a><a href="#environment">Environment setup</a><a href="#code-examples">Code examples</a><a href="#errors">Error fixing</a></nav>
+    </section>
+
+    <section id="activation-flow" class="quick-start-section" aria-labelledby="activation-title">
+      <p class="eyebrow">Standard path</p>
+      <h2 id="activation-title">Four steps that should not be mixed</h2>
+      <p>A website loading or an endpoint returning a status code does not prove that an account can be created or a model request will succeed. Each step must be performed and verified separately.</p>
+      <ol class="activation-steps">
+        <li><span>1</span><strong>Choose a provider</strong><p>Compare use case, free-tier type, limits, models, and regional access.</p></li>
+        <li><span>2</span><strong>Sign up and get an API key</strong><p>Use the official signup page and the official API key dashboard only.</p></li>
+        <li><span>3</span><strong>Set three values</strong><p>API key, Base URL, and exact model ID — all from official documentation.</p></li>
+        <li><span>4</span><strong>Send a real request</strong><p>Check HTTP status, JSON body, and model response content.</p></li>
+      </ol>
+    </section>
+
+    <section id="environment" class="quick-start-section" aria-labelledby="environment-title">
+      <p class="eyebrow">Before coding</p>
+      <h2 id="environment-title">Get these three values from official docs</h2>
+      <div class="setup-grid">
+        <article class="setup-card"><h3>LLM_API_KEY</h3><p>Your secret key. Never commit it to Git, paste it in public code, or expose it in the browser frontend.</p></article>
+        <article class="setup-card"><h3>LLM_BASE_URL</h3><p>The API base URL. For OpenAI-compatible services this usually ends with <code>/v1</code>.</p></article>
+        <article class="setup-card"><h3>LLM_MODEL</h3><p>The exact model identifier — not the marketing name. Copy it from your account dashboard or the official docs.</p></article>
+      </div>
+      <details class="code-example" open>
+        <summary><span>Setting environment variables</span><small>Linux / macOS / Git Bash</small></summary>
+        <pre><code>export LLM_API_KEY="YOUR_API_KEY"
+export LLM_BASE_URL="https://provider.example/v1"
+export LLM_MODEL="MODEL_ID"</code></pre>
+        <div class="code-actions"><span>Replace sample values with your real credentials.</span><button class="copy-button" type="button" data-copy-text="export LLM_API_KEY=&quot;YOUR_API_KEY&quot;&#10;export LLM_BASE_URL=&quot;https://provider.example/v1&quot;&#10;export LLM_MODEL=&quot;MODEL_ID&quot;"><span class="copy-text">Copy</span><span class="copy-status" role="status" aria-live="polite" hidden></span></button></div>
+      </details>
+    </section>
+
+    <section id="code-examples" class="quick-start-section" aria-labelledby="code-title">
+      <p class="eyebrow">Ready-to-copy examples</p>
+      <h2 id="code-title">Send a simple Chat Completions request</h2>
+      <p>These examples work with any provider labeled <strong>OpenAI-compatible</strong> in the catalog. If the service has a proprietary API, use its native SDK and schema. The test message is kept short so connection, auth, and model errors surface quickly.</p>
+
+      <details class="code-example" open>
+        <summary><span>curl</span><small>no SDK required</small></summary>
+        <pre><code>curl "$LLM_BASE_URL/chat/completions" \
+  -H "Authorization: Bearer $LLM_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "'"$LLM_MODEL"'",
+    "messages": [
+      {"role": "user", "content": "Only respond with: Connection successful"}
+    ]
+  }'</code></pre>
+        <div class="code-actions"><span>First check the HTTP status code, then inspect the JSON body.</span><button class="copy-button" type="button" data-copy-text='curl "$LLM_BASE_URL/chat/completions" \
+  -H "Authorization: Bearer $LLM_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '\''{"model":"'"$LLM_MODEL"'","messages":[{"role":"user","content":"Only respond with: Connection successful"}]}'\'''><span class="copy-text">Copy curl</span><span class="copy-status" role="status" aria-live="polite" hidden></span></button></div>
+      </details>
+
+      <details class="code-example">
+        <summary><span>Python</span><small>OpenAI SDK</small></summary>
+        <pre><code>import os
+from openai import OpenAI
+
+client = OpenAI(
+    api_key=os.environ["LLM_API_KEY"],
+    base_url=os.environ["LLM_BASE_URL"],
+)
+
+response = client.chat.completions.create(
+    model=os.environ["LLM_MODEL"],
+    messages=[
+        {"role": "user", "content": "Only respond with: Connection successful"}
+    ],
+)
+
+print(response.choices[0].message.content)</code></pre>
+        <div class="code-actions"><span>Install: <code>python -m pip install openai</code></span><button class="copy-button" type="button" data-copy-text="import os&#10;from openai import OpenAI&#10;&#10;client = OpenAI(api_key=os.environ[&quot;LLM_API_KEY&quot;], base_url=os.environ[&quot;LLM_BASE_URL&quot;])&#10;response = client.chat.completions.create(model=os.environ[&quot;LLM_MODEL&quot;], messages=[{&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;Only respond with: Connection successful&quot;}])&#10;print(response.choices[0].message.content)"><span class="copy-text">Copy Python</span><span class="copy-status" role="status" aria-live="polite" hidden></span></button></div>
+      </details>
+
+      <details class="code-example">
+        <summary><span>Node.js</span><small>OpenAI SDK + ESM</small></summary>
+        <pre><code>import OpenAI from "openai";
+
+const client = new OpenAI({
+  apiKey: process.env.LLM_API_KEY,
+  baseURL: process.env.LLM_BASE_URL,
+});
+
+const response = await client.chat.completions.create({
+  model: process.env.LLM_MODEL,
+  messages: [
+    { role: "user", content: "Only respond with: Connection successful" },
+  ],
+});
+
+console.log(response.choices[0].message.content);</code></pre>
+        <div class="code-actions"><span>Install: <code>npm install openai</code></span><button class="copy-button" type="button" data-copy-text="import OpenAI from &quot;openai&quot;;&#10;&#10;const client = new OpenAI({ apiKey: process.env.LLM_API_KEY, baseURL: process.env.LLM_BASE_URL });&#10;const response = await client.chat.completions.create({ model: process.env.LLM_MODEL, messages: [{ role: &quot;user&quot;, content: &quot;Only respond with: Connection successful&quot; }] });&#10;console.log(response.choices[0].message.content);"><span class="copy-text">Copy Node.js</span><span class="copy-status" role="status" aria-live="polite" hidden></span></button></div>
+      </details>
+    </section>
+
+    <section class="quick-start-section" aria-labelledby="success-title">
+      <p class="eyebrow">Defining success</p>
+      <h2 id="success-title">How do I know I am connected?</h2>
+      <div class="success-checks">
+        <article><h3>Successful HTTP status</h3><p>Usually 200, but status alone is not enough — verify the body too.</p></article>
+        <article><h3>Valid JSON body</h3><p>The response must be the expected API JSON, not a login page or CDN error.</p></article>
+        <article><h3>Correct model</h3><p>The response should reference the model ID you sent in the request.</p></article>
+        <article><h3>Readable content</h3><p>The model response content should be accessible in the expected SDK path or JSON field.</p></article>
+      </div>
+    </section>
+
+    <section id="errors" class="quick-start-section" aria-labelledby="errors-title">
+      <p class="eyebrow">Quick error reference</p>
+      <h2 id="errors-title">What common errors mean</h2>
+      <div class="error-map">
+        <article><h3>401 Unauthorized</h3><p>The API key is missing, invalid, or not accepted for this endpoint. Check the variable name and Authorization header.</p></article>
+        <article><h3>403 Forbidden</h3><p>Your account, region, model, or service policy does not allow access. Do not confuse this with a network issue.</p></article>
+        <article><h3>404 Not Found</h3><p>The Base URL, API version, <code>chat/completions</code> path, or model ID may be incorrect.</p></article>
+        <article><h3>429 Too Many Requests</h3><p>Quota or rate limit exceeded. Retry with backoff and check the rate-limit headers.</p></article>
+        <article><h3>Timeout / TLS</h3><p>The issue is likely before the API layer: check DNS, network path, TLS, and firewall separately.</p></article>
+        <article><h3>200 + HTML</h3><p>You received a web page instead of an API response. Check Content-Type and the Base URL.</p></article>
+      </div>
+      <p>For details, read the <a href="../../guides/fix-llm-api-401-403-model-not-found/">401/403/Model guide</a> and the <a href="../../guides/llm-api-rate-limit-429/">429 rate-limit guide</a>.</p>
+    </section>
+
+    <section class="quick-start-cta">
+      <div><h2>Ready to find your provider?</h2><p>Use the API Finder to match providers to your use case, budget, and constraints.</p></div>
+      <a class="button" href="../api-finder/">Open API Finder</a>
+    </section>
+  </main>
+
+  <footer><p>Never commit your API key to public code or expose it in the frontend.</p><a href="../">Back to home</a></footer>
+  <script defer data-domain="llm.persiantoolbox.ir" src="../../plausible.js"></script>
+</body>
+</html>

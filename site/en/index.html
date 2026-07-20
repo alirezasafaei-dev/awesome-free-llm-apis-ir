@@ -5,19 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#111827">
     <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1">
-    <meta name="description" content="Free LLM API catalog for English-speaking developers and users in Iran: quotas, models, OpenAI compatibility, and Iran-access evidence with timestamps.">
-    <meta property="og:title" content="Free LLM APIs for Iran | Quota & Access Catalog">
-    <meta property="og:description" content="Machine-readable English catalog of free LLM APIs with Iran-access status, quotas, models, and official sources.">
+    <meta name="description" content="Find and compare free LLM APIs by quota, models, signup requirements, payment method needs, and OpenAI compatibility. Evidence-based, sourced from official documentation, updated regularly.">
+    <meta property="og:title" content="Free LLM APIs Finder — Compare Quotas, Models & Access">
+    <meta property="og:description" content="Evidence-based catalog of free AI APIs. Compare free tiers, rate limits, models, signup requirements, and OpenAI compatibility. No sponsored ranking.">
     <meta property="og:type" content="website">
     <meta property="og:locale" content="en_US">
-    <meta property="og:site_name" content="Awesome Free LLM APIs IR">
+    <meta property="og:site_name" content="Awesome Free LLM APIs">
     <meta property="og:url" content="https://llm.persiantoolbox.ir/en/">
     <meta property="og:image" content="https://llm.persiantoolbox.ir/assets/social/og-default.png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Free LLM APIs for Iran">
-    <meta name="twitter:description" content="Quota, model, OpenAI compatibility, and Iran-access data for free LLM providers.">
+    <meta name="twitter:title" content="Free LLM APIs Finder">
+    <meta name="twitter:description" content="Compare free AI APIs by quota, models, and signup requirements. Evidence-based, no sponsored ranking.">
     <meta name="twitter:image" content="https://llm.persiantoolbox.ir/assets/social/og-default.png">
     <link rel="canonical" href="https://llm.persiantoolbox.ir/en/">
     <!-- HREFLANG_TAGS -->
@@ -25,12 +25,50 @@
     <link rel="alternate" type="text/plain" href="../llms.txt" title="LLM-readable project summary">
     <link rel="manifest" href="../manifest.webmanifest">
     <link rel="stylesheet" href="../styles.css">
-    <title>Free LLM APIs for Iran | Quota & Access Comparison</title>
+    <title>Free LLM APIs — Find, Compare & Build with Free AI APIs</title>
     <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
     <link rel="mask-icon" href="../assets/mask-icon.svg" color="#2563EB">
     <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="../assets/favicon-16x16.png">
     <link rel="apple-touch-icon" sizes="180x180" href="../assets/apple-touch-icon.png">
+    <script type="application/ld+json" data-seo-enrichment="english-home-schema">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Organization",
+          "@id": "https://llm.persiantoolbox.ir/#organization",
+          "name": "Awesome Free LLM APIs",
+          "url": "https://llm.persiantoolbox.ir/en/",
+          "sameAs": ["https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir"]
+        },
+        {
+          "@type": "WebApplication",
+          "@id": "https://llm.persiantoolbox.ir/en/#webapp",
+          "url": "https://llm.persiantoolbox.ir/en/",
+          "name": "Awesome Free LLM APIs — Finder & Catalog",
+          "inLanguage": ["en", "fa"],
+          "description": "Evidence-based catalog of free AI APIs. Compare free tiers, rate limits, models, and signup requirements.",
+          "applicationCategory": "DeveloperApplication",
+          "operatingSystem": "All",
+          "browserRequirements": "Requires JavaScript for interactive features",
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+          },
+          "publisher": { "@id": "https://llm.persiantoolbox.ir/#organization" }
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": "https://llm.persiantoolbox.ir/en/#breadcrumb",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://llm.persiantoolbox.ir/en/" }
+          ]
+        }
+      ]
+    }
+    </script>
   </head>
   <body>
     <a class="skip-link" href="#main-content">Skip to main content</a>
@@ -38,13 +76,13 @@
     <header class="topbar">
       <a class="brand" href="./" aria-label="Home">
         <span class="brand-mark" aria-hidden="true"><img src="../assets/logo-symbol.svg" alt="" width="40" height="40"></span>
-        <span>Awesome Free LLM APIs IR</span>
+        <span>Awesome Free LLM APIs</span>
       </a>
       <nav aria-label="Main links">
-        <a href="#english-guides">Guides</a>
-        <a href="../#catalog">All APIs</a>
-        <a href="https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir">GitHub</a>
-        <a href="https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir/issues/new/choose">Report Issue</a>
+        <a href="./api-finder/">API Finder</a>
+        <a href="./quick-start/">Quick Start</a>
+        <a href="./compare/">Compare</a>
+        <a href="../catalog.json" target="_blank" rel="noopener">Catalog JSON</a>
         <!-- LANGUAGE_SWITCHER -->
       </nav>
     </header>
@@ -52,50 +90,51 @@
     <main id="main-content">
       <section class="hero" aria-labelledby="hero-title">
         <div class="hero-copy">
-          <p class="eyebrow">Open, machine-readable, evidence-based</p>
-          <h1 id="hero-title">Free LLM APIs<br><span>for Iran, verified.</span></h1>
-          <p class="hero-description">Free quotas, models, OpenAI-compatible endpoints, and direct-connection evidence from Iran — each entry sourced from official documentation and dated.</p>
+          <p class="eyebrow">Evidence-based, machine-readable, regularly updated</p>
+          <h1 id="hero-title">Find and compare<br><span>free LLM APIs.</span></h1>
+          <p class="hero-description">Quotas, models, signup requirements, payment method needs, and OpenAI compatibility — each fact sourced from official documentation and timestamped. No sponsored ranking, no guesswork.</p>
           <div class="hero-actions">
-            <a class="button primary" href="../#catalog">Browse APIs</a>
-            <a class="button detail-secondary" href="../api-finder/">API Finder</a>
+            <a class="button primary" href="./api-finder/">Find a free LLM API</a>
+            <a class="button detail-secondary" href="./compare/">Browse technical catalog</a>
           </div>
         </div>
-        <div class="hero-panel" aria-label="Data features">
-          <div><strong>Data-driven</strong><span>No sponsored ranking</span></div>
+        <div class="hero-panel" aria-label="Catalog features">
+          <div><strong>Evidence-based</strong><span>No sponsored ranking</span></div>
           <div><strong>Timestamped</strong><span>Stale-data warnings</span></div>
-          <div><strong>Transparent</strong><span>Direct, VPN, Signup separated</span></div>
+          <div><strong>Layered</strong><span>Reachability, signup, key, inference kept separate</span></div>
         </div>
       </section>
 
-      <section id="english-guides" class="seo-intro" aria-labelledby="english-guides-title">
-        <p class="eyebrow">English Tutorials</p>
-        <h2 id="english-guides-title">Practical Guides for Using Free LLM APIs from Iran</h2>
-        <p>Step-by-step tutorials covering provider selection, secure signup, error troubleshooting, rate-limit management, and code examples in Python and Node.js. These guides focus on the realities of connecting from inside Iran.</p>
-        <!-- ENGLISH_GUIDE_CARDS -->
+      <section class="seo-intro" aria-labelledby="how-title">
+        <p class="eyebrow">Three steps</p>
+        <h2 id="how-title">How to choose a free LLM API</h2>
+        <ol class="activation-steps">
+          <li><span>1</span><strong>Define your use case</strong><p>Chat, coding, reasoning, or embeddings — each capability maps to different providers and free tiers.</p></li>
+          <li><span>2</span><strong>Compare free tiers</strong><p>Permanent allowance, free models, monthly credits, or trial. Check if a payment method is required.</p></li>
+          <li><span>3</span><strong>Review evidence layers</strong><p>Reachability, signup, key issuance, and inference are four separate claims. Know what each badge means.</p></li>
+        </ol>
       </section>
 
-      <section id="catalog-link" class="seo-intro" aria-labelledby="catalog-link-title">
+      <section class="seo-intro" aria-labelledby="trust-title">
         <div class="section-heading">
           <div>
-            <p class="eyebrow">Interactive Catalog</p>
-            <h2 id="catalog-link-title">Browse the Full Provider Catalog</h2>
+            <p class="eyebrow">Separated evidence</p>
+            <h2 id="trust-title">Why you should trust this catalog</h2>
           </div>
         </div>
-        <p>The interactive catalog lives on the Persian-language homepage. Detailed provider profiles include Iran-access evidence, quotas, model lists, and OpenAI-compatible endpoints — all sourced from official documentation with dated verification.</p>
-        <p>Provider notes and Iran-access reports are currently Persian-first. The catalog JSON file is machine-readable and locale-neutral.</p>
+        <p>Every provider entry distinguishes between network reachability, signup completion, API key issuance, and authenticated inference. These four layers are never mixed. If only reachability is confirmed, the inference status remains <code>unknown</code>. No plausible guesses replace missing evidence.</p>
         <div class="hero-actions">
-          <a class="button primary" href="../#catalog">Open interactive catalog</a>
-          <a class="button detail-secondary" href="../api-finder/">API Finder tool</a>
-          <a class="button detail-secondary" href="../catalog.json">Browse catalog JSON</a>
+          <a class="button primary" href="./api-finder/">Start the API Finder</a>
+          <a class="button detail-secondary" href="../verification-policy.txt">Read verification policy</a>
         </div>
       </section>
 
-      <section class="contribute"><div><p class="eyebrow">Data outdated or incorrect?</p><h2>This catalog improves with accurate contributions.</h2><p>Reports must include the official source, date, and connection path — no full IPs or API keys.</p></div><a class="button primary" href="https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir/issues/new/choose">Submit a report</a></section>
+      <section class="contribute"><div><p class="eyebrow">Data outdated or incorrect?</p><h2>Help improve this catalog.</h2><p>Reports must include the official source, date, and connection path — no full IPs or API keys.</p></div><a class="button primary" href="https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir/issues/new/choose">Submit a report</a></section>
     </main>
 
     <footer>
       <p>Data licensed under MIT — no commercial affiliation with listed services.</p>
-      <p><a href="../catalog.json">JSON data</a> · <a href="../sitemap.xml">Sitemap</a> · <a href="../llms.txt">llms.txt</a></p>
+      <p><a href="../catalog.json">JSON data</a> · <a href="../sitemap.xml">Sitemap</a> · <a href="../llms.txt">llms.txt</a> · <a href="../catalog-tools.json">Tools catalog</a></p>
       <a href="https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir">Source on GitHub</a>
     </footer>
 
