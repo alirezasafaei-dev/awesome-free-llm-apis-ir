@@ -54,6 +54,46 @@ function trackPersianCampaignLanding() {
   });
 }
 
+function isPersianHomepage() {
+  return ["/", "/index.html"].includes(window.location.pathname);
+}
+
+function trackHomepageJourney(target, href) {
+  if (!isPersianHomepage()) return false;
+
+  if (target.matches(".advanced-filter-panel > summary")) {
+    sendEvent("catalog_advanced_open", { source: "homepage" });
+    return true;
+  }
+
+  if (target.closest(".beginner-path")) {
+    sendEvent("ux_path_click", { path: "beginner_explainer" });
+    return true;
+  }
+
+  if (target.closest(".developer-path")) {
+    sendEvent("ux_path_click", { path: "developer_finder" });
+    return true;
+  }
+
+  if (target.closest(".clarity-hero") && href.includes("/api-finder/")) {
+    sendEvent("ux_path_click", { path: "hero_finder_primary" });
+    return true;
+  }
+
+  if (target.closest(".clarity-hero") && href.includes("#catalog")) {
+    sendEvent("ux_path_click", { path: "hero_catalog_secondary" });
+    return true;
+  }
+
+  if (target.closest(".plain-explainer") && href.includes("/api-finder/")) {
+    sendEvent("ux_path_click", { path: "explainer_finder" });
+    return true;
+  }
+
+  return false;
+}
+
 async function copyFromButton(button) {
   const explicitValue = button.dataset.copyText;
   if (!explicitValue) return;
@@ -79,10 +119,12 @@ async function copyFromButton(button) {
 trackPersianCampaignLanding();
 
 document.addEventListener("click", (event) => {
-  const target = event.target.closest("a, button");
+  const target = event.target.closest("a, button, summary");
   if (!target) return;
 
   const href = target instanceof HTMLAnchorElement ? target.href : "";
+  if (trackHomepageJourney(target, href)) return;
+
   const providerId = providerIdFromCard(target) || pathValue(href, "providers") || currentPathValue("providers");
   const currentGuideSlug = currentPathValue("guides");
   const linkedGuideSlug = pathValue(href, "guides");
