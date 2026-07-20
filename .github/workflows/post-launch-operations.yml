@@ -31,7 +31,7 @@ concurrency:
 jobs:
   operations:
     runs-on: ubuntu-latest
-    timeout-minutes: 35
+    timeout-minutes: 40
     env:
       SMOKE_TARGET: ${{ github.event.inputs.target || 'all' }}
       EXPECTED_REVISION_INPUT: ${{ github.event.inputs.expected_revision || '' }}
@@ -42,8 +42,10 @@ jobs:
           node-version: 22
       - run: npm ci
 
-      - name: Validate production smoke checker
-        run: npm run production:smoke:test
+      - name: Validate production smoke checkers
+        run: |
+          npm run production:smoke:test
+          npm run production:ux-smoke:test
 
       - name: Build and regression gate
         id: regression
@@ -67,16 +69,36 @@ jobs:
         shell: bash
         run: |
           set +e
-          args=("--report=production-smoke-report.json")
+          args=("--report=production-smoke-report.md")
           if [ -n "$EXPECTED_REVISION_INPUT" ]; then
             args+=("--expected-revision=$EXPECTED_REVISION_INPUT")
           fi
           if [ "$SMOKE_TARGET" != "all" ]; then
             args+=("--target=$SMOKE_TARGET")
           fi
-          npm run production:smoke -- "${args[@]}" > production-smoke-report.md 2>&1
+          npm run production:smoke -- "${args[@]}" > production-smoke-console.md 2>&1
           code=$?
-          cat production-smoke-report.md
+          cat production-smoke-console.md
+          if [ "$code" -ne 0 ]; then
+            echo "failed=true" >> "$GITHUB_OUTPUT"
+          fi
+          exit 0
+
+      - name: Smoke-test deployed UX routes
+        id: ux_smoke
+        shell: bash
+        run: |
+          set +e
+          args=("--report=production-ux-smoke-report.md")
+          if [ -n "$EXPECTED_REVISION_INPUT" ]; then
+            args+=("--expected-revision=$EXPECTED_REVISION_INPUT")
+          fi
+          if [ "$SMOKE_TARGET" != "all" ]; then
+            args+=("--target=$SMOKE_TARGET")
+          fi
+          npm run production:ux-smoke -- "${args[@]}" > production-ux-smoke-console.md 2>&1
+          code=$?
+          cat production-ux-smoke-console.md
           if [ "$code" -ne 0 ]; then
             echo "failed=true" >> "$GITHUB_OUTPUT"
           fi
@@ -132,6 +154,7 @@ jobs:
             echo "|---|---|"
             echo "| Build and regression | ${{ steps.regression.outputs.failed == 'true' && 'FAIL' || 'PASS' }} |"
             echo "| Production smoke | ${{ steps.smoke.outputs.failed == 'true' && 'FAIL' || 'PASS' }} |"
+            echo "| Production UX smoke | ${{ steps.ux_smoke.outputs.failed == 'true' && 'FAIL' || 'PASS' }} |"
             echo "| Provider health | ${{ steps.health.outputs.failed == 'true' && 'FAIL' || 'PASS' }} |"
             echo "| Provider drift | ${{ steps.drift.outputs.failed == 'true' && 'FAIL' || 'PASS' }} |"
             echo "| Strict SEO | ${{ steps.seo.outputs.failed == 'true' && 'FAIL' || 'PASS' }} |"
@@ -143,6 +166,7 @@ jobs:
         env:
           REGRESSION_FAILED: ${{ steps.regression.outputs.failed || 'false' }}
           SMOKE_FAILED: ${{ steps.smoke.outputs.failed || 'false' }}
+          UX_SMOKE_FAILED: ${{ steps.ux_smoke.outputs.failed || 'false' }}
           HEALTH_FAILED: ${{ steps.health.outputs.failed || 'false' }}
           DRIFT_FAILED: ${{ steps.drift.outputs.failed || 'false' }}
           SEO_FAILED: ${{ steps.seo.outputs.failed || 'false' }}
@@ -153,6 +177,7 @@ jobs:
             const failed = [
               process.env.REGRESSION_FAILED,
               process.env.SMOKE_FAILED,
+              process.env.UX_SMOKE_FAILED,
               process.env.HEALTH_FAILED,
               process.env.DRIFT_FAILED,
               process.env.SEO_FAILED
@@ -160,6 +185,7 @@ jobs:
             const files = [
               ['Build and regression', 'regression-report.md'],
               ['Production smoke', 'production-smoke-report.md'],
+              ['Production UX smoke', 'production-ux-smoke-report.md'],
               ['Provider health', 'api-health-report.md'],
               ['Provider drift', 'provider-drift-report.md'],
               ['Strict SEO', 'seo-report.md']
@@ -174,7 +200,7 @@ jobs:
             const existing = found.data.items[0];
 
             if (failed) {
-              const body = `${marker}\n# Post-launch operations incident\n\nRun: ${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}\nCommit: \`${context.sha}\`\n\n${sections.join('\n\n')}\n\nGenerated automatically. Treat reachability, signup, credential issuance and successful inference as separate evidence layers.`;
+              const body = `${marker}\n# Post-launch operations incident\n\nRun: ${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}\nCommit: \`${context.sha}\`\n\n${sections.join('\n\n')}\n\nGenerated automatically. Treat deployment health, reachability, signup, credential issuance and successful inference as separate evidence layers.`;
               if (existing) {
                 await github.rest.issues.update({
                   ...context.repo,
@@ -209,6 +235,7 @@ jobs:
         run: |
           if [ "${{ steps.regression.outputs.failed }}" = "true" ] || \
              [ "${{ steps.smoke.outputs.failed }}" = "true" ] || \
+             [ "${{ steps.ux_smoke.outputs.failed }}" = "true" ] || \
              [ "${{ steps.health.outputs.failed }}" = "true" ] || \
              [ "${{ steps.drift.outputs.failed }}" = "true" ] || \
              [ "${{ steps.seo.outputs.failed }}" = "true" ]; then

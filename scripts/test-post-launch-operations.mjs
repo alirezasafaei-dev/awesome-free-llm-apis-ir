@@ -4,6 +4,7 @@ import process from "node:process";
 const root = process.cwd();
 const workflow = await readFile(`${root}/.github/workflows/post-launch-operations.yml`, "utf8");
 const smoke = await readFile(`${root}/scripts/check-production-smoke.mjs`, "utf8");
+const uxSmoke = await readFile(`${root}/scripts/check-production-ux-smoke.mjs`, "utf8");
 const docs = await readFile(`${root}/docs/POST_LAUNCH_OPERATIONS.fa.md`, "utf8");
 const packageJson = JSON.parse(await readFile(`${root}/package.json`, "utf8"));
 
@@ -14,7 +15,11 @@ const workflowTokens = [
   "issues: write",
   "cancel-in-progress: false",
   "npm run production:smoke:test",
+  "npm run production:ux-smoke:test",
   "npm run production:smoke",
+  "npm run production:ux-smoke",
+  "UX_SMOKE_FAILED",
+  "Production UX smoke",
   "npm run check:api-health",
   "npm run check:drift",
   "npm run check:seo -- --strict",
@@ -43,7 +48,31 @@ for (const token of smokeTokens) {
   if (!smoke.includes(token)) throw new Error(`Production smoke checker is missing ${token}`);
 }
 
-for (const script of ["production:smoke", "production:smoke:dry", "production:smoke:test", "ops:check"]) {
+const uxSmokeTokens = [
+  "API رایگان هوش مصنوعی",
+  "api-finder/",
+  "quick-start/",
+  "finder-clarity.css",
+  "finder-clarity.js",
+  "LLM_API_KEY",
+  "LLM_BASE_URL",
+  "LLM_MODEL",
+  "static_product_pages",
+  "sitemap.xml"
+];
+for (const token of uxSmokeTokens) {
+  if (!uxSmoke.includes(token)) throw new Error(`Production UX smoke checker is missing ${token}`);
+}
+
+for (const script of [
+  "production:smoke",
+  "production:smoke:dry",
+  "production:smoke:test",
+  "production:ux-smoke",
+  "production:ux-smoke:dry",
+  "production:ux-smoke:test",
+  "ops:check"
+]) {
   if (!packageJson.scripts?.[script]) throw new Error(`package.json is missing ${script}`);
 }
 
@@ -51,11 +80,12 @@ for (const token of ["قرارداد خط مبنای KPI", "Benchmark 2026", "ش
   if (!docs.includes(token)) throw new Error(`Post-launch runbook is missing ${token}`);
 }
 
-if (/BEGIN (RSA|OPENSSH|EC) PRIVATE KEY/.test(workflow + smoke + docs)) {
+const allContent = workflow + smoke + uxSmoke + docs;
+if (/BEGIN (RSA|OPENSSH|EC) PRIVATE KEY/.test(allContent)) {
   throw new Error("Post-launch files contain private key material");
 }
-if (/\b(sk-|ghp_|github_pat_)[A-Za-z0-9_-]{16,}\b/.test(workflow + smoke + docs)) {
+if (/\b(sk-|ghp_|github_pat_)[A-Za-z0-9_-]{16,}\b/.test(allContent)) {
   throw new Error("Post-launch files contain secret-like material");
 }
 
-console.log("Post-launch operations contract checks passed.");
+console.log("Post-launch operations contract checks passed, including deployed UX smoke automation.");
