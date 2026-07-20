@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-07-19",
+  "lastUpdated": "2026-07-20",
   "providerCount": 22,
   "providers": [
     {
@@ -30,12 +30,12 @@
         "status": "unknown",
         "label": "❔ نامشخص",
         "tested": true,
-        "testedAt": "2026-07-16",
+        "testedAt": "2026-07-20",
         "network": {
           "country": "IR",
           "route": "direct"
         },
-        "evidenceCount": 1,
+        "evidenceCount": 2,
         "notesFa": "Endpoint از ایران قابل دسترس است؛ برای تعیین وضعیت عملی سرویس، درخواست مدل با API key معتبر لازم است."
       },
       "models": [
@@ -47,7 +47,7 @@
       ],
       "verification": {
         "level": "live_verified",
-        "lastChecked": "2026-07-16",
+        "lastChecked": "2026-07-20",
         "staleAfterDays": 30
       },
       "health": {
@@ -108,7 +108,7 @@
       ],
       "verification": {
         "level": "live_verified",
-        "lastChecked": "2026-07-16",
+        "lastChecked": "2026-07-20",
         "staleAfterDays": 30
       },
       "health": {
@@ -169,7 +169,7 @@
       ],
       "verification": {
         "level": "live_verified",
-        "lastChecked": "2026-07-18",
+        "lastChecked": "2026-07-20",
         "staleAfterDays": 30
       },
       "health": {
@@ -229,7 +229,7 @@
       ],
       "verification": {
         "level": "live_verified",
-        "lastChecked": "2026-07-16",
+        "lastChecked": "2026-07-20",
         "staleAfterDays": 30
       },
       "health": {
@@ -289,7 +289,7 @@
       ],
       "verification": {
         "level": "live_verified",
-        "lastChecked": "2026-07-16",
+        "lastChecked": "2026-07-20",
         "staleAfterDays": 30
       },
       "health": {
@@ -336,12 +336,12 @@
         "status": "unknown",
         "label": "❔ نامشخص",
         "tested": true,
-        "testedAt": "2026-07-16",
+        "testedAt": "2026-07-20",
         "network": {
           "country": "IR",
           "route": "direct"
         },
-        "evidenceCount": 2,
+        "evidenceCount": 3,
         "notesFa": "وضعیت نامشخص می‌ماند: حساب فعلی معلق است و یک Probe دیگر نیز بدون پاسخ HTTP شکست خورده است. تست با حساب فعال و مقایسه همان Credential از مسیر پشتیبانی‌شده ضروری است."
       },
       "models": [
@@ -353,7 +353,7 @@
       ],
       "verification": {
         "level": "live_verified",
-        "lastChecked": "2026-07-16",
+        "lastChecked": "2026-07-20",
         "staleAfterDays": 30
       },
       "health": {
@@ -401,12 +401,12 @@
         "status": "unknown",
         "label": "❔ نامشخص",
         "tested": true,
-        "testedAt": "2026-07-16",
+        "testedAt": "2026-07-20",
         "network": {
           "country": "IR",
           "route": "direct"
         },
-        "evidenceCount": 1,
+        "evidenceCount": 2,
         "notesFa": "Endpoint از ایران قابل دسترس است؛ برای تعیین وضعیت عملی سرویس، درخواست مدل با کلید مجاز دریافت‌شده از Discord لازم است."
       },
       "models": [
@@ -417,7 +417,7 @@
       ],
       "verification": {
         "level": "live_verified",
-        "lastChecked": "2026-07-19",
+        "lastChecked": "2026-07-20",
         "staleAfterDays": 14
       },
       "health": {
@@ -475,7 +475,7 @@
       "models": [],
       "verification": {
         "level": "live_verified",
-        "lastChecked": "2026-07-15",
+        "lastChecked": "2026-07-20",
         "staleAfterDays": 30
       },
       "health": {
@@ -533,7 +533,7 @@
       "models": [],
       "verification": {
         "level": "live_verified",
-        "lastChecked": "2026-07-16",
+        "lastChecked": "2026-07-20",
         "staleAfterDays": 30
       },
       "health": {
@@ -596,7 +596,7 @@
       ],
       "verification": {
         "level": "live_verified",
-        "lastChecked": "2026-07-18",
+        "lastChecked": "2026-07-20",
         "staleAfterDays": 30
       },
       "health": {
@@ -655,7 +655,7 @@
       "models": [],
       "verification": {
         "level": "live_verified",
-        "lastChecked": "2026-07-16",
+        "lastChecked": "2026-07-20",
         "staleAfterDays": 30
       },
       "health": {
@@ -701,12 +701,12 @@
         "status": "verified_working",
         "label": "✅ مستقیم تست‌شده",
         "tested": true,
-        "testedAt": "2026-07-16",
+        "testedAt": "2026-07-20",
         "network": {
           "country": "IR",
           "route": "direct"
         },
-        "evidenceCount": 1,
+        "evidenceCount": 2,
         "notesFa": null
       },
       "models": [
@@ -714,7 +714,7 @@
       ],
       "verification": {
         "level": "live_verified",
-        "lastChecked": "2026-07-16",
+        "lastChecked": "2026-07-20",
         "staleAfterDays": 14
       },
       "health": {
@@ -777,7 +777,7 @@
       ],
       "verification": {
         "level": "live_verified",
-        "lastChecked": "2026-07-19",
+        "lastChecked": "2026-07-20",
         "staleAfterDays": 14
       },
       "health": {
@@ -837,7 +837,7 @@
       ],
       "verification": {
         "level": "live_verified",
-        "lastChecked": "2026-07-16",
+        "lastChecked": "2026-07-20",
         "staleAfterDays": 30
       },
       "health": {
@@ -904,7 +904,7 @@
       ],
       "verification": {
         "level": "live_verified",
-        "lastChecked": "2026-07-19",
+        "lastChecked": "2026-07-20",
         "staleAfterDays": 14
       },
       "health": {
@@ -951,18 +951,18 @@
         "status": "unknown",
         "label": "❔ نامشخص",
         "tested": true,
-        "testedAt": "2026-07-16",
+        "testedAt": "2026-07-20",
         "network": {
           "country": "IR",
           "route": "direct"
         },
-        "evidenceCount": 1,
+        "evidenceCount": 2,
         "notesFa": "Endpoint از ایران قابل دسترس است؛ برای تعیین وضعیت عملی سرویس، درخواست مدل با کلید مجاز NVIDIA Developer Program لازم است."
       },
       "models": [],
       "verification": {
         "level": "live_verified",
-        "lastChecked": "2026-07-16",
+        "lastChecked": "2026-07-20",
         "staleAfterDays": 30
       },
       "health": {
@@ -1026,7 +1026,7 @@
       ],
       "verification": {
         "level": "live_verified",
-        "lastChecked": "2026-07-19",
+        "lastChecked": "2026-07-20",
         "staleAfterDays": 14
       },
       "health": {
@@ -1083,7 +1083,7 @@
       "models": [],
       "verification": {
         "level": "live_verified",
-        "lastChecked": "2026-07-16",
+        "lastChecked": "2026-07-20",
         "staleAfterDays": 30
       },
       "health": {
@@ -1129,13 +1129,12 @@
         "status": "verified_working",
         "label": "✅ مستقیم تست‌شده",
         "tested": true,
-        "testedAt": "2026-07-16",
+        "testedAt": "2026-07-20",
         "network": {
           "country": "IR",
-          "route": "direct",
-          "exit_country": null
+          "route": "direct"
         },
-        "evidenceCount": 1,
+        "evidenceCount": 2,
         "notesFa": "دسترسی ناشناس بدون نیاز به کلید API. تست مستقیم از ایران موفق."
       },
       "models": [
@@ -1147,7 +1146,7 @@
       ],
       "verification": {
         "level": "live_verified",
-        "lastChecked": "2026-07-16",
+        "lastChecked": "2026-07-20",
         "staleAfterDays": 30
       },
       "health": {
@@ -1209,7 +1208,7 @@
       ],
       "verification": {
         "level": "live_verified",
-        "lastChecked": "2026-07-16",
+        "lastChecked": "2026-07-20",
         "staleAfterDays": 30
       },
       "health": {
@@ -1272,7 +1271,7 @@
       ],
       "verification": {
         "level": "live_verified",
-        "lastChecked": "2026-07-16",
+        "lastChecked": "2026-07-20",
         "staleAfterDays": 30
       },
       "health": {
@@ -1321,18 +1320,18 @@
         "status": "unknown",
         "label": "❔ نامشخص",
         "tested": true,
-        "testedAt": "2026-07-16",
+        "testedAt": "2026-07-20",
         "network": {
           "country": "IR",
           "route": "direct"
         },
-        "evidenceCount": 1,
+        "evidenceCount": 2,
         "notesFa": "Endpoint از ایران قابل دسترس است؛ برای تعیین وضعیت عملی سرویس، ساخت Gateway مجاز و اجرای درخواست مدل لازم است."
       },
       "models": [],
       "verification": {
         "level": "live_verified",
-        "lastChecked": "2026-07-16",
+        "lastChecked": "2026-07-20",
         "staleAfterDays": 30
       },
       "health": {

@@ -11,7 +11,14 @@
     "openai_compatible": true,
     "auth": "api_key"
   },
-  "capabilities": ["chat", "text_generation", "reasoning", "embeddings", "tool_calling", "structured_output"],
+  "capabilities": [
+    "chat",
+    "text_generation",
+    "reasoning",
+    "embeddings",
+    "tool_calling",
+    "structured_output"
+  ],
   "free_tier": {
     "status": "limited",
     "type": "permanent_allowance",
@@ -23,7 +30,7 @@
     "status": "unknown",
     "official_policy": "not_documented",
     "tested_from_iran": true,
-    "tested_at": "2026-07-16",
+    "tested_at": "2026-07-20",
     "test_method": "connectivity_probe",
     "network": {
       "country": "IR",
@@ -38,6 +45,15 @@
         "source": "IRAN_SERVER — direct connectivity probe",
         "connectivity_result": "http_response",
         "notes_fa": "Endpoint مدل‌ها از مسیر مستقیم ایران پاسخ HTTP 200 داد؛ این نتیجه Reachability را نشان می‌دهد و جای درخواست استنتاج با کلید Developer Program را نمی‌گیرد."
+      },
+      {
+        "type": "connectivity_test",
+        "checked_at": "2026-07-20",
+        "http_status": 404,
+        "endpoint": "https://integrate.api.nvidia.com/v1/chat/completions",
+        "source": "IRAN_SERVER — direct connectivity probe",
+        "connectivity_result": "http_response",
+        "notes_fa": "Endpoint از ایران قابل دسترس است (HTTP 404). نیاز به API key معتبر."
       }
     ],
     "notes_fa": "Endpoint از ایران قابل دسترس است؛ برای تعیین وضعیت عملی سرویس، درخواست مدل با کلید مجاز NVIDIA Developer Program لازم است."
@@ -49,10 +65,13 @@
   },
   "verification": {
     "level": "live_verified",
-    "last_checked": "2026-07-16",
+    "last_checked": "2026-07-20",
     "checked_by": "maintainers",
     "stale_after_days": 30
   },
   "notes_fa": "این دسترسی برای Production رایگان نیست و سقف عددی ثابت عمومی در منبع بررسی‌شده اعلام نشده است.",
-  "sources": ["https://docs.api.nvidia.com/nim/docs/product", "https://build.nvidia.com/explore/discover"]
+  "sources": [
+    "https://docs.api.nvidia.com/nim/docs/product",
+    "https://build.nvidia.com/explore/discover"
+  ]
 }
