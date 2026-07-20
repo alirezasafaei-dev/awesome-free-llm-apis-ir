@@ -10,20 +10,26 @@ const buildMetaPath = path.join(destination, "build-meta.json");
 const homepagePath = path.join(destination, "index.html");
 const apiFinderPath = path.join(destination, "api-finder", "index.html");
 const canonicalOrigin = "https://llm.persiantoolbox.ir";
+const apiFinderUrl = `${canonicalOrigin}/api-finder/`;
 const quickStartUrl = `${canonicalOrigin}/quick-start/`;
 
 let sitemap = await readFile(sitemapPath, "utf8");
-if (!sitemap.includes(`<loc>${quickStartUrl}</loc>`)) {
-  const entry = `  <url>\n    <loc>${quickStartUrl}</loc>\n    <lastmod>2026-07-20</lastmod>\n    <priority>0.9</priority>\n      <xhtml:link rel="alternate" hreflang="fa-IR" href="${quickStartUrl}"/>\n      <xhtml:link rel="alternate" hreflang="x-default" href="${quickStartUrl}"/>\n  </url>\n`;
-  sitemap = sitemap.replace("</urlset>", `${entry}</urlset>`);
-  await writeFile(sitemapPath, sitemap);
+
+for (const [url, priority] of [[apiFinderUrl, "0.9"], [quickStartUrl, "0.9"]]) {
+  if (!sitemap.includes(`<loc>${url}</loc>`)) {
+    const entry = `  <url>\n    <loc>${url}</loc>\n    <lastmod>2026-07-20</lastmod>\n    <priority>${priority}</priority>\n      <xhtml:link rel="alternate" hreflang="fa-IR" href="${url}"/>\n      <xhtml:link rel="alternate" hreflang="x-default" href="${url}"/>\n  </url>\n`;
+    sitemap = sitemap.replace("</urlset>", `${entry}</urlset>`);
+  }
 }
+await writeFile(sitemapPath, sitemap);
 
 let llms = await readFile(llmsPath, "utf8");
-if (!llms.includes(`Developer quick start: ${quickStartUrl}`)) {
-  llms += `Developer quick start: ${quickStartUrl}\n`;
-  await writeFile(llmsPath, llms);
+for (const [label, url] of [["API Finder", apiFinderUrl], ["Developer quick start", quickStartUrl]]) {
+  if (!llms.includes(`${label}: ${url}`)) {
+    llms += `${label}: ${url}\n`;
+  }
 }
+await writeFile(llmsPath, llms);
 
 const buildMeta = JSON.parse(await readFile(buildMetaPath, "utf8"));
 buildMeta.static_product_pages = [...new Set([...(buildMeta.static_product_pages ?? []), "/api-finder/", "/quick-start/"])];
