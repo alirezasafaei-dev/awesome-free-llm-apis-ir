@@ -127,6 +127,13 @@ This catalog focuses on international providers accessible from Iran. If you kno
 
 Yes. Mistral AI, GitHub Models, and SambaNova Cloud all support Persian language chat. Use the OpenAI-compatible SDK with any of these providers.
 
+## Related Guides
+
+- [Free AI API guide](https://llm.persiantoolbox.ir/guides/en/en-free-ai-api/) — complete overview of free AI APIs
+- [Free LLM API list](https://llm.persiantoolbox.ir/guides/en/en-free-llm-api/) — full comparison of all free LLM APIs
+- [Free GPT API no credit card](https://llm.persiantoolbox.ir/guides/en/en-free-gpt-api-no-credit-card/) — GPT access without payment
+- [ChatGPT API alternatives](https://llm.persiantoolbox.ir/guides/en/en-chatgpt-api-alternative/) — focused ChatGPT API comparison
+
 ## Help Improve the Data
 
 If you test a provider from Iran, [submit a sanitized Iran Access Report](https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir/issues/new?template=iran-access-report.yml). Include the test date, provider, and result — never include API keys, cookies, or personal information.

@@ -101,6 +101,13 @@ response = client.chat.completions.create(
 print(response.choices[0].message.content)
 ```
 
+## Related Guides
+
+- [Free AI API guide](https://llm.persiantoolbox.ir/guides/en/en-free-ai-api/) — complete overview of free AI APIs
+- [AI API Iran](https://llm.persiantoolbox.ir/guides/en/en-ai-api-iran/) — providers verified working from Iran
+- [ChatGPT API alternatives](https://llm.persiantoolbox.ir/guides/en/en-chatgpt-api-alternative/) — free alternatives to ChatGPT API
+- [Free GPT API no credit card](https://llm.persiantoolbox.ir/guides/en/en-free-gpt-api-no-credit-card/) — GPT access without payment
+
 ## Compare All Providers
 
 Browse the complete [interactive catalog](https://llm.persiantoolbox.ir/) with filtering by capability, Iran access, free type, and OpenAI compatibility. Star the [GitHub repository](https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir) to support this project.
