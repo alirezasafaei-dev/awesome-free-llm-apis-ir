@@ -19,7 +19,7 @@ const styleSource = await readFile(styles, "utf8");
 const scriptSource = await readFile(script, "utf8");
 
 for (const signal of [
-  "data/tools",
+  'path.join(root, "data", "tools")',
   "catalog-tools.json",
   "CLI، Router و Proxyهای LLM",
   "ریسک Terms",
