@@ -90,7 +90,7 @@ try {
   }
   if (!builtScript.includes("tools_filter_changed")) throw new Error("Built tools script lost filter analytics");
   if (catalog.tool_count < 1 || catalog.tools.length !== catalog.tool_count) throw new Error("Published tools catalog count is invalid");
-  if (!homepage.includes('href="./tools/"')) throw new Error("Homepage does not link to tools catalog");
+  if (!homepage.includes(`href="${toolsUrl}"`)) throw new Error("Homepage does not link to the canonical tools catalog");
   if (!sitemap.includes(`<loc>${toolsUrl}</loc>`)) throw new Error("Sitemap is missing tools route");
   if (!llms.includes(`Tools and CLI catalog: ${toolsUrl}`)) throw new Error("llms.txt is missing tools route");
   if (!buildMeta.static_product_pages?.includes("/tools/")) throw new Error("Build metadata is missing /tools/");
