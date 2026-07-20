@@ -226,6 +226,13 @@ Base URL و Model ID را از صفحه Provider و مستندات رسمی بر
 
 استفاده از Interface مشترک و متغیرهای `LLM_BASE_URL`، `LLM_API_KEY` و `LLM_MODEL` هزینه مهاجرت را کاهش می‌دهد.
 
+## راهنماهای مرتبط
+
+- [راهنمای API رایگان هوش مصنوعی](https://llm.persiantoolbox.ir/guides/free-ai-api/) — نمای کلی APIهای رایگان هوش مصنوعی
+- [API هوش مصنوعی در ایران](https://llm.persiantoolbox.ir/guides/ai-api-iran/) — ارائه‌دهندگان تأییدشده قابل دسترس از ایران
+- [GPT API رایگان بدون کارت بانکی](https://llm.persiantoolbox.ir/guides/free-gpt-api-no-credit-card/) — دسترسی GPT بدون پرداخت
+- [رفع خطاهای ۴۰۱/۴۰۳/model-not-found](https://llm.persiantoolbox.ir/guides/fix-llm-api-401-403-model-not-found/) — عیب‌یابی خطاهای API رایگان
+
 ## جمع‌بندی
 
 برای کاربر ایرانی، بهترین API الزاماً معروف‌ترین مدل نیست. گزینه مناسب سرویسی است که بتوانید با شرایط روشن در آن ثبت‌نام کنید، نوع سهمیه را بفهمید، از شبکه موردنظر درخواست واقعی بفرستید و در صورت تغییر سیاست، بدون بازنویسی کل برنامه جایگزینش کنید.

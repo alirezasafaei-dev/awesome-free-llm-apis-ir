@@ -226,6 +226,13 @@ Consider switching when:
 
 Using a common interface with `LLM_BASE_URL`, `LLM_API_KEY`, and `LLM_MODEL` environment variables reduces migration cost.
 
+## Related Guides
+
+- [Free AI API guide](https://llm.persiantoolbox.ir/guides/en/en-free-ai-api/) — complete overview of free AI APIs
+- [AI API Iran](https://llm.persiantoolbox.ir/guides/en/en-ai-api-iran/) — providers verified working from Iran
+- [Free GPT API no credit card](https://llm.persiantoolbox.ir/guides/en/en-free-gpt-api-no-credit-card/) — GPT access without payment
+- [Fix 401/403/model-not-found errors](https://llm.persiantoolbox.ir/guides/en/en-fix-llm-api-401-403-model-not-found/) — troubleshooting free LLM API errors
+
 ## Summary
 
 For an Iranian user, the best API is not necessarily the most famous model. The right choice is a service with clear terms, a verifiable free tier, tested network access, and easy replaceability when policies change.

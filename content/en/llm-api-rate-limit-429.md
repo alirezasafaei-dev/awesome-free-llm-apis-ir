@@ -210,6 +210,12 @@ Aggregate metrics help you choose the right provider and tier:
 
 Do not log API keys or private prompt content in monitoring systems.
 
+## Related Guides
+
+- [Free LLM API list](https://llm.persiantoolbox.ir/guides/en/en-free-llm-api/) — full comparison of all free LLM APIs
+- [Fix 401/403/model-not-found errors](https://llm.persiantoolbox.ir/guides/en/en-fix-llm-api-401-403-model-not-found/) — troubleshooting free LLM API errors
+- [Practical free LLM API guide for Iran](https://llm.persiantoolbox.ir/guides/en/en-practical-free-llm-api-iran/) — full guide from signup to first request
+
 ## Summary
 
 Rate limiting in free LLM APIs is normal and manageable. The key is systematic diagnosis: identify whether the limit is RPM, RPD, TPM, concurrency, or credit-based, then apply the appropriate strategy. Retry with backoff, request queuing, context management, circuit breakers, and provider fallback form a complete toolkit.
