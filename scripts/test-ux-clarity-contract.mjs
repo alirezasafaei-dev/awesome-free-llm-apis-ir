@@ -14,10 +14,10 @@ await access(analyticsPath);
 const html = await readFile(homepagePath, "utf8");
 const css = await readFile(clarityCssPath, "utf8");
 const analytics = await readFile(analyticsPath, "utf8");
+const plainText = html.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
 
 const requiredHomepageSignals = [
   "API رایگان هوش مصنوعی",
-  "API راهی است که برنامه، سایت یا ربات شما را به یک مدل هوش مصنوعی وصل می‌کند",
   'class="audience-paths"',
   "تازه‌کارم",
   "برنامه‌نویسم",
@@ -34,6 +34,10 @@ const requiredHomepageSignals = [
 
 for (const signal of requiredHomepageSignals) {
   if (!html.includes(signal)) throw new Error(`Homepage clarity contract is missing: ${signal}`);
+}
+
+if (!plainText.includes("API راهی است که برنامه، سایت یا ربات شما را به یک مدل هوش مصنوعی وصل می‌کند")) {
+  throw new Error("Homepage does not explain the API concept in plain language");
 }
 
 if (html.includes("مرجع فارسی، آزاد و ماشین‌خوان")) {
