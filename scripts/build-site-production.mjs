@@ -11,6 +11,7 @@ await cp(dataPath, path.join(destination, "data.json"));
 await import("./enrich-seo-pages.mjs");
 await import("./register-static-routes.mjs");
 await import("./build-tools-pages.mjs");
+await import("./normalize-tools-home-links.mjs");
 
 async function normalizeNestedTrackerPaths(section) {
   const sectionRoot = path.join(destination, section);
