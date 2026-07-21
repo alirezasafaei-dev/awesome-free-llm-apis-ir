@@ -111,6 +111,8 @@ A. VPS ایران — route=direct, country=IR
 B. سرور خارج — route=direct, country=<actual country>
 ```
 
+سرور خارج نقش Control را دارد؛ VPN و Exit node جداگانه لازم نیست.
+
 برای هر Provider باید دقیقاً همان موارد در هر دو محیط استفاده شوند:
 
 - API key یکسان؛
