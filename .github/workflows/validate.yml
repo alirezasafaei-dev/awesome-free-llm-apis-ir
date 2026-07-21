@@ -59,11 +59,23 @@ jobs:
         with:
           node-version: 22
       - run: npm ci
-      - name: Build exact revision
+      - name: Validate built-site contract
+        run: npm run site:check
+      - name: Build exact release revision
         run: npm run site:build
         env:
           SOURCE_REVISION: ${{ github.sha }}
-      - run: npm run site:check
+      - name: Assert exact release metadata
+        env:
+          EXPECTED_SHA: ${{ github.sha }}
+        run: |
+          EXPECTED_SHA="$EXPECTED_SHA" node -e '
+            const fs = require("node:fs");
+            const meta = JSON.parse(fs.readFileSync(".site-dist/build-meta.json", "utf8"));
+            if (meta.source_revision !== process.env.EXPECTED_SHA) {
+              throw new Error(`Release metadata mismatch: ${meta.source_revision} !== ${process.env.EXPECTED_SHA}`);
+            }
+          '
       - name: Stage immutable release
         run: |
           set -Eeuo pipefail
