@@ -18,8 +18,9 @@ const binaryExtensions = new Set([
   ".woff", ".woff2", ".zip"
 ]);
 
-const excludedFiles = new Set([
-  "scripts/test-evidence-privacy.mjs"
+const controlledFixtureFiles = new Set([
+  "scripts/test-evidence-privacy.mjs",
+  "scripts/test-provider-content-contract.mjs"
 ]);
 
 /**
@@ -28,7 +29,7 @@ const excludedFiles = new Set([
  */
 function isPublishableText(file) {
   const extension = file.includes(".") ? file.slice(file.lastIndexOf(".")).toLowerCase() : "";
-  return !binaryExtensions.has(extension) && !excludedFiles.has(file);
+  return !binaryExtensions.has(extension) && !controlledFixtureFiles.has(file);
 }
 
 const publishable = tracked.stdout
