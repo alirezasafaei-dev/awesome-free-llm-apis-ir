@@ -4,12 +4,14 @@ on:
   push:
     branches:
       - agent/provider-evidence-clean-rebuild-20260721
+  pull_request:
 
 permissions:
   contents: read
 
 jobs:
   capture:
+    if: github.head_ref == 'agent/provider-evidence-clean-rebuild-20260721' || github.ref_name == 'agent/provider-evidence-clean-rebuild-20260721'
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
