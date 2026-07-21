@@ -31,7 +31,7 @@
     "official_policy": "not_documented",
     "tested_from_iran": true,
     "tested_at": "2026-07-21",
-    "test_method": "connectivity_probe",
+    "test_method": "signup_only",
     "network": {
       "country": "IR",
       "route": "direct"
@@ -44,7 +44,7 @@
         "endpoint": "https://integrate.api.nvidia.com/v1/models",
         "source": "IRAN_SERVER — direct connectivity probe",
         "connectivity_result": "http_response",
-        "notes_fa": "Endpoint مدل‌ها از مسیر مستقیم ایران پاسخ HTTP 200 داد."
+        "notes_fa": "Endpoint مدل‌ها از مسیر مستقیم ایران پاسخ HTTP 200 داد؛ این نتیجه فقط Reachability را نشان می‌دهد."
       },
       {
         "type": "connectivity_test",
@@ -53,16 +53,16 @@
         "endpoint": "https://integrate.api.nvidia.com/v1/chat/completions",
         "source": "IRAN_SERVER — direct connectivity probe",
         "connectivity_result": "http_response",
-        "notes_fa": "Endpoint از ایران قابل دسترس است (HTTP 404). نیاز به API key."
+        "notes_fa": "Endpoint از ایران پاسخ HTTP 404 داد؛ این پاسخ موفقیت احراز هویت یا استنتاج مدل را ثابت نمی‌کند."
       },
       {
         "type": "community_report",
         "url": "https://developer.nvidia.com/login",
         "checked_at": "2026-07-21",
-        "notes_fa": "ثبت‌نام در NVIDIA Developer Program نیاز به تأیید هویت با شماره تلفن دارد. حساب تست‌کننده نتوانست این مرحله را کامل کند. کلید API صادر نشد. استنتاج احراز هویت‌شده انجام نشد."
+        "notes_fa": "در حساب آزمایشی NVIDIA Developer Program، جریان ثبت‌نام تأیید شماره تلفن درخواست کرد و همان حساب نتوانست مرحله را کامل کند. این مشاهده به همان حساب و جریان ثبت‌نام محدود است؛ کلید API صادر و استنتاج احراز هویت‌شده اجرا نشد."
       }
     ],
-    "notes_fa": "Endpoint از ایران قابل دسترس است. ثبت‌نام در NVIDIA Developer Program نیاز به تأیید هویت با شماره تلفن دارد. استنتاج احراز هویت‌شده انجام نشد."
+    "notes_fa": "Endpointهای عمومی از ایران پاسخ دادند. در حساب آزمایشی، ثبت‌نام در مرحله تأیید شماره تلفن متوقف شد؛ این نتیجه به همان حساب محدود است و استنتاج احراز هویت‌شده از ایران انجام نشد."
   },
   "models": {
     "dynamic": true,
