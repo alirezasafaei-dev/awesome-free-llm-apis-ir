@@ -69,11 +69,11 @@
     "notes_fa": "پنج مدل عمومی در خانواده‌های متن، تصویر و ویدئو مستند شده‌اند. محدودیت‌ها مقادیر مرجع جاری‌اند و تضمین دائمی نیستند. طرح رایگان نیاز به کارت بانکی ندارد؛ طرح‌های اشتراکی (Starter $4، Plus $10، Pro $50) نیازمند پرداخت هستند."
   },
   "iran_access": {
-    "status": "verified_working",
+    "status": "unknown",
     "official_policy": "not_documented",
     "tested_from_iran": true,
     "tested_at": "2026-07-21",
-    "test_method": "live_request",
+    "test_method": "connectivity_probe",
     "network": {
       "country": "IR",
       "route": "direct"
@@ -107,10 +107,10 @@
         "source": "DIRECT_CONTROL_SERVER (AS24940)",
         "credential_validated_from": "DIRECT_CONTROL_SERVER (AS24940)",
         "credential_validated_status": 200,
-        "notes_fa": "استنتاج احراز هویت‌شده با مدل agnes-2.0-flash از سرور کنترل خارجی (DE) با HTTP 200 پاسخ داد. این نتیجه فقط برای ASN و مسیر مستقیم تست‌شده معتبر است. مدل از نوع reasoning است."
+        "notes_fa": "استنتاج احراز هویت‌شده با مدل agnes-2.0-flash فقط از مسیر کنترل مستقیم خارجی با HTTP 200 موفق شد. این نتیجه اعتبار کلید و مدل را برای همان مسیر تأیید می‌کند و اثبات موفقیت استنتاج از ایران نیست."
       }
     ],
-    "notes_fa": "استنتاج از سرور کنترل خارجی (DE) با HTTP 200 تأیید شد. این نتیجه فقط برای ASN و مسیر مستقیم تست‌شده معتبر است."
+    "notes_fa": "از مسیر مستقیم ایران فقط Reachability با HTTP 401 ثبت شده است؛ استنتاج احراز هویت‌شده ایران انجام نشده و وضعیت عملی ایران نامشخص باقی می‌ماند. مسیر کنترل خارجی با همان مدل HTTP 200 داده است."
   },
   "models": {
     "dynamic": true,
