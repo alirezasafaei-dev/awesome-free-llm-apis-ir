@@ -6,6 +6,7 @@ const accessLabels = {
   officially_unsupported: "پشتیبانی‌نشده رسمی",
   intermittent: "ناپایدار",
   signup_blocked: "ثبت‌نام مسدود",
+  account_activation_blocked: "فعال‌سازی حساب مسدود",
   unknown: "نامشخص"
 };
 
@@ -17,6 +18,7 @@ const accessEmoji = {
   officially_unsupported: "🚫",
   intermittent: "⚠️",
   signup_blocked: "🧾",
+  account_activation_blocked: "🔒",
   unknown: "❔"
 };
 
@@ -28,6 +30,7 @@ const accessAriaLabel = {
   officially_unsupported: "وضعیت دسترسی ایران: پشتیبانی‌نشده رسمی",
   intermittent: "وضعیت دسترسی ایران: ناپایدار",
   signup_blocked: "وضعیت دسترسی ایران: ثبت‌نام مسدود",
+  account_activation_blocked: "فعال‌سازی حساب مسدود",
   unknown: "وضعیت دسترسی ایران: نامشخص"
 };
 
@@ -219,7 +222,7 @@ function usecaseCapabilities(usecase) {
   return map[usecase] ?? map.chat;
 }
 
-const iranScorePenalties = ["officially_unsupported", "verified_blocked", "signup_blocked"];
+const iranScorePenalties = ["officially_unsupported", "verified_blocked", "signup_blocked", "account_activation_blocked"];
 
 function recommendationScore(provider, usecase, priority) {
   const capabilities = usecaseCapabilities(usecase);

@@ -27,6 +27,7 @@ const accessLabels = {
   officially_unsupported: "🚫 پشتیبانی‌نشده رسمی",
   intermittent: "⚠️ ناپایدار",
   signup_blocked: "🧾 مانع ثبت‌نام",
+  account_activation_blocked: "🔒 فعال‌سازی حساب مسدود",
   unknown: "❔ نامشخص"
 };
 
@@ -92,7 +93,7 @@ const guides = [
     h1: "راهنمای انتخاب API رایگان LLM برای ایران",
     content: (catalog) => {
       const ordered = [...catalog.providers].sort((a, b) => {
-        const rank = { verified_working: 0, unknown: 1, signup_blocked: 2, verified_blocked: 3, officially_unsupported: 4 };
+        const rank = { verified_working: 0, unknown: 1, account_activation_blocked: 2, signup_blocked: 2, verified_blocked: 3, officially_unsupported: 4 };
         return (rank[a.iran_access.status] ?? 9) - (rank[b.iran_access.status] ?? 9) || a.name.localeCompare(b.name, "en");
       });
       const tableRows = ordered.slice(0, 10).map((provider) =>

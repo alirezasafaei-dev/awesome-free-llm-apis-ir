@@ -55,7 +55,7 @@ VPN مجاز است، اما نتیجهٔ آن هرگز به‌عنوان «دس
 | **دسترسی ایران (اولویت `iran-aware`)** | | |
 | `verified_working` | ۳۰+ | — |
 | `verified_working_vpn` | ۱۲+ | — |
-| `officially_unsupported`, `verified_blocked`, `signup_blocked` | ۳۰- | — |
+| `officially_unsupported`, `verified_blocked`, `signup_blocked`, `account_activation_blocked` | ۳۰- | — |
 | `unknown`, `intermittent` | ۰ | — |
 | **دسترسی ایران (سایر اولویت‌ها)** | | |
 | غیر از `unknown` | ۵+ | — |
