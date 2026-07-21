@@ -100,7 +100,7 @@ VPN فقط زمانی استفاده می‌شود که هدف ثبت وضعیت
 | **دسترسی ایران (اولویت `iran-aware`)** | | |
 | `verified_working` | ۳۰+ | — |
 | `verified_working_vpn` | ۱۲+ | — |
-| `officially_unsupported`, `verified_blocked`, `signup_blocked`, `account_activation_blocked` | ۳۰- | — |
+| `officially_unsupported`, `verified_blocked`, `signup_blocked` | ۳۰- | — |
 | `unknown`, `intermittent` | ۰ | — |
 | **دسترسی ایران (سایر اولویت‌ها)** | | |
 | غیر از `unknown` | ۵+ | — |

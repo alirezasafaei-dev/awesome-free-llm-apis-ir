@@ -4,7 +4,7 @@
   "parent_issue": 29,
   "summary": {
     "provider_count": 22,
-    "unknown_count": 1
+    "unknown_count": 0
   },
   "tracks": [
     {
@@ -25,7 +25,6 @@
       "execution": "local",
       "status": "open",
       "providers": [
-        "agnes-ai",
         "freetheai",
         "nvidia-nim",
         "vercel-ai-gateway",
@@ -64,7 +63,7 @@
       "issue": 35,
       "priority": "P0",
       "execution": "local",
-      "status": "partially_completed",
+      "status": "completed",
       "providers": [
         "agnes-ai",
         "fireworks-ai",
@@ -75,14 +74,5 @@
       "blocker_type": "same_request_direct_route_matrix"
     }
   ],
-  "providers": [
-    {
-      "provider_id": "agnes-ai",
-      "track_issue": 33,
-      "blocker_type": "authenticated_iran_inference",
-      "next_action": "Run the same authorized model request from the Iran direct route and the foreign direct-control route, then publish only sanitized status evidence.",
-      "requires_local_execution": true,
-      "automatable": false
-    }
-  ]
+  "providers": []
 }

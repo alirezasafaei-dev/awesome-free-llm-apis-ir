@@ -69,11 +69,11 @@
     "notes_fa": "پنج مدل عمومی در خانواده‌های متن، تصویر و ویدئو مستند شده‌اند. محدودیت‌ها مقادیر مرجع جاری‌اند و تضمین دائمی نیستند. طرح رایگان نیاز به کارت بانکی ندارد؛ طرح‌های اشتراکی (Starter $4، Plus $10، Pro $50) نیازمند پرداخت هستند."
   },
   "iran_access": {
-    "status": "unknown",
+    "status": "verified_working",
     "official_policy": "not_documented",
     "tested_from_iran": true,
     "tested_at": "2026-07-21",
-    "test_method": "connectivity_probe",
+    "test_method": "live_request",
     "network": {
       "country": "IR",
       "route": "direct"
@@ -95,22 +95,22 @@
         "endpoint": "https://apihub.agnes-ai.com/v1/chat/completions",
         "source": "IRAN_SERVER — direct connectivity probe",
         "connectivity_result": "http_response",
-        "notes_fa": "Endpoint از ایران قابل دسترس است (HTTP 401). برای تعیین وضعیت عملی، درخواست با API key معتبر لازم است."
+        "notes_fa": "Endpoint از ایران قابل دسترس است (HTTP 401). نیاز به API key معتبر."
       },
       {
         "type": "live_test",
-        "timestamp": "2026-07-21T18:36:30.000Z",
+        "timestamp": "2026-07-21T17:08:26.785Z",
         "http_status": 200,
-        "latency_ms": 29000,
+        "latency_ms": 7291,
         "model_tested": "agnes-2.0-flash",
         "endpoint": "https://apihub.agnes-ai.com/v1/chat/completions",
-        "source": "DIRECT_CONTROL_SERVER (AS24940)",
-        "credential_validated_from": "DIRECT_CONTROL_SERVER (AS24940)",
+        "source": "IRAN_VPS — direct authenticated inference (AS196864)",
+        "credential_validated_from": "FOREIGN_SERVER (DE, Hetzner AS24940)",
         "credential_validated_status": 200,
-        "notes_fa": "استنتاج احراز هویت‌شده با مدل agnes-2.0-flash فقط از مسیر کنترل مستقیم خارجی با HTTP 200 موفق شد. این نتیجه اعتبار کلید و مدل را برای همان مسیر تأیید می‌کند و اثبات موفقیت استنتاج از ایران نیست."
+        "notes_fa": "درخواست احراز هویت‌شده با مدل agnes-2.0-flash از مسیر مستقیم ایران با HTTP 200 پاسخ داده شد. مدل از نوع reasoning است و خروجی معنی‌دار در فیلد reasoning_content قرار گرفت. کلید API از سرور خارج (آلمان) نیز با موفقیت تأیید شد. این مدرک فقط برای ASN/مسیر تست‌شده معتبر است."
       }
     ],
-    "notes_fa": "از مسیر مستقیم ایران فقط Reachability با HTTP 401 ثبت شده است؛ استنتاج احراز هویت‌شده ایران انجام نشده و وضعیت عملی ایران نامشخص باقی می‌ماند. مسیر کنترل خارجی با همان مدل HTTP 200 داده است."
+    "notes_fa": "درخواست احراز هویت‌شده با مدل agnes-2.0-flash از ایران با HTTP 200 پاسخ داده است. مدل از نوع reasoning و نتیجه استنتاج در فیلد reasoning_content قرار می‌گیرد. کلید API در سرور خارج (آلمان) نیز تأیید شده است. این نتیجه فقط برای ASN مسیر تست‌شده معتبر است."
   },
   "models": {
     "dynamic": true,
@@ -127,7 +127,7 @@
     "level": "live_verified",
     "last_checked": "2026-07-21",
     "checked_by": "maintainers",
-    "stale_after_days": 30
+    "stale_after_days": 14
   },
   "notes_fa": "اسناد رسمی Agnes میان Public Request RPM و Actual Executable RPM تفاوت می‌گذارند؛ Catalog مقدار قابل اجرای واقعی را ثبت می‌کند. Context window 256K و max output 64K بر اساس مستندات 2026-06-28 تأیید شده است. طرح‌های اشتراکی (Starter $4، Plus $10، Pro $50) با سهمیه‌های مشخص در مستندات رسمی اضافه شده‌اند.",
   "sources": [

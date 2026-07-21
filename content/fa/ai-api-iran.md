@@ -60,7 +60,6 @@ Handshake باید موفق باشد و Certificate معتبر دریافت شو
 - **verified_working:** درخواست واقعی با روش و تاریخ مشخص موفق بوده است.
 - **verified_blocked:** مانع فنی قابل بازتولید با Evidence کافی ثبت شده است.
 - **signup_blocked:** شبکه یا Endpoint ممکن است قابل دسترسی باشد، اما ساخت حساب یا دریافت Credential مانع دارد.
-- **account_activation_blocked:** ثبت‌نام انجام شد اما فعال‌سازی حساب به دلیل محدودیت مبدأ، تأیید پرداخت یا تحریم مسدود است.
 - **officially_unsupported:** منبع رسمی منطقه را پشتیبانی نمی‌کند.
 - **unknown:** Evidence کافی برای نتیجه قطعی وجود ندارد.
 

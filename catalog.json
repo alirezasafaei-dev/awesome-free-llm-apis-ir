@@ -74,11 +74,11 @@
         "notes_fa": "پنج مدل عمومی در خانواده‌های متن، تصویر و ویدئو مستند شده‌اند. محدودیت‌ها مقادیر مرجع جاری‌اند و تضمین دائمی نیستند. طرح رایگان نیاز به کارت بانکی ندارد؛ طرح‌های اشتراکی (Starter $4، Plus $10، Pro $50) نیازمند پرداخت هستند."
       },
       "iran_access": {
-        "status": "unknown",
+        "status": "verified_working",
         "official_policy": "not_documented",
         "tested_from_iran": true,
         "tested_at": "2026-07-21",
-        "test_method": "connectivity_probe",
+        "test_method": "live_request",
         "network": {
           "country": "IR",
           "route": "direct"
@@ -100,22 +100,22 @@
             "endpoint": "https://apihub.agnes-ai.com/v1/chat/completions",
             "source": "IRAN_SERVER — direct connectivity probe",
             "connectivity_result": "http_response",
-            "notes_fa": "Endpoint از ایران قابل دسترس است (HTTP 401). برای تعیین وضعیت عملی، درخواست با API key معتبر لازم است."
+            "notes_fa": "Endpoint از ایران قابل دسترس است (HTTP 401). نیاز به API key معتبر."
           },
           {
             "type": "live_test",
-            "timestamp": "2026-07-21T18:36:30.000Z",
+            "timestamp": "2026-07-21T17:08:26.785Z",
             "http_status": 200,
-            "latency_ms": 29000,
+            "latency_ms": 7291,
             "model_tested": "agnes-2.0-flash",
             "endpoint": "https://apihub.agnes-ai.com/v1/chat/completions",
-            "source": "DIRECT_CONTROL_SERVER (AS24940)",
-            "credential_validated_from": "DIRECT_CONTROL_SERVER (AS24940)",
+            "source": "IRAN_VPS — direct authenticated inference (AS196864)",
+            "credential_validated_from": "FOREIGN_SERVER (DE, Hetzner AS24940)",
             "credential_validated_status": 200,
-            "notes_fa": "استنتاج احراز هویت‌شده با مدل agnes-2.0-flash فقط از مسیر کنترل مستقیم خارجی با HTTP 200 موفق شد. این نتیجه اعتبار کلید و مدل را برای همان مسیر تأیید می‌کند و اثبات موفقیت استنتاج از ایران نیست."
+            "notes_fa": "درخواست احراز هویت‌شده با مدل agnes-2.0-flash از مسیر مستقیم ایران با HTTP 200 پاسخ داده شد. مدل از نوع reasoning است و خروجی معنی‌دار در فیلد reasoning_content قرار گرفت. کلید API از سرور خارج (آلمان) نیز با موفقیت تأیید شد. این مدرک فقط برای ASN/مسیر تست‌شده معتبر است."
           }
         ],
-        "notes_fa": "از مسیر مستقیم ایران فقط Reachability با HTTP 401 ثبت شده است؛ استنتاج احراز هویت‌شده ایران انجام نشده و وضعیت عملی ایران نامشخص باقی می‌ماند. مسیر کنترل خارجی با همان مدل HTTP 200 داده است."
+        "notes_fa": "درخواست احراز هویت‌شده با مدل agnes-2.0-flash از ایران با HTTP 200 پاسخ داده است. مدل از نوع reasoning و نتیجه استنتاج در فیلد reasoning_content قرار می‌گیرد. کلید API در سرور خارج (آلمان) نیز تأیید شده است. این نتیجه فقط برای ASN مسیر تست‌شده معتبر است."
       },
       "models": {
         "dynamic": true,
@@ -132,7 +132,7 @@
         "level": "live_verified",
         "last_checked": "2026-07-21",
         "checked_by": "maintainers",
-        "stale_after_days": 30
+        "stale_after_days": 14
       },
       "notes_fa": "اسناد رسمی Agnes میان Public Request RPM و Actual Executable RPM تفاوت می‌گذارند؛ Catalog مقدار قابل اجرای واقعی را ثبت می‌کند. Context window 256K و max output 64K بر اساس مستندات 2026-06-28 تأیید شده است. طرح‌های اشتراکی (Starter $4، Plus $10، Pro $50) با سهمیه‌های مشخص در مستندات رسمی اضافه شده‌اند.",
       "sources": [
@@ -569,7 +569,7 @@
         "notes_fa": "$۱ اعتبار رایگان در شروع کار. بدون نیاز به کارت بانکی. پس از اتمام اعتبار، حساب متوقف می‌شود مگر کارت اضافه کنید."
       },
       "iran_access": {
-        "status": "account_activation_blocked",
+        "status": "signup_blocked",
         "official_policy": "not_documented",
         "tested_from_iran": true,
         "tested_at": "2026-07-21",
@@ -580,35 +580,59 @@
         },
         "evidence": [
           {
+            "type": "live_test",
+            "timestamp": "2026-07-16T11:51:38.762Z",
+            "http_status": 403,
+            "latency_ms": 500,
+            "model_tested": "gpt-oss-120b",
+            "endpoint": "https://api.fireworks.ai/inference/v1/chat/completions",
+            "source": "IRAN_VPS — direct",
+            "credential_validated_from": "FOREIGN_SERVER",
+            "credential_validated_status": 412,
+            "notes_fa": "کلید از ایران ۴۰۳ و از مسیر غیرایرانی ۴۱۲ برگرداند؛ به‌دلیل تعلیق حساب، اعتبار Credential و Geo-block قابل تفکیک نیست."
+          },
+          {
             "type": "connectivity_test",
             "checked_at": "2026-07-16",
             "endpoint": "https://api.fireworks.ai/inference/v1/models",
-            "source": "IRAN_SERVER — direct connectivity probe",
+            "source": "IRAN_VPS — direct connectivity probe",
             "connectivity_result": "connection_refused",
-            "notes_fa": "یک Probe از مسیر مستقیم ایران پیش از دریافت پاسخ HTTP با Connection refused شکست خورد؛ این نتیجه به‌تنهایی محدودیت جغرافیایی را ثابت نمی‌کند."
+            "notes_fa": "یک Probe از مسیر مستقیم ایران پیش از دریافت پاسخ HTTP با Connection refused شکست خورد؛ این نتیجه می‌تواند ناشی از Routing، Firewall یا وضعیت موقت سرویس باشد و به‌تنهایی اثبات انسداد جغرافیایی نیست."
           },
           {
             "type": "connectivity_test",
             "checked_at": "2026-07-20",
             "endpoint": "https://api.fireworks.ai/inference/v1/chat/completions",
-            "source": "IRAN_SERVER — direct connectivity probe",
+            "source": "IRAN_VPS — direct connectivity probe",
             "connectivity_result": "timeout",
-            "notes_fa": "اتصال مستقیم ایران پیش از دریافت پاسخ HTTP با Timeout مواجه شد؛ علت شبکه‌ای از وضعیت حساب تفکیک نشده است."
+            "notes_fa": "اتصال به api.fireworks.ai از ایران با Timeout ۱۵ ثانیه‌ای مواجه شد. هیچ پاسخی دریافت نشد. این تنها یک Probe شبکه است و برای تأیید مسدودیت به تست با API key معتبر نیاز است."
           },
           {
             "type": "live_test",
-            "timestamp": "2026-07-21T18:36:00.000Z",
+            "timestamp": "2026-07-21T17:00:00.000Z",
+            "http_status": 404,
+            "latency_ms": 12000,
+            "model_tested": "accounts/fireworks/models/gpt-oss-120b",
+            "endpoint": "https://api.fireworks.ai/inference/v1/chat/completions",
+            "source": "FOREIGN_SERVER (DE, Hetzner AS24940)",
+            "credential_validated_from": "DIRECT_ATTEMPT",
+            "credential_validated_status": 404,
+            "notes_fa": "از سرور خارج (آلمان) درخواست با کلید موجود فرستاده شد. حساب آزمایشی معلق است (محدودیت مصرف یا صورت‌حساب پرداخت‌نشده). مدل‌ها قابل لیست نیستند (0 مدل). استنتاج با 404 رد شد. وضعیت شبکه از ایران همچنان Timeout است، اما به‌دلیل تعلیق حساب، نمی‌توان نتیجه گرفت که مسدودیت ایران ناشی از Geo-blocking است."
+          },
+          {
+            "type": "live_test",
+            "timestamp": "2026-07-21T17:50:00.000Z",
             "http_status": 403,
             "latency_ms": 3500,
             "model_tested": "accounts/fireworks/models/gpt-oss-120b",
             "endpoint": "https://api.fireworks.ai/inference/v1/chat/completions",
-            "source": "DIRECT_CONTROL_SERVER (AS24940)",
-            "credential_validated_from": "DIRECT_CONTROL_SERVER (AS24940)",
+            "source": "FOREIGN_SERVER (DE, Hetzner AS24940)",
+            "credential_validated_from": "FOREIGN_SERVER (DE, Hetzner AS24940)",
             "credential_validated_status": 403,
-            "notes_fa": "Endpointهای آزمایش‌شده برای یک حساب جدید از مسیر کنترل مستقیم خارجی با HTTP 403 و کلاس خطای sanitized «sanctioned_origin_country» پاسخ دادند. این نتیجه مانع سطح همان حساب را نشان می‌دهد؛ وضعیت شبکه ایران و موفقیت حساب‌های دیگر را تعیین نمی‌کند."
+            "notes_fa": "حساب جدید Fireworks از سرور خارج (آلمان) تست شد. همه endpointها ۴۰۳ برگرداندند: {\"blocked\":true,\"reason\":\"sanctioned origin country\"}. حساب در زمان ثبت‌نام (احتمالاً به دلیل IP ایران) مسدود شده است. این محدودیت در سطح حساب است و به IP درخواست‌دهنده مربوط نیست."
           }
         ],
-        "notes_fa": "یک حساب آزمایشی Fireworks AI در مسیر کنترل خارجی با HTTP 403 و کلاس sanitized «sanctioned_origin_country» متوقف شد. مسیر مستقیم ایران نیز پیش از پاسخ HTTP شکست خورد؛ بنابراین Geo-block شبکه ایران از مانع حساب تفکیک نشده است."
+        "notes_fa": "ثبت‌نام در Fireworks AI از ایران منجر به مسدودیت حساب در سطح سرویس می‌شود (sanctioned origin country). حتی کلید جدید هم از سرور خارج (آلمان) با ۴۰۳ مسدود شد. شبکه از ایران نیز Timeout دارد."
       },
       "models": {
         "dynamic": true,
@@ -625,7 +649,7 @@
         "level": "live_verified",
         "last_checked": "2026-07-21",
         "checked_by": "maintainers",
-        "stale_after_days": 30
+        "stale_after_days": 14
       },
       "sources": [
         "https://fireworks.ai/pricing",
@@ -676,7 +700,7 @@
         "official_policy": "not_documented",
         "tested_from_iran": true,
         "tested_at": "2026-07-21",
-        "test_method": "signup_only",
+        "test_method": "connectivity_probe",
         "network": {
           "country": "IR",
           "route": "direct"
@@ -704,10 +728,10 @@
             "type": "community_report",
             "url": "https://support.discord.com/hc/en-us/articles/360017947012-Phone-Verification",
             "checked_at": "2026-07-21",
-            "notes_fa": "در جریان ثبت‌نام آزمایشی، Discord برای ادامه دریافت کلید از ربات FreeTheAI تأیید شماره تلفن درخواست کرد و حساب آزمایشی نتوانست این مرحله را کامل کند. این مشاهده به همان حساب و جریان ثبت‌نام محدود است؛ کلید صادر و استنتاج احراز هویت‌شده اجرا نشد."
+            "notes_fa": "ورود به Discord با اکانت جدید امکان‌پذیر است. اما برای دریافت کلید API از ربات FreeTheAI در دیسکورد، احراز هویت با شماره تلفن الزامی است. کاربر ایرانی به شماره خارجی دسترسی ندارد. در نتیجه کلید قابل دریافت نیست."
           }
         ],
-        "notes_fa": "Endpoint از ایران قابل دسترس است. در حساب آزمایشی، مرحله دریافت کلید در تأیید شماره تلفن Discord متوقف شد؛ این نتیجه به همان حساب و جریان ثبت‌نام محدود است و استنتاج احراز هویت‌شده انجام نشد."
+        "notes_fa": "Endpoint از ایران قابل دسترس است. ورود به Discord ممکن است اما صدور کلید نیاز به شماره تلفن دارد (برای کاربران ایران در دسترس نیست)."
       },
       "models": {
         "dynamic": true,
@@ -725,7 +749,7 @@
         "checked_by": "maintainers",
         "stale_after_days": 14
       },
-      "notes_fa": "این سرویس یک Gateway اجتماعی است، نه Provider اصلی مدل. پایداری، قوانین و ظرفیت آن باید مستقل از Providerهای رسمی پایش شود. ثبت‌نام از طریق Discord (/signup) امکان‌پذیر است و در حساب آزمایشی مانع باقی‌مانده دریافت کلید و اجرای درخواست مدل بود.",
+      "notes_fa": "این سرویس یک Gateway اجتماعی است، نه Provider اصلی مدل. پایداری، قوانین و ظرفیت آن باید مستقل از Providerهای رسمی پایش شود. ثبت‌نام از طریق Discord (/signup) امکان‌پذیر است و مانع باقی‌مانده دریافت کلید و اجرای درخواست مدل است.",
       "sources": [
         "https://github.com/Free-The-Ai/free-ai",
         "https://freetheai.xyz/docs",
@@ -1505,7 +1529,7 @@
         "official_policy": "not_documented",
         "tested_from_iran": true,
         "tested_at": "2026-07-21",
-        "test_method": "signup_only",
+        "test_method": "connectivity_probe",
         "network": {
           "country": "IR",
           "route": "direct"
@@ -1518,7 +1542,7 @@
             "endpoint": "https://integrate.api.nvidia.com/v1/models",
             "source": "IRAN_SERVER — direct connectivity probe",
             "connectivity_result": "http_response",
-            "notes_fa": "Endpoint مدل‌ها از مسیر مستقیم ایران پاسخ HTTP 200 داد؛ این نتیجه فقط Reachability را نشان می‌دهد."
+            "notes_fa": "Endpoint مدل‌ها از مسیر مستقیم ایران پاسخ HTTP 200 داد؛ این نتیجه Reachability را نشان می‌دهد و جای درخواست استنتاج با کلید Developer Program را نمی‌گیرد."
           },
           {
             "type": "connectivity_test",
@@ -1527,16 +1551,16 @@
             "endpoint": "https://integrate.api.nvidia.com/v1/chat/completions",
             "source": "IRAN_SERVER — direct connectivity probe",
             "connectivity_result": "http_response",
-            "notes_fa": "Endpoint از ایران پاسخ HTTP 404 داد؛ این پاسخ موفقیت احراز هویت یا استنتاج مدل را ثابت نمی‌کند."
+            "notes_fa": "Endpoint از ایران قابل دسترس است (HTTP 404). نیاز به API key معتبر."
           },
           {
             "type": "community_report",
             "url": "https://developer.nvidia.com/login",
             "checked_at": "2026-07-21",
-            "notes_fa": "در حساب آزمایشی NVIDIA Developer Program، جریان ثبت‌نام تأیید شماره تلفن درخواست کرد و همان حساب نتوانست مرحله را کامل کند. این مشاهده به همان حساب و جریان ثبت‌نام محدود است؛ کلید API صادر و استنتاج احراز هویت‌شده اجرا نشد."
+            "notes_fa": "ثبت‌نام در NVIDIA Developer Program نیاز به شماره تلفن خارجی برای احراز هویت دارد. کاربر ایرانی به شماره خارجی دسترسی ندارد. کلید API قابل دریافت نیست."
           }
         ],
-        "notes_fa": "Endpointهای عمومی از ایران پاسخ دادند. در حساب آزمایشی، ثبت‌نام در مرحله تأیید شماره تلفن متوقف شد؛ این نتیجه به همان حساب محدود است و استنتاج احراز هویت‌شده از ایران انجام نشد."
+        "notes_fa": "Endpoint از ایران قابل دسترس است. اما ثبت‌نام در NVIDIA Developer Program نیاز به شماره تلفن خارجی دارد."
       },
       "models": {
         "dynamic": true,
@@ -2032,7 +2056,7 @@
       "free_tier": {
         "status": "active",
         "type": "monthly_credit",
-        "requires_payment_method": null,
+        "requires_payment_method": true,
         "limits": [
           {
             "scope": "team",
@@ -2042,10 +2066,10 @@
             "notes_fa": "فقط زیرمجموعه‌ای از مدل‌ها واجد اعتبار رایگان‌اند و محدودیت هر مدل می‌تواند پایین‌تر باشد. BYOK در پلن پولی موجود است."
           }
         ],
-        "notes_fa": "اعتبار رایگان ماهانه ۵ دلار روی مدل‌های واجد شرایط. پس از اولین درخواست، حساب به پلن پولی ارتقا می‌یابد. ثبت‌نام نیاز به حساب Vercel دارد."
+        "notes_fa": "اعتبار رایگان ماهانه ۵ دلار روی مدل‌های واجد شرایط. اما Vercel حتی برای فعال‌سازی اعتبار رایگان نیز کارت اعتباری معتبر می‌خواهد (HTTP 403: customer_verification_required). ثبت‌نام نیاز به حساب Vercel دارد."
       },
       "iran_access": {
-        "status": "account_activation_blocked",
+        "status": "signup_blocked",
         "official_policy": "not_documented",
         "tested_from_iran": true,
         "tested_at": "2026-07-21",
@@ -2060,33 +2084,33 @@
             "checked_at": "2026-07-16",
             "http_status": 200,
             "endpoint": "https://ai-gateway.vercel.sh/v1/models",
-            "source": "IRAN_SERVER — direct connectivity probe",
+            "source": "IRAN_VPS — direct connectivity probe",
             "connectivity_result": "http_response",
-            "notes_fa": "Endpoint عمومی مدل‌ها از مسیر مستقیم ایران پاسخ HTTP 200 داد؛ این نتیجه فقط Reachability را نشان می‌دهد و اعتبار کلید را ثابت نمی‌کند."
+            "notes_fa": "Endpoint مدل‌ها از مسیر مستقیم ایران پاسخ HTTP 200 داد؛ این نتیجه Reachability را نشان می‌دهد و جای درخواست مدل با Gateway key را نمی‌گیرد."
           },
           {
             "type": "connectivity_test",
             "checked_at": "2026-07-20",
             "http_status": 401,
             "endpoint": "https://ai-gateway.vercel.sh/v1/chat/completions",
-            "source": "IRAN_SERVER — direct connectivity probe",
+            "source": "IRAN_VPS — direct connectivity probe",
             "connectivity_result": "http_response",
-            "notes_fa": "Endpoint از ایران پاسخ HTTP 401 داد؛ این پاسخ فقط نیاز به احراز هویت را نشان می‌دهد."
+            "notes_fa": "Endpoint از ایران قابل دسترس است (HTTP 401). نیاز به API key معتبر."
           },
           {
             "type": "live_test",
-            "timestamp": "2026-07-21T18:36:30.000Z",
-            "http_status": 403,
-            "latency_ms": 3800,
-            "model_tested": "gpt-4o-mini",
-            "endpoint": "https://ai-gateway.vercel.sh/v1/chat/completions",
-            "source": "DIRECT_CONTROL_SERVER (AS24940)",
-            "credential_validated_from": "DIRECT_CONTROL_SERVER (AS24940)",
-            "credential_validated_status": 403,
-            "notes_fa": "در حساب آزمایشی، درخواست احراز هویت‌شده از مسیر کنترل مستقیم خارجی با HTTP 403 رد شد و جریان همان حساب مانع پرداخت یا تأیید مشتری را گزارش کرد. این مشاهده به همان حساب محدود است؛ مستندات رسمی همچنان اعتبار رایگان ماهانه ۵ دلار را اعلام می‌کنند و استنتاج احراز هویت‌شده از ایران انجام نشد."
+            "timestamp": "2026-07-21T17:28:00.000Z",
+            "http_status": 200,
+            "latency_ms": 3500,
+            "model_tested": "models list (GET /v1/models)",
+            "endpoint": "https://ai-gateway.vercel.sh/v1/models",
+            "source": "FOREIGN_SERVER (DE, Hetzner AS24940)",
+            "credential_validated_from": "FOREIGN_SERVER (DE, Hetzner AS24940)",
+            "credential_validated_status": 200,
+            "notes_fa": "کلید Vercel AI Gateway از سرور خارج (آلمان) با موفقیت تأیید شد. 306 مدل قابل دسترس هستند. اما درخواست استنتاج با HTTP 403 رد شد: «AI Gateway requires a valid credit card on file to service requests». این خطمشی عمومی Vercel است و مختص ایران نیست. برای تکمیل آزمایش نیاز به کارت اعتباری معتبر روی حساب Vercel است."
           }
         ],
-        "notes_fa": "Endpointهای عمومی از ایران قابل دسترس‌اند. حساب آزمایشی در مسیر کنترل خارجی پیش از استنتاج با مانع فعال‌سازی پرداخت یا تأیید مشتری روبه‌رو شد؛ این نتیجه به همان حساب محدود است و الزام عمومی کارت برای همه کاربران را ثابت نمی‌کند."
+        "notes_fa": "کلید API معتبر است (306 مدل قابل دسترس). اما Vercel برای سرویس‌دهی نیاز به کارت اعتباری روی حساب دارد (حتی برای اعتبار رایگان ماهانه ۵ دلار). آزمایش استنتاج از ایران به همین دلیل انجام نشد."
       },
       "models": {
         "dynamic": true,

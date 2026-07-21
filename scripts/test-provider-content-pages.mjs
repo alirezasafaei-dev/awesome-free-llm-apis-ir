@@ -21,7 +21,6 @@ const accessLabels = {
   officially_unsupported: "ایران رسماً پشتیبانی نمی‌شود",
   intermittent: "دسترسی ناپایدار",
   signup_blocked: "مانع ثبت‌نام یا احراز حساب",
-  account_activation_blocked: "فعال‌سازی حساب مسدود",
   unknown: "وضعیت دسترسی نامشخص"
 };
 
