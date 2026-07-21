@@ -17,10 +17,11 @@ const assertions = [
   [home.indexOf('class="search-field catalog-search"') < home.indexOf('class="advanced-filter-panel"'), "catalog search precedes advanced filters"],
   [faFinder.includes("ظرفیت درخواست / Rate limit"), "Persian Finder labels RPM as request capacity"],
   [!faFinder.includes("سرعت / Latency"), "Persian Finder no longer calls RPM latency"],
-  [faFinder.includes("کیفیت زبانی مدل یا نتیجه بنچمارک فارسی نیست"), "Persian language-score limitation is disclosed"],
+  [!faFinder.includes('id="finder-language"') && !faFinder.includes("پشتیبانی فارسی (+۱۵)"), "Persian Finder does not infer language quality from documentation or access"],
   [enFinder.includes("Request-capacity priority"), "English Finder labels RPM as request capacity"],
   [!enFinder.includes("Latency sensitivity"), "English Finder no longer calls RPM latency"],
   [enFinder.includes("not response latency or model speed"), "English RPM limitation is disclosed"],
+  [!enFinder.includes('id="finder-language"') && !enFinder.includes("Language support (max +15)"), "English Finder does not assign unsupported language-quality points"],
   [faFinder.includes('hreflang="en" href="https://llm.persiantoolbox.ir/en/api-finder/"'), "Persian Finder links English alternate"],
   [faCompare.includes('hreflang="en" href="https://llm.persiantoolbox.ir/en/compare/"'), "Persian Compare links English alternate"],
   [enCompare.includes('hreflang="fa" href="https://llm.persiantoolbox.ir/compare/"'), "English Compare links Persian alternate"]
