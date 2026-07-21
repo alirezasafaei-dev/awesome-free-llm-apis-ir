@@ -46,7 +46,7 @@ if (!(invalid.stderr + invalid.stdout).includes("full 40-character Git SHA")) {
 }
 
 const source = await readFile(script, "utf8");
-for (const signal of ["SOURCE_REVISION", "build-meta.json", "meta.source_revision", "production:smoke:test", "production:ux-smoke:test"]) {
+for (const signal of ["SOURCE_REVISION", "build-meta.json", "metadata.source_revision", "production:smoke:test", "production:ux-smoke:test"]) {
   if (!source.includes(signal)) throw new Error(`Release candidate implementation is missing: ${signal}`);
 }
 
