@@ -21,33 +21,22 @@ jobs:
         run: |
           python <<'PY'
           from pathlib import Path
+          import re
 
           deploy_path = Path('.github/workflows/deploy-vps.yml')
           deploy = deploy_path.read_text()
-          old_push = """  push:
-              branches: [main]
-              paths:
-                - 'assets/**'
-                - 'content/**'
-                - 'data/**'
-                - 'deploy/**'
-                - 'site/**'
-                - 'scripts/build-guides.mjs'
-                - 'scripts/build-persian*.mjs'
-                - 'scripts/build-site*.mjs'
-                - 'scripts/generate-*.mjs'
-                - 'catalog.json'
-                - 'data.json'
-                - 'package.json'
-                - 'package-lock.json'
-                - '.github/workflows/deploy-vps.yml'
-            workflow_dispatch:""".replace('            ', '')
-          new_push = """  push:
-              branches: [main]
-            workflow_dispatch:""".replace('            ', '')
-          if old_push not in deploy:
-              raise SystemExit('deploy-vps push path filter block not found')
-          deploy_path.write_text(deploy.replace(old_push, new_push, 1))
+          if re.search(r'(?ms)^  push:\n    branches: \[main\]\n    paths:\n(?:      - .*\n)+(?=  workflow_dispatch:)', deploy):
+              deploy, count = re.subn(
+                  r'(?ms)^  push:\n    branches: \[main\]\n    paths:\n(?:      - .*\n)+(?=  workflow_dispatch:)',
+                  '  push:\n    branches: [main]\n',
+                  deploy,
+                  count=1,
+              )
+              if count != 1:
+                  raise SystemExit(f'unexpected deploy-vps patch count: {count}')
+          elif not re.search(r'(?m)^  push:\n    branches: \[main\]\n  workflow_dispatch:', deploy):
+              raise SystemExit('deploy-vps push trigger shape is unknown')
+          deploy_path.write_text(deploy)
 
           live_path = Path('.github/workflows/verify-live-release.yml')
           live = live_path.read_text()
@@ -58,82 +47,91 @@ jobs:
               'One or more public targets failed exact-revision verification': 'Exact revision or full live smoke verification failed',
           }
           for old, new in replacements.items():
-              if old not in live:
+              if old in live:
+                  live = live.replace(old, new, 1)
+              elif new not in live:
                   raise SystemExit(f'live workflow marker not found: {old}')
-              live = live.replace(old, new, 1)
 
-          exact_step = """      - name: Verify exact revision on global, Iran and Pages targets
-                run: >-
-                  node scripts/check-live-release-revision.mjs
-                  --expected-revision=${EXPECTED_SHA}
-                  --attempts=36
-                  --delay-ms=10000
-                  --timeout-ms=15000
-          """.replace('              ', '')
-          full_steps = exact_step + """
-            - name: Run full production smoke
-              env:
-                EXPECTED_REVISION: ${{ env.EXPECTED_SHA }}
-                SMOKE_REPORT_PATH: production-smoke.md
-              run: npm run production:smoke -- --expected-revision=${EXPECTED_SHA} --report=production-smoke.md
+          if 'name: Run full production smoke' not in live:
+              pattern = re.compile(
+                  r'(?ms)(^      - name: Verify exact revision on global, Iran and Pages targets\n'
+                  r'        run: >-\n'
+                  r'          node scripts/check-live-release-revision\.mjs\n'
+                  r'          --expected-revision=\$\{EXPECTED_SHA\}\n'
+                  r'          --attempts=36\n'
+                  r'          --delay-ms=10000\n'
+                  r'          --timeout-ms=15000\n)'
+              )
+              insertion = r'''\1
+      - name: Run full production smoke
+        env:
+          EXPECTED_REVISION: ${{ env.EXPECTED_SHA }}
+          SMOKE_REPORT_PATH: production-smoke.md
+        run: npm run production:smoke -- --expected-revision=${EXPECTED_SHA} --report=production-smoke.md
 
-            - name: Run full UX smoke
-              env:
-                EXPECTED_REVISION: ${{ env.EXPECTED_SHA }}
-                UX_SMOKE_REPORT_PATH: ux-smoke.md
-              run: npm run production:ux-smoke -- --expected-revision=${EXPECTED_SHA} --report=ux-smoke.md
+      - name: Run full UX smoke
+        env:
+          EXPECTED_REVISION: ${{ env.EXPECTED_SHA }}
+          UX_SMOKE_REPORT_PATH: ux-smoke.md
+        run: npm run production:ux-smoke -- --expected-revision=${EXPECTED_SHA} --report=ux-smoke.md
 
-            - name: Upload live smoke reports
-              if: always()
-              uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
-              with:
-                name: live-release-reports-${{ env.EXPECTED_SHA }}
-                path: |
-                  production-smoke.md
-                  ux-smoke.md
-                if-no-files-found: warn
-                retention-days: 7
-          """
-          if exact_step not in live:
-              raise SystemExit('exact verification step not found')
-          live_path.write_text(live.replace(exact_step, full_steps, 1))
+      - name: Upload live smoke reports
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: live-release-reports-${{ env.EXPECTED_SHA }}
+          path: |
+            production-smoke.md
+            ux-smoke.md
+          if-no-files-found: warn
+          retention-days: 7
+'''
+              live, count = pattern.subn(insertion, live, count=1)
+              if count != 1:
+                  raise SystemExit(f'exact verification insertion count: {count}')
+          live_path.write_text(live)
 
           test_path = Path('scripts/test-live-release-revision.mjs')
           test = test_path.read_text()
-          marker = 'const workflow = await readFile(new URL("../.github/workflows/verify-live-release.yml", import.meta.url), "utf8");'
-          replacement = marker + '\nconst deployWorkflow = await readFile(new URL("../.github/workflows/deploy-vps.yml", import.meta.url), "utf8");'
-          if marker not in test:
-              raise SystemExit('test workflow read marker not found')
-          test = test.replace(marker, replacement, 1)
+          deploy_read = 'const deployWorkflow = await readFile(new URL("../.github/workflows/deploy-vps.yml", import.meta.url), "utf8");'
+          if deploy_read not in test:
+              workflow_read = 'const workflow = await readFile(new URL("../.github/workflows/verify-live-release.yml", import.meta.url), "utf8");'
+              if workflow_read not in test:
+                  raise SystemExit('test workflow read marker not found')
+              test = test.replace(workflow_read, workflow_read + '\n' + deploy_read, 1)
 
-          pin_marker = '  "actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020"\n]) {'
-          pin_replacement = '''  "actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
-            "npm run production:smoke",
-            "npm run production:ux-smoke",
-            "production-smoke.md",
-            "ux-smoke.md",
-            "actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a"
-          ]) {'''.replace('          ', '')
-          if pin_marker not in test:
-              raise SystemExit('test marker list not found')
-          test = test.replace(pin_marker, pin_replacement, 1)
+          extra_markers = [
+              'npm run production:smoke',
+              'npm run production:ux-smoke',
+              'production-smoke.md',
+              'ux-smoke.md',
+              'actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a',
+          ]
+          if extra_markers[0] not in test:
+              anchor = '  "actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020"\n]) {'
+              replacement = '  "actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",\n' + ''.join(f'  "{marker}",\n' for marker in extra_markers[:-1]) + f'  "{extra_markers[-1]}"\n]) {{'
+              if anchor not in test:
+                  raise SystemExit('test marker list anchor not found')
+              test = test.replace(anchor, replacement, 1)
 
-          trigger_marker = '''if (/\\bpull_request\\s*:/.test(workflow)) {
-            throw new Error("Live release verification must not run from pull_request events");
-          }
-          '''.replace('          ', '')
-          trigger_replacement = trigger_marker + '''
-          if (!/push:\\s*\\n\\s*branches:\\s*\\[main\\]/.test(deployWorkflow)) {
-            throw new Error("VPS deployment must run for every push to main");
-          }
-          const pushBlock = deployWorkflow.match(/push:\\s*\\n([\\s\\S]*?)workflow_dispatch:/)?.[1] ?? "";
-          if (/\\bpaths:\\s*/.test(pushBlock)) {
-            throw new Error("VPS deployment must not use path filters that can leave mirrors on stale revisions");
-          }
-          '''
-          if trigger_marker not in test:
-              raise SystemExit('test trigger marker not found')
-          test_path.write_text(test.replace(trigger_marker, trigger_replacement, 1))
+          deploy_contract = '''
+if (!/push:\\s*\\n\\s*branches:\\s*\\[main\\]/.test(deployWorkflow)) {
+  throw new Error("VPS deployment must run for every push to main");
+}
+const pushBlock = deployWorkflow.match(/push:\\s*\\n([\\s\\S]*?)workflow_dispatch:/)?.[1] ?? "";
+if (/\\bpaths:\\s*/.test(pushBlock)) {
+  throw new Error("VPS deployment must not use path filters that can leave mirrors on stale revisions");
+}
+'''
+          if 'VPS deployment must run for every push to main' not in test:
+              anchor = '''if (/\\bpull_request\\s*:/.test(workflow)) {
+  throw new Error("Live release verification must not run from pull_request events");
+}
+'''
+              if anchor not in test:
+                  raise SystemExit('test trigger contract anchor not found')
+              test = test.replace(anchor, anchor + deploy_contract, 1)
+          test_path.write_text(test)
           PY
 
           git rm .github/workflows/patch-full-live-gate.yml
