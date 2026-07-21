@@ -1,0 +1,92 @@
+name: Ensure VPS deployment
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  actions: write
+  contents: read
+
+concurrency:
+  group: ensure-vps-deployment-${{ github.sha }}
+  cancel-in-progress: false
+
+jobs:
+  dispatch-if-uncovered:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.2.1
+        with:
+          fetch-depth: 2
+
+      - name: Detect whether regular VPS path filters already cover this push
+        id: coverage
+        env:
+          BEFORE_SHA: ${{ github.event.before }}
+          AFTER_SHA: ${{ github.sha }}
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          changed_file_list="$(mktemp)"
+          if [[ "$BEFORE_SHA" =~ ^0+$ ]] || ! git cat-file -e "${BEFORE_SHA}^{commit}" 2>/dev/null; then
+            git diff-tree --no-commit-id --name-only -r "$AFTER_SHA" > "$changed_file_list"
+          else
+            git diff --name-only "$BEFORE_SHA" "$AFTER_SHA" > "$changed_file_list"
+          fi
+
+          cat "$changed_file_list"
+          regular_filter='^(assets/|content/|data/|deploy/|site/|scripts/build-guides\.mjs$|scripts/build-persian.*\.mjs$|scripts/build-site.*\.mjs$|scripts/generate-.*\.mjs$|catalog\.json$|data\.json$|package\.json$|package-lock\.json$|\.github/workflows/deploy-vps\.yml$)'
+          if grep -Eq "$regular_filter" "$changed_file_list"; then
+            echo "dispatch=false" >> "$GITHUB_OUTPUT"
+            echo "Regular Deploy VPS mirrors workflow already covers this push."
+          else
+            echo "dispatch=true" >> "$GITHUB_OUTPUT"
+            echo "Push is outside regular VPS path filters; dispatch is required."
+          fi
+
+      - name: Skip superseded revisions
+        if: steps.coverage.outputs.dispatch == 'true'
+        id: freshness
+        env:
+          GH_TOKEN: ${{ github.token }}
+          EXPECTED_SHA: ${{ github.sha }}
+        run: |
+          node <<'NODE'
+          const { GH_TOKEN, GITHUB_API_URL, GITHUB_REPOSITORY, EXPECTED_SHA, GITHUB_OUTPUT } = process.env;
+          const response = await fetch(`${GITHUB_API_URL}/repos/${GITHUB_REPOSITORY}/git/ref/heads/main`, {
+            headers: {
+              authorization: `Bearer ${GH_TOKEN}`,
+              accept: "application/vnd.github+json",
+              "x-github-api-version": "2022-11-28"
+            }
+          });
+          if (!response.ok) throw new Error(`Unable to read current main ref: HTTP ${response.status}`);
+          const payload = await response.json();
+          const current = payload.object?.sha;
+          const fresh = current === EXPECTED_SHA;
+          require("node:fs").appendFileSync(GITHUB_OUTPUT, `fresh=${fresh}\n`);
+          console.log(fresh ? "Revision is still current Main." : `Revision was superseded by ${current}; newer push will deploy.`);
+          NODE
+
+      - name: Dispatch VPS deployment for uncovered current revision
+        if: steps.coverage.outputs.dispatch == 'true' && steps.freshness.outputs.fresh == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          node <<'NODE'
+          const { GH_TOKEN, GITHUB_API_URL, GITHUB_REPOSITORY } = process.env;
+          const response = await fetch(`${GITHUB_API_URL}/repos/${GITHUB_REPOSITORY}/actions/workflows/deploy-vps.yml/dispatches`, {
+            method: "POST",
+            headers: {
+              authorization: `Bearer ${GH_TOKEN}`,
+              accept: "application/vnd.github+json",
+              "x-github-api-version": "2022-11-28",
+              "content-type": "application/json"
+            },
+            body: JSON.stringify({ ref: "main", inputs: { target: "both" } })
+          });
+          if (response.status !== 204) throw new Error(`Unable to dispatch VPS deployment: HTTP ${response.status}`);
+          console.log("Dispatched Deploy VPS mirrors for the current Main revision.");
+          NODE
