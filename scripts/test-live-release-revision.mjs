@@ -1,8 +1,31 @@
 import { createServer } from "node:http";
+import { readFile } from "node:fs/promises";
 import process from "node:process";
 import { verifyLiveRelease } from "./check-live-release-revision.mjs";
 
 const EXPECTED_SHA = "a".repeat(40);
+const workflow = await readFile(new URL("../.github/workflows/verify-live-release.yml", import.meta.url), "utf8");
+
+for (const marker of [
+  "Deploy VPS mirrors",
+  "Deploy website",
+  "statuses: write",
+  "github.event.workflow_run.head_sha",
+  "github.event.workflow_run.head_branch == 'main'",
+  "production-release/exact-revision",
+  "Reject failed upstream deployment",
+  "--attempts=36",
+  "COMMIT_STATUS_STATE: pending",
+  "COMMIT_STATUS_STATE: success",
+  "COMMIT_STATUS_STATE: failure",
+  "actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5",
+  "actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020"
+]) {
+  if (!workflow.includes(marker)) throw new Error(`Live release workflow is missing contract marker: ${marker}`);
+}
+if (/\bpull_request\s*:/.test(workflow)) {
+  throw new Error("Live release verification must not run from pull_request events");
+}
 
 /**
  * @typedef {object} ServerState
@@ -139,4 +162,4 @@ try {
 }
 
 if (process.exitCode) process.exit(process.exitCode);
-console.log("Live release revision verifier tests passed.");
+console.log("Live release revision verifier and workflow contract tests passed.");
