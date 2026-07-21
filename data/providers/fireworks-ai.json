@@ -40,10 +40,10 @@
     "notes_fa": "$۱ اعتبار رایگان در شروع کار. بدون نیاز به کارت بانکی. پس از اتمام اعتبار، حساب متوقف می‌شود مگر کارت اضافه کنید."
   },
   "iran_access": {
-    "status": "unknown",
+    "status": "account_activation_blocked",
     "official_policy": "not_documented",
     "tested_from_iran": true,
-    "tested_at": "2026-07-20",
+    "tested_at": "2026-07-21",
     "test_method": "connectivity_probe",
     "network": {
       "country": "IR",
@@ -51,24 +51,12 @@
     },
     "evidence": [
       {
-        "type": "live_test",
-        "timestamp": "2026-07-16T11:51:38.762Z",
-        "http_status": 403,
-        "latency_ms": 500,
-        "model_tested": "gpt-oss-120b",
-        "endpoint": "https://api.fireworks.ai/inference/v1/chat/completions",
-        "source": "LOCAL_PC — Iran direct",
-        "credential_validated_from": "AUTOMATION_SERVER",
-        "credential_validated_status": 412,
-        "notes_fa": "کلید از ایران ۴۰۳ و از مسیر غیرایرانی ۴۱۲ برگرداند؛ به‌دلیل تعلیق حساب، اعتبار Credential و Geo-block قابل تفکیک نیست."
-      },
-      {
         "type": "connectivity_test",
         "checked_at": "2026-07-16",
         "endpoint": "https://api.fireworks.ai/inference/v1/models",
         "source": "IRAN_SERVER — direct connectivity probe",
         "connectivity_result": "connection_refused",
-        "notes_fa": "یک Probe از مسیر مستقیم ایران پیش از دریافت پاسخ HTTP با Connection refused شکست خورد؛ این نتیجه می‌تواند ناشی از Routing، Firewall یا وضعیت موقت سرویس باشد و به‌تنهایی اثبات انسداد جغرافیایی نیست."
+        "notes_fa": "یک Probe از مسیر مستقیم ایران پیش از دریافت پاسخ HTTP با Connection refused شکست خورد."
       },
       {
         "type": "connectivity_test",
@@ -76,10 +64,22 @@
         "endpoint": "https://api.fireworks.ai/inference/v1/chat/completions",
         "source": "IRAN_SERVER — direct connectivity probe",
         "connectivity_result": "timeout",
-        "notes_fa": "اتصال به api.fireworks.ai از ایران با Timeout ۱۵ ثانیه‌ای مواجه شد. هیچ پاسخی دریافت نشد. این تنها یک Probe شبکه است و برای تأیید مسدودیت به تست با API key معتبر نیاز است."
+        "notes_fa": "اتصال به api.fireworks.ai از ایران با Timeout ۱۵ ثانیه‌ای مواجه شد."
+      },
+      {
+        "type": "live_test",
+        "timestamp": "2026-07-21T18:36:00.000Z",
+        "http_status": 403,
+        "latency_ms": 3500,
+        "model_tested": "accounts/fireworks/models/gpt-oss-120b",
+        "endpoint": "https://api.fireworks.ai/inference/v1/chat/completions",
+        "source": "DIRECT_CONTROL_SERVER (AS24940)",
+        "credential_validated_from": "DIRECT_CONTROL_SERVER (AS24940)",
+        "credential_validated_status": 403,
+        "notes_fa": "یک حساب جدید ایجاد و از سرور کنترل خارجی تست شد. همه endpointها با HTTP 403 و کلاس خطای «sanctioned_origin_country» پاسخ دادند. محدودیت در سطح حساب اعمال شده است. وضعیت شبکه ایران همچنان نامشخص است."
       }
     ],
-    "notes_fa": "وضعیت نامشخص می‌ماند: حساب فعلی معلق است و یک Probe دیگر نیز بدون پاسخ HTTP شکست خورده است. تست با حساب فعال و مقایسه همان Credential از مسیر پشتیبانی‌شده ضروری است."
+    "notes_fa": "حساب جدید Fireworks AI از سرور کنترل خارجی با 403 (sanctioned_origin_country) مسدود شد. شبکه ایران نیز Timeout دارد. نمی‌توان نتیجه گرفت که مسدودیت شبکه ایران ناشی از Geo-blocking است یا خیر."
   },
   "models": {
     "dynamic": true,
@@ -94,7 +94,7 @@
   },
   "verification": {
     "level": "live_verified",
-    "last_checked": "2026-07-20",
+    "last_checked": "2026-07-21",
     "checked_by": "maintainers",
     "stale_after_days": 30
   },

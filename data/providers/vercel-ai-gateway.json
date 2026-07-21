@@ -35,10 +35,10 @@
     "notes_fa": "اعتبار رایگان ماهانه ۵ دلار روی مدل‌های واجد شرایط. پس از اولین درخواست، حساب به پلن پولی ارتقا می‌یابد. ثبت‌نام نیاز به حساب Vercel دارد."
   },
   "iran_access": {
-    "status": "unknown",
+    "status": "account_activation_blocked",
     "official_policy": "not_documented",
     "tested_from_iran": true,
-    "tested_at": "2026-07-20",
+    "tested_at": "2026-07-21",
     "test_method": "connectivity_probe",
     "network": {
       "country": "IR",
@@ -52,7 +52,7 @@
         "endpoint": "https://ai-gateway.vercel.sh/v1/models",
         "source": "IRAN_SERVER — direct connectivity probe",
         "connectivity_result": "http_response",
-        "notes_fa": "Endpoint مدل‌ها از مسیر مستقیم ایران پاسخ HTTP 200 داد؛ این نتیجه Reachability را نشان می‌دهد و جای درخواست مدل با Gateway key را نمی‌گیرد."
+        "notes_fa": "Endpoint مدل‌ها از مسیر مستقیم ایران پاسخ HTTP 200 داد."
       },
       {
         "type": "connectivity_test",
@@ -61,10 +61,22 @@
         "endpoint": "https://ai-gateway.vercel.sh/v1/chat/completions",
         "source": "IRAN_SERVER — direct connectivity probe",
         "connectivity_result": "http_response",
-        "notes_fa": "Endpoint از ایران قابل دسترس است (HTTP 401). نیاز به API key معتبر."
+        "notes_fa": "Endpoint از ایران قابل دسترس است (HTTP 401). نیاز به API key."
+      },
+      {
+        "type": "live_test",
+        "timestamp": "2026-07-21T18:36:30.000Z",
+        "http_status": 403,
+        "latency_ms": 3800,
+        "model_tested": "gpt-4o-mini",
+        "endpoint": "https://ai-gateway.vercel.sh/v1/chat/completions",
+        "source": "DIRECT_CONTROL_SERVER (AS24940)",
+        "credential_validated_from": "DIRECT_CONTROL_SERVER (AS24940)",
+        "credential_validated_status": 403,
+        "notes_fa": "استنتاج احراز هویت‌شده از سرور کنترل خارجی با HTTP 403 رد شد. سرویس اعلام کرد که حساب نیاز به کارت پرداخت معتبر دارد (حتی برای استفاده از اعتبار رایگان). مستندات رسمی Vercel اعتبار رایگان ماهانه ۵ دلار را مستقل از این مانع فعال‌سازی حساب اعلام کرده است. استنتاج از ایران انجام نشد."
       }
     ],
-    "notes_fa": "Endpoint از ایران قابل دسترس است؛ برای تعیین وضعیت عملی سرویس، ساخت Gateway مجاز و اجرای درخواست مدل لازم است."
+    "notes_fa": "Endpoint از ایران قابل دسترس است. استنتاج احراز هویت‌شده از سرور کنترل خارجی نیاز به فعال‌سازی حساب با کارت پرداخت دارد. مستندات رسمی Vercel اعتبار رایگان ماهانه ۵ دلار را جداگانه اعلام کرده است."
   },
   "models": {
     "dynamic": true,
@@ -73,7 +85,7 @@
   },
   "verification": {
     "level": "live_verified",
-    "last_checked": "2026-07-20",
+    "last_checked": "2026-07-21",
     "checked_by": "maintainers",
     "stale_after_days": 30
   },

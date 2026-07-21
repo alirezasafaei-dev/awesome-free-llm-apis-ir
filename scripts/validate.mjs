@@ -10,7 +10,7 @@ const allowed = {
   freeType: new Set(["permanent_allowance", "free_models", "monthly_credit", "trial", "unknown"]),
   serviceType: new Set(["official_provider", "official_gateway", "community_gateway", "session_bridge", "self_hosted"]),
   auth: new Set(["api_key", "oauth", "token", "account_id_and_token", "none_or_api_key", "other"]),
-  iranStatus: new Set(["verified_working", "verified_working_vpn", "direct_blocked_vpn_working", "verified_blocked", "officially_unsupported", "intermittent", "signup_blocked", "unknown"]),
+  iranStatus: new Set(["verified_working", "verified_working_vpn", "direct_blocked_vpn_working", "verified_blocked", "officially_unsupported", "intermittent", "signup_blocked", "account_activation_blocked", "unknown"]),
   officialPolicy: new Set(["supported", "unsupported", "not_documented", "unknown"]),
   testMethod: new Set(["live_request", "connectivity_probe", "signup_only", "community_report", "official_docs", "not_tested"]),
   route: new Set(["direct", "vpn"]),

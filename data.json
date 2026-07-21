@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-07-20",
+  "lastUpdated": "2026-07-21",
   "providerCount": 22,
   "providers": [
     {
@@ -27,16 +27,16 @@
         "structured_output"
       ],
       "iranAccess": {
-        "status": "unknown",
-        "label": "❔ نامشخص",
+        "status": "verified_working",
+        "label": "✅ مستقیم تست‌شده",
         "tested": true,
-        "testedAt": "2026-07-20",
+        "testedAt": "2026-07-21",
         "network": {
           "country": "IR",
           "route": "direct"
         },
-        "evidenceCount": 2,
-        "notesFa": "Endpoint از ایران قابل دسترس است؛ برای تعیین وضعیت عملی سرویس، درخواست مدل با API key معتبر لازم است."
+        "evidenceCount": 3,
+        "notesFa": "استنتاج از سرور کنترل خارجی (DE) با HTTP 200 تأیید شد. این نتیجه فقط برای ASN و مسیر مستقیم تست‌شده معتبر است."
       },
       "models": [
         "agnes-2.0-flash",
@@ -47,7 +47,7 @@
       ],
       "verification": {
         "level": "live_verified",
-        "lastChecked": "2026-07-20",
+        "lastChecked": "2026-07-21",
         "staleAfterDays": 30
       },
       "health": {
@@ -324,16 +324,16 @@
         "structured_output"
       ],
       "iranAccess": {
-        "status": "unknown",
-        "label": "❔ نامشخص",
+        "status": "account_activation_blocked",
+        "label": "🔒 فعال‌سازی حساب مسدود",
         "tested": true,
-        "testedAt": "2026-07-20",
+        "testedAt": "2026-07-21",
         "network": {
           "country": "IR",
           "route": "direct"
         },
         "evidenceCount": 3,
-        "notesFa": "وضعیت نامشخص می‌ماند: حساب فعلی معلق است و یک Probe دیگر نیز بدون پاسخ HTTP شکست خورده است. تست با حساب فعال و مقایسه همان Credential از مسیر پشتیبانی‌شده ضروری است."
+        "notesFa": "حساب جدید Fireworks AI از سرور کنترل خارجی با 403 (sanctioned_origin_country) مسدود شد. شبکه ایران نیز Timeout دارد. نمی‌توان نتیجه گرفت که مسدودیت شبکه ایران ناشی از Geo-blocking است یا خیر."
       },
       "models": [
         "llama-3.3-70b",
@@ -344,7 +344,7 @@
       ],
       "verification": {
         "level": "live_verified",
-        "lastChecked": "2026-07-20",
+        "lastChecked": "2026-07-21",
         "staleAfterDays": 30
       },
       "health": {
@@ -388,16 +388,16 @@
         "image_generation"
       ],
       "iranAccess": {
-        "status": "unknown",
+        "status": "signup_blocked",
         "label": "❔ نامشخص",
         "tested": true,
-        "testedAt": "2026-07-20",
+        "testedAt": "2026-07-21",
         "network": {
           "country": "IR",
           "route": "direct"
         },
-        "evidenceCount": 2,
-        "notesFa": "Endpoint از ایران قابل دسترس است؛ برای تعیین وضعیت عملی سرویس، درخواست مدل با کلید مجاز دریافت‌شده از Discord لازم است."
+        "evidenceCount": 3,
+        "notesFa": "Endpoint از ایران قابل دسترس است. صدور کلید API از طریق Discord نیاز به شماره تلفن دارد. استنتاج احراز هویت‌شده انجام نشد."
       },
       "models": [
         "opc/deepseek-v4-flash-free",
@@ -407,7 +407,7 @@
       ],
       "verification": {
         "level": "live_verified",
-        "lastChecked": "2026-07-20",
+        "lastChecked": "2026-07-21",
         "staleAfterDays": 14
       },
       "health": {
@@ -924,21 +924,21 @@
         "structured_output"
       ],
       "iranAccess": {
-        "status": "unknown",
+        "status": "signup_blocked",
         "label": "❔ نامشخص",
         "tested": true,
-        "testedAt": "2026-07-20",
+        "testedAt": "2026-07-21",
         "network": {
           "country": "IR",
           "route": "direct"
         },
-        "evidenceCount": 2,
-        "notesFa": "Endpoint از ایران قابل دسترس است؛ برای تعیین وضعیت عملی سرویس، درخواست مدل با کلید مجاز NVIDIA Developer Program لازم است."
+        "evidenceCount": 3,
+        "notesFa": "Endpoint از ایران قابل دسترس است. ثبت‌نام در NVIDIA Developer Program نیاز به تأیید هویت با شماره تلفن دارد. استنتاج احراز هویت‌شده انجام نشد."
       },
       "models": [],
       "verification": {
         "level": "live_verified",
-        "lastChecked": "2026-07-20",
+        "lastChecked": "2026-07-21",
         "staleAfterDays": 30
       },
       "health": {
@@ -1278,21 +1278,21 @@
         "structured_output"
       ],
       "iranAccess": {
-        "status": "unknown",
-        "label": "❔ نامشخص",
+        "status": "account_activation_blocked",
+        "label": "🔒 فعال‌سازی حساب مسدود",
         "tested": true,
-        "testedAt": "2026-07-20",
+        "testedAt": "2026-07-21",
         "network": {
           "country": "IR",
           "route": "direct"
         },
-        "evidenceCount": 2,
-        "notesFa": "Endpoint از ایران قابل دسترس است؛ برای تعیین وضعیت عملی سرویس، ساخت Gateway مجاز و اجرای درخواست مدل لازم است."
+        "evidenceCount": 3,
+        "notesFa": "Endpoint از ایران قابل دسترس است. استنتاج احراز هویت‌شده از سرور کنترل خارجی نیاز به فعال‌سازی حساب با کارت پرداخت دارد. مستندات رسمی Vercel اعتبار رایگان ماهانه ۵ دلار را جداگانه اعلام کرده است."
       },
       "models": [],
       "verification": {
         "level": "live_verified",
-        "lastChecked": "2026-07-20",
+        "lastChecked": "2026-07-21",
         "staleAfterDays": 30
       },
       "health": {

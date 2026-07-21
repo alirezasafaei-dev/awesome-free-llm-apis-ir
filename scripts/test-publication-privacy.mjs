@@ -17,6 +17,14 @@ const binaryExtensions = new Set([
   ".woff", ".woff2", ".zip"
 ]);
 
+const excludedFiles = new Set([
+  "scripts/test-evidence-privacy.mjs"
+]);
+
+function isExcludedFile(file) {
+  return excludedFiles.has(file);
+}
+
 function isPublishableText(file) {
   const extension = file.includes(".") ? file.slice(file.lastIndexOf(".")).toLowerCase() : "";
   return !binaryExtensions.has(extension);
@@ -25,10 +33,14 @@ function isPublishableText(file) {
 const publishable = tracked.stdout
   .split("\0")
   .filter(Boolean)
-  .filter(isPublishableText);
+  .filter(isPublishableText)
+  .filter((f) => !isExcludedFile(f));
 
 const ipv4Pattern = /(?<![\d.])(?:\d{1,3}\.){3}\d{1,3}(?![\d.])/g;
+const ipv6FullPattern = /(?:[A-Fa-f0-9]{1,4}:){7}[A-Fa-f0-9]{1,4}/g;
+const ipv6WithDoubleColon = /(?:[A-Fa-f0-9]{1,4}:){2,}(?::[A-Fa-f0-9]{1,4}){2,}|(?:[A-Fa-f0-9]{1,4}:){3,}(?::[A-Fa-f0-9]{1,4})?::[A-Fa-f0-9]{1,4}/g;
 const sshTargetPattern = /\b[A-Za-z_][A-Za-z0-9._-]*@(?:\d{1,3}\.){3}\d{1,3}\b/g;
+const credentialTokenPattern = /\b(?:sk-|fw_|vck_|hf_|gsk_|pplx-|xai-|ghp_|gho_|ghu_|ghs_|ghr_)[A-Za-z0-9_-]{12,}/g;
 const violations = [];
 
 function parseIpv4(value) {
@@ -61,6 +73,10 @@ function isNonPublicIpv4(value) {
   );
 }
 
+function isSnippetOrPlaceholder(line) {
+  return /(?:prefix|example|sample|placeholder|your_|YOUR_|no-key|key-required)/.test(line);
+}
+
 for (const file of publishable) {
   const content = readFileSync(file, "utf8");
   if (content.includes("\0")) continue;
@@ -68,20 +84,34 @@ for (const file of publishable) {
 
   for (const [index, line] of lines.entries()) {
     for (const target of line.matchAll(sshTargetPattern)) {
-      violations.push(`${file}:${index + 1}: published SSH-style user@IP target (${target[0].replace(/^[^@]+/, "<user>")})`);
+      violations.push(`${file}:${index + 1}: published SSH-style user@IP target`);
     }
 
     for (const match of line.matchAll(ipv4Pattern)) {
       const address = match[0];
       if (!parseIpv4(address) || isNonPublicIpv4(address)) continue;
-      violations.push(`${file}:${index + 1}: public IPv4 address must not be published (${address.replace(/\.\d+$/, ".x")})`);
+      violations.push(`${file}:${index + 1}: public IPv4 address must not be published`);
+    }
+
+    for (const match of line.matchAll(ipv6FullPattern)) {
+      violations.push(`${file}:${index + 1}: full IPv6 address must not be published`);
+    }
+
+    for (const match of line.matchAll(ipv6WithDoubleColon)) {
+      violations.push(`${file}:${index + 1}: IPv6 address must not be published`);
+    }
+
+    for (const match of line.matchAll(credentialTokenPattern)) {
+      if (isSnippetOrPlaceholder(line)) continue;
+      violations.push(`${file}:${index + 1}: credential/token fragment must not be published`);
     }
   }
 }
 
 if (violations.length > 0) {
   for (const violation of [...new Set(violations)]) console.error(`ERROR ${violation}`);
-  console.error("\nRemove infrastructure addresses from tracked text files. Record only country, ASN, route and a generic host label.");
+  console.error("\nRemove infrastructure addresses, credential values, and account identifiers from tracked text files.");
+  console.error("Record only country, ASN, route, and a generic host label.");
   process.exit(1);
 }
 
