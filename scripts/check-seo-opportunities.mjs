@@ -71,29 +71,12 @@ async function scanPage(filePath, urlPath) {
 
   const page = { path: urlPath, title };
 
-  if (!hasMetaDescription) {
-    issues.push({ severity: "high", category: "missing_meta_description", page, detail: "Page missing meta description" });
-  }
-
-  if (!hasHreflang) {
-    issues.push({ severity: "high", category: "missing_hreflang", page, detail: "Page missing hreflang tags" });
-  }
-
-  if (!hasCanonical) {
-    issues.push({ severity: "high", category: "missing_canonical", page, detail: "Page missing canonical URL" });
-  }
-
-  if (!hasJsonLd) {
-    issues.push({ severity: "high", category: "missing_json_ld", page, detail: "Page missing JSON-LD structured data" });
-  }
-
-  if (imagesWithoutAlt > 0) {
-    issues.push({ severity: "medium", category: "missing_alt_text", page, detail: `${imagesWithoutAlt} image(s) missing alt text` });
-  }
-
-  if (wc < 300 && shouldEnforceMinimumWordCount(html)) {
-    issues.push({ severity: "low", category: "low_word_count", page, detail: `Low word count: ${wc} words (threshold: 300)` });
-  }
+  if (!hasMetaDescription) issues.push({ severity: "high", category: "missing_meta_description", page, detail: "Page missing meta description" });
+  if (!hasHreflang) issues.push({ severity: "high", category: "missing_hreflang", page, detail: "Page missing hreflang tags" });
+  if (!hasCanonical) issues.push({ severity: "high", category: "missing_canonical", page, detail: "Page missing canonical URL" });
+  if (!hasJsonLd) issues.push({ severity: "high", category: "missing_json_ld", page, detail: "Page missing JSON-LD structured data" });
+  if (imagesWithoutAlt > 0) issues.push({ severity: "medium", category: "missing_alt_text", page, detail: `${imagesWithoutAlt} image(s) missing alt text` });
+  if (wc < 300 && shouldEnforceMinimumWordCount(html)) issues.push({ severity: "low", category: "low_word_count", page, detail: `Low word count: ${wc} words (threshold: 300)` });
 
   return { html, internalLinks, title };
 }
@@ -201,8 +184,11 @@ async function main() {
     { file: "en/index.html", path: "/en/" },
     { file: "api-finder/index.html", path: "/api-finder/" },
     { file: "en/api-finder/index.html", path: "/en/api-finder/" },
+    { file: "quick-start/index.html", path: "/quick-start/" },
     { file: "en/quick-start/index.html", path: "/en/quick-start/" },
+    { file: "compare/index.html", path: "/compare/" },
     { file: "en/compare/index.html", path: "/en/compare/" },
+    { file: "tools/index.html", path: "/tools/" },
     { file: "404.html", path: "/404.html" }
   ];
 
@@ -276,9 +262,7 @@ async function main() {
   const report = lines.join("\n");
   console.log(report);
 
-  if (strict && issues.length) {
-    process.exit(1);
-  }
+  if (strict && issues.length) process.exit(1);
 }
 
 await main().catch((err) => {
