@@ -60,7 +60,7 @@
 | [OVHcloud AI Endpoints](https://www.ovhcloud.com/en/public-cloud/ai-endpoints/) | Gateway رسمی | مدل‌های رایگان | 2 RPM | ✅ | ✅ مستقیم تست‌شده | 2026-07-20 |
 | [SambaNova Cloud](https://cloud.sambanova.ai/) | Gateway رسمی | سهمیه دائمی | 20 RPM · 20 RPD | ✅ | ✅ مستقیم تست‌شده | 2026-07-20 |
 | [SiliconFlow](https://cloud.siliconflow.cn/) | Gateway رسمی | مدل‌های رایگان | 30 RPM · 60,000 TPM | ✅ | 🧾 ثبت‌نام مسدود | 2026-07-20 |
-| [Vercel AI Gateway](https://vercel.com/ai) | Gateway رسمی | اعتبار ماهانه | $5/month | ✅ | ❔ نامشخص | 2026-07-20 |
+| [Vercel AI Gateway](https://vercel.com/ai) | Gateway رسمی | اعتبار ماهانه | $5/month | ✅ | ❔ نامشخص | 2026-07-21 |
 <!-- PROVIDERS_TABLE_END -->
 
 ## مرجع سریع API

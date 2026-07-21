@@ -86,8 +86,8 @@
     {
       "provider_id": "vercel-ai-gateway",
       "track_issue": 33,
-      "blocker_type": "account_access",
-      "next_action": "Create an authorized gateway configuration and run a minimal model request from the direct Iran route.",
+      "blocker_type": "payment_method_required",
+      "next_action": "Vercel requires a valid credit card on file to service requests (even for free $5/month credit). Add a card to the Vercel account, then retest inference from both foreign control and Iran.",
       "requires_local_execution": true,
       "automatable": false
     },
