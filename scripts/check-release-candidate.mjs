@@ -33,12 +33,13 @@ if (!/^[0-9a-f]{40}$/iu.test(revision)) {
 
 const tasks = [
   { name: "Full repository test suite", args: ["test"] },
+  { name: "Built-site contract", args: ["run", "site:check"] },
   {
     name: "Production site build",
     args: ["run", "site:build"],
-    env: { SOURCE_REVISION: revision }
+    env: { SOURCE_REVISION: revision },
+    assertRevision: true
   },
-  { name: "Built-site contract", args: ["run", "site:check"] },
   { name: "Build regression", args: ["run", "check:regression"] },
   { name: "Strict SEO", args: ["run", "check:seo", "--", "--strict"] },
   { name: "Deployment static checks", args: ["run", "deploy:check"] },
@@ -52,7 +53,7 @@ function printPlan() {
   for (const [index, task] of tasks.entries()) {
     console.log(`${index + 1}. ${task.name}: ${npmCommand} ${task.args.join(" ")}`);
   }
-  console.log("Revision assertion: .site-dist/build-meta.json source_revision must match exactly.");
+  console.log("Revision assertion: .site-dist/build-meta.json source_revision must match exactly after the final production build.");
 }
 
 async function assertBuiltRevision() {
@@ -84,7 +85,7 @@ for (const task of tasks) {
   if (result.status !== 0) {
     throw new Error(`${task.name} failed with exit code ${result.status}`);
   }
-  if (task.name === "Built-site contract") await assertBuiltRevision();
+  if (task.assertRevision) await assertBuiltRevision();
 }
 
 console.log(`\nRelease candidate ${revision} passed all local deterministic gates.`);
