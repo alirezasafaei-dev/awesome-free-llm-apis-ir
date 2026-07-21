@@ -58,7 +58,7 @@ async function fetchWithTimeout(url, timeoutMs) {
       redirect: "follow",
       signal: controller.signal,
       headers: {
-        "user-agent": "awesome-free-llm-apis-ir-ux-smoke/1.2",
+        "user-agent": "awesome-free-llm-apis-ir-ux-smoke/1.3",
         accept: "text/html,application/json,application/xml,text/xml;q=0.9,*/*;q=0.8"
       }
     });
@@ -129,6 +129,26 @@ async function checkTarget(target, options) {
       path: "compare/",
       kind: "compare",
       signals: ["compare-title", "compare-grid", "compare-empty", "compare.css", "compare.js", "catalog.json", "application/ld+json"]
+    },
+    {
+      path: "en/",
+      kind: "english-homepage",
+      signals: ["Find and compare", "free LLM APIs", "./api-finder/", "./quick-start/", "./compare/", "application/ld+json"]
+    },
+    {
+      path: "en/api-finder/",
+      kind: "english-api-finder",
+      signals: ["en-finder-hero", "finder-form", "finder-results", "../../catalog.json", "application/ld+json"]
+    },
+    {
+      path: "en/quick-start/",
+      kind: "english-quick-start",
+      signals: ["qs-en-hero", "LLM_API_KEY", "LLM_BASE_URL", "LLM_MODEL", "provider-context-en.js", "application/ld+json"]
+    },
+    {
+      path: "en/compare/",
+      kind: "english-compare",
+      signals: ["compare-en-hero", "compare-grid", "compare-empty", "catalog.json", "compare.js", "application/ld+json"]
     }
   ];
 
@@ -162,7 +182,7 @@ async function checkTarget(target, options) {
       result.metadata.sourceRevision = revision || null;
       const productPages = Array.isArray(meta.static_product_pages) ? meta.static_product_pages : [];
       result.metadata.staticProductPages = productPages;
-      for (const route of ["/api-finder/", "/quick-start/", "/tools/", "/compare/"]) {
+      for (const route of ["/api-finder/", "/quick-start/", "/tools/", "/compare/", "/en/api-finder/", "/en/quick-start/", "/en/compare/"]) {
         if (!productPages.includes(route)) addFailure(metaCheck, `build metadata is missing product route ${route}`);
       }
       if (!Number.isInteger(meta.tool_count) || meta.tool_count < 1) addFailure(metaCheck, "build metadata is missing a valid tool_count");
@@ -186,7 +206,7 @@ async function checkTarget(target, options) {
     sitemapCheck.status = response.status;
     sitemapCheck.elapsedMs = response.elapsedMs;
     if (!response.ok) addFailure(sitemapCheck, `expected 2xx, received HTTP ${response.status}`);
-    for (const route of ["api-finder/", "quick-start/", "tools/", "compare/"]) {
+    for (const route of ["api-finder/", "quick-start/", "tools/", "compare/", "en/api-finder/", "en/quick-start/", "en/compare/"]) {
       if (!response.body.includes(route)) addFailure(sitemapCheck, `sitemap is missing ${route}`);
     }
   } catch (error) {
@@ -233,7 +253,7 @@ async function main() {
       expectedRevision: options.expectedRevision || null,
       timeoutMs: options.timeoutMs,
       targets: selectedTargets,
-      requiredRoutes: ["/", "/api-finder/", "/quick-start/", "/tools/", "/compare/", "/build-meta.json", "/sitemap.xml"]
+      requiredRoutes: ["/", "/api-finder/", "/quick-start/", "/tools/", "/compare/", "/en/", "/en/api-finder/", "/en/quick-start/", "/en/compare/", "/build-meta.json", "/sitemap.xml"]
     }, null, 2));
     return;
   }
