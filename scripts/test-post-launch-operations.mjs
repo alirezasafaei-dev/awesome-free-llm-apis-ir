@@ -14,12 +14,18 @@ const workflowTokens = [
   "permissions:",
   "issues: write",
   "cancel-in-progress: false",
+  "expected_revision:",
+  "Full 40-character deployed Git SHA to require",
+  "Validate exact deployed revision input",
+  "^[0-9a-fA-F]{40}$",
+  "expected_revision must be a full 40-character Git SHA",
   "npm run production:smoke:test",
   "npm run production:ux-smoke:test",
   "npm run production:smoke",
   "npm run production:ux-smoke",
   "UX_SMOKE_FAILED",
   "Production UX smoke",
+  "Expected deployed revision",
   "npm run check:api-health",
   "npm run check:drift",
   "npm run check:seo -- --strict",
@@ -30,6 +36,11 @@ const workflowTokens = [
 ];
 for (const token of workflowTokens) {
   if (!workflow.includes(token)) throw new Error(`Post-launch workflow is missing ${token}`);
+}
+
+const expectedRevisionBlock = /expected_revision:\s*\n\s*description:\s*Full 40-character deployed Git SHA to require\s*\n\s*required:\s*true/u;
+if (!expectedRevisionBlock.test(workflow)) {
+  throw new Error("Manual post-launch operations must require an exact revision input");
 }
 
 const smokeTokens = [
@@ -57,6 +68,9 @@ const uxSmokeTokens = [
   "LLM_API_KEY",
   "LLM_BASE_URL",
   "LLM_MODEL",
+  "en/api-finder/",
+  "en/quick-start/",
+  "en/compare/",
   "static_product_pages",
   "sitemap.xml"
 ];
@@ -88,4 +102,4 @@ if (/\b(sk-|ghp_|github_pat_)[A-Za-z0-9_-]{16,}\b/.test(allContent)) {
   throw new Error("Post-launch files contain secret-like material");
 }
 
-console.log("Post-launch operations contract checks passed, including deployed UX smoke automation.");
+console.log("Post-launch operations contract checks passed, including exact manual revision and bilingual deployed UX smoke automation.");
