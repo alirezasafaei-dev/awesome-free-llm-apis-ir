@@ -3,7 +3,7 @@ import { isIP } from "node:net";
 const IPV4_PATTERN = /(?<![\d.])(?:\d{1,3}\.){3}\d{1,3}(?![\d.])/g;
 const IPV6_CANDIDATE_PATTERN = /(?<![A-Za-z0-9])[A-Fa-f0-9:]{2,}(?![A-Za-z0-9])/g;
 const SSH_IP_TARGET_PATTERN = /\b[A-Za-z_][A-Za-z0-9._-]*@(?:(?:\d{1,3}\.){3}\d{1,3}|\[[A-Fa-f0-9:]+\])/g;
-const CREDENTIAL_PATTERN = /(?:^|[^A-Za-z0-9])((?:sk-|fw_|vck_|hf_|gsk_|pplx-|xai-|ghp_|gho_|ghu_|ghs_|ghr_)[A-Za-z0-9_-]{8,})(?=$|[^A-Za-z0-9_-])/g;
+const CREDENTIAL_PATTERN = /(?:^|[^A-Za-z0-9])((?:sk-|fw_|vck_|hf_|gsk_|pplx-|xai-|ghp_|gho_|ghu_|ghs_|ghr_)[A-Za-z0-9_-]{4,})(?=$|[^A-Za-z0-9_-])/g;
 const LABELED_IDENTIFIER_PATTERN = /\b(?:account|team|organization|org|tenant|workspace|customer)\s+(?:id\s*[:=#]?\s*)?([A-Za-z0-9][A-Za-z0-9._-]{5,})\b/gi;
 const EXPLICIT_IDENTIFIER_PATTERN = /\b(?:account|team|organization|org|tenant|workspace|customer)[_-]?id\s*[:=#]\s*([A-Za-z0-9][A-Za-z0-9._-]{5,})\b/gi;
 const PERSIAN_IDENTIFIER_PATTERN = /(?:شناسه\s*)?(?:حساب|تیم|سازمان|فضای\s*کاری)\s*[:=#]\s*([A-Za-z0-9][A-Za-z0-9._-]{5,})/g;
