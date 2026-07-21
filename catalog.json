@@ -74,11 +74,11 @@
         "notes_fa": "پنج مدل عمومی در خانواده‌های متن، تصویر و ویدئو مستند شده‌اند. محدودیت‌ها مقادیر مرجع جاری‌اند و تضمین دائمی نیستند. طرح رایگان نیاز به کارت بانکی ندارد؛ طرح‌های اشتراکی (Starter $4، Plus $10، Pro $50) نیازمند پرداخت هستند."
       },
       "iran_access": {
-        "status": "verified_working",
+        "status": "unknown",
         "official_policy": "not_documented",
         "tested_from_iran": true,
         "tested_at": "2026-07-21",
-        "test_method": "live_request",
+        "test_method": "connectivity_probe",
         "network": {
           "country": "IR",
           "route": "direct"
@@ -112,10 +112,10 @@
             "source": "DIRECT_CONTROL_SERVER (AS24940)",
             "credential_validated_from": "DIRECT_CONTROL_SERVER (AS24940)",
             "credential_validated_status": 200,
-            "notes_fa": "استنتاج احراز هویت‌شده با مدل agnes-2.0-flash از سرور کنترل خارجی (DE) با HTTP 200 پاسخ داد. این نتیجه فقط برای ASN و مسیر مستقیم تست‌شده معتبر است. مدل از نوع reasoning است."
+            "notes_fa": "استنتاج احراز هویت‌شده با مدل agnes-2.0-flash فقط از مسیر کنترل مستقیم خارجی با HTTP 200 موفق شد. این نتیجه اعتبار کلید و مدل را برای همان مسیر تأیید می‌کند و اثبات موفقیت استنتاج از ایران نیست."
           }
         ],
-        "notes_fa": "استنتاج از سرور کنترل خارجی (DE) با HTTP 200 تأیید شد. این نتیجه فقط برای ASN و مسیر مستقیم تست‌شده معتبر است."
+        "notes_fa": "از مسیر مستقیم ایران فقط Reachability با HTTP 401 ثبت شده است؛ استنتاج احراز هویت‌شده ایران انجام نشده و وضعیت عملی ایران نامشخص باقی می‌ماند. مسیر کنترل خارجی با همان مدل HTTP 200 داده است."
       },
       "models": {
         "dynamic": true,
@@ -585,7 +585,7 @@
             "endpoint": "https://api.fireworks.ai/inference/v1/models",
             "source": "IRAN_SERVER — direct connectivity probe",
             "connectivity_result": "connection_refused",
-            "notes_fa": "یک Probe از مسیر مستقیم ایران پیش از دریافت پاسخ HTTP با Connection refused شکست خورد."
+            "notes_fa": "یک Probe از مسیر مستقیم ایران پیش از دریافت پاسخ HTTP با Connection refused شکست خورد؛ این نتیجه به‌تنهایی محدودیت جغرافیایی را ثابت نمی‌کند."
           },
           {
             "type": "connectivity_test",
@@ -593,7 +593,7 @@
             "endpoint": "https://api.fireworks.ai/inference/v1/chat/completions",
             "source": "IRAN_SERVER — direct connectivity probe",
             "connectivity_result": "timeout",
-            "notes_fa": "اتصال به api.fireworks.ai از ایران با Timeout ۱۵ ثانیه‌ای مواجه شد."
+            "notes_fa": "اتصال مستقیم ایران پیش از دریافت پاسخ HTTP با Timeout مواجه شد؛ علت شبکه‌ای از وضعیت حساب تفکیک نشده است."
           },
           {
             "type": "live_test",
@@ -605,10 +605,10 @@
             "source": "DIRECT_CONTROL_SERVER (AS24940)",
             "credential_validated_from": "DIRECT_CONTROL_SERVER (AS24940)",
             "credential_validated_status": 403,
-            "notes_fa": "یک حساب جدید ایجاد و از سرور کنترل خارجی تست شد. همه endpointها با HTTP 403 و کلاس خطای «sanctioned_origin_country» پاسخ دادند. محدودیت در سطح حساب اعمال شده است. وضعیت شبکه ایران همچنان نامشخص است."
+            "notes_fa": "Endpointهای آزمایش‌شده برای یک حساب جدید از مسیر کنترل مستقیم خارجی با HTTP 403 و کلاس خطای sanitized «sanctioned_origin_country» پاسخ دادند. این نتیجه مانع سطح همان حساب را نشان می‌دهد؛ وضعیت شبکه ایران و موفقیت حساب‌های دیگر را تعیین نمی‌کند."
           }
         ],
-        "notes_fa": "حساب جدید Fireworks AI از سرور کنترل خارجی با 403 (sanctioned_origin_country) مسدود شد. شبکه ایران نیز Timeout دارد. نمی‌توان نتیجه گرفت که مسدودیت شبکه ایران ناشی از Geo-blocking است یا خیر."
+        "notes_fa": "یک حساب آزمایشی Fireworks AI در مسیر کنترل خارجی با HTTP 403 و کلاس sanitized «sanctioned_origin_country» متوقف شد. مسیر مستقیم ایران نیز پیش از پاسخ HTTP شکست خورد؛ بنابراین Geo-block شبکه ایران از مانع حساب تفکیک نشده است."
       },
       "models": {
         "dynamic": true,
@@ -676,7 +676,7 @@
         "official_policy": "not_documented",
         "tested_from_iran": true,
         "tested_at": "2026-07-21",
-        "test_method": "connectivity_probe",
+        "test_method": "signup_only",
         "network": {
           "country": "IR",
           "route": "direct"
@@ -704,10 +704,10 @@
             "type": "community_report",
             "url": "https://support.discord.com/hc/en-us/articles/360017947012-Phone-Verification",
             "checked_at": "2026-07-21",
-            "notes_fa": "ورود به Discord با اکانت جدید امکان‌پذیر است اما برای دریافت کلید API از ربات FreeTheAI، احراز هویت با شماره تلفن الزامی است. کاربر تست‌کننده به شماره تلفن خارجی دسترسی نداشت. استنتاج احراز هویت‌شده انجام نشد."
+            "notes_fa": "در جریان ثبت‌نام آزمایشی، Discord برای ادامه دریافت کلید از ربات FreeTheAI تأیید شماره تلفن درخواست کرد و حساب آزمایشی نتوانست این مرحله را کامل کند. این مشاهده به همان حساب و جریان ثبت‌نام محدود است؛ کلید صادر و استنتاج احراز هویت‌شده اجرا نشد."
           }
         ],
-        "notes_fa": "Endpoint از ایران قابل دسترس است. صدور کلید API از طریق Discord نیاز به شماره تلفن دارد. استنتاج احراز هویت‌شده انجام نشد."
+        "notes_fa": "Endpoint از ایران قابل دسترس است. در حساب آزمایشی، مرحله دریافت کلید در تأیید شماره تلفن Discord متوقف شد؛ این نتیجه به همان حساب و جریان ثبت‌نام محدود است و استنتاج احراز هویت‌شده انجام نشد."
       },
       "models": {
         "dynamic": true,
@@ -725,7 +725,7 @@
         "checked_by": "maintainers",
         "stale_after_days": 14
       },
-      "notes_fa": "این سرویس یک Gateway اجتماعی است، نه Provider اصلی مدل. پایداری، قوانین و ظرفیت آن باید مستقل از Providerهای رسمی پایش شود. ثبت‌نام از طریق Discord (/signup) امکان‌پذیر است و مانع باقی‌مانده دریافت کلید و اجرای درخواست مدل است.",
+      "notes_fa": "این سرویس یک Gateway اجتماعی است، نه Provider اصلی مدل. پایداری، قوانین و ظرفیت آن باید مستقل از Providerهای رسمی پایش شود. ثبت‌نام از طریق Discord (/signup) امکان‌پذیر است و در حساب آزمایشی مانع باقی‌مانده دریافت کلید و اجرای درخواست مدل بود.",
       "sources": [
         "https://github.com/Free-The-Ai/free-ai",
         "https://freetheai.xyz/docs",
@@ -1505,7 +1505,7 @@
         "official_policy": "not_documented",
         "tested_from_iran": true,
         "tested_at": "2026-07-21",
-        "test_method": "connectivity_probe",
+        "test_method": "signup_only",
         "network": {
           "country": "IR",
           "route": "direct"
@@ -1518,7 +1518,7 @@
             "endpoint": "https://integrate.api.nvidia.com/v1/models",
             "source": "IRAN_SERVER — direct connectivity probe",
             "connectivity_result": "http_response",
-            "notes_fa": "Endpoint مدل‌ها از مسیر مستقیم ایران پاسخ HTTP 200 داد."
+            "notes_fa": "Endpoint مدل‌ها از مسیر مستقیم ایران پاسخ HTTP 200 داد؛ این نتیجه فقط Reachability را نشان می‌دهد."
           },
           {
             "type": "connectivity_test",
@@ -1527,16 +1527,16 @@
             "endpoint": "https://integrate.api.nvidia.com/v1/chat/completions",
             "source": "IRAN_SERVER — direct connectivity probe",
             "connectivity_result": "http_response",
-            "notes_fa": "Endpoint از ایران قابل دسترس است (HTTP 404). نیاز به API key."
+            "notes_fa": "Endpoint از ایران پاسخ HTTP 404 داد؛ این پاسخ موفقیت احراز هویت یا استنتاج مدل را ثابت نمی‌کند."
           },
           {
             "type": "community_report",
             "url": "https://developer.nvidia.com/login",
             "checked_at": "2026-07-21",
-            "notes_fa": "ثبت‌نام در NVIDIA Developer Program نیاز به تأیید هویت با شماره تلفن دارد. حساب تست‌کننده نتوانست این مرحله را کامل کند. کلید API صادر نشد. استنتاج احراز هویت‌شده انجام نشد."
+            "notes_fa": "در حساب آزمایشی NVIDIA Developer Program، جریان ثبت‌نام تأیید شماره تلفن درخواست کرد و همان حساب نتوانست مرحله را کامل کند. این مشاهده به همان حساب و جریان ثبت‌نام محدود است؛ کلید API صادر و استنتاج احراز هویت‌شده اجرا نشد."
           }
         ],
-        "notes_fa": "Endpoint از ایران قابل دسترس است. ثبت‌نام در NVIDIA Developer Program نیاز به تأیید هویت با شماره تلفن دارد. استنتاج احراز هویت‌شده انجام نشد."
+        "notes_fa": "Endpointهای عمومی از ایران پاسخ دادند. در حساب آزمایشی، ثبت‌نام در مرحله تأیید شماره تلفن متوقف شد؛ این نتیجه به همان حساب محدود است و استنتاج احراز هویت‌شده از ایران انجام نشد."
       },
       "models": {
         "dynamic": true,
@@ -2062,7 +2062,7 @@
             "endpoint": "https://ai-gateway.vercel.sh/v1/models",
             "source": "IRAN_SERVER — direct connectivity probe",
             "connectivity_result": "http_response",
-            "notes_fa": "Endpoint مدل‌ها از مسیر مستقیم ایران پاسخ HTTP 200 داد."
+            "notes_fa": "Endpoint عمومی مدل‌ها از مسیر مستقیم ایران پاسخ HTTP 200 داد؛ این نتیجه فقط Reachability را نشان می‌دهد و اعتبار کلید را ثابت نمی‌کند."
           },
           {
             "type": "connectivity_test",
@@ -2071,7 +2071,7 @@
             "endpoint": "https://ai-gateway.vercel.sh/v1/chat/completions",
             "source": "IRAN_SERVER — direct connectivity probe",
             "connectivity_result": "http_response",
-            "notes_fa": "Endpoint از ایران قابل دسترس است (HTTP 401). نیاز به API key."
+            "notes_fa": "Endpoint از ایران پاسخ HTTP 401 داد؛ این پاسخ فقط نیاز به احراز هویت را نشان می‌دهد."
           },
           {
             "type": "live_test",
@@ -2083,10 +2083,10 @@
             "source": "DIRECT_CONTROL_SERVER (AS24940)",
             "credential_validated_from": "DIRECT_CONTROL_SERVER (AS24940)",
             "credential_validated_status": 403,
-            "notes_fa": "استنتاج احراز هویت‌شده از سرور کنترل خارجی با HTTP 403 رد شد. سرویس اعلام کرد که حساب نیاز به کارت پرداخت معتبر دارد (حتی برای استفاده از اعتبار رایگان). مستندات رسمی Vercel اعتبار رایگان ماهانه ۵ دلار را مستقل از این مانع فعال‌سازی حساب اعلام کرده است. استنتاج از ایران انجام نشد."
+            "notes_fa": "در حساب آزمایشی، درخواست احراز هویت‌شده از مسیر کنترل مستقیم خارجی با HTTP 403 رد شد و جریان همان حساب مانع پرداخت یا تأیید مشتری را گزارش کرد. این مشاهده به همان حساب محدود است؛ مستندات رسمی همچنان اعتبار رایگان ماهانه ۵ دلار را اعلام می‌کنند و استنتاج احراز هویت‌شده از ایران انجام نشد."
           }
         ],
-        "notes_fa": "Endpoint از ایران قابل دسترس است. استنتاج احراز هویت‌شده از سرور کنترل خارجی نیاز به فعال‌سازی حساب با کارت پرداخت دارد. مستندات رسمی Vercel اعتبار رایگان ماهانه ۵ دلار را جداگانه اعلام کرده است."
+        "notes_fa": "Endpointهای عمومی از ایران قابل دسترس‌اند. حساب آزمایشی در مسیر کنترل خارجی پیش از استنتاج با مانع فعال‌سازی پرداخت یا تأیید مشتری روبه‌رو شد؛ این نتیجه به همان حساب محدود است و الزام عمومی کارت برای همه کاربران را ثابت نمی‌کند."
       },
       "models": {
         "dynamic": true,
