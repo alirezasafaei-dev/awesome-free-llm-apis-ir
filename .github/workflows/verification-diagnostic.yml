@@ -1,0 +1,52 @@
+name: Verification diagnostic
+
+on:
+  push:
+    branches:
+      - agent/provider-evidence-clean-rebuild-20260721
+
+permissions:
+  contents: read
+
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 22
+      - run: npm ci
+      - name: Capture privacy output
+        shell: bash
+        run: |
+          set +e
+          npm run privacy:test > privacy.log 2>&1
+          printf '%s\n' "$?" > privacy.status
+          exit 0
+      - name: Capture npm test output
+        shell: bash
+        run: |
+          set +e
+          npm test > npm-test.log 2>&1
+          printf '%s\n' "$?" > npm-test.status
+          exit 0
+      - name: Upload diagnostics
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: verification-diagnostic-${{ github.sha }}
+          path: |
+            privacy.log
+            privacy.status
+            npm-test.log
+            npm-test.status
+          if-no-files-found: error
+          retention-days: 1
+      - name: Preserve result
+        if: always()
+        shell: bash
+        run: |
+          test "$(cat privacy.status)" = "0"
+          test "$(cat npm-test.status)" = "0"
