@@ -64,15 +64,24 @@ jobs:
         env:
           SOURCE_REVISION: ${{ github.sha }}
       - run: npm run site:check
-      - name: Package immutable VPS release candidate
+      - name: Stage immutable release
         run: |
           set -Eeuo pipefail
-          stage_dir="$(mktemp -d)"
-          trap 'rm -rf "$stage_dir"' EXIT
-          cp -a .site-dist/. "$stage_dir/"
-          tar -czf "$GITHUB_WORKSPACE/site-release.tar.gz" -C "$stage_dir" .
+          rm -rf .release-stage
+          mkdir .release-stage
+          cp -a .site-dist/. .release-stage/
+          test -s .release-stage/build-meta.json
+      - name: Create VPS release archive
+        run: |
+          set -Eeuo pipefail
+          tar -czf site-release.tar.gz -C .release-stage .
+          test -s site-release.tar.gz
+      - name: Verify VPS release archive
+        run: |
+          set -Eeuo pipefail
           tar -tzf site-release.tar.gz >/dev/null
           sha256sum site-release.tar.gz > site-release.tar.gz.sha256
+          sha256sum -c site-release.tar.gz.sha256
       - name: Upload VPS release candidate
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
