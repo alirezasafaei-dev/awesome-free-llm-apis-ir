@@ -21,7 +21,7 @@
     "content:en:build": "node scripts/build-english-content.mjs",
     "seo:translations:test": "node scripts/test-seo-translation-pairs.mjs",
     "seo:policy:test": "node scripts/test-seo-page-policy.mjs",
-    "seo:strict:test": "node scripts/check-seo-opportunities.mjs --strict && npm run seo:public-routes:test",
+    "seo:strict:test": "node scripts/check-seo-opportunities.mjs --strict && npm run seo:public-routes:test && npm run seo:serp:test",
     "ux:clarity:test": "node scripts/test-ux-clarity-contract.mjs",
     "ux:quick-start:test": "node scripts/test-developer-quick-start.mjs",
     "ux:finder:test": "node scripts/test-api-finder-clarity.mjs",
@@ -45,7 +45,7 @@
     "content:audit:test": "node scripts/test-content-audit-contract.mjs",
     "content:guides:test": "node scripts/test-expanded-guides-content.mjs",
     "check:freshness": "node scripts/check-freshness.mjs --strict",
-    "site:build": "node scripts/build-site-production.mjs && npm run content:fa:build && node scripts/apply-ux-seo-p0.mjs",
+    "site:build": "node scripts/build-site-production.mjs && npm run content:fa:build && node scripts/apply-ux-seo-p0.mjs && node scripts/apply-serp-metadata-p1.mjs",
     "site:check": "node scripts/check-site.mjs",
     "site:data:test": "node scripts/test-published-data-json.mjs",
     "pages:paths:test": "node scripts/test-pages-path-portability.mjs",
@@ -93,6 +93,7 @@
     "test": "npm run validate && npm run providers:normalize && npm run roadmap:test && npm run privacy:test && npm run privacy:evidence:test && npm run privacy:github:test && npm run workflow-pins:test && npm run deployment:artifact:test && npm run release:candidate:test && npm run content:fa:test && npm run content:en:test && npm run seo:translations:test && npm run seo:policy:test && npm run seo:strict:test && npm run ux:seo:p0:test && npm run ux:clarity:test && npm run ux:quick-start:test && npm run ux:finder:test && npm run compare:test && npm run ux:research:test && npm run content:providers:validate && npm run content:providers:test && npm run content:providers:pages:test && npm run content:audit:test && npm run content:guides:test && npm run content:fa:live:verify:dry && npm run launch:links:test && npm run links:test && npm run launch:log:test && npm run verification:backlog:test && npm run generate:check && npm run catalog:check && npm run data:test && npm run brand:test && npm run site:data:test && npm run verify:iran:dry && npm run upstreams:test && npm run advisor:test && npm run benchmark:validate && npm run benchmark:dry && npm run benchmark:test && npm run api-health:test && npm run production:smoke:test && npm run production:ux-smoke:test && npm run post-launch:ops:test && npm run pages:paths:test && npm run site:check && npm run analytics:production:test && npm run deploy:check && npm run deploy:test && npm run validate:tools && npm run generate:tools:check && npm run tools:test && npm run tools:site:test && npm run validate:repo-audits && npm run hermes:pilot:test",
     "brand:test": "node scripts/test-brand-assets.mjs",
     "seo:public-routes:test": "node scripts/test-seo-public-routes.mjs",
+    "seo:serp:test": "node scripts/test-serp-metadata.mjs",
     "ux:seo:p0:test": "node scripts/test-ux-seo-p0.mjs"
   },
   "engines": {
