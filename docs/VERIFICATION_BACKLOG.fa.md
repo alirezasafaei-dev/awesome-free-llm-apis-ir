@@ -7,21 +7,23 @@
 | Issue | وضعیت | دامنه |
 |---|---|---|---|
 | #32 | بخشی انجام‌شده | تکمیل Hardening و بازبینی دسترسی میزبان اعتبارسنجی |
-| #33 | بخشی بسته‌شده | ۴ Provider از ۵ مسدود دائم (بدون راهکار از ایران)، ۱ تأییدشده، ۱ نامشخص |
+| #33 | بسته‌شده | هر ۵ Provider بررسی شدند: ۱ تأییدشده، ۴ مسدود دائم |
 | #34 | تکمیل‌شده | مستندسازی موانع Signup و الزامات هویتی |
 | #35 | بخشی انجام‌شده | ثبت ASN مسیر دوم ایران و تکمیل ماتریس مستقل شبکه |
 
 ## Providerهای باقی‌مانده
 
+✅ **هیچ Provider با وضعیت `unknown` باقی نمانده است.**
+
 | Provider | وضعیت نهایی | دلیل |
 |---|---|---|
-| `fireworks-ai` | ❓ نامشخص | حساب asdevelooper-de0ciua معلق + Timeout شبکه از ایران |
-| `agnes-ai` | ✅ تأییدشده | استنتاج احراز هویت‌شده از ایران (AS196864) با HTTP 200 و مدل agnes-2.0-flash |
-| `freetheai` | 🔴 مسدود دائم | Discord برای صدور کلید نیاز به شماره تلفن خارجی دارد |
-| `nvidia-nim` | 🔴 مسدود دائم | ثبت‌نام NVIDIA Developer Program نیاز به شماره تلفن خارجی دارد |
-| `vercel-ai-gateway` | 🔴 مسدود دائم | Vercel برای اعتبار رایگان هم نیاز به کارت اعتباری خارجی دارد |
+| `agnes-ai` | ✅ **verified_working** | استنتاج احراز هویت‌شده از ایران (AS196864) با HTTP 200 |
+| `fireworks-ai` | 🔴 **signup_blocked** | حساب جدید از ایران مسدود شد: {"blocked":true,"reason":"sanctioned origin country"} |
+| `freetheai` | 🔴 **signup_blocked** | Discord برای صدور کلید نیاز به شماره تلفن خارجی |
+| `nvidia-nim` | 🔴 **signup_blocked** | ثبت‌نام NVIDIA Developer Program نیاز به شماره تلفن خارجی |
+| `vercel-ai-gateway` | 🔴 **signup_blocked** | Vercel برای اعتبار رایگان هم نیاز به کارت اعتباری خارجی |
 
-ModelScope و SiliconFlow نیز `signup_blocked` هستند (مسئله #34 قبلاً مستند شده).
+ModelScope و SiliconFlow نیز `signup_blocked` هستند (مسئله #34).
 
 ## قواعد اجرا
 

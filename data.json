@@ -324,16 +324,16 @@
         "structured_output"
       ],
       "iranAccess": {
-        "status": "unknown",
+        "status": "signup_blocked",
         "label": "❔ نامشخص",
         "tested": true,
-        "testedAt": "2026-07-20",
+        "testedAt": "2026-07-21",
         "network": {
           "country": "IR",
           "route": "direct"
         },
-        "evidenceCount": 4,
-        "notesFa": "وضعیت نامشخص باقی می‌ماند. حساب asdevelooper-de0ciua در Fireworks معلق است و نمی‌توان Credential را معتبر دانست. از ایران نیز endpoint با Timeout مواجه شد. تا زمانی که حساب فعال در اختیار نباشد، تفکیک Geo-block از مشکلات حساب ممکن نیست."
+        "evidenceCount": 5,
+        "notesFa": "ثبت‌نام در Fireworks AI از ایران منجر به مسدودیت حساب در سطح سرویس می‌شود (sanctioned origin country). حتی کلید جدید هم از سرور خارج (آلمان) با ۴۰۳ مسدود شد. شبکه از ایران نیز Timeout دارد."
       },
       "models": [
         "llama-3.3-70b",
@@ -345,7 +345,7 @@
       "verification": {
         "level": "live_verified",
         "lastChecked": "2026-07-21",
-        "staleAfterDays": 30
+        "staleAfterDays": 14
       },
       "health": {
         "provider_id": "fireworks-ai",
