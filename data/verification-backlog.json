@@ -4,7 +4,7 @@
   "parent_issue": 29,
   "summary": {
     "provider_count": 22,
-    "unknown_count": 0
+    "unknown_count": 1
   },
   "tracks": [
     {
@@ -13,8 +13,10 @@
       "priority": "P0",
       "execution": "local",
       "status": "partially_completed",
-      "providers": [],
-      "blocker_type": "security_review"
+      "providers": [
+        "fireworks-ai"
+      ],
+      "blocker_type": "credential_rotation_confirmation"
     },
     {
       "id": "account_access",
@@ -53,7 +55,7 @@
         {
           "provider_id": "freetheai",
           "resolution": "signup_blocked",
-          "reason": "Discord API key requires phone verification; test user could not complete this step"
+          "reason": "The tested Discord signup flow required phone verification and the test account could not complete it"
         }
       ]
     },
@@ -63,9 +65,24 @@
       "priority": "P0",
       "execution": "local",
       "status": "partially_completed",
-      "providers": [],
-      "blocker_type": "independent_asn_and_vpn"
+      "providers": [
+        "agnes-ai",
+        "fireworks-ai",
+        "freetheai",
+        "nvidia-nim",
+        "vercel-ai-gateway"
+      ],
+      "blocker_type": "same_request_direct_route_matrix"
     }
   ],
-  "providers": []
+  "providers": [
+    {
+      "provider_id": "agnes-ai",
+      "track_issue": 33,
+      "blocker_type": "authenticated_iran_inference",
+      "next_action": "Run the same authorized model request from the Iran direct route and the foreign direct-control route, then publish only sanitized status evidence.",
+      "requires_local_execution": true,
+      "automatable": false
+    }
+  ]
 }
