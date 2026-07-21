@@ -14,7 +14,7 @@ NVIDIA_API_KEY
 VERCEL_AI_GATEWAY_API_KEY
 ```
 
-شناسه مدل‌ها Secret نیستند، اما باید پیش از تست از Model list جاری هر سرویس تأیید شوند.
+کلیدها را در Chat، Issue comment یا Pull Request ارسال نکنید. شناسه مدل‌ها Secret نیستند، اما باید پیش از تست از Model list جاری هر سرویس تأیید شوند.
 
 ## Agnes AI
 
