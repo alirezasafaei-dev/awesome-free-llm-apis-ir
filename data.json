@@ -53,15 +53,13 @@
       "health": {
         "provider_id": "agnes-ai",
         "last_verification_date": "2026-07-20",
-        "endpoint_status": "unknown",
+        "endpoint_status": "reachable",
         "endpoint_tested": "https://apihub.agnes-ai.com/v1",
         "documentation_change_detected": false,
         "documentation_last_checked": "2026-07-20",
-        "broken_links": [
-          "https://apihub.agnes-ai.com/v1"
-        ],
-        "latency_ms": 2852,
-        "notes": null,
+        "broken_links": [],
+        "latency_ms": 1750,
+        "notes": "The API host responded with HTTP 404; reachability is confirmed but inference is not verified.",
         "checked_by": "system"
       }
     },
@@ -114,15 +112,13 @@
       "health": {
         "provider_id": "aion-labs",
         "last_verification_date": "2026-07-20",
-        "endpoint_status": "unknown",
+        "endpoint_status": "reachable",
         "endpoint_tested": "https://api.aionlabs.ai/v1",
         "documentation_change_detected": false,
         "documentation_last_checked": "2026-07-20",
-        "broken_links": [
-          "https://api.aionlabs.ai/v1"
-        ],
-        "latency_ms": 1869,
-        "notes": null,
+        "broken_links": [],
+        "latency_ms": 1857,
+        "notes": "The API host responded with HTTP 404; reachability is confirmed but inference is not verified.",
         "checked_by": "system"
       }
     },
@@ -175,16 +171,15 @@
       "health": {
         "provider_id": "cerebras",
         "last_verification_date": "2026-07-20",
-        "endpoint_status": "degraded",
+        "endpoint_status": "auth_required",
         "endpoint_tested": "https://api.cerebras.ai/v1",
         "documentation_change_detected": false,
         "documentation_last_checked": "2026-07-20",
         "broken_links": [
-          "https://cloud.cerebras.ai/",
-          "https://api.cerebras.ai/v1"
+          "https://cloud.cerebras.ai/"
         ],
-        "latency_ms": 3108,
-        "notes": null,
+        "latency_ms": 2359,
+        "notes": "Unauthenticated probe reached the API and received HTTP 403; credentials are required.",
         "checked_by": "system"
       }
     },
@@ -235,15 +230,13 @@
       "health": {
         "provider_id": "cloudflare-workers-ai",
         "last_verification_date": "2026-07-20",
-        "endpoint_status": "unknown",
+        "endpoint_status": "reachable",
         "endpoint_tested": "https://api.cloudflare.com/client/v4/accounts/{account_id}/ai/v1",
         "documentation_change_detected": false,
         "documentation_last_checked": "2026-07-20",
-        "broken_links": [
-          "https://api.cloudflare.com/client/v4/accounts/{account_id}/ai/v1"
-        ],
-        "latency_ms": 3025,
-        "notes": null,
+        "broken_links": [],
+        "latency_ms": 2560,
+        "notes": "The API host responded with HTTP 400; reachability is confirmed but inference is not verified.",
         "checked_by": "system"
       }
     },
@@ -295,15 +288,13 @@
       "health": {
         "provider_id": "cohere",
         "last_verification_date": "2026-07-20",
-        "endpoint_status": "degraded",
+        "endpoint_status": "auth_required",
         "endpoint_tested": "https://api.cohere.com/v2",
         "documentation_change_detected": false,
         "documentation_last_checked": "2026-07-20",
-        "broken_links": [
-          "https://api.cohere.com/v2"
-        ],
-        "latency_ms": 4538,
-        "notes": null,
+        "broken_links": [],
+        "latency_ms": 3145,
+        "notes": "Unauthenticated probe reached the API and received HTTP 403; credentials are required.",
         "checked_by": "system"
       }
     },
@@ -359,16 +350,15 @@
       "health": {
         "provider_id": "fireworks-ai",
         "last_verification_date": "2026-07-20",
-        "endpoint_status": "degraded",
+        "endpoint_status": "auth_required",
         "endpoint_tested": "https://api.fireworks.ai/inference/v1",
         "documentation_change_detected": false,
         "documentation_last_checked": "2026-07-20",
         "broken_links": [
-          "https://api.fireworks.ai/inference/v1",
           "https://fireworks.ai/"
         ],
-        "latency_ms": 8019,
-        "notes": null,
+        "latency_ms": 3959,
+        "notes": "Unauthenticated probe reached the API and received HTTP 403; credentials are required.",
         "checked_by": "system"
       }
     },
@@ -423,15 +413,13 @@
       "health": {
         "provider_id": "freetheai",
         "last_verification_date": "2026-07-20",
-        "endpoint_status": "unknown",
+        "endpoint_status": "reachable",
         "endpoint_tested": "https://api.freetheai.xyz/v1",
         "documentation_change_detected": false,
         "documentation_last_checked": "2026-07-20",
-        "broken_links": [
-          "https://api.freetheai.xyz/v1"
-        ],
-        "latency_ms": 3752,
-        "notes": null,
+        "broken_links": [],
+        "latency_ms": 1990,
+        "notes": "The API host responded with HTTP 404; reachability is confirmed but inference is not verified.",
         "checked_by": "system"
       }
     },
@@ -481,15 +469,15 @@
       "health": {
         "provider_id": "github-models",
         "last_verification_date": "2026-07-20",
-        "endpoint_status": "degraded",
+        "endpoint_status": "down",
         "endpoint_tested": "https://models.github.ai/inference",
         "documentation_change_detected": false,
         "documentation_last_checked": "2026-07-20",
         "broken_links": [
           "https://models.github.ai/inference"
         ],
-        "latency_ms": 4403,
-        "notes": null,
+        "latency_ms": 2315,
+        "notes": "API infrastructure probe failed: fetch failed",
         "checked_by": "system"
       }
     },
@@ -539,17 +527,16 @@
       "health": {
         "provider_id": "google-gemini",
         "last_verification_date": "2026-07-20",
-        "endpoint_status": "degraded",
+        "endpoint_status": "auth_required",
         "endpoint_tested": "https://generativelanguage.googleapis.com/v1beta",
         "documentation_change_detected": false,
         "documentation_last_checked": "2026-07-20",
         "broken_links": [
-          "https://generativelanguage.googleapis.com/v1beta",
           "https://ai.google.dev/",
           "https://ai.google.dev/gemini-api/docs"
         ],
-        "latency_ms": 2574,
-        "notes": null,
+        "latency_ms": 1929,
+        "notes": "Unauthenticated probe reached the API and received HTTP 403; credentials are required.",
         "checked_by": "system"
       }
     },
@@ -602,16 +589,15 @@
       "health": {
         "provider_id": "groq",
         "last_verification_date": "2026-07-20",
-        "endpoint_status": "degraded",
+        "endpoint_status": "auth_required",
         "endpoint_tested": "https://api.groq.com/openai/v1",
         "documentation_change_detected": false,
         "documentation_last_checked": "2026-07-20",
         "broken_links": [
-          "https://api.groq.com/openai/v1",
           "https://console.groq.com/docs/quickstart"
         ],
-        "latency_ms": 1640,
-        "notes": null,
+        "latency_ms": 1124,
+        "notes": "Unauthenticated probe reached the API and received HTTP 403; credentials are required.",
         "checked_by": "system"
       }
     },
@@ -661,15 +647,13 @@
       "health": {
         "provider_id": "hugging-face-inference",
         "last_verification_date": "2026-07-20",
-        "endpoint_status": "unknown",
+        "endpoint_status": "reachable",
         "endpoint_tested": "https://router.huggingface.co/v1",
         "documentation_change_detected": false,
         "documentation_last_checked": "2026-07-20",
-        "broken_links": [
-          "https://router.huggingface.co/v1"
-        ],
-        "latency_ms": 3537,
-        "notes": null,
+        "broken_links": [],
+        "latency_ms": 1767,
+        "notes": "The API host responded with HTTP 404; reachability is confirmed but inference is not verified.",
         "checked_by": "system"
       }
     },
@@ -720,15 +704,13 @@
       "health": {
         "provider_id": "kilo-gateway",
         "last_verification_date": "2026-07-20",
-        "endpoint_status": "unknown",
+        "endpoint_status": "reachable",
         "endpoint_tested": "https://api.kilo.ai/api/gateway",
         "documentation_change_detected": false,
         "documentation_last_checked": "2026-07-20",
-        "broken_links": [
-          "https://api.kilo.ai/api/gateway"
-        ],
-        "latency_ms": 1324,
-        "notes": null,
+        "broken_links": [],
+        "latency_ms": 874,
+        "notes": "The API host responded with HTTP 404; reachability is confirmed but inference is not verified.",
         "checked_by": "system"
       }
     },
@@ -783,15 +765,13 @@
       "health": {
         "provider_id": "llm7-io",
         "last_verification_date": "2026-07-20",
-        "endpoint_status": "unknown",
+        "endpoint_status": "reachable",
         "endpoint_tested": "https://api.llm7.io/v1",
         "documentation_change_detected": false,
         "documentation_last_checked": "2026-07-20",
-        "broken_links": [
-          "https://api.llm7.io/v1"
-        ],
-        "latency_ms": 3601,
-        "notes": null,
+        "broken_links": [],
+        "latency_ms": 1021,
+        "notes": "The API host responded with HTTP 404; reachability is confirmed but inference is not verified.",
         "checked_by": "system"
       }
     },
@@ -843,15 +823,13 @@
       "health": {
         "provider_id": "mistral",
         "last_verification_date": "2026-07-20",
-        "endpoint_status": "unknown",
+        "endpoint_status": "reachable",
         "endpoint_tested": "https://api.mistral.ai/v1",
         "documentation_change_detected": false,
         "documentation_last_checked": "2026-07-20",
-        "broken_links": [
-          "https://api.mistral.ai/v1"
-        ],
-        "latency_ms": 2283,
-        "notes": null,
+        "broken_links": [],
+        "latency_ms": 1123,
+        "notes": "The API host responded with HTTP 404; reachability is confirmed but inference is not verified.",
         "checked_by": "system"
       }
     },
@@ -910,15 +888,13 @@
       "health": {
         "provider_id": "modelscope",
         "last_verification_date": "2026-07-20",
-        "endpoint_status": "unknown",
+        "endpoint_status": "reachable",
         "endpoint_tested": "https://api-inference.modelscope.cn/v1",
         "documentation_change_detected": false,
         "documentation_last_checked": "2026-07-20",
-        "broken_links": [
-          "https://api-inference.modelscope.cn/v1"
-        ],
-        "latency_ms": 4461,
-        "notes": null,
+        "broken_links": [],
+        "latency_ms": 3531,
+        "notes": "The API host responded with HTTP 404; reachability is confirmed but inference is not verified.",
         "checked_by": "system"
       }
     },
@@ -968,16 +944,13 @@
       "health": {
         "provider_id": "nvidia-nim",
         "last_verification_date": "2026-07-20",
-        "endpoint_status": "degraded",
+        "endpoint_status": "auth_required",
         "endpoint_tested": "https://integrate.api.nvidia.com/v1",
         "documentation_change_detected": false,
         "documentation_last_checked": "2026-07-20",
-        "broken_links": [
-          "https://integrate.api.nvidia.com/v1",
-          "https://build.nvidia.com/"
-        ],
-        "latency_ms": 4801,
-        "notes": null,
+        "broken_links": [],
+        "latency_ms": 3169,
+        "notes": "Unauthenticated probe reached the API and received HTTP 403; credentials are required.",
         "checked_by": "system"
       }
     },
@@ -1032,15 +1005,13 @@
       "health": {
         "provider_id": "opencode-zen",
         "last_verification_date": "2026-07-20",
-        "endpoint_status": "unknown",
+        "endpoint_status": "reachable",
         "endpoint_tested": "https://opencode.ai/zen/v1",
         "documentation_change_detected": false,
         "documentation_last_checked": "2026-07-20",
-        "broken_links": [
-          "https://opencode.ai/zen/v1"
-        ],
-        "latency_ms": 2232,
-        "notes": null,
+        "broken_links": [],
+        "latency_ms": 2838,
+        "notes": "The API host responded with HTTP 404; reachability is confirmed but inference is not verified.",
         "checked_by": "system"
       }
     },
@@ -1089,17 +1060,16 @@
       "health": {
         "provider_id": "openrouter",
         "last_verification_date": "2026-07-20",
-        "endpoint_status": "degraded",
+        "endpoint_status": "auth_required",
         "endpoint_tested": "https://openrouter.ai/api/v1",
         "documentation_change_detected": false,
         "documentation_last_checked": "2026-07-20",
         "broken_links": [
           "https://openrouter.ai/",
-          "https://openrouter.ai/api/v1",
           "https://openrouter.ai/docs/quickstart"
         ],
-        "latency_ms": 972,
-        "notes": null,
+        "latency_ms": 2311,
+        "notes": "Unauthenticated probe reached the API and received HTTP 403; credentials are required.",
         "checked_by": "system"
       }
     },
@@ -1152,15 +1122,13 @@
       "health": {
         "provider_id": "ovhcloud-ai-endpoints",
         "last_verification_date": "2026-07-20",
-        "endpoint_status": "unknown",
+        "endpoint_status": "reachable",
         "endpoint_tested": "https://oai.endpoints.kepler.ai.cloud.ovh.net/v1",
         "documentation_change_detected": false,
         "documentation_last_checked": "2026-07-20",
-        "broken_links": [
-          "https://oai.endpoints.kepler.ai.cloud.ovh.net/v1"
-        ],
-        "latency_ms": 2098,
-        "notes": null,
+        "broken_links": [],
+        "latency_ms": 3167,
+        "notes": "The API host responded with HTTP 404; reachability is confirmed but inference is not verified.",
         "checked_by": "system"
       }
     },
@@ -1214,16 +1182,13 @@
       "health": {
         "provider_id": "sambanova",
         "last_verification_date": "2026-07-20",
-        "endpoint_status": "down",
+        "endpoint_status": "reachable",
         "endpoint_tested": "https://api.sambanova.ai/v1",
         "documentation_change_detected": false,
         "documentation_last_checked": "2026-07-20",
-        "broken_links": [
-          "https://api.sambanova.ai/v1",
-          "https://cloud.sambanova.ai/"
-        ],
-        "latency_ms": 4404,
-        "notes": null,
+        "broken_links": [],
+        "latency_ms": 2662,
+        "notes": "The API host responded with HTTP 405; reachability is confirmed but inference is not verified.",
         "checked_by": "system"
       }
     },
@@ -1277,17 +1242,13 @@
       "health": {
         "provider_id": "siliconflow",
         "last_verification_date": "2026-07-20",
-        "endpoint_status": "down",
+        "endpoint_status": "reachable",
         "endpoint_tested": "https://api.siliconflow.cn/v1",
         "documentation_change_detected": false,
         "documentation_last_checked": "2026-07-20",
-        "broken_links": [
-          "https://api.siliconflow.cn/v1",
-          "https://cloud.siliconflow.cn/",
-          "https://cloud.siliconflow.cn/account/ak"
-        ],
-        "latency_ms": 6596,
-        "notes": null,
+        "broken_links": [],
+        "latency_ms": 5730,
+        "notes": "The API host responded with HTTP 404; reachability is confirmed but inference is not verified.",
         "checked_by": "system"
       }
     },
@@ -1337,15 +1298,13 @@
       "health": {
         "provider_id": "vercel-ai-gateway",
         "last_verification_date": "2026-07-20",
-        "endpoint_status": "unknown",
+        "endpoint_status": "reachable",
         "endpoint_tested": "https://ai-gateway.vercel.sh/v1",
         "documentation_change_detected": false,
         "documentation_last_checked": "2026-07-20",
-        "broken_links": [
-          "https://ai-gateway.vercel.sh/v1"
-        ],
-        "latency_ms": 4892,
-        "notes": null,
+        "broken_links": [],
+        "latency_ms": 2470,
+        "notes": "The API host responded with HTTP 404; reachability is confirmed but inference is not verified.",
         "checked_by": "system"
       }
     }
