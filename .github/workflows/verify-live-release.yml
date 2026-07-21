@@ -1,0 +1,129 @@
+name: Verify live release
+
+on:
+  workflow_run:
+    workflows:
+      - Deploy VPS mirrors
+      - Deploy website
+    types: [completed]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  statuses: write
+
+concurrency:
+  group: verify-live-release-${{ github.event.workflow_run.head_sha || github.sha }}
+  cancel-in-progress: true
+
+jobs:
+  exact-release:
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      github.event.workflow_run.head_branch == 'main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      EXPECTED_SHA: ${{ github.event.workflow_run.head_sha || github.sha }}
+      UPSTREAM_CONCLUSION: ${{ github.event.workflow_run.conclusion || 'manual' }}
+      STATUS_CONTEXT: production-release/exact-revision
+      STATUS_TARGET_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.2.1
+        with:
+          ref: ${{ env.EXPECTED_SHA }}
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.3.0
+        with:
+          node-version: 22
+
+      - name: Mark exact-release verification pending
+        env:
+          COMMIT_STATUS_STATE: pending
+          COMMIT_STATUS_DESCRIPTION: Waiting for all public targets to expose the exact revision
+        run: |
+          node <<'NODE'
+          const { GH_TOKEN, GITHUB_API_URL, GITHUB_REPOSITORY, EXPECTED_SHA, COMMIT_STATUS_STATE, COMMIT_STATUS_DESCRIPTION, STATUS_CONTEXT, STATUS_TARGET_URL } = process.env;
+          const response = await fetch(`${GITHUB_API_URL}/repos/${GITHUB_REPOSITORY}/statuses/${EXPECTED_SHA}`, {
+            method: "POST",
+            headers: {
+              authorization: `Bearer ${GH_TOKEN}`,
+              accept: "application/vnd.github+json",
+              "x-github-api-version": "2022-11-28",
+              "content-type": "application/json"
+            },
+            body: JSON.stringify({
+              state: COMMIT_STATUS_STATE,
+              description: COMMIT_STATUS_DESCRIPTION,
+              context: STATUS_CONTEXT,
+              target_url: STATUS_TARGET_URL
+            })
+          });
+          if (!response.ok) throw new Error(`Unable to publish pending commit status: HTTP ${response.status}`);
+          NODE
+
+      - name: Reject failed upstream deployment
+        if: github.event_name == 'workflow_run' && env.UPSTREAM_CONCLUSION != 'success'
+        run: |
+          echo "Triggering deployment workflow concluded with: $UPSTREAM_CONCLUSION" >&2
+          exit 1
+
+      - name: Verify exact revision on global, Iran and Pages targets
+        run: >-
+          node scripts/check-live-release-revision.mjs
+          --expected-revision=${EXPECTED_SHA}
+          --attempts=36
+          --delay-ms=10000
+          --timeout-ms=15000
+
+      - name: Mark exact-release verification successful
+        if: success()
+        env:
+          COMMIT_STATUS_STATE: success
+          COMMIT_STATUS_DESCRIPTION: All public targets expose the exact Main revision
+        run: |
+          node <<'NODE'
+          const { GH_TOKEN, GITHUB_API_URL, GITHUB_REPOSITORY, EXPECTED_SHA, COMMIT_STATUS_STATE, COMMIT_STATUS_DESCRIPTION, STATUS_CONTEXT, STATUS_TARGET_URL } = process.env;
+          const response = await fetch(`${GITHUB_API_URL}/repos/${GITHUB_REPOSITORY}/statuses/${EXPECTED_SHA}`, {
+            method: "POST",
+            headers: {
+              authorization: `Bearer ${GH_TOKEN}`,
+              accept: "application/vnd.github+json",
+              "x-github-api-version": "2022-11-28",
+              "content-type": "application/json"
+            },
+            body: JSON.stringify({
+              state: COMMIT_STATUS_STATE,
+              description: COMMIT_STATUS_DESCRIPTION,
+              context: STATUS_CONTEXT,
+              target_url: STATUS_TARGET_URL
+            })
+          });
+          if (!response.ok) throw new Error(`Unable to publish success commit status: HTTP ${response.status}`);
+          NODE
+
+      - name: Mark exact-release verification failed
+        if: failure()
+        env:
+          COMMIT_STATUS_STATE: failure
+          COMMIT_STATUS_DESCRIPTION: One or more public targets failed exact-revision verification
+        run: |
+          node <<'NODE'
+          const { GH_TOKEN, GITHUB_API_URL, GITHUB_REPOSITORY, EXPECTED_SHA, COMMIT_STATUS_STATE, COMMIT_STATUS_DESCRIPTION, STATUS_CONTEXT, STATUS_TARGET_URL } = process.env;
+          const response = await fetch(`${GITHUB_API_URL}/repos/${GITHUB_REPOSITORY}/statuses/${EXPECTED_SHA}`, {
+            method: "POST",
+            headers: {
+              authorization: `Bearer ${GH_TOKEN}`,
+              accept: "application/vnd.github+json",
+              "x-github-api-version": "2022-11-28",
+              "content-type": "application/json"
+            },
+            body: JSON.stringify({
+              state: COMMIT_STATUS_STATE,
+              description: COMMIT_STATUS_DESCRIPTION,
+              context: STATUS_CONTEXT,
+              target_url: STATUS_TARGET_URL
+            })
+          });
+          if (!response.ok) throw new Error(`Unable to publish failure commit status: HTTP ${response.status}`);
+          NODE
