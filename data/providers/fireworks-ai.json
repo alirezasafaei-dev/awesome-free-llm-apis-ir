@@ -77,9 +77,21 @@
         "source": "IRAN_SERVER — direct connectivity probe",
         "connectivity_result": "timeout",
         "notes_fa": "اتصال به api.fireworks.ai از ایران با Timeout ۱۵ ثانیه‌ای مواجه شد. هیچ پاسخی دریافت نشد. این تنها یک Probe شبکه است و برای تأیید مسدودیت به تست با API key معتبر نیاز است."
+      },
+      {
+        "type": "live_test",
+        "timestamp": "2026-07-21T17:00:00.000Z",
+        "http_status": 404,
+        "latency_ms": 12000,
+        "model_tested": "accounts/fireworks/models/gpt-oss-120b",
+        "endpoint": "https://api.fireworks.ai/inference/v1/chat/completions",
+        "source": "FOREIGN_SERVER (DE, Hetzner AS24940)",
+        "credential_validated_from": "DIRECT_ATTEMPT",
+        "credential_validated_status": 404,
+        "notes_fa": "از سرور خارج (آلمان) درخواست با کلید موجود فرستاده شد. حساب asdevelooper-de0ciua معلق است (محدودیت مصرف یا صورت‌حساب پرداخت‌نشده). مدل‌ها قابل لیست نیستند (0 مدل). استنتاج با 404 رد شد. وضعیت شبکه از ایران همچنان Timeout است، اما به‌دلیل تعلیق حساب، نمی‌توان نتیجه گرفت که مسدودیت ایران ناشی از Geo-blocking است."
       }
     ],
-    "notes_fa": "وضعیت نامشخص می‌ماند: حساب فعلی معلق است و یک Probe دیگر نیز بدون پاسخ HTTP شکست خورده است. تست با حساب فعال و مقایسه همان Credential از مسیر پشتیبانی‌شده ضروری است."
+    "notes_fa": "وضعیت نامشخص باقی می‌ماند. حساب asdevelooper-de0ciua در Fireworks معلق است و نمی‌توان Credential را معتبر دانست. از ایران نیز endpoint با Timeout مواجه شد. تا زمانی که حساب فعال در اختیار نباشد، تفکیک Geo-block از مشکلات حساب ممکن نیست."
   },
   "models": {
     "dynamic": true,
@@ -94,7 +106,7 @@
   },
   "verification": {
     "level": "live_verified",
-    "last_checked": "2026-07-20",
+    "last_checked": "2026-07-21",
     "checked_by": "maintainers",
     "stale_after_days": 30
   },

@@ -13,7 +13,6 @@
 
 ## Providerهای باقی‌مانده
 
-- `agnes-ai`
 - `fireworks-ai`
 - `freetheai`
 - `nvidia-nim`

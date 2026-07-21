@@ -39,12 +39,12 @@
 <!-- This section is generated. Run: npm run generate -->
 | سرویس | نوع | رایگان | محدودیت نمونه | OpenAI-compatible | دسترسی ایران | آخرین بررسی |
 |---|---|---|---|:---:|---|---|
-| [Agnes AI](https://agnes-ai.com/) | Gateway رسمی | مدل‌های رایگان | 20 RPM | ✅ | ❔ نامشخص | 2026-07-20 |
+| [Agnes AI](https://agnes-ai.com/) | Gateway رسمی | مدل‌های رایگان | 20 RPM | ✅ | ✅ مستقیم تست‌شده | 2026-07-21 |
 | [Aion Labs](https://www.aionlabs.ai/) | Provider رسمی | سهمیه دائمی | 15 RPM · 20,000 TPM | ✅ | ⛔ مسدود | 2026-07-20 |
 | [Cerebras Inference](https://cloud.cerebras.ai/) | Gateway رسمی | آزمایشی | 5 RPM · 30,000 TPM | ✅ | ⛔ مسدود | 2026-07-20 |
 | [Cloudflare Workers AI](https://developers.cloudflare.com/workers-ai/) | Gateway رسمی | سهمیه دائمی | 10,000 neurons/day | ✅ | ✅ مستقیم تست‌شده | 2026-07-20 |
 | [Cohere](https://cohere.com/) | Provider رسمی | آزمایشی | 20 RPM · 1,000 requests/month | — | ⛔ مسدود | 2026-07-20 |
-| [Fireworks AI](https://fireworks.ai/) | Gateway رسمی | اعتبار ماهانه | 10 RPM | ✅ | ❔ نامشخص | 2026-07-20 |
+| [Fireworks AI](https://fireworks.ai/) | Gateway رسمی | اعتبار ماهانه | 10 RPM | ✅ | ❔ نامشخص | 2026-07-21 |
 | [FreeTheAI](https://freetheai.xyz/) | Gateway اجتماعی | مدل‌های رایگان | 10 RPM · 250 RPD | ✅ | ❔ نامشخص | 2026-07-20 |
 | [GitHub Models](https://github.com/marketplace/models) | Gateway رسمی | سهمیه دائمی | 15 RPM · 150 RPD | ✅ | ✅ مستقیم تست‌شده | 2026-07-20 |
 | [Google Gemini API](https://ai.google.dev/) | Provider رسمی | سهمیه دائمی | وابسته به حساب/مدل | ✅ | 🚫 پشتیبانی‌نشده رسمی | 2026-07-20 |

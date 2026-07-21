@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-07-20",
+  "lastUpdated": "2026-07-21",
   "providerCount": 22,
   "providers": [
     {
@@ -27,16 +27,16 @@
         "structured_output"
       ],
       "iranAccess": {
-        "status": "unknown",
-        "label": "❔ نامشخص",
+        "status": "verified_working",
+        "label": "✅ مستقیم تست‌شده",
         "tested": true,
-        "testedAt": "2026-07-20",
+        "testedAt": "2026-07-21",
         "network": {
           "country": "IR",
           "route": "direct"
         },
-        "evidenceCount": 2,
-        "notesFa": "Endpoint از ایران قابل دسترس است؛ برای تعیین وضعیت عملی سرویس، درخواست مدل با API key معتبر لازم است."
+        "evidenceCount": 3,
+        "notesFa": "درخواست احراز هویت‌شده با مدل agnes-2.0-flash از ایران با HTTP 200 پاسخ داده است. مدل از نوع reasoning و نتیجه استنتاج در فیلد reasoning_content قرار می‌گیرد. کلید API در سرور خارج (آلمان) نیز تأیید شده است. این نتیجه فقط برای ASN مسیر تست‌شده معتبر است."
       },
       "models": [
         "agnes-2.0-flash",
@@ -47,7 +47,7 @@
       ],
       "verification": {
         "level": "live_verified",
-        "lastChecked": "2026-07-20",
+        "lastChecked": "2026-07-21",
         "staleAfterDays": 30
       },
       "health": {
@@ -332,8 +332,8 @@
           "country": "IR",
           "route": "direct"
         },
-        "evidenceCount": 3,
-        "notesFa": "وضعیت نامشخص می‌ماند: حساب فعلی معلق است و یک Probe دیگر نیز بدون پاسخ HTTP شکست خورده است. تست با حساب فعال و مقایسه همان Credential از مسیر پشتیبانی‌شده ضروری است."
+        "evidenceCount": 4,
+        "notesFa": "وضعیت نامشخص باقی می‌ماند. حساب asdevelooper-de0ciua در Fireworks معلق است و نمی‌توان Credential را معتبر دانست. از ایران نیز endpoint با Timeout مواجه شد. تا زمانی که حساب فعال در اختیار نباشد، تفکیک Geo-block از مشکلات حساب ممکن نیست."
       },
       "models": [
         "llama-3.3-70b",
@@ -344,7 +344,7 @@
       ],
       "verification": {
         "level": "live_verified",
-        "lastChecked": "2026-07-20",
+        "lastChecked": "2026-07-21",
         "staleAfterDays": 30
       },
       "health": {

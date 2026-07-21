@@ -1,10 +1,10 @@
 {
   "schema_version": "1.0.0",
-  "last_updated": "2026-07-20",
+  "last_updated": "2026-07-21",
   "parent_issue": 29,
   "summary": {
     "provider_count": 22,
-    "unknown_count": 5
+    "unknown_count": 4
   },
   "tracks": [
     {
@@ -23,7 +23,6 @@
       "execution": "local",
       "status": "open",
       "providers": [
-        "agnes-ai",
         "freetheai",
         "nvidia-nim",
         "vercel-ai-gateway",
@@ -69,14 +68,6 @@
   ],
   "providers": [
     {
-      "provider_id": "agnes-ai",
-      "track_issue": 33,
-      "blocker_type": "account_access",
-      "next_action": "Obtain authorized API access and run a minimal model request from the direct Iran route.",
-      "requires_local_execution": true,
-      "automatable": false
-    },
-    {
       "provider_id": "freetheai",
       "track_issue": 33,
       "blocker_type": "community_key_required",
@@ -103,8 +94,8 @@
     {
       "provider_id": "fireworks-ai",
       "track_issue": 33,
-      "blocker_type": "inactive_account_and_inconclusive_network_failure",
-      "next_action": "Endpoint connection timed out from Iran. Repeat with an active authorized account to determine if it's truly geo-blocked.",
+      "blocker_type": "suspended_account_and_network_timeout",
+      "next_action": "Account asdevelooper-de0ciua is suspended (spending/billing). Need a new active Fireworks account with valid credential to retest from both Iran and foreign control.",
       "requires_local_execution": true,
       "automatable": false
     }
