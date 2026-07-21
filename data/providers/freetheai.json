@@ -41,7 +41,7 @@
     "official_policy": "not_documented",
     "tested_from_iran": true,
     "tested_at": "2026-07-21",
-    "test_method": "connectivity_probe",
+    "test_method": "signup_only",
     "network": {
       "country": "IR",
       "route": "direct"
@@ -69,10 +69,10 @@
         "type": "community_report",
         "url": "https://support.discord.com/hc/en-us/articles/360017947012-Phone-Verification",
         "checked_at": "2026-07-21",
-        "notes_fa": "ورود به Discord با اکانت جدید امکان‌پذیر است اما برای دریافت کلید API از ربات FreeTheAI، احراز هویت با شماره تلفن الزامی است. کاربر تست‌کننده به شماره تلفن خارجی دسترسی نداشت. استنتاج احراز هویت‌شده انجام نشد."
+        "notes_fa": "در جریان ثبت‌نام آزمایشی، Discord برای ادامه دریافت کلید از ربات FreeTheAI تأیید شماره تلفن درخواست کرد و حساب آزمایشی نتوانست این مرحله را کامل کند. این مشاهده به همان حساب و جریان ثبت‌نام محدود است؛ کلید صادر و استنتاج احراز هویت‌شده اجرا نشد."
       }
     ],
-    "notes_fa": "Endpoint از ایران قابل دسترس است. صدور کلید API از طریق Discord نیاز به شماره تلفن دارد. استنتاج احراز هویت‌شده انجام نشد."
+    "notes_fa": "Endpoint از ایران قابل دسترس است. در حساب آزمایشی، مرحله دریافت کلید در تأیید شماره تلفن Discord متوقف شد؛ این نتیجه به همان حساب و جریان ثبت‌نام محدود است و استنتاج احراز هویت‌شده انجام نشد."
   },
   "models": {
     "dynamic": true,
@@ -90,7 +90,7 @@
     "checked_by": "maintainers",
     "stale_after_days": 14
   },
-  "notes_fa": "این سرویس یک Gateway اجتماعی است، نه Provider اصلی مدل. پایداری، قوانین و ظرفیت آن باید مستقل از Providerهای رسمی پایش شود. ثبت‌نام از طریق Discord (/signup) امکان‌پذیر است و مانع باقی‌مانده دریافت کلید و اجرای درخواست مدل است.",
+  "notes_fa": "این سرویس یک Gateway اجتماعی است، نه Provider اصلی مدل. پایداری، قوانین و ظرفیت آن باید مستقل از Providerهای رسمی پایش شود. ثبت‌نام از طریق Discord (/signup) امکان‌پذیر است و در حساب آزمایشی مانع باقی‌مانده دریافت کلید و اجرای درخواست مدل بود.",
   "sources": [
     "https://github.com/Free-The-Ai/free-ai",
     "https://freetheai.xyz/docs",
