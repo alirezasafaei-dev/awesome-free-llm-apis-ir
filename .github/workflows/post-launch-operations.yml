@@ -14,8 +14,8 @@ on:
           - iran
           - pages
       expected_revision:
-        description: Optional deployed Git SHA to require
-        required: false
+        description: Full 40-character deployed Git SHA to require
+        required: true
         type: string
   schedule:
     - cron: "37 5 * * 4"
@@ -41,6 +41,16 @@ jobs:
         with:
           node-version: 22
       - run: npm ci
+
+      - name: Validate exact deployed revision input
+        if: github.event_name == 'workflow_dispatch'
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          if [[ ! "$EXPECTED_REVISION_INPUT" =~ ^[0-9a-fA-F]{40}$ ]]; then
+            echo "expected_revision must be a full 40-character Git SHA." >&2
+            exit 1
+          fi
 
       - name: Validate production smoke checkers
         run: |
@@ -150,6 +160,9 @@ jobs:
           {
             echo "# Post-launch operations"
             echo
+            echo "- Target: $SMOKE_TARGET"
+            echo "- Expected revision: ${EXPECTED_REVISION_INPUT:-scheduled check without revision lock}"
+            echo
             echo "| Gate | Result |"
             echo "|---|---|"
             echo "| Build and regression | ${{ steps.regression.outputs.failed == 'true' && 'FAIL' || 'PASS' }} |"
@@ -170,6 +183,8 @@ jobs:
           HEALTH_FAILED: ${{ steps.health.outputs.failed || 'false' }}
           DRIFT_FAILED: ${{ steps.drift.outputs.failed || 'false' }}
           SEO_FAILED: ${{ steps.seo.outputs.failed || 'false' }}
+          SMOKE_TARGET: ${{ github.event.inputs.target || 'all' }}
+          EXPECTED_REVISION_INPUT: ${{ github.event.inputs.expected_revision || '' }}
         with:
           script: |
             const fs = require('fs');
@@ -200,7 +215,7 @@ jobs:
             const existing = found.data.items[0];
 
             if (failed) {
-              const body = `${marker}\n# Post-launch operations incident\n\nRun: ${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}\nCommit: \`${context.sha}\`\n\n${sections.join('\n\n')}\n\nGenerated automatically. Treat deployment health, reachability, signup, credential issuance and successful inference as separate evidence layers.`;
+              const body = `${marker}\n# Post-launch operations incident\n\nRun: ${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}\nCommit: \`${context.sha}\`\nTarget: \`${process.env.SMOKE_TARGET}\`\nExpected deployed revision: \`${process.env.EXPECTED_REVISION_INPUT || 'not locked (scheduled run)'}\`\n\n${sections.join('\n\n')}\n\nGenerated automatically. Treat deployment health, reachability, signup, credential issuance and successful inference as separate evidence layers.`;
               if (existing) {
                 await github.rest.issues.update({
                   ...context.repo,
