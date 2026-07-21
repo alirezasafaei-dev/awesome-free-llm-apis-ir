@@ -96,7 +96,7 @@ export function detectPrivacyViolations(text, options = {}) {
     if (strictEvidence || isPublicIpv4(address)) violations.push("ipv4");
   }
 
-  if (extractIpv6(text).length > 0) violations.push("ipv6");
+  if (strictEvidence && extractIpv6(text).length > 0) violations.push("ipv6");
 
   CREDENTIAL_PATTERN.lastIndex = 0;
   if (CREDENTIAL_PATTERN.test(text)) violations.push("credential_fragment");
