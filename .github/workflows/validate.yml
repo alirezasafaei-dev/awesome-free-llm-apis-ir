@@ -67,7 +67,11 @@ jobs:
       - name: Package immutable VPS release candidate
         run: |
           set -Eeuo pipefail
-          tar -C .site-dist -czf "$GITHUB_WORKSPACE/site-release.tar.gz" .
+          stage_dir="$(mktemp -d)"
+          trap 'rm -rf "$stage_dir"' EXIT
+          cp -a .site-dist/. "$stage_dir/"
+          tar -czf "$GITHUB_WORKSPACE/site-release.tar.gz" -C "$stage_dir" .
+          tar -tzf site-release.tar.gz >/dev/null
           sha256sum site-release.tar.gz > site-release.tar.gz.sha256
       - name: Upload VPS release candidate
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
