@@ -9,10 +9,10 @@
   "tracks": [
     {
       "id": "security_rotation",
-      "issue": 32,
+      "issue": 155,
       "priority": "P0",
       "execution": "local",
-      "status": "partially_completed",
+      "status": "open",
       "providers": [
         "fireworks-ai"
       ],
