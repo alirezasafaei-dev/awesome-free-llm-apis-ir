@@ -27,8 +27,8 @@
         "structured_output"
       ],
       "iranAccess": {
-        "status": "unknown",
-        "label": "❔ نامشخص",
+        "status": "verified_working",
+        "label": "✅ مستقیم تست‌شده",
         "tested": true,
         "testedAt": "2026-07-21",
         "network": {
@@ -36,7 +36,7 @@
           "route": "direct"
         },
         "evidenceCount": 3,
-        "notesFa": "از مسیر مستقیم ایران فقط Reachability با HTTP 401 ثبت شده است؛ استنتاج احراز هویت‌شده ایران انجام نشده و وضعیت عملی ایران نامشخص باقی می‌ماند. مسیر کنترل خارجی با همان مدل HTTP 200 داده است."
+        "notesFa": "درخواست احراز هویت‌شده با مدل agnes-2.0-flash از ایران با HTTP 200 پاسخ داده است. مدل از نوع reasoning و نتیجه استنتاج در فیلد reasoning_content قرار می‌گیرد. کلید API در سرور خارج (آلمان) نیز تأیید شده است. این نتیجه فقط برای ASN مسیر تست‌شده معتبر است."
       },
       "models": [
         "agnes-2.0-flash",
@@ -48,7 +48,7 @@
       "verification": {
         "level": "live_verified",
         "lastChecked": "2026-07-21",
-        "staleAfterDays": 30
+        "staleAfterDays": 14
       },
       "health": {
         "provider_id": "agnes-ai",
@@ -324,16 +324,16 @@
         "structured_output"
       ],
       "iranAccess": {
-        "status": "account_activation_blocked",
-        "label": "🔒 فعال‌سازی حساب مسدود",
+        "status": "signup_blocked",
+        "label": "❔ نامشخص",
         "tested": true,
         "testedAt": "2026-07-21",
         "network": {
           "country": "IR",
           "route": "direct"
         },
-        "evidenceCount": 3,
-        "notesFa": "یک حساب آزمایشی Fireworks AI در مسیر کنترل خارجی با HTTP 403 و کلاس sanitized «sanctioned_origin_country» متوقف شد. مسیر مستقیم ایران نیز پیش از پاسخ HTTP شکست خورد؛ بنابراین Geo-block شبکه ایران از مانع حساب تفکیک نشده است."
+        "evidenceCount": 5,
+        "notesFa": "ثبت‌نام در Fireworks AI از ایران منجر به مسدودیت حساب در سطح سرویس می‌شود (sanctioned origin country). حتی کلید جدید هم از سرور خارج (آلمان) با ۴۰۳ مسدود شد. شبکه از ایران نیز Timeout دارد."
       },
       "models": [
         "llama-3.3-70b",
@@ -345,7 +345,7 @@
       "verification": {
         "level": "live_verified",
         "lastChecked": "2026-07-21",
-        "staleAfterDays": 30
+        "staleAfterDays": 14
       },
       "health": {
         "provider_id": "fireworks-ai",
@@ -397,7 +397,7 @@
           "route": "direct"
         },
         "evidenceCount": 3,
-        "notesFa": "Endpoint از ایران قابل دسترس است. در حساب آزمایشی، مرحله دریافت کلید در تأیید شماره تلفن Discord متوقف شد؛ این نتیجه به همان حساب و جریان ثبت‌نام محدود است و استنتاج احراز هویت‌شده انجام نشد."
+        "notesFa": "Endpoint از ایران قابل دسترس است. ورود به Discord ممکن است اما صدور کلید نیاز به شماره تلفن دارد (برای کاربران ایران در دسترس نیست)."
       },
       "models": [
         "opc/deepseek-v4-flash-free",
@@ -933,7 +933,7 @@
           "route": "direct"
         },
         "evidenceCount": 3,
-        "notesFa": "Endpointهای عمومی از ایران پاسخ دادند. در حساب آزمایشی، ثبت‌نام در مرحله تأیید شماره تلفن متوقف شد؛ این نتیجه به همان حساب محدود است و استنتاج احراز هویت‌شده از ایران انجام نشد."
+        "notesFa": "Endpoint از ایران قابل دسترس است. اما ثبت‌نام در NVIDIA Developer Program نیاز به شماره تلفن خارجی دارد."
       },
       "models": [],
       "verification": {
@@ -1265,9 +1265,9 @@
       "freeTier": {
         "status": "active",
         "type": "monthly_credit",
-        "requiresPaymentMethod": null,
+        "requiresPaymentMethod": true,
         "limitExample": "فقط زیرمجموعه‌ای از مدل‌ها واجد اعتبار رایگان‌اند و محدودیت هر مدل می‌تواند پایین‌تر باشد. BYOK در پلن پولی موجود است.",
-        "notesFa": "اعتبار رایگان ماهانه ۵ دلار روی مدل‌های واجد شرایط. پس از اولین درخواست، حساب به پلن پولی ارتقا می‌یابد. ثبت‌نام نیاز به حساب Vercel دارد."
+        "notesFa": "اعتبار رایگان ماهانه ۵ دلار روی مدل‌های واجد شرایط. اما Vercel حتی برای فعال‌سازی اعتبار رایگان نیز کارت اعتباری معتبر می‌خواهد (HTTP 403: customer_verification_required). ثبت‌نام نیاز به حساب Vercel دارد."
       },
       "capabilities": [
         "chat",
@@ -1278,8 +1278,8 @@
         "structured_output"
       ],
       "iranAccess": {
-        "status": "account_activation_blocked",
-        "label": "🔒 فعال‌سازی حساب مسدود",
+        "status": "signup_blocked",
+        "label": "❔ نامشخص",
         "tested": true,
         "testedAt": "2026-07-21",
         "network": {
@@ -1287,7 +1287,7 @@
           "route": "direct"
         },
         "evidenceCount": 3,
-        "notesFa": "Endpointهای عمومی از ایران قابل دسترس‌اند. حساب آزمایشی در مسیر کنترل خارجی پیش از استنتاج با مانع فعال‌سازی پرداخت یا تأیید مشتری روبه‌رو شد؛ این نتیجه به همان حساب محدود است و الزام عمومی کارت برای همه کاربران را ثابت نمی‌کند."
+        "notesFa": "کلید API معتبر است (306 مدل قابل دسترس). اما Vercel برای سرویس‌دهی نیاز به کارت اعتباری روی حساب دارد (حتی برای اعتبار رایگان ماهانه ۵ دلار). آزمایش استنتاج از ایران به همین دلیل انجام نشد."
       },
       "models": [],
       "verification": {

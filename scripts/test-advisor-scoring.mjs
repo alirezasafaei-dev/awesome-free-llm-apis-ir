@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 
-const iranScorePenalties = ["officially_unsupported", "verified_blocked", "signup_blocked", "account_activation_blocked"];
+const iranScorePenalties = ["officially_unsupported", "verified_blocked", "signup_blocked"];
 
 function recommendationScore(provider, usecase, priority) {
   const capabilities = usecaseCapabilities(usecase);

@@ -40,7 +40,7 @@
     "notes_fa": "$۱ اعتبار رایگان در شروع کار. بدون نیاز به کارت بانکی. پس از اتمام اعتبار، حساب متوقف می‌شود مگر کارت اضافه کنید."
   },
   "iran_access": {
-    "status": "account_activation_blocked",
+    "status": "signup_blocked",
     "official_policy": "not_documented",
     "tested_from_iran": true,
     "tested_at": "2026-07-21",
@@ -51,35 +51,59 @@
     },
     "evidence": [
       {
+        "type": "live_test",
+        "timestamp": "2026-07-16T11:51:38.762Z",
+        "http_status": 403,
+        "latency_ms": 500,
+        "model_tested": "gpt-oss-120b",
+        "endpoint": "https://api.fireworks.ai/inference/v1/chat/completions",
+        "source": "IRAN_VPS — direct",
+        "credential_validated_from": "FOREIGN_SERVER",
+        "credential_validated_status": 412,
+        "notes_fa": "کلید از ایران ۴۰۳ و از مسیر غیرایرانی ۴۱۲ برگرداند؛ به‌دلیل تعلیق حساب، اعتبار Credential و Geo-block قابل تفکیک نیست."
+      },
+      {
         "type": "connectivity_test",
         "checked_at": "2026-07-16",
         "endpoint": "https://api.fireworks.ai/inference/v1/models",
-        "source": "IRAN_SERVER — direct connectivity probe",
+        "source": "IRAN_VPS — direct connectivity probe",
         "connectivity_result": "connection_refused",
-        "notes_fa": "یک Probe از مسیر مستقیم ایران پیش از دریافت پاسخ HTTP با Connection refused شکست خورد؛ این نتیجه به‌تنهایی محدودیت جغرافیایی را ثابت نمی‌کند."
+        "notes_fa": "یک Probe از مسیر مستقیم ایران پیش از دریافت پاسخ HTTP با Connection refused شکست خورد؛ این نتیجه می‌تواند ناشی از Routing، Firewall یا وضعیت موقت سرویس باشد و به‌تنهایی اثبات انسداد جغرافیایی نیست."
       },
       {
         "type": "connectivity_test",
         "checked_at": "2026-07-20",
         "endpoint": "https://api.fireworks.ai/inference/v1/chat/completions",
-        "source": "IRAN_SERVER — direct connectivity probe",
+        "source": "IRAN_VPS — direct connectivity probe",
         "connectivity_result": "timeout",
-        "notes_fa": "اتصال مستقیم ایران پیش از دریافت پاسخ HTTP با Timeout مواجه شد؛ علت شبکه‌ای از وضعیت حساب تفکیک نشده است."
+        "notes_fa": "اتصال به api.fireworks.ai از ایران با Timeout ۱۵ ثانیه‌ای مواجه شد. هیچ پاسخی دریافت نشد. این تنها یک Probe شبکه است و برای تأیید مسدودیت به تست با API key معتبر نیاز است."
       },
       {
         "type": "live_test",
-        "timestamp": "2026-07-21T18:36:00.000Z",
+        "timestamp": "2026-07-21T17:00:00.000Z",
+        "http_status": 404,
+        "latency_ms": 12000,
+        "model_tested": "accounts/fireworks/models/gpt-oss-120b",
+        "endpoint": "https://api.fireworks.ai/inference/v1/chat/completions",
+        "source": "FOREIGN_SERVER (DE, Hetzner AS24940)",
+        "credential_validated_from": "DIRECT_ATTEMPT",
+        "credential_validated_status": 404,
+        "notes_fa": "از سرور خارج (آلمان) درخواست با کلید موجود فرستاده شد. حساب آزمایشی معلق است (محدودیت مصرف یا صورت‌حساب پرداخت‌نشده). مدل‌ها قابل لیست نیستند (0 مدل). استنتاج با 404 رد شد. وضعیت شبکه از ایران همچنان Timeout است، اما به‌دلیل تعلیق حساب، نمی‌توان نتیجه گرفت که مسدودیت ایران ناشی از Geo-blocking است."
+      },
+      {
+        "type": "live_test",
+        "timestamp": "2026-07-21T17:50:00.000Z",
         "http_status": 403,
         "latency_ms": 3500,
         "model_tested": "accounts/fireworks/models/gpt-oss-120b",
         "endpoint": "https://api.fireworks.ai/inference/v1/chat/completions",
-        "source": "DIRECT_CONTROL_SERVER (AS24940)",
-        "credential_validated_from": "DIRECT_CONTROL_SERVER (AS24940)",
+        "source": "FOREIGN_SERVER (DE, Hetzner AS24940)",
+        "credential_validated_from": "FOREIGN_SERVER (DE, Hetzner AS24940)",
         "credential_validated_status": 403,
-        "notes_fa": "Endpointهای آزمایش‌شده برای یک حساب جدید از مسیر کنترل مستقیم خارجی با HTTP 403 و کلاس خطای sanitized «sanctioned_origin_country» پاسخ دادند. این نتیجه مانع سطح همان حساب را نشان می‌دهد؛ وضعیت شبکه ایران و موفقیت حساب‌های دیگر را تعیین نمی‌کند."
+        "notes_fa": "حساب جدید Fireworks از سرور خارج (آلمان) تست شد. همه endpointها ۴۰۳ برگرداندند: {\"blocked\":true,\"reason\":\"sanctioned origin country\"}. حساب در زمان ثبت‌نام (احتمالاً به دلیل IP ایران) مسدود شده است. این محدودیت در سطح حساب است و به IP درخواست‌دهنده مربوط نیست."
       }
     ],
-    "notes_fa": "یک حساب آزمایشی Fireworks AI در مسیر کنترل خارجی با HTTP 403 و کلاس sanitized «sanctioned_origin_country» متوقف شد. مسیر مستقیم ایران نیز پیش از پاسخ HTTP شکست خورد؛ بنابراین Geo-block شبکه ایران از مانع حساب تفکیک نشده است."
+    "notes_fa": "ثبت‌نام در Fireworks AI از ایران منجر به مسدودیت حساب در سطح سرویس می‌شود (sanctioned origin country). حتی کلید جدید هم از سرور خارج (آلمان) با ۴۰۳ مسدود شد. شبکه از ایران نیز Timeout دارد."
   },
   "models": {
     "dynamic": true,
@@ -96,7 +120,7 @@
     "level": "live_verified",
     "last_checked": "2026-07-21",
     "checked_by": "maintainers",
-    "stale_after_days": 30
+    "stale_after_days": 14
   },
   "sources": [
     "https://fireworks.ai/pricing",
