@@ -16,8 +16,8 @@ if (dryRun.status !== 0) throw new Error(dryRun.stderr || dryRun.stdout || "Rele
 const expectedSignals = [
   `Release candidate revision: ${revision}`,
   "Full repository test suite",
-  "Production site build",
   "Built-site contract",
+  "Production site build",
   "Build regression",
   "Strict SEO",
   "Deployment static checks",
@@ -46,8 +46,8 @@ if (!(invalid.stderr + invalid.stdout).includes("full 40-character Git SHA")) {
 }
 
 const source = await readFile(script, "utf8");
-for (const signal of ["SOURCE_REVISION", "build-meta.json", "metadata.source_revision", "production:smoke:test", "production:ux-smoke:test"]) {
+for (const signal of ["SOURCE_REVISION", "build-meta.json", "metadata.source_revision", "assertRevision", "production:smoke:test", "production:ux-smoke:test"]) {
   if (!source.includes(signal)) throw new Error(`Release candidate implementation is missing: ${signal}`);
 }
 
-console.log("Release candidate command contract passed: exact SHA, deterministic gates and live-deploy disclaimer are enforced.");
+console.log("Release candidate command contract passed: destructive checks precede the exact-SHA build and live deployment remains separate.");
