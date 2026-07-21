@@ -49,7 +49,7 @@ jobs:
       - run: npm run privacy:test
       - run: npm run privacy:github:test
 
-  build:
+  site-build:
     needs: validate
     runs-on: ubuntu-latest
     timeout-minutes: 15
@@ -59,8 +59,102 @@ jobs:
         with:
           node-version: 22
       - run: npm ci
-      - run: npm run site:build
-      - run: npm run site:check
+      - name: Validate built-site contract
+        run: npm run site:check
+      - name: Build exact release revision
+        run: npm run site:build
+        env:
+          SOURCE_REVISION: ${{ github.sha }}
+      - name: Assert exact release metadata
+        env:
+          EXPECTED_SHA: ${{ github.sha }}
+        run: |
+          EXPECTED_SHA="$EXPECTED_SHA" node -e '
+            const fs = require("node:fs");
+            const meta = JSON.parse(fs.readFileSync(".site-dist/build-meta.json", "utf8"));
+            if (meta.source_revision !== process.env.EXPECTED_SHA) {
+              throw new Error(`Release metadata mismatch: ${meta.source_revision} !== ${process.env.EXPECTED_SHA}`);
+            }
+          '
+      - name: Stage immutable release
+        run: |
+          set -Eeuo pipefail
+          rm -rf .release-stage
+          mkdir .release-stage
+          cp -a .site-dist/. .release-stage/
+          test -s .release-stage/build-meta.json
+      - name: Create VPS release archive
+        run: |
+          set -Eeuo pipefail
+          tar -czf site-release.tar.gz -C .release-stage .
+          test -s site-release.tar.gz
+      - name: Verify VPS release archive
+        run: |
+          set -Eeuo pipefail
+          tar -tzf site-release.tar.gz >/dev/null
+          sha256sum site-release.tar.gz > site-release.tar.gz.sha256
+          sha256sum -c site-release.tar.gz.sha256
+      - name: Upload VPS release candidate
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: validation-release-${{ github.sha }}
+          path: |
+            site-release.tar.gz
+            site-release.tar.gz.sha256
+            deploy/remote-release.sh
+            deploy/rollback-release.sh
+          if-no-files-found: error
+          retention-days: 1
+      - name: Package GitHub Pages candidate
+        uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
+        with:
+          path: .site-dist
+          retention-days: 1
+
+  artifact-roundtrip:
+    needs: site-build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.2.1
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.3.0
+        with:
+          node-version: 22
+      - name: Download VPS release candidate
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: validation-release-${{ github.sha }}
+          path: validation-release
+      - name: Verify artifact integrity and revision
+        env:
+          EXPECTED_SHA: ${{ github.sha }}
+        run: |
+          set -Eeuo pipefail
+          cd validation-release
+          sha256sum -c site-release.tar.gz.sha256
+          tar -tzf site-release.tar.gz >/dev/null
+          mkdir extracted
+          tar -C extracted -xzf site-release.tar.gz
+          EXPECTED_SHA="$EXPECTED_SHA" META_FILE="extracted/build-meta.json" node -e '
+            const fs = require("node:fs");
+            const meta = JSON.parse(fs.readFileSync(process.env.META_FILE, "utf8"));
+            if (meta.source_revision !== process.env.EXPECTED_SHA) {
+              throw new Error(`Artifact revision mismatch: ${meta.source_revision} !== ${process.env.EXPECTED_SHA}`);
+            }
+            if (!Number.isInteger(meta.provider_count) || meta.provider_count < 1) {
+              throw new Error("Artifact provider_count is invalid");
+            }
+          '
+          bash -n deploy/remote-release.sh
+          bash -n deploy/rollback-release.sh
+
+  # Keep this stable job name because branch protection requires the `build` check.
+  build:
+    needs: [site-build, artifact-roundtrip]
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - run: echo "Site build, Pages packaging and VPS artifact roundtrip passed."
 
   links:
     if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
