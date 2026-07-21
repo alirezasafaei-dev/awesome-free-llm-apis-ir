@@ -22,7 +22,7 @@ jobs:
       github.event_name == 'workflow_dispatch' ||
       github.event.workflow_run.head_branch == 'main'
     runs-on: ubuntu-latest
-    timeout-minutes: 12
+    timeout-minutes: 20
     env:
       EXPECTED_SHA: ${{ github.event.workflow_run.head_sha || github.sha }}
       UPSTREAM_CONCLUSION: ${{ github.event.workflow_run.conclusion || 'manual' }}
@@ -40,7 +40,7 @@ jobs:
       - name: Mark exact-release verification pending
         env:
           COMMIT_STATUS_STATE: pending
-          COMMIT_STATUS_DESCRIPTION: Waiting for all public targets to expose the exact revision
+          COMMIT_STATUS_DESCRIPTION: Waiting for exact revision and full live smoke checks
         run: |
           node <<'NODE'
           const { GH_TOKEN, GITHUB_API_URL, GITHUB_REPOSITORY, EXPECTED_SHA, COMMIT_STATUS_STATE, COMMIT_STATUS_DESCRIPTION, STATUS_CONTEXT, STATUS_TARGET_URL } = process.env;
@@ -76,11 +76,34 @@ jobs:
           --delay-ms=10000
           --timeout-ms=15000
 
+      - name: Run full production smoke
+        env:
+          EXPECTED_REVISION: ${{ env.EXPECTED_SHA }}
+          SMOKE_REPORT_PATH: production-smoke.md
+        run: npm run production:smoke -- --expected-revision=${EXPECTED_SHA} --report=production-smoke.md
+
+      - name: Run full UX smoke
+        env:
+          EXPECTED_REVISION: ${{ env.EXPECTED_SHA }}
+          UX_SMOKE_REPORT_PATH: ux-smoke.md
+        run: npm run production:ux-smoke -- --expected-revision=${EXPECTED_SHA} --report=ux-smoke.md
+
+      - name: Upload live smoke reports
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: live-release-reports-${{ env.EXPECTED_SHA }}
+          path: |
+            production-smoke.md
+            ux-smoke.md
+          if-no-files-found: warn
+          retention-days: 7
+
       - name: Mark exact-release verification successful
         if: success()
         env:
           COMMIT_STATUS_STATE: success
-          COMMIT_STATUS_DESCRIPTION: All public targets expose the exact Main revision
+          COMMIT_STATUS_DESCRIPTION: Exact revision, production smoke and UX smoke passed
         run: |
           node <<'NODE'
           const { GH_TOKEN, GITHUB_API_URL, GITHUB_REPOSITORY, EXPECTED_SHA, COMMIT_STATUS_STATE, COMMIT_STATUS_DESCRIPTION, STATUS_CONTEXT, STATUS_TARGET_URL } = process.env;
@@ -106,7 +129,7 @@ jobs:
         if: failure()
         env:
           COMMIT_STATUS_STATE: failure
-          COMMIT_STATUS_DESCRIPTION: One or more public targets failed exact-revision verification
+          COMMIT_STATUS_DESCRIPTION: Exact revision or full live smoke verification failed
         run: |
           node <<'NODE'
           const { GH_TOKEN, GITHUB_API_URL, GITHUB_REPOSITORY, EXPECTED_SHA, COMMIT_STATUS_STATE, COMMIT_STATUS_DESCRIPTION, STATUS_CONTEXT, STATUS_TARGET_URL } = process.env;
