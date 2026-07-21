@@ -35,7 +35,7 @@
     "notes_fa": "اعتبار رایگان ماهانه ۵ دلار روی مدل‌های واجد شرایط. اما Vercel حتی برای فعال‌سازی اعتبار رایگان نیز کارت اعتباری معتبر می‌خواهد (HTTP 403: customer_verification_required). ثبت‌نام نیاز به حساب Vercel دارد."
   },
   "iran_access": {
-    "status": "unknown",
+    "status": "signup_blocked",
     "official_policy": "not_documented",
     "tested_from_iran": true,
     "tested_at": "2026-07-21",

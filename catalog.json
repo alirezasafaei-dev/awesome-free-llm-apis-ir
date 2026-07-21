@@ -684,10 +684,10 @@
         "notes_fa": "ثبت‌نام از طریق Discord (/signup) و check-in روزانه (/checkin) الزامی است. ۶۰+ مدل فعال. مدل‌های image generation و audio نیز موجود. اسلات‌های پولی اختیاری جداگانه برای مدل‌های قوی‌تر موجود است."
       },
       "iran_access": {
-        "status": "unknown",
+        "status": "signup_blocked",
         "official_policy": "not_documented",
         "tested_from_iran": true,
-        "tested_at": "2026-07-20",
+        "tested_at": "2026-07-21",
         "test_method": "connectivity_probe",
         "network": {
           "country": "IR",
@@ -711,9 +711,15 @@
             "source": "IRAN_SERVER — direct connectivity probe",
             "connectivity_result": "http_response",
             "notes_fa": "Endpoint از ایران قابل دسترس است (HTTP 401). نیاز به API key معتبر."
+          },
+          {
+            "type": "community_report",
+            "url": "https://support.discord.com/hc/en-us/articles/360017947012-Phone-Verification",
+            "checked_at": "2026-07-21",
+            "notes_fa": "ورود به Discord با اکانت جدید امکان‌پذیر است. اما برای دریافت کلید API از ربات FreeTheAI در دیسکورد، احراز هویت با شماره تلفن الزامی است. کاربر ایرانی به شماره خارجی دسترسی ندارد. در نتیجه کلید قابل دریافت نیست."
           }
         ],
-        "notes_fa": "Endpoint از ایران قابل دسترس است؛ برای تعیین وضعیت عملی سرویس، درخواست مدل با کلید مجاز دریافت‌شده از Discord لازم است."
+        "notes_fa": "Endpoint از ایران قابل دسترس است. ورود به Discord ممکن است اما صدور کلید نیاز به شماره تلفن دارد (برای کاربران ایران در دسترس نیست)."
       },
       "models": {
         "dynamic": true,
@@ -727,7 +733,7 @@
       },
       "verification": {
         "level": "live_verified",
-        "last_checked": "2026-07-20",
+        "last_checked": "2026-07-21",
         "checked_by": "maintainers",
         "stale_after_days": 14
       },
@@ -1507,10 +1513,10 @@
         "notes_fa": "اعضای رایگان NVIDIA Developer Program برای Prototype، تحقیق، توسعه و آزمایش به Endpointهای میزبانی‌شده دسترسی دارند؛ استفاده Production نیازمند مجوز تجاری است. صفحه اصلی build.nvidia.com اعلام 'Free inference with leading models' می‌کند."
       },
       "iran_access": {
-        "status": "unknown",
+        "status": "signup_blocked",
         "official_policy": "not_documented",
         "tested_from_iran": true,
-        "tested_at": "2026-07-20",
+        "tested_at": "2026-07-21",
         "test_method": "connectivity_probe",
         "network": {
           "country": "IR",
@@ -1534,9 +1540,15 @@
             "source": "IRAN_SERVER — direct connectivity probe",
             "connectivity_result": "http_response",
             "notes_fa": "Endpoint از ایران قابل دسترس است (HTTP 404). نیاز به API key معتبر."
+          },
+          {
+            "type": "community_report",
+            "url": "https://developer.nvidia.com/login",
+            "checked_at": "2026-07-21",
+            "notes_fa": "ثبت‌نام در NVIDIA Developer Program نیاز به شماره تلفن خارجی برای احراز هویت دارد. کاربر ایرانی به شماره خارجی دسترسی ندارد. کلید API قابل دریافت نیست."
           }
         ],
-        "notes_fa": "Endpoint از ایران قابل دسترس است؛ برای تعیین وضعیت عملی سرویس، درخواست مدل با کلید مجاز NVIDIA Developer Program لازم است."
+        "notes_fa": "Endpoint از ایران قابل دسترس است. اما ثبت‌نام در NVIDIA Developer Program نیاز به شماره تلفن خارجی دارد."
       },
       "models": {
         "dynamic": true,
@@ -1545,7 +1557,7 @@
       },
       "verification": {
         "level": "live_verified",
-        "last_checked": "2026-07-20",
+        "last_checked": "2026-07-21",
         "checked_by": "maintainers",
         "stale_after_days": 30
       },
@@ -2045,7 +2057,7 @@
         "notes_fa": "اعتبار رایگان ماهانه ۵ دلار روی مدل‌های واجد شرایط. اما Vercel حتی برای فعال‌سازی اعتبار رایگان نیز کارت اعتباری معتبر می‌خواهد (HTTP 403: customer_verification_required). ثبت‌نام نیاز به حساب Vercel دارد."
       },
       "iran_access": {
-        "status": "unknown",
+        "status": "signup_blocked",
         "official_policy": "not_documented",
         "tested_from_iran": true,
         "tested_at": "2026-07-21",

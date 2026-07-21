@@ -4,7 +4,7 @@
   "parent_issue": 29,
   "summary": {
     "provider_count": 22,
-    "unknown_count": 4
+    "unknown_count": 1
   },
   "tracks": [
     {
@@ -21,14 +21,33 @@
       "issue": 33,
       "priority": "P0",
       "execution": "local",
-      "status": "open",
+      "status": "partially_closed",
       "providers": [
-        "freetheai",
-        "nvidia-nim",
-        "vercel-ai-gateway",
         "fireworks-ai"
       ],
-      "blocker_type": "account_access"
+      "blocker_type": "account_access",
+      "closed_providers": [
+        {
+          "provider_id": "agnes-ai",
+          "resolution": "verified_working",
+          "reason": "Authenticated inference from Iran VPS (AS196864) returned HTTP 200 with agnes-2.0-flash"
+        },
+        {
+          "provider_id": "freetheai",
+          "resolution": "permanently_blocked",
+          "reason": "Discord phone verification required for API key; not available to Iran users"
+        },
+        {
+          "provider_id": "nvidia-nim",
+          "resolution": "permanently_blocked",
+          "reason": "NVIDIA Developer Program registration requires foreign phone number"
+        },
+        {
+          "provider_id": "vercel-ai-gateway",
+          "resolution": "permanently_blocked",
+          "reason": "Vercel requires credit card on file even for free $5/month credit; not available to Iran users"
+        }
+      ]
     },
     {
       "id": "signup_identity",
@@ -67,30 +86,6 @@
     }
   ],
   "providers": [
-    {
-      "provider_id": "freetheai",
-      "track_issue": 33,
-      "blocker_type": "community_key_required",
-      "next_action": "Use an authorized Discord-issued key and run a minimal model request from the direct Iran route.",
-      "requires_local_execution": true,
-      "automatable": false
-    },
-    {
-      "provider_id": "nvidia-nim",
-      "track_issue": 33,
-      "blocker_type": "account_access",
-      "next_action": "Complete the standard developer access flow and run a minimal model request from the direct Iran route.",
-      "requires_local_execution": true,
-      "automatable": false
-    },
-    {
-      "provider_id": "vercel-ai-gateway",
-      "track_issue": 33,
-      "blocker_type": "payment_method_required",
-      "next_action": "Vercel requires a valid credit card on file to service requests (even for free $5/month credit). Add a card to the Vercel account, then retest inference from both foreign control and Iran.",
-      "requires_local_execution": true,
-      "automatable": false
-    },
     {
       "provider_id": "fireworks-ai",
       "track_issue": 33,

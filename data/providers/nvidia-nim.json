@@ -27,10 +27,10 @@
     "notes_fa": "اعضای رایگان NVIDIA Developer Program برای Prototype، تحقیق، توسعه و آزمایش به Endpointهای میزبانی‌شده دسترسی دارند؛ استفاده Production نیازمند مجوز تجاری است. صفحه اصلی build.nvidia.com اعلام 'Free inference with leading models' می‌کند."
   },
   "iran_access": {
-    "status": "unknown",
+    "status": "signup_blocked",
     "official_policy": "not_documented",
     "tested_from_iran": true,
-    "tested_at": "2026-07-20",
+    "tested_at": "2026-07-21",
     "test_method": "connectivity_probe",
     "network": {
       "country": "IR",
@@ -54,9 +54,15 @@
         "source": "IRAN_SERVER — direct connectivity probe",
         "connectivity_result": "http_response",
         "notes_fa": "Endpoint از ایران قابل دسترس است (HTTP 404). نیاز به API key معتبر."
+      },
+      {
+        "type": "community_report",
+        "url": "https://developer.nvidia.com/login",
+        "checked_at": "2026-07-21",
+        "notes_fa": "ثبت‌نام در NVIDIA Developer Program نیاز به شماره تلفن خارجی برای احراز هویت دارد. کاربر ایرانی به شماره خارجی دسترسی ندارد. کلید API قابل دریافت نیست."
       }
     ],
-    "notes_fa": "Endpoint از ایران قابل دسترس است؛ برای تعیین وضعیت عملی سرویس، درخواست مدل با کلید مجاز NVIDIA Developer Program لازم است."
+    "notes_fa": "Endpoint از ایران قابل دسترس است. اما ثبت‌نام در NVIDIA Developer Program نیاز به شماره تلفن خارجی دارد."
   },
   "models": {
     "dynamic": true,
@@ -65,7 +71,7 @@
   },
   "verification": {
     "level": "live_verified",
-    "last_checked": "2026-07-20",
+    "last_checked": "2026-07-21",
     "checked_by": "maintainers",
     "stale_after_days": 30
   },

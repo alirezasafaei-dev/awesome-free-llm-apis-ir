@@ -388,16 +388,16 @@
         "image_generation"
       ],
       "iranAccess": {
-        "status": "unknown",
+        "status": "signup_blocked",
         "label": "❔ نامشخص",
         "tested": true,
-        "testedAt": "2026-07-20",
+        "testedAt": "2026-07-21",
         "network": {
           "country": "IR",
           "route": "direct"
         },
-        "evidenceCount": 2,
-        "notesFa": "Endpoint از ایران قابل دسترس است؛ برای تعیین وضعیت عملی سرویس، درخواست مدل با کلید مجاز دریافت‌شده از Discord لازم است."
+        "evidenceCount": 3,
+        "notesFa": "Endpoint از ایران قابل دسترس است. ورود به Discord ممکن است اما صدور کلید نیاز به شماره تلفن دارد (برای کاربران ایران در دسترس نیست)."
       },
       "models": [
         "opc/deepseek-v4-flash-free",
@@ -407,7 +407,7 @@
       ],
       "verification": {
         "level": "live_verified",
-        "lastChecked": "2026-07-20",
+        "lastChecked": "2026-07-21",
         "staleAfterDays": 14
       },
       "health": {
@@ -924,21 +924,21 @@
         "structured_output"
       ],
       "iranAccess": {
-        "status": "unknown",
+        "status": "signup_blocked",
         "label": "❔ نامشخص",
         "tested": true,
-        "testedAt": "2026-07-20",
+        "testedAt": "2026-07-21",
         "network": {
           "country": "IR",
           "route": "direct"
         },
-        "evidenceCount": 2,
-        "notesFa": "Endpoint از ایران قابل دسترس است؛ برای تعیین وضعیت عملی سرویس، درخواست مدل با کلید مجاز NVIDIA Developer Program لازم است."
+        "evidenceCount": 3,
+        "notesFa": "Endpoint از ایران قابل دسترس است. اما ثبت‌نام در NVIDIA Developer Program نیاز به شماره تلفن خارجی دارد."
       },
       "models": [],
       "verification": {
         "level": "live_verified",
-        "lastChecked": "2026-07-20",
+        "lastChecked": "2026-07-21",
         "staleAfterDays": 30
       },
       "health": {
@@ -1278,7 +1278,7 @@
         "structured_output"
       ],
       "iranAccess": {
-        "status": "unknown",
+        "status": "signup_blocked",
         "label": "❔ نامشخص",
         "tested": true,
         "testedAt": "2026-07-21",
