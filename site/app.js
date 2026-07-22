@@ -5,7 +5,8 @@ const accessLabels = {
   verified_blocked: "مستقیم مسدود",
   officially_unsupported: "پشتیبانی‌نشده رسمی",
   intermittent: "ناپایدار",
-  signup_blocked: "ثبت‌نام مسدود",
+  signup_blocked: "مانع ثبت‌نام",
+  account_activation_blocked: "مانع فعال‌سازی حساب",
   unknown: "نامشخص"
 };
 
@@ -17,6 +18,7 @@ const accessEmoji = {
   officially_unsupported: "🚫",
   intermittent: "⚠️",
   signup_blocked: "🧾",
+  account_activation_blocked: "🧾",
   unknown: "❔"
 };
 
@@ -27,7 +29,8 @@ const accessAriaLabel = {
   verified_blocked: "وضعیت دسترسی ایران: مستقیم مسدود",
   officially_unsupported: "وضعیت دسترسی ایران: پشتیبانی‌نشده رسمی",
   intermittent: "وضعیت دسترسی ایران: ناپایدار",
-  signup_blocked: "وضعیت دسترسی ایران: ثبت‌نام مسدود",
+  signup_blocked: "وضعیت دسترسی ایران: مانع ثبت‌نام",
+  account_activation_blocked: "وضعیت دسترسی ایران: مانع فعال‌سازی حساب",
   unknown: "وضعیت دسترسی ایران: نامشخص"
 };
 
@@ -153,11 +156,16 @@ function createCard(provider) {
   const stale = isStale(provider);
   const accessBadge = card.querySelector(".access-badge");
   const accessStatus = provider.iran_access.status;
-  accessBadge.textContent = `${accessEmoji[accessStatus] ?? ""} ${accessLabels[accessStatus] ?? accessStatus}`;
-  accessBadge.setAttribute("aria-label", accessAriaLabel[accessStatus] ?? accessStatus);
+  // Color-coded status is driven by data-status (CSS); emoji is stripped by ui-pro-max enhance.
+  accessBadge.dataset.status = accessStatus;
+  accessBadge.textContent = `${accessEmoji[accessStatus] ?? ""} ${accessLabels[accessStatus] ?? accessStatus}`.trim();
+  accessBadge.setAttribute("aria-label", accessAriaLabel[accessStatus] ?? `وضعیت دسترسی ایران: ${accessStatus}`);
+  accessBadge.title = accessAriaLabel[accessStatus] ?? accessStatus;
   const freshness = card.querySelector(".freshness-badge");
   freshness.textContent = stale ? "نیازمند بررسی" : "دادهٔ تازه";
   freshness.classList.toggle("stale", stale);
+  freshness.dataset.freshness = stale ? "stale" : "fresh";
+  freshness.setAttribute("aria-label", stale ? "تازگی داده: نیازمند بررسی" : "تازگی داده: تازه");
   setText(card, ".provider-avatar", provider.name.slice(0, 2).toUpperCase());
   setText(card, "h3", provider.name);
   setText(card, ".provider-id", `${provider.id} · ${serviceLabels[provider.service_type] ?? provider.service_type}`);
