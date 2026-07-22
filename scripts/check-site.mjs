@@ -129,7 +129,7 @@ if (!dataset.inLanguage) throw new Error("Dataset missing inLanguage");
 if (!dataset.license) throw new Error("Dataset missing license");
 if (!dataset.distribution) throw new Error("Dataset missing distribution");
 if (dataset.isAccessibleForFree !== true) throw new Error("Dataset isAccessibleForFree must be true");
-if (!dataset.sameAs === undefined && !Array.isArray(dataset.sameAs)) throw new Error("Dataset sameAs must be an array if present");
+if (dataset.sameAs !== undefined && !Array.isArray(dataset.sameAs)) throw new Error("Dataset sameAs must be an array if present");
 
 for (const file of ["site/app.js", "site/analytics.js", "scripts/build-site.mjs", "scripts/build-guides.mjs"]) {
   const syntax = spawnSync(process.execPath, ["--check", path.join(root, file)], { encoding: "utf8" });

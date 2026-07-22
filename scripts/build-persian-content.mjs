@@ -34,6 +34,36 @@ function parseFrontmatter(source, filename) {
   return { metadata, body: source.slice(end + 5).trim() };
 }
 
+function extractFaq(body) {
+  const items = [];
+  const lines = body.replaceAll("\r\n", "\n").split("\n");
+  let inFaq = false;
+  let currentQuestion = null;
+  let currentAnswer = [];
+
+  for (const sourceLine of lines) {
+    const line = sourceLine.trim();
+    if (line === "## پرسش‌های متداول") {
+      inFaq = true;
+      continue;
+    }
+    if (!inFaq) continue;
+    if (line.startsWith("## ")) break;
+
+    const heading = line.match(/^### (.+)$/);
+    if (heading) {
+      if (currentQuestion) items.push({ question: currentQuestion, answer: currentAnswer.join(" ").trim() });
+      currentQuestion = heading[1];
+      currentAnswer = [];
+      continue;
+    }
+    if (currentQuestion && line) currentAnswer.push(line);
+  }
+
+  if (currentQuestion) items.push({ question: currentQuestion, answer: currentAnswer.join(" ").trim() });
+  return items;
+}
+
 function renderInline(value) {
   let html = escapeHtml(value);
   html = html.replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, '<a href="$2">$1</a>');
@@ -153,35 +183,47 @@ function articlePage(article) {
   const translationKey = metadata.translation_key;
   const pair = translationKey ? getTranslationPair(translationKey) : null;
   const enUrl = pair ? resolveUrl(pair.en) : null;
+  const faqItems = extractFaq(body);
+  const graph = [
+    {
+      "@type": "Organization",
+      "@id": organizationId,
+      "name": "Awesome Free LLM APIs IR",
+      "url": canonicalOrigin,
+      "sameAs": [repositoryUrl]
+    },
+    {
+      "@type": "TechArticle",
+      headline: title,
+      description,
+      inLanguage: "fa-IR",
+      dateModified: metadata.updated_at,
+      mainEntityOfPage: canonicalUrl,
+      author: { "@id": organizationId },
+      publisher: { "@id": organizationId }
+    },
+    {
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "خانه", item: `${canonicalOrigin}/` },
+        { "@type": "ListItem", position: 2, name: "راهنماهای فارسی", item: `${canonicalOrigin}/#persian-guides` },
+        { "@type": "ListItem", position: 3, name: title, item: canonicalUrl }
+      ]
+    }
+  ];
+  if (faqItems.length > 0) {
+    graph.push({
+      "@type": "FAQPage",
+      mainEntity: faqItems.map((item) => ({
+        "@type": "Question",
+        name: item.question,
+        acceptedAnswer: { "@type": "Answer", text: item.answer }
+      }))
+    });
+  }
   const structuredData = {
     "@context": "https://schema.org",
-    "@graph": [
-      {
-        "@type": "Organization",
-        "@id": organizationId,
-        "name": "Awesome Free LLM APIs IR",
-        "url": canonicalOrigin,
-        "sameAs": [repositoryUrl]
-      },
-      {
-        "@type": "TechArticle",
-        headline: title,
-        description,
-        inLanguage: "fa-IR",
-        dateModified: metadata.updated_at,
-        mainEntityOfPage: canonicalUrl,
-        author: { "@id": organizationId },
-        publisher: { "@id": organizationId }
-      },
-      {
-        "@type": "BreadcrumbList",
-        itemListElement: [
-          { "@type": "ListItem", position: 1, name: "خانه", item: `${canonicalOrigin}/` },
-          { "@type": "ListItem", position: 2, name: "راهنماهای فارسی", item: `${canonicalOrigin}/#persian-guides` },
-          { "@type": "ListItem", position: 3, name: title, item: canonicalUrl }
-        ]
-      }
-    ]
+    "@graph": graph
   };
 
   const hreflang = pair

@@ -27,8 +27,11 @@ const lastUpdated = providers
 const iranLabels = {
   verified_working: "✅ مستقیم تست‌شده",
   verified_working_vpn: "🛡️ با VPN تست‌شده",
+  direct_blocked_vpn_working: "🛡️ مستقیم مسدود / VPN موفق",
   verified_blocked: "⛔ مستقیم مسدود",
   officially_unsupported: "🚫 پشتیبانی‌نشده رسمی",
+  intermittent: "⚠️ ناپایدار",
+  signup_blocked: "🧾 ثبت‌نام مسدود",
   unknown: "❔ نامشخص"
 };
 
