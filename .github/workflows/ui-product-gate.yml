@@ -80,8 +80,16 @@ jobs:
         run: npm run content:audit:test && npm run content:guides:test && npm run content:fa:live:verify:dry
       - name: Validate launch and verification contracts
         run: npm run launch:links:test && npm run links:test && npm run launch:log:test && npm run verification:backlog:test
-      - name: Validate generated and published data
-        run: npm run generate:check && npm run catalog:check && npm run data:test && npm run brand:test && npm run site:data:test
+      - name: Validate generated source parity
+        run: npm run generate:check
+      - name: Validate catalog source parity
+        run: npm run catalog:check
+      - name: Validate data JSON contract
+        run: npm run data:test
+      - name: Validate brand assets
+        run: npm run brand:test
+      - name: Validate published data contract
+        run: npm run site:data:test
       - name: Validate provider operations and benchmark contracts
         run: npm run verify:iran:dry && npm run upstreams:test && npm run advisor:test && npm run benchmark:validate && npm run benchmark:dry && npm run benchmark:test && npm run api-health:test
       - name: Validate production and release contracts
