@@ -22,7 +22,8 @@ const productRoutes = [
   { url: `${canonicalOrigin}/quick-start/`, priority: "0.9", hreflang: "fa-IR", label: "Developer quick start" },
   { url: `${canonicalOrigin}/en/api-finder/`, priority: "0.9", hreflang: "en", label: "English API Finder" },
   { url: `${canonicalOrigin}/en/quick-start/`, priority: "0.9", hreflang: "en", label: "English developer quick start" },
-  { url: `${canonicalOrigin}/en/compare/`, priority: "0.8", hreflang: "en", label: "English Provider comparison" }
+  { url: `${canonicalOrigin}/en/compare/`, priority: "0.8", hreflang: "en", label: "English Provider comparison" },
+  { url: `${canonicalOrigin}/methodology/`, priority: "0.5", hreflang: "fa-IR", label: "Methodology, privacy and corrections" }
 ];
 
 let sitemap = await readFile(sitemapPath, "utf8");
@@ -33,7 +34,10 @@ for (const route of productRoutes) {
     const counterpart = route.url.includes("/en/") ? route.url.replace("/en/", "/") : route.url;
     const faHref = route.url.includes("/en/") ? counterpart : route.url;
     const enHref = route.url.includes("/en/") ? route.url : counterpart;
-    const entry = `  <url>\n    <loc>${route.url}</loc>\n    <lastmod>2026-07-20</lastmod>\n    <priority>${route.priority}</priority>\n      <xhtml:link rel="alternate" hreflang="fa-IR" href="${faHref}"/>\n      <xhtml:link rel="alternate" hreflang="en" href="${enHref}"/>\n      <xhtml:link rel="alternate" hreflang="x-default" href="${faHref}"/>\n  </url>\n`;
+    const alternates = route.url.includes("/methodology/")
+      ? `      <xhtml:link rel="alternate" hreflang="fa-IR" href="${route.url}"/>\n      <xhtml:link rel="alternate" hreflang="x-default" href="${route.url}"/>`
+      : `      <xhtml:link rel="alternate" hreflang="fa-IR" href="${faHref}"/>\n      <xhtml:link rel="alternate" hreflang="en" href="${enHref}"/>\n      <xhtml:link rel="alternate" hreflang="x-default" href="${faHref}"/>`;
+    const entry = `  <url>\n    <loc>${route.url}</loc>\n    <lastmod>2026-07-22</lastmod>\n    <priority>${route.priority}</priority>\n${alternates}\n  </url>\n`;
     sitemap = sitemap.replace("</urlset>", `${entry}</urlset>`);
     sitemapChanged = true;
   }
@@ -54,7 +58,7 @@ const buildMeta = JSON.parse(await readFile(buildMetaPath, "utf8"));
 buildMeta.static_product_pages = [...new Set([
   ...(buildMeta.static_product_pages ?? []),
   "/api-finder/", "/quick-start/",
-  "/en/api-finder/", "/en/quick-start/", "/en/compare/"
+  "/en/api-finder/", "/en/quick-start/", "/en/compare/", "/methodology/"
 ])];
 await writeFile(buildMetaPath, `${JSON.stringify(buildMeta, null, 2)}\n`);
 
@@ -67,6 +71,13 @@ if (!homepage.includes(`href="${canonicalOrigin}/quick-start/"`)) {
   homepage = homepage.replace(
     '<a class="path-link" href="./api-finder/">بازکردن API Finder ←</a>',
     `<a class="path-link" href="${canonicalOrigin}/quick-start/">شروع مرحله‌ای و نمونه‌کد ←</a>`
+  );
+  await writeFile(homepagePath, homepage);
+}
+if (!homepage.includes('href="./methodology/"')) {
+  homepage = homepage.replace(
+    '<a href="./catalog.json">داده JSON</a>',
+    '<a href="./catalog.json">داده JSON</a> · <a href="./methodology/">روش‌شناسی و اصلاح داده</a>'
   );
   await writeFile(homepagePath, homepage);
 }

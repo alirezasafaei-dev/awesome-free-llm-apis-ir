@@ -325,7 +325,7 @@
       ],
       "iranAccess": {
         "status": "signup_blocked",
-        "label": "❔ نامشخص",
+        "label": "🧾 ثبت‌نام مسدود",
         "tested": true,
         "testedAt": "2026-07-21",
         "network": {
@@ -389,7 +389,7 @@
       ],
       "iranAccess": {
         "status": "signup_blocked",
-        "label": "❔ نامشخص",
+        "label": "🧾 ثبت‌نام مسدود",
         "tested": true,
         "testedAt": "2026-07-21",
         "network": {
@@ -859,7 +859,7 @@
       ],
       "iranAccess": {
         "status": "signup_blocked",
-        "label": "❔ نامشخص",
+        "label": "🧾 ثبت‌نام مسدود",
         "tested": true,
         "testedAt": "2026-07-16",
         "network": {
@@ -925,7 +925,7 @@
       ],
       "iranAccess": {
         "status": "signup_blocked",
-        "label": "❔ نامشخص",
+        "label": "🧾 ثبت‌نام مسدود",
         "tested": true,
         "testedAt": "2026-07-21",
         "network": {
@@ -1218,7 +1218,7 @@
       ],
       "iranAccess": {
         "status": "signup_blocked",
-        "label": "❔ نامشخص",
+        "label": "🧾 ثبت‌نام مسدود",
         "tested": true,
         "testedAt": "2026-07-16",
         "network": {
@@ -1279,7 +1279,7 @@
       ],
       "iranAccess": {
         "status": "signup_blocked",
-        "label": "❔ نامشخص",
+        "label": "🧾 ثبت‌نام مسدود",
         "tested": true,
         "testedAt": "2026-07-21",
         "network": {

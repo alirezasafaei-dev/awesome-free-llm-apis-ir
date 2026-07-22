@@ -86,7 +86,7 @@ for (const filename of entries) {
   }
   if (!body.includes("```")) throw new Error(`${filename}: expected at least one practical code block`);
 
-  articles.push(metadata);
+  articles.push({ ...metadata, hasFaq: body.includes("## پرسش‌های متداول") });
 }
 
 for (const script of ["scripts/build-persian-content.mjs", "scripts/validate-persian-content.mjs"]) {
@@ -127,6 +127,14 @@ try {
     }
     const h1Count = (html.match(/<h1(?:\s|>)/g) || []).length;
     if (h1Count !== 1) throw new Error(`${article.slug}: expected exactly one H1, found ${h1Count}`);
+    const jsonLdMatch = html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/);
+    if (!jsonLdMatch) throw new Error(`${article.slug}: generated page is missing JSON-LD`);
+    const graph = JSON.parse(jsonLdMatch[1])["@graph"];
+    const faq = graph.find((item) => item["@type"] === "FAQPage");
+    if (article.hasFaq && (!faq || !Array.isArray(faq.mainEntity) || faq.mainEntity.length === 0)) {
+      throw new Error(`${article.slug}: FAQ source content must produce FAQPage JSON-LD`);
+    }
+    if (!article.hasFaq && faq) throw new Error(`${article.slug}: FAQPage JSON-LD requires source FAQ content`);
     if (!sitemap.includes(`<loc>${article.canonical_target}</loc>`)) {
       throw new Error(`${article.slug}: sitemap entry is missing`);
     }

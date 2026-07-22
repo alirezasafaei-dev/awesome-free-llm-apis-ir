@@ -338,6 +338,10 @@ def classify_error(exc):
 
 این طبقه‌بندی برای Metric و Alert مفید است. پاسخ خام Provider را بدون پاک‌سازی وارد Log عمومی نکنید.
 
+## چه زمانی این روش مناسب نیست؟
+
+این چک‌لیست برای جداکردن خطاهای Client، حساب و قرارداد API است؛ برای اثبات مسدودسازی منطقه‌ای، انتخاب Plan یا تضمین سازگاری کامل Provider کافی نیست. در این موارد به سیاست رسمی Provider، وضعیت حساب و تست مجازِ همان محیط تکیه کنید.
+
 ## چه زمانی Retry کنیم؟
 
 برای این خطاها معمولاً Retry خودکار نکنید:
@@ -368,6 +372,14 @@ def classify_error(exc):
 - [راهنمای API رایگان هوش مصنوعی](https://llm.persiantoolbox.ir/guides/free-ai-api/) — نمای کلی APIهای رایگان هوش مصنوعی
 - [مدیریت محدودیت نرخ 429](https://llm.persiantoolbox.ir/guides/llm-api-rate-limit-429/) — راهنمای مدیریت Rate limit
 - [راهنمای عملی API رایگان در ایران](https://llm.persiantoolbox.ir/guides/practical-free-llm-api-iran/) — از ثبت‌نام تا اولین درخواست
+
+## منابع رسمی بررسی‌شده
+
+این منابع الگوی خطا، احراز هویت و درخواست API را توضیح می‌دهند؛ برای Endpoint، مدل، Plan و سیاست منطقه‌ای هر Provider، مستندات همان Provider مرجع نهایی است. تاریخ بررسی: ۲۲ ژوئیه ۲۰۲۶.
+
+- [کدهای خطای OpenAI API](https://developers.openai.com/api/docs/guides/error-codes) — مرجع رفتار خطاهای API و شناسهٔ درخواست برای عیب‌یابی.
+- [نمای کلی مرجع OpenAI API](https://developers.openai.com/api/reference/overview) — الگوی احراز هویت و اصول نگهداری امن کلید API.
+- [سیاست و روش گزارش دسترسی ایران این پروژه](https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir/blob/main/docs/IRAN_LIVE_VERIFICATION.fa.md) — تفکیک شواهد شبکه، حساب و سیاست؛ نه اثبات دسترسی یک Provider.
 
 ## جمع‌بندی
 

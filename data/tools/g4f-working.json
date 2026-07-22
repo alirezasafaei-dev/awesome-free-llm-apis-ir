@@ -25,9 +25,9 @@
     "features": ["model_discovery"]
   },
   "iran_compatibility": {
-    "status": "compatible",
+    "status": "unknown",
     "last_checked": "2026-07-16",
-    "notes_fa": "فقط خواندنی و بدون نیاز به احراز هویت. از ایران قابل دسترسی است."
+    "notes_fa": "این ابزار فقط‌خوان و بدون احراز هویت معرفی شده است، اما تست مستقیم از ایران برای آن ثبت نشده است."
   },
   "risk": {
     "terms": "low",

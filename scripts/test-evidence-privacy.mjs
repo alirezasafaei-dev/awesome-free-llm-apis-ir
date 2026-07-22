@@ -53,6 +53,7 @@ mustBlock("ssh operator@198.51.100.77", "ssh_target");
 mustBlock("Account asdevelooper-de0ciua is suspended", "account_identifier");
 mustBlock("team_id=team_987654", "account_identifier");
 mustBlock("شناسه حساب: account_987654", "account_identifier");
+mustBlock('Provider response: {\\"blocked\\":true}', "raw_response_body");
 
 console.log("\n--- Negative fixtures ---");
 mustPass("AS196864");

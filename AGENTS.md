@@ -35,12 +35,14 @@ Agents may:
 - create a feature branch and draft pull request;
 - report blockers and conflicting evidence without changing data.
 
+When an authorized repository owner explicitly directs a merge or production release in the active conversation, agents may also follow the controlled-release procedure below. This exception is limited to that explicit instruction and does not authorize infrastructure changes outside the repository's release scripts.
+
 ## Hard safety boundaries
 
 Agents must not:
 
-- deploy the website or mutate production infrastructure;
-- merge pull requests or push directly to `main`;
+- deploy the website or mutate production infrastructure without an explicit active-conversation instruction from an authorized repository owner;
+- merge pull requests or push directly to `main` without an explicit active-conversation instruction from an authorized repository owner;
 - use force-push, rewrite shared history, or delete branches autonomously;
 - run live Iran/VPN verification unless an authorized human explicitly starts that task on the correct network runner;
 - publish IP addresses, usernames, hostnames, SSH details, API keys, tokens, cookies, account emails, phone numbers, request headers, or raw response bodies;
@@ -51,6 +53,17 @@ Agents must not:
 - weaken privacy tests, validation rules, or evidence requirements to make a change pass.
 
 If a task requires any prohibited action, stop and produce a sanitized operator checklist instead.
+
+## Controlled release procedure
+
+When the repository owner explicitly authorizes a merge and release, agents must:
+
+1. Confirm the intended pull request is clean, all required checks pass, and the local worktree is clean.
+2. Merge only the reviewed pull request with a normal merge strategy; never force-push or rewrite history.
+3. Build and deploy only through the repository's documented release scripts and configured targets; do not improvise remote shell mutations.
+4. Capture the full merged commit SHA, verify every public target exposes that exact revision, and run the production smoke and UX-smoke checks.
+5. If a release check fails, use the repository's documented atomic rollback mechanism and report a sanitized failure summary.
+6. Never publish infrastructure identifiers, credentials, raw responses, or private deployment logs.
 
 ## Required commands
 
@@ -89,7 +102,7 @@ Do not hand-edit generated sections.
 - Open as a draft unless every required gate passes and the evidence is complete.
 - Include: source URLs, checked date, evidence class, files changed, tests run, limitations, and any human-only follow-up.
 - Never claim that a provider works from Iran unless a sanitized direct-Iran result satisfies the repository's verification contract.
-- Do not auto-merge.
+- Merge is permitted only through the controlled-release procedure after explicit repository-owner authorization.
 
 ## Scheduled-job policy
 
@@ -99,7 +112,7 @@ Unattended jobs are read-only by default. They may detect documentation drift, r
 - `npm test` passes;
 - no secret or private evidence is included;
 - no live network-location claim is changed;
-- no production or deployment command is run.
+- no production or deployment command is run unless a repository owner has explicitly authorized the controlled-release procedure in the active conversation.
 
 When uncertain, create an issue/report with `unknown` status instead of changing provider data.
 
@@ -112,4 +125,4 @@ A task is complete only when:
 - `npm test` passes;
 - privacy-sensitive output is absent;
 - limitations and unresolved conflicts are documented;
-- the result is presented for human review as a draft PR or sanitized report.
+- the result is presented for human review as a draft PR or sanitized report, unless an explicitly authorized controlled release has completed with revision verification and production smoke checks.

@@ -189,6 +189,7 @@ async function main() {
     { file: "compare/index.html", path: "/compare/" },
     { file: "en/compare/index.html", path: "/en/compare/" },
     { file: "tools/index.html", path: "/tools/" },
+    { file: "methodology/index.html", path: "/methodology/" },
     { file: "404.html", path: "/404.html" }
   ];
 

@@ -48,19 +48,21 @@ function wordCount(source) {
 }
 
 const sectionPatterns = {
-  intent: [/نیت جست.?وجو/i, /هدف (?:این )?(?:صفحه|راهنما)/i, /primary intent/i],
+  intent: [/^primary_keyword:\s*"?.+"?\s*$/mi, /نیت جست.?وجو/i, /هدف (?:این )?(?:صفحه|راهنما)/i, /primary intent/i],
   signup: [/ثبت.?نام/i, /ساخت حساب/i, /signup/i],
   "first-request": [/اولین درخواست/i, /نمونه درخواست/i, /chat\.completions/i, /curl\b/i],
   quota: [/سهمیه/i, /محدودیت/i, /rate limit/i, /quota/i],
   iran: [/وضعیت ایران/i, /دسترسی از ایران/i, /iran access/i],
   errors: [/خطاهای رایج/i, /رفع اشکال/i, /عیب.?یابی/i, /troubleshoot/i],
-  "when-not-to-use": [/چه زمانی.*(?:انتخاب|استفاده).*(?:نکن|نیست)/i, /مناسب نیست/i, /when not to/i],
+  "when-not-to-use": [/چه زمانی.*(?:انتخاب|استفاده).*(?:نکن|نیست)/i, /چه زمانی نباید/i, /چه زمانی.*(?:عوض|تغییر)/i, /مناسب نیست/i, /when not to/i],
   references: [/منابع رسمی/i, /منابع بررسی/i, /references/i],
-  links: [/مطالب مرتبط/i, /پیوندهای داخلی/i, /related (?:guides|links)/i]
+  links: [/مطالب مرتبط/i, /راهنماهای مرتبط/i, /پیوندهای داخلی/i, /related (?:guides|links)/i]
 };
 
 function missingSectionsFromText(source) {
+  const requiresIranEvidence = /^primary_keyword:.*ایران/m.test(source) || /^## .*ایران/m.test(source);
   return requirements
+    .filter(({ id }) => id !== "iran" || requiresIranEvidence)
     .filter(({ id }) => !(sectionPatterns[id] ?? []).some((pattern) => pattern.test(source)))
     .map(({ id }) => id);
 }
