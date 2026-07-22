@@ -8,6 +8,7 @@ on:
       - "scripts/apply-ui-pro-max-shell.mjs"
       - "scripts/test-ui-pro-max-contract.mjs"
       - "scripts/test-ux-clarity-contract.mjs"
+      - "scripts/test-developer-quick-start.mjs"
       - "package.json"
       - ".github/workflows/ui-product-gate.yml"
   workflow_dispatch:
@@ -63,3 +64,29 @@ jobs:
         run: npm run production:ux-smoke:test
       - name: Validate build regression contract
         run: npm run check:regression
+
+  repository-compatibility:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.2.1
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.3.0
+        with:
+          node-version: 22
+      - run: npm ci
+      - name: Validate provider editorial contracts
+        run: npm run content:providers:validate && npm run content:providers:test && npm run content:providers:pages:test
+      - name: Validate content quality contracts
+        run: npm run content:audit:test && npm run content:guides:test && npm run content:fa:live:verify:dry
+      - name: Validate launch and verification contracts
+        run: npm run launch:links:test && npm run links:test && npm run launch:log:test && npm run verification:backlog:test
+      - name: Validate generated and published data
+        run: npm run generate:check && npm run catalog:check && npm run data:test && npm run brand:test && npm run site:data:test
+      - name: Validate provider operations and benchmark contracts
+        run: npm run verify:iran:dry && npm run upstreams:test && npm run advisor:test && npm run benchmark:validate && npm run benchmark:dry && npm run benchmark:test && npm run api-health:test
+      - name: Validate production and release contracts
+        run: npm run production:smoke:test && npm run production:release:verify:test && npm run production:release:orchestration:test && npm run production:ux-smoke:test && npm run post-launch:ops:test
+      - name: Validate deployment and tools contracts
+        run: npm run pages:paths:test && npm run analytics:production:test && npm run deploy:check && npm run deploy:test && npm run validate:tools && npm run generate:tools:check && npm run tools:test && npm run tools:site:test
+      - name: Validate repository audits and Hermes contracts
+        run: npm run validate:repo-audits && npm run hermes:pilot:test
