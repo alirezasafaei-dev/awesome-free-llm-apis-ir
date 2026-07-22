@@ -12,7 +12,8 @@ const routes = [
   "en/quick-start/index.html",
   "compare/index.html",
   "en/compare/index.html",
-  "tools/index.html"
+  "tools/index.html",
+  "methodology/index.html"
 ];
 
 const failures = [];
@@ -38,6 +39,19 @@ for (const route of routes) {
     if (!pattern.test(html)) failures.push(`${route}: missing ${label}`);
   }
 }
+
+const methodologyUrl = "https://llm.persiantoolbox.ir/methodology/";
+const methodology = await readFile(path.join(dist, "methodology", "index.html"), "utf8");
+for (const signal of ["روش‌شناسی و اصلاح داده", "حریم خصوصی و Analytics", "اصلاح و گزارش خطا", "AboutPage"]) {
+  if (!methodology.includes(signal)) failures.push(`methodology/index.html: missing trust signal ${signal}`);
+}
+
+const sitemap = await readFile(path.join(dist, "sitemap.xml"), "utf8");
+if (!sitemap.includes(`<loc>${methodologyUrl}</loc>`)) failures.push("sitemap.xml: missing methodology route");
+const llms = await readFile(path.join(dist, "llms.txt"), "utf8");
+if (!llms.includes(`Methodology, privacy and corrections: ${methodologyUrl}`)) failures.push("llms.txt: missing methodology route");
+const buildMeta = JSON.parse(await readFile(path.join(dist, "build-meta.json"), "utf8"));
+if (!buildMeta.static_product_pages?.includes("/methodology/")) failures.push("build-meta.json: missing methodology route");
 
 if (failures.length) {
   console.error("Public-route SEO coverage failed:");
