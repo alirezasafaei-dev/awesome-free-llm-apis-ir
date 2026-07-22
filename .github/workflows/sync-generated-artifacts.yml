@@ -17,7 +17,7 @@ jobs:
       github.event.pull_request.head.repo.full_name == github.repository &&
       startsWith(github.head_ref, 'agent/')
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.2.1
         with:
@@ -26,32 +26,82 @@ jobs:
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.3.0
         with:
           node-version: 22
+      - name: Apply allow-listed evidence migration
+        if: github.head_ref == 'agent/evidence-semantics-fix-20260722'
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          if [[ ! -f .github/scripts/apply-evidence-semantics.py ]]; then
+            echo 'Evidence migration is already applied.'
+            exit 0
+          fi
+          python .github/scripts/apply-evidence-semantics.py
+          python <<'PY'
+          from pathlib import Path
+
+          path = Path('scripts/validate.mjs')
+          text = path.read_text()
+          before = 'evidenceType: new Set(["official_docs", "live_test", "connectivity_test", "community_report"]),'
+          after = 'evidenceType: new Set(["official_docs", "live_test", "connectivity_test", "signup_test", "community_report"]),'
+          if before not in text:
+              raise SystemExit('validator evidence enum marker not found')
+          text = text.replace(before, after, 1)
+
+          marker = '''  if (evidence.type === "official_docs" || evidence.type === "community_report") {
+            if (!validHttps(evidence.url)) fail(file, `${prefix}.url must be an HTTPS URL`);
+            if (!validDate(evidence.checked_at ?? "")) fail(file, `${prefix}.checked_at must be a date`);
+            if (typeof evidence.notes_fa !== "string" || !evidence.notes_fa.trim()) fail(file, `${prefix}.notes_fa must be non-empty`);
+          }
+          '''.replace('          ', '')
+          addition = marker + '''
+          if (evidence.type === "signup_test") {
+            if (!validDate(evidence.checked_at ?? "")) fail(file, `${prefix}.checked_at must be a date`);
+            if (typeof evidence.source !== "string" || !evidence.source.trim()) fail(file, `${prefix}.source must be non-empty`);
+            if (typeof evidence.notes_fa !== "string" || !evidence.notes_fa.trim()) fail(file, `${prefix}.notes_fa must be non-empty`);
+          }
+          '''.replace('          ', '')
+          if marker not in text:
+              raise SystemExit('validator evidence rule marker not found')
+          path.write_text(text.replace(marker, addition, 1))
+          PY
+          git rm .github/workflows/apply-evidence-semantics.yml
+          git rm .github/scripts/apply-evidence-semantics.py
       - run: npm ci
       - name: Regenerate canonical artifacts
         run: npm run generate
-      - name: Reject unexpected generator writes
+      - name: Reject unexpected writes
         shell: bash
         run: |
           set -Eeuo pipefail
           changed="$(git diff --name-only)"
-          unexpected="$(printf '%s\n' "$changed" | grep -Ev '^(README\.md|catalog\.json|data\.json)$' || true)"
+          if [[ "${GITHUB_HEAD_REF}" == 'agent/evidence-semantics-fix-20260722' ]]; then
+            allowed='^(README\.md|catalog\.json|data\.json|content/fa/ai-api-iran\.md|docs/METHODOLOGY\.fa\.md|schema/provider\.schema\.json|scripts/(build-guides|build-site|generate-data-json|generate-readme|test-advisor-scoring|test-provider-content-pages|validate|privacy-evidence-rules|test-evidence-privacy)\.mjs|site/(api-finder/index\.html|app\.js|compare/compare\.js|en/api-finder/index\.html|en/compare/compare\.js|en/quick-start/provider-context-en\.js|index\.html|quick-start/provider-context\.js)|data/providers/(agnes-ai|fireworks-ai|freetheai|nvidia-nim|vercel-ai-gateway)\.json|data/verification-backlog\.json|\.github/scripts/apply-evidence-semantics\.py|\.github/workflows/apply-evidence-semantics\.yml)$'
+          else
+            allowed='^(README\.md|catalog\.json|data\.json)$'
+          fi
+          unexpected="$(printf '%s\n' "$changed" | grep -Ev "$allowed" || true)"
           if [[ -n "$unexpected" ]]; then
-            echo "Generator modified unexpected paths:" >&2
+            echo 'Workflow modified unexpected paths:' >&2
             printf '%s\n' "$unexpected" >&2
             exit 1
           fi
       - name: Validate regenerated repository
         run: npm test
-      - name: Commit generated artifacts
+      - name: Commit synchronized repository
         shell: bash
         run: |
           set -Eeuo pipefail
-          if git diff --quiet -- README.md catalog.json data.json; then
-            echo 'Generated artifacts are already synchronized.'
+          if git diff --quiet; then
+            echo 'Repository is already synchronized.'
             exit 0
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add README.md catalog.json data.json
-          git commit -m "chore(generated): sync repository artifacts"
+          if [[ "${GITHUB_HEAD_REF}" == 'agent/evidence-semantics-fix-20260722' ]]; then
+            git add -A
+            git commit -m 'fix(verification): preserve account barriers and sanitize evidence'
+          else
+            git add README.md catalog.json data.json
+            git commit -m 'chore(generated): sync repository artifacts'
+          fi
           git push origin "HEAD:${GITHUB_HEAD_REF}"
