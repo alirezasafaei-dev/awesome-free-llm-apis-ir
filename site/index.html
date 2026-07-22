@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="theme-color" content="#111827">
+    <meta name="theme-color" content="#F7F8FA">
     <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
     <meta name="description" content="API رایگان هوش مصنوعی برای پروژه‌ات پیدا کن. سرویس‌های رایگان LLM را بر اساس کاربرد، محدودیت، سازگاری با OpenAI و وضعیت دسترسی ایران ساده و شفاف مقایسه کن.">
     <meta property="og:title" content="API رایگان هوش مصنوعی برای پروژه | انتخاب ساده و مقایسه فنی">
@@ -26,9 +26,10 @@
     <link rel="manifest" href="./manifest.webmanifest">
     <link rel="stylesheet" href="./styles.css">
     <link rel="stylesheet" href="./ux-clarity.css">
+    <link rel="stylesheet" href="./ui-pro-max.css">
     <title>API رایگان هوش مصنوعی برای پروژه | API رایگان LLM برای ایران</title>
     <link rel="icon" type="image/svg+xml" href="./assets/favicon.svg">
-    <link rel="mask-icon" href="./assets/mask-icon.svg" color="#2563EB">
+    <link rel="mask-icon" href="./assets/mask-icon.svg" color="#155EEF">
     <link rel="icon" type="image/png" sizes="32x32" href="./assets/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="./assets/favicon-16x16.png">
     <link rel="apple-touch-icon" sizes="180x180" href="./assets/apple-touch-icon.png">
@@ -85,7 +86,7 @@
     }
     </script>
   </head>
-  <body>
+  <body data-page-type="home">
     <a class="skip-link" href="#main-content">رفتن به محتوای اصلی</a>
 
     <header class="topbar">
@@ -94,146 +95,163 @@
         <span>Awesome Free LLM APIs IR</span>
       </a>
       <nav aria-label="پیوندهای اصلی">
-        <a href="#how-it-works">روش استفاده</a>
-        <a href="./api-finder/">انتخاب API</a>
-        <a href="#catalog">فهرست کامل</a>
+        <a href="#catalog">APIها</a>
+        <a href="./api-finder/">انتخاب هوشمند</a>
+        <a href="./compare/">مقایسه</a>
+        <a href="./quick-start/">شروع سریع</a>
         <!-- LANGUAGE_SWITCHER -->
-        <button id="theme-toggle" class="icon-button" type="button" aria-pressed="false" aria-label="تغییر به پوسته روشن">◐</button>
+        <button id="theme-toggle" class="icon-button" type="button" aria-pressed="false" aria-label="تغییر پوسته">◐</button>
       </nav>
     </header>
 
     <main id="main-content">
-      <section class="hero clarity-hero" aria-labelledby="hero-title">
+      <section class="hero clarity-hero product-hero" aria-labelledby="hero-title">
         <div class="hero-copy">
-          <p class="eyebrow">سرویس مناسب را بدون سردرگمی پیدا کن</p>
-          <h1 id="hero-title">API رایگان هوش مصنوعی<br><span>برای پروژه‌ات پیدا کن.</span></h1>
-          <p class="hero-description"><strong>API</strong> راهی است که برنامه، سایت یا ربات شما را به یک مدل هوش مصنوعی وصل می‌کند. کاربردت را انتخاب کن تا گزینه‌های مناسب را با توضیح ساده، محدودیت مصرف و وضعیت دسترسی ایران ببینی.</p>
-          <p class="hero-examples">مناسب برای چت‌بات، تولید متن، کدنویسی، استدلال و جست‌وجوی معنایی</p>
+          <p class="eyebrow">کاتالوگ بررسی‌شده برای توسعه‌دهنده‌های فارسی</p>
+          <h1 id="hero-title">API رایگان هوش مصنوعی<br><span>بدون حدس و تبلیغ.</span></h1>
+          <p class="hero-description"><strong>API راهی است که برنامه، سایت یا ربات شما را به یک مدل هوش مصنوعی وصل می‌کند.</strong> سرویس‌ها را بر اساس سهمیه، مدل، فرمت OpenAI، شرایط حساب و شواهد دسترسی ایران بررسی و مقایسه کن.</p>
+          <p class="hero-examples">برای چت‌بات، تولید متن، کدنویسی، استدلال، Embedding و ابزارهای Agent</p>
           <div class="hero-actions">
             <a class="button primary" href="./api-finder/">برای من API انتخاب کن</a>
-            <a class="button secondary" href="#catalog">فهرست فنی را ببین</a>
+            <a class="button secondary" href="./quick-start/">اولین درخواست را بساز</a>
+            <a class="button secondary" href="#catalog">همه سرویس‌ها</a>
           </div>
         </div>
-        <div class="hero-panel" aria-label="این سایت چه کمکی می‌کند؟">
-          <div><strong>ساده انتخاب کن</strong><span>نیازت را بگو و پیشنهادهای مرتبط بگیر</span></div>
-          <div><strong>قبل از ثبت‌نام مقایسه کن</strong><span>رایگان بودن، محدودیت و نیاز به کارت را ببین</span></div>
-          <div><strong>وضعیت ایران را جدا بررسی کن</strong><span>شبکه، ثبت‌نام و اجرای واقعی با هم قاطی نمی‌شوند</span></div>
+        <div class="hero-panel" aria-label="معیارهای بررسی">
+          <div><strong>Evidence-first</strong><span>نتیجه شبکه، ثبت‌نام، کلید و استنتاج از هم جدا ثبت می‌شوند.</span></div>
+          <div><strong>محدودیت واقعی</strong><span>RPM، RPD، اعتبار ماهانه و نیاز به روش پرداخت قابل مشاهده است.</span></div>
+          <div><strong>منبع و تاریخ</strong><span>هر ادعا باید به منبع رسمی یا آزمایش محدودشده متصل باشد.</span></div>
+        </div>
+      </section>
+
+      <section id="catalog" class="catalog-section" aria-labelledby="catalog-title">
+        <div class="catalog-shell">
+          <header class="catalog-header">
+            <div>
+              <p class="eyebrow">جست‌وجو و مقایسه</p>
+              <h2 id="catalog-title">کاتالوگ APIهای رایگان LLM</h2>
+              <p class="section-intro">نام سرویس، مدل یا قابلیت را جست‌وجو کن. برای پیشنهاد رتبه‌بندی‌شده از <a href="./api-finder/">API Finder</a> و برای کنارهم‌گذاشتن گزینه‌ها از <a href="./compare/">صفحه مقایسه</a> استفاده کن.</p>
+            </div>
+            <p id="catalog-updated" class="updated">در حال دریافت داده…</p>
+          </header>
+
+          <div class="catalog-metrics" aria-label="آمار فهرست">
+            <span><strong id="stat-total">—</strong><small>سرویس بررسی‌شده</small></span>
+            <span><strong id="stat-free">—</strong><small>دارای گزینه رایگان</small></span>
+            <span><strong id="stat-openai">—</strong><small>سازگار با فرمت OpenAI</small></span>
+            <span><strong id="stat-fresh">—</strong><small>دارای داده تازه</small></span>
+          </div>
+
+          <form id="filters" class="catalog-filter-shell" role="search" aria-label="جست‌وجو و فیلتر سرویس‌ها">
+            <label class="search-field catalog-search" for="search">
+              <span>جست‌وجو</span>
+              <span class="search-input-shell"><input id="search" type="search" placeholder="مثلاً Groq، Llama، Embedding یا OpenAI-compatible" autocomplete="off"><button id="clear-search" class="clear-search" type="button" hidden>پاک‌کردن</button></span>
+            </label>
+            <div class="quick-filter-row" aria-label="فیلترهای سریع">
+              <a href="?access=verified_working#catalog">اجرای مستقیم از ایران</a>
+              <a href="?openai=1#catalog">فرمت OpenAI</a>
+              <a href="?free=permanent_allowance#catalog">سهمیه دائمی</a>
+              <a href="?capability=reasoning#catalog">مدل استدلال</a>
+              <a href="?capability=embeddings#catalog">Embedding</a>
+            </div>
+            <details class="advanced-filter-panel">
+              <summary><span>فیلترهای پیشرفته</span><small>نوع رایگان، وضعیت ایران، قابلیت و سازگاری</small></summary>
+              <div class="filters">
+                <label><span>نوع گزینه رایگان</span><select id="free-type"><option value="">همه</option><option value="permanent_allowance">سهمیه دائمی</option><option value="free_models">مدل‌های رایگان</option><option value="monthly_credit">اعتبار ماهانه</option><option value="trial">آزمایشی</option></select></label>
+                <label><span>وضعیت استفاده از ایران</span><select id="access-status"><option value="">همه وضعیت‌ها</option><option value="verified_working">اجرای مستقیم تأییدشده</option><option value="verified_working_vpn">با VPN تست‌شده</option><option value="direct_blocked_vpn_working">مستقیم مسدود / VPN موفق</option><option value="verified_blocked">مسدودیت تأییدشده</option><option value="signup_blocked">مانع ثبت‌نام</option><option value="account_activation_blocked">مانع فعال‌سازی حساب</option><option value="officially_unsupported">پشتیبانی‌نشده رسمی</option><option value="unknown">هنوز نامشخص</option></select></label>
+                <label><span>قابلیت</span><select id="capability"><option value="">همه قابلیت‌ها</option><option value="chat">چت</option><option value="reasoning">استدلال</option><option value="embeddings">جست‌وجوی معنایی</option><option value="tool_calling">اتصال به ابزارها</option><option value="structured_output">خروجی ساخت‌یافته</option></select></label>
+                <label class="checkbox-field"><input id="openai-only" type="checkbox"><span>فقط سازگار با فرمت OpenAI</span></label>
+                <button id="reset-filters" class="reset-button" type="reset">پاک‌کردن همه فیلترها</button>
+              </div>
+            </details>
+          </form>
+
+          <div class="results-bar">
+            <p id="result-count" role="status" aria-live="polite">در حال بارگذاری…</p>
+            <label class="sort-field"><span>مرتب‌سازی</span><select id="sort"><option value="name">نام</option><option value="freshness">تازگی داده</option><option value="free">نوع گزینه رایگان</option></select></label>
+          </div>
+          <div id="loading" class="message-card">در حال دریافت فهرست…</div>
+          <div id="error" class="message-card error" hidden>دریافت داده ناموفق بود. صفحه را دوباره بارگذاری کنید.</div>
+          <div id="empty" class="message-card" hidden>موردی با این فیلترها پیدا نشد.</div>
+          <div id="provider-grid" class="provider-grid" aria-live="polite"></div>
+
+          <section class="advisor simplified-advisor" aria-labelledby="advisor-title">
+            <div>
+              <p class="eyebrow">پیشنهاد سریع</p>
+              <h3 id="advisor-title">سه گزینه متناسب با کاربردت</h3>
+              <p>این پیشنهاد بر اساس داده کاتالوگ است، نه تضمین کیفیت یا دسترسی دائمی.</p>
+              <details class="advisor-disclosure"><summary>امتیاز چطور محاسبه می‌شود؟</summary><p>قابلیت، نوع سهمیه، روش پرداخت، تازگی Evidence، وضعیت ایران و نوع سرویس در امتیاز اثر دارند.</p></details>
+            </div>
+            <div class="advisor-controls">
+              <label><span>کاربرد</span><select id="advisor-usecase"><option value="chat">چت و تولید متن</option><option value="coding">کدنویسی و ابزارها</option><option value="reasoning">استدلال و حل مسئله</option><option value="embeddings">جست‌وجوی معنایی</option></select></label>
+              <label><span>اولویت</span><select id="advisor-priority"><option value="low-friction">شروع کم‌دردسر</option><option value="iran-aware">شفافیت وضعیت ایران</option><option value="openai-compatible">فرمت OpenAI</option><option value="fresh">داده تازه‌تر</option></select></label>
+            </div>
+            <ol id="advisor-results" class="advisor-results"></ol>
+          </section>
         </div>
       </section>
 
       <section class="audience-paths" aria-labelledby="choose-path-title">
-        <div class="section-heading compact-heading">
-          <div>
-            <p class="eyebrow">از مسیر مناسب خودت شروع کن</p>
-            <h2 id="choose-path-title">چقدر با API آشنا هستی؟</h2>
-          </div>
-        </div>
+        <div class="section-heading compact-heading"><div><p class="eyebrow">قدم بعدی</p><h2 id="choose-path-title">از مسیر مناسب ادامه بده</h2></div></div>
         <div class="path-grid">
           <article class="path-card beginner-path">
-            <span class="path-icon" aria-hidden="true">۱</span>
-            <p class="path-label">تازه‌کارم</p>
-            <h3>اول می‌خواهم بفهمم API چیست</h3>
-            <p>با یک توضیح کوتاه و مثال واقعی شروع کن؛ بعد بدون درگیرشدن با اصطلاحات فنی گزینه‌ها را ببین.</p>
+            <span class="path-icon" aria-hidden="true">01</span>
+            <p class="path-label">تازه‌کار</p>
+            <h3>اول مفهوم API را بفهم</h3>
+            <p>یک توضیح کوتاه، بدون اصطلاحات اضافه، بعد ورود به انتخاب سرویس.</p>
             <a class="path-link" href="#what-is-api">توضیح ساده API ←</a>
           </article>
           <article class="path-card developer-path">
-            <span class="path-icon" aria-hidden="true">۲</span>
-            <p class="path-label">برنامه‌نویسم</p>
-            <h3>برای پروژه‌ام سرویس مناسب می‌خواهم</h3>
-            <p>کاربرد، زبان، بودجه، سرعت و شرایط منطقه را انتخاب کن تا سه پیشنهاد رتبه‌بندی‌شده بگیری.</p>
-            <a class="path-link" href="./api-finder/">بازکردن API Finder ←</a>
+            <span class="path-icon" aria-hidden="true">02</span>
+            <p class="path-label">توسعه‌دهنده</p>
+            <h3>مستقیم به راه‌اندازی برو</h3>
+            <p>Provider را انتخاب کن و نمونه درخواست cURL، Python یا Node.js را بساز.</p>
+            <a class="path-link" href="./quick-start/">شروع سریع ←</a>
           </article>
         </div>
       </section>
 
       <section id="how-it-works" class="how-it-works" aria-labelledby="how-title">
         <p class="eyebrow">فقط سه قدم</p>
-        <h2 id="how-title">چطور از سایت استفاده کنم؟</h2>
+        <h2 id="how-title">از انتخاب تا اولین درخواست</h2>
         <ol class="step-grid">
-          <li><span>۱</span><div><strong>نیازت را انتخاب کن</strong><p>مثلاً چت‌بات، تولید محتوا، کدنویسی یا Embedding.</p></div></li>
-          <li><span>۲</span><div><strong>پیشنهادها را مقایسه کن</strong><p>نوع رایگان، محدودیت، سازگاری و وضعیت ایران را کنار هم ببین.</p></div></li>
-          <li><span>۳</span><div><strong>مستندات را باز کن</strong><p>بعد از بررسی شرایط، از منبع رسمی سرویس اولین درخواستت را بساز.</p></div></li>
+          <li><span>۱</span><div><strong>نیازت را مشخص کن</strong><p>چت، کدنویسی، استدلال یا Embedding.</p></div></li>
+          <li><span>۲</span><div><strong>شرایط را مقایسه کن</strong><p>سهمیه، حساب، پرداخت، وضعیت ایران و تاریخ Evidence.</p></div></li>
+          <li><span>۳</span><div><strong>از منبع رسمی شروع کن</strong><p>مستندات را باز کن و اولین درخواست را اجرا کن.</p></div></li>
         </ol>
       </section>
 
-      <div class="trust-strip" aria-label="آمار فهرست">
-        <span><strong id="stat-total">—</strong> <small>سرویس بررسی‌شده</small></span>
-        <span><strong id="stat-free">—</strong> <small>دارای گزینه رایگان</small></span>
-        <span><strong id="stat-openai">—</strong> <small>قابل استفاده با فرمت OpenAI</small></span>
-        <span><strong id="stat-fresh">—</strong> <small>دارای داده تازه</small></span>
-      </div>
-
       <section id="what-is-api" class="plain-explainer" aria-labelledby="api-explainer-title">
         <div>
-          <p class="eyebrow">توضیح بدون اصطلاح پیچیده</p>
-          <h2 id="api-explainer-title">API هوش مصنوعی دقیقاً چیست؟</h2>
-          <p>فرض کن یک برنامه یا ربات ساخته‌ای و می‌خواهی متن تولید کند، سؤال جواب بدهد یا کد بنویسد. به‌جای ساختن مدل هوش مصنوعی از صفر، برنامه تو یک درخواست برای سرویس هوش مصنوعی می‌فرستد و پاسخ را دریافت می‌کند. این مسیر ارتباطی همان API است.</p>
+          <p class="eyebrow">تعریف ساده</p>
+          <h2 id="api-explainer-title">API هوش مصنوعی چیست؟</h2>
+          <p>برنامه تو یک درخواست شامل متن و تنظیمات برای سرویس هوش مصنوعی می‌فرستد و پاسخ مدل را دریافت می‌کند. به‌جای ساخت مدل از صفر، از توان مدل آماده داخل سایت، ربات یا ابزار خودت استفاده می‌کنی.</p>
         </div>
-        <div class="example-flow" aria-label="نمونه جریان API">
-          <span>برنامه شما</span><b aria-hidden="true">←</b><span>API</span><b aria-hidden="true">←</b><span>مدل هوش مصنوعی</span>
-        </div>
-        <a class="button primary" href="./api-finder/">حالا یک API مناسب پیدا کن</a>
-      </section>
-
-      <section id="catalog" class="catalog-section" aria-labelledby="catalog-title">
-        <div class="section-heading">
-          <div>
-            <p class="eyebrow">برای مقایسه دقیق‌تر</p>
-            <h2 id="catalog-title">فهرست کامل APIهای رایگان</h2>
-            <p class="section-intro">این بخش برای زمانی است که می‌خواهی همه سرویس‌ها را ببینی. برای انتخاب سریع‌تر، از <a href="./api-finder/">API Finder هدایت‌شده</a> استفاده کن.</p>
-          </div>
-          <p id="catalog-updated" class="updated">در حال دریافت داده…</p>
-        </div>
-
-        <section class="advisor simplified-advisor" aria-labelledby="advisor-title">
-          <div><p class="eyebrow">پیشنهاد سریع برای توسعه‌دهنده</p><h3 id="advisor-title">کاربرد و اولویتت را انتخاب کن</h3><p>سه گزینه اولیه نمایش داده می‌شود. برای انتخاب دقیق‌تر وارد API Finder شو.</p><details class="advisor-disclosure"><summary>پیشنهادها چطور محاسبه می‌شوند؟</summary><p>قابلیت موردنیاز، نوع سهمیه، نیاز به کارت بانکی، تازگی داده، وضعیت ایران و نوع سرویس در امتیاز اثر دارند. این پیشنهاد تضمین کیفیت یا دسترسی دائمی نیست.</p></details></div>
-          <div class="advisor-controls">
-            <label><span>برای چه کاری؟</span><select id="advisor-usecase"><option value="chat">چت و تولید متن</option><option value="coding">کدنویسی و ابزارها</option><option value="reasoning">استدلال و حل مسئله</option><option value="embeddings">جست‌وجوی معنایی</option></select></label>
-            <label><span>مهم‌ترین اولویت</span><select id="advisor-priority"><option value="low-friction">شروع سریع و بدون دردسر</option><option value="iran-aware">شفافیت وضعیت ایران</option><option value="openai-compatible">سازگاری با فرمت OpenAI</option><option value="fresh">داده تازه‌تر</option></select></label>
-          </div>
-          <ol id="advisor-results" class="advisor-results"></ol>
-        </section>
-
-        <details class="advanced-filter-panel">
-          <summary><span>فیلترهای پیشرفته</span><small>جست‌وجو بر اساس نوع رایگان، وضعیت ایران، قابلیت و سازگاری</small></summary>
-          <form id="filters" class="filters" role="search" aria-label="فیلتر سرویس‌ها">
-            <label class="search-field"><span>جست‌وجو</span><input id="search" type="search" placeholder="نام سرویس، مدل یا قابلیت…" autocomplete="off"></label>
-            <label><span>نوع گزینه رایگان</span><select id="free-type"><option value="">همه</option><option value="permanent_allowance">سهمیه دائمی</option><option value="free_models">مدل‌های رایگان</option><option value="monthly_credit">اعتبار ماهانه</option><option value="trial">آزمایشی</option></select></label>
-            <label><span>وضعیت استفاده از ایران</span><select id="access-status"><option value="">همه وضعیت‌ها</option><option value="verified_working">اجرای مستقیم تأییدشده</option><option value="verified_working_vpn">با VPN تست‌شده</option><option value="direct_blocked_vpn_working">مستقیم مسدود / VPN موفق</option><option value="verified_blocked">مسدودیت تأییدشده</option><option value="signup_blocked">مانع ثبت‌نام</option><option value="officially_unsupported">پشتیبانی‌نشده رسمی</option><option value="unknown">هنوز نامشخص</option></select></label>
-            <label><span>قابلیت</span><select id="capability"><option value="">همه قابلیت‌ها</option><option value="chat">چت</option><option value="reasoning">استدلال</option><option value="embeddings">جست‌وجوی معنایی</option><option value="tool_calling">اتصال به ابزارها</option><option value="structured_output">خروجی ساخت‌یافته</option></select></label>
-            <label class="checkbox-field"><input id="openai-only" type="checkbox"><span>فقط سازگار با فرمت OpenAI</span></label>
-            <button id="reset-filters" class="reset-button" type="reset">پاک‌کردن فیلترها</button>
-          </form>
-        </details>
-
-        <div class="results-bar"><p id="result-count" role="status" aria-live="polite">در حال بارگذاری…</p><label class="sort-field"><span>مرتب‌سازی</span><select id="sort"><option value="name">نام</option><option value="freshness">تازگی داده</option><option value="free">نوع گزینه رایگان</option></select></label></div>
-        <div id="loading" class="message-card">در حال دریافت فهرست…</div>
-        <div id="error" class="message-card error" hidden>دریافت داده ناموفق بود. صفحه را دوباره بارگذاری کنید.</div>
-        <div id="empty" class="message-card" hidden>موردی با این فیلترها پیدا نشد.</div>
-        <div id="provider-grid" class="provider-grid" aria-live="polite"></div>
+        <div class="example-flow" aria-label="نمونه جریان API"><span>برنامه شما</span><b aria-hidden="true">←</b><span>API</span><b aria-hidden="true">←</b><span>مدل هوش مصنوعی</span></div>
+        <a class="button primary" href="./api-finder/">یک API مناسب پیدا کن</a>
       </section>
 
       <section id="guide" class="seo-intro" aria-labelledby="guide-title">
-        <p class="eyebrow">قبل از انتخاب بدان</p>
-        <h2 id="guide-title">سه نکته‌ای که جلوی انتخاب اشتباه را می‌گیرد</h2>
-        <p>نام مدل به‌تنهایی کافی نیست. رایگان بودن، امکان ساخت حساب، محدودیت مصرف و اجرای واقعی از شبکه شما چهار موضوع جدا هستند.</p>
+        <p class="eyebrow">قبل از انتخاب</p>
+        <h2 id="guide-title">چهار موضوع را با هم قاطی نکن</h2>
+        <p>بازشدن سایت، ساخت حساب، دریافت کلید و پاسخ‌گرفتن از مدل چهار مرحله جدا هستند.</p>
         <div class="seo-guide-grid">
-          <article><h3>رایگان همیشه یک معنی ندارد</h3><p>مدل رایگان دائمی، سهمیه ماهانه، اعتبار هدیه و دوره آزمایشی شرایط متفاوتی دارند.</p></article>
-          <article><h3>بازشدن سایت یعنی API کار نمی‌کند</h3><p>دسترسی به صفحه، ساخت حساب، گرفتن کلید و دریافت پاسخ مدل باید جداگانه بررسی شوند.</p></article>
-          <article><h3>منبع و تاریخ را کنترل کن</h3><p>سیاست‌ها و محدودیت‌ها تغییر می‌کنند؛ صفحه هر سرویس منبع رسمی و تاریخ آخرین بررسی را نشان می‌دهد.</p></article>
+          <article><h3>رایگان یک معنی ندارد</h3><p>سهمیه دائمی، مدل رایگان، اعتبار ماهانه و Trial شرایط متفاوتی دارند.</p></article>
+          <article><h3>دسترسی صفحه کافی نیست</h3><p>ممکن است سایت باز شود اما ثبت‌نام، کلید یا استنتاج روی همان حساب محدود باشد.</p></article>
+          <article><h3>تاریخ Evidence مهم است</h3><p>قیمت، محدودیت و سیاست منطقه‌ای تغییر می‌کند؛ تاریخ آخرین بررسی را بخوان.</p></article>
         </div>
       </section>
 
       <section id="glossary" class="glossary" aria-labelledby="glossary-title">
-        <p class="eyebrow">واژه‌نامه کوتاه</p>
-        <h2 id="glossary-title">اصطلاحات روی کارت‌ها یعنی چه؟</h2>
+        <p class="eyebrow">واژه‌نامه</p>
+        <h2 id="glossary-title">اصطلاحات مهم کارت‌ها</h2>
         <div class="glossary-grid">
-          <details open><summary>API</summary><p>راه ارتباط برنامه شما با یک سرویس دیگر؛ در این سایت، راه ارتباط با مدل هوش مصنوعی.</p></details>
-          <details><summary>LLM</summary><p>مدل زبانی بزرگ؛ مدلی که متن را می‌فهمد یا تولید می‌کند، مانند مدل‌های چت و کدنویسی.</p></details>
+          <details open><summary>API</summary><p>راه ارتباط برنامه با سرویس مدل هوش مصنوعی.</p></details>
+          <details><summary>LLM</summary><p>مدل زبانی بزرگ برای فهم و تولید متن.</p></details>
           <details><summary>Provider</summary><p>شرکت یا سرویسی که دسترسی API را ارائه می‌دهد.</p></details>
-          <details><summary>سازگار با OpenAI</summary><p>ساختار درخواست شبیه API رایج OpenAI است و معمولاً با تغییر آدرس و کلید می‌توان از SDK مشابه استفاده کرد.</p></details>
-          <details><summary>RPM و RPD</summary><p>تعداد درخواست مجاز در دقیقه و روز. این اعداد ممکن است برای هر مدل یا حساب متفاوت باشند.</p></details>
-          <details><summary>وضعیت ایران</summary><p>نتیجه شبکه، ثبت‌نام و اجرای مدل از هم جدا نگه داشته می‌شوند؛ برچسب هر سرویس را با تاریخ و شواهد بخوان.</p></details>
+          <details><summary>سازگار با OpenAI</summary><p>ساختار درخواست شبیه API رایج OpenAI است و معمولاً با تغییر Base URL و کلید قابل استفاده است.</p></details>
+          <details><summary>RPM و RPD</summary><p>تعداد درخواست مجاز در دقیقه و روز؛ این اعداد ظرفیت هستند، نه سرعت پاسخ.</p></details>
+          <details><summary>وضعیت ایران</summary><p>شبکه، ثبت‌نام، فعال‌سازی حساب و استنتاج جداگانه گزارش می‌شوند.</p></details>
         </div>
       </section>
 
@@ -252,20 +270,23 @@
       </details>
 
       <section class="language-note" aria-label="نسخه انگلیسی">
-        <div><strong>نسخه انگلیسی هم در دسترس است.</strong><p>برای راهنماها و رابط انگلیسی از تغییر زبان بالای صفحه استفاده کن.</p></div>
+        <div><strong>نسخه انگلیسی در دسترس است.</strong><p>برای رابط و راهنماهای انگلیسی از تغییر زبان بالای صفحه استفاده کن.</p></div>
         <a href="./en/">Open English version</a>
       </section>
 
       <section class="faq" aria-labelledby="faq-title">
         <p class="eyebrow">پرسش‌های پرتکرار</p>
         <h2 id="faq-title">سؤالات رایج درباره API رایگان هوش مصنوعی</h2>
-        <details><summary>برای استفاده از این سایت باید برنامه‌نویس باشم؟</summary><p>برای فهمیدن گزینه‌ها نه؛ اما استفاده از API داخل یک برنامه معمولاً به دانش پایه برنامه‌نویسی نیاز دارد. مسیر تازه‌کار مفاهیم را ساده توضیح می‌دهد.</p></details>
-        <details><summary>API رایگان دائمی با Trial چه تفاوتی دارد؟</summary><p>Trial پس از زمان یا اعتبار مشخص تمام می‌شود؛ سهمیه دائمی یا مدل رایگان تا زمانی که سیاست سرویس تغییر نکند قابل استفاده است.</p></details>
-        <details><summary>آیا همه APIهای رایگان از ایران در دسترس‌اند؟</summary><p>خیر. وضعیت شبکه، ثبت‌نام، دریافت کلید و اجرای مدل جداگانه بررسی می‌شوند و نتیجه هر سرویس در صفحه اختصاصی آن درج شده است.</p></details>
-        <details><summary>سازگار با OpenAI یعنی چه؟</summary><p>یعنی ساختار درخواست سرویس با API رایج OpenAI سازگار است و معمولاً با تغییر Base URL و کلید می‌توان از SDKهای مشابه استفاده کرد.</p></details>
+        <details><summary>برای استفاده از این سایت باید برنامه‌نویس باشم؟</summary><p>برای مقایسه گزینه‌ها نه؛ استفاده از API داخل برنامه به دانش پایه برنامه‌نویسی نیاز دارد.</p></details>
+        <details><summary>API رایگان دائمی با Trial چه تفاوتی دارد؟</summary><p>Trial پس از زمان یا اعتبار مشخص تمام می‌شود؛ سهمیه دائمی تا زمان تغییر سیاست سرویس قابل استفاده است.</p></details>
+        <details><summary>آیا همه APIها از ایران در دسترس‌اند؟</summary><p>خیر. نتیجه شبکه، ثبت‌نام، فعال‌سازی حساب و اجرای مدل برای هر سرویس جدا بررسی می‌شود.</p></details>
+        <details><summary>سازگار با OpenAI یعنی چه؟</summary><p>ساختار درخواست مشابه است و معمولاً با تغییر Base URL و کلید می‌توان از SDK مشابه استفاده کرد.</p></details>
       </section>
 
-      <section class="contribute"><div><p class="eyebrow">داده‌ای اشتباه یا قدیمی است؟</p><h2>با یک گزارش دقیق کمک کن.</h2><p>منبع رسمی، تاریخ و نوع آزمایش را ثبت کن؛ بدون IP کامل، کلید API یا اطلاعات حساب.</p></div><a class="button primary" href="https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir/issues/new/choose">ثبت گزارش</a></section>
+      <section class="contribute">
+        <div><p class="eyebrow">داده‌ای اشتباه یا قدیمی است؟</p><h2>با یک گزارش دقیق کمک کن.</h2><p>منبع رسمی، تاریخ و نوع آزمایش را ثبت کن؛ بدون IP کامل، کلید API یا اطلاعات حساب.</p></div>
+        <a class="button primary" href="https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir/issues/new/choose">ثبت گزارش</a>
+      </section>
     </main>
 
     <footer>
@@ -276,18 +297,22 @@
 
     <template id="provider-template">
       <article class="provider-card">
-        <div class="card-topline"><span class="access-badge"><span class="visually-hidden">وضعیت دسترسی ایران: </span></span><span class="freshness-badge"></span></div>
+        <div class="card-topline"><span class="access-badge"></span><span class="freshness-badge"></span></div>
         <div class="provider-title"><div class="provider-avatar" aria-hidden="true"></div><div><h3></h3><code class="provider-id"></code></div></div>
-        <p class="provider-note"></p><div class="tag-list"></div>
-        <dl class="facts"><div><dt>نوع رایگان</dt><dd class="free-label"></dd></div><div><dt>محدودیت نمونه</dt><dd class="limit-label"></dd></div><div><dt>فرمت OpenAI</dt><dd class="openai-label"></dd></div><div><dt>آخرین بررسی</dt><dd class="checked-label"></dd></div></dl>
-        <details><summary>اطلاعات فنی و مدل‌ها</summary><p class="free-note"></p><p class="models-note"></p><div class="api-base-row"><code class="api-base"></code><button class="copy-button" type="button" aria-label="کپی Base URL"><span class="copy-text">کپی</span><span class="copy-status" role="status" aria-live="polite" hidden></span></button></div></details>
-        <div class="card-actions">
-          <a class="detail-link" href="./providers/">شرایط، شواهد و راه‌اندازی</a>
-          <a class="docs-link" target="_blank" rel="noopener noreferrer">مستندات رسمی</a>
-        </div>
+        <p class="provider-note"></p>
+        <div class="tag-list"></div>
+        <dl class="facts">
+          <div><dt>نوع رایگان</dt><dd class="free-label"></dd></div>
+          <div><dt>محدودیت نمونه</dt><dd class="limit-label"></dd></div>
+          <div><dt>فرمت OpenAI</dt><dd class="openai-label"></dd></div>
+          <div><dt>آخرین بررسی</dt><dd class="checked-label"></dd></div>
+        </dl>
+        <details><summary>مدل‌ها و اطلاعات فنی</summary><p class="free-note"></p><p class="models-note"></p><div class="api-base-row"><code class="api-base"></code><button class="copy-button" type="button" aria-label="کپی Base URL"><span class="copy-text">کپی</span><span class="copy-status" role="status" aria-live="polite" hidden></span></button></div></details>
+        <div class="card-actions"><a class="detail-link" href="./providers/">شرایط و شواهد</a><a class="docs-link" target="_blank" rel="noopener noreferrer">مستندات رسمی</a></div>
       </article>
     </template>
     <script type="module" src="./app.js"></script>
+    <script type="module" src="./ui-pro-max.js"></script>
     <script defer data-domain="llm.persiantoolbox.ir" src="./plausible.js"></script>
   </body>
 </html>
