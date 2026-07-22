@@ -159,9 +159,9 @@
 
     <main id="main-content">
       <section class="api-finder-hero" aria-labelledby="finder-hero-title">
-        <p class="eyebrow">ابزار هوشمند انتخاب</p>
-        <h1 id="finder-hero-title">بهترین API رایگان LLM<br>را <span>برای نیازت پیدا کن.</span></h1>
-        <p>کاربرد، زبان، بودجه، سرعت و منطقه را مشخص کن تا با امتیازدهی شفاف، مناسب‌ترین گزینه‌ها را ببینی. همه داده‌ها از کاتالوگ اصلی با شواهد تاریخ‌دار استفاده می‌کنند.</p>
+        <p class="eyebrow">انتخاب مبتنی بر شواهد</p>
+        <h1 id="finder-hero-title">API مناسب پروژه‌ات را پیدا کن</h1>
+        <p>نوع پروژه و محدودیت رایگان را مشخص کن. پیشنهادها از کاتالوگ تاریخ‌دار ساخته می‌شوند و هر نتیجه دلیل، محدودیت و مسیر بررسی خودش را دارد.</p>
       </section>
 
       <form id="finder-form" class="finder-form" role="search" aria-label="فرم جست‌وجوی API">
@@ -202,7 +202,7 @@
           </select>
         </label>
         <div class="finder-actions">
-          <button class="button primary" type="submit" id="finder-submit">🔍 پیدا کن / Find</button>
+          <button class="button primary" type="submit" id="finder-submit">نمایش پیشنهادها</button>
           <button class="button secondary" type="reset" id="finder-reset">پاک‌کردن / Reset</button>
         </div>
       </form>
@@ -212,8 +212,8 @@
       </div>
 
       <div id="finder-results" class="finder-results"></div>
-      <div id="finder-loading" class="message-card">در حال بارگذاری داده‌ها…</div>
-      <div id="finder-error" class="message-card error" hidden>دریافت داده ناموفق بود. صفحه را دوباره بارگذاری کنید.</div>
+      <div id="finder-loading" class="message-card" role="status" aria-live="polite">در حال آماده‌کردن پیشنهادها…</div>
+      <div id="finder-error" class="message-card error" role="alert" hidden>دریافت داده ناموفق بود. <button class="button secondary" type="button" id="finder-retry">تلاش دوباره</button></div>
       <div id="finder-empty" class="finder-empty" hidden>
         <p><strong>موردی مطابق فیلترهای شما پیدا نشد.</strong></p>
         <p>معیارهای دیگری را امتحان کنید یا <a href="https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir/issues/new/choose">گزارش دهید</a> که چه سرویسی نیاز دارید.</p>
@@ -222,12 +222,12 @@
       <details id="finder-disclosure" class="finder-disclosure">
         <summary>چرا این امتیاز؟ / Why this score?</summary>
         <div class="finder-disclosure-content">
-          <div><strong>🎯 تطابق قابلیت (+۳۵)</strong><span>اگر Provider قابلیت‌های موردنیاز کاربرد انتخاب‌شده (چت، کدنویسی، استدلال، Embedding) را داشته باشد.</span></div>
+          <div><strong>تطابق قابلیت (+۳۵)</strong><span>اگر Provider قابلیت‌های موردنیاز کاربرد انتخاب‌شده (چت، کدنویسی، استدلال، Embedding) را داشته باشد.</span></div>
           <div><strong>🌐 پشتیبانی فارسی (+۱۵)</strong><span>اگر Provider یادداشت فارسی (<code>notes_fa</code>) داشته و از ایران قابل دسترس باشد.</span></div>
-          <div><strong>💳 بودجه (تا +۲۰)</strong><span>بدون کارت بانکی +۲۰، فقط مدل رایگان +۱۵، هر نوع +۵.</span></div>
-          <div><strong>⚡ سرعت (تا +۱۵)</strong><span>بر اساس بیشترین RPM ثبت‌شده. بحرانی = امتیاز بالاتر برای RPM بیشتر.</span></div>
-          <div><strong>📍 منطقه (تا +۳۰)</strong><span>ایران مستقیم +۳۰، ایران با VPN +۱۵، هر منطقه +۵.</span></div>
-          <div><strong>⛔ جریمه‌ها (۰ تا -۳۰)</strong><span>Gateway اجتماعی -۱۵، مسدود -۳۰، نامشخص -۵.</span></div>
+          <div><strong>بودجه (تا +۲۰)</strong><span>بدون کارت بانکی +۲۰، فقط مدل رایگان +۱۵، هر نوع +۵.</span></div>
+          <div><strong>ظرفیت درخواست (تا +۱۵)</strong><span>بر اساس بیشترین RPM ثبت‌شده؛ RPM معادل سرعت پاسخ نیست.</span></div>
+          <div><strong>منطقه (تا +۳۰)</strong><span>ایران مستقیم +۳۰، ایران با VPN +۱۵، هر منطقه +۵.</span></div>
+          <div><strong>جریمه‌ها (۰ تا -۳۰)</strong><span>Gateway اجتماعی -۱۵، مسدود -۳۰، نامشخص -۵.</span></div>
         </div>
       </details>
 
@@ -257,16 +257,6 @@
         intermittent: "ناپایدار",
         signup_blocked: "ثبت‌نام مسدود",
         unknown: "نامشخص"
-      };
-      const accessEmoji = {
-        verified_working: "✅",
-        verified_working_vpn: "🛡️",
-        direct_blocked_vpn_working: "🛡️",
-        verified_blocked: "⛔",
-        officially_unsupported: "🚫",
-        intermittent: "⚠️",
-        signup_blocked: "🧾",
-        unknown: "❔"
       };
       const serviceLabels = {
         official_provider: "Provider رسمی",
@@ -314,6 +304,7 @@
         statusText: document.getElementById("finder-status-text"),
         loading: document.getElementById("finder-loading"),
         error: document.getElementById("finder-error"),
+        retry: document.getElementById("finder-retry"),
         empty: document.getElementById("finder-empty"),
         disclosure: document.getElementById("finder-disclosure"),
         themeToggle: document.getElementById("theme-toggle")
@@ -447,7 +438,7 @@
               }).join("")}
             </div>
             <div class="finder-card-extra">
-              <span class="access-badge${statusClass}">${accessEmoji[provider.iran_access.status] ?? ""} ${accessLabels[provider.iran_access.status] ?? provider.iran_access.status}</span>
+              <span class="access-badge${statusClass}" data-status="${provider.iran_access.status}">${accessLabels[provider.iran_access.status] ?? provider.iran_access.status}</span>
               <span class="limit-label">${limitText(provider)}</span>
               ${isStale(provider) ? '<span class="freshness-badge stale finder-stale-badge">نیازمند بررسی</span>' : ""}
             </div>
@@ -557,6 +548,7 @@
       async function init() {
         setupTheme();
         loadUrlFilters();
+        elements.retry.addEventListener("click", () => location.reload());
 
         elements.form.addEventListener("submit", onFind);
         elements.reset.addEventListener("click", () => {
@@ -573,6 +565,7 @@
 
         try {
           elements.loading.hidden = false;
+          elements.error.hidden = true;
           const response = await fetch("../catalog.json", { cache: "no-cache" });
           if (!response.ok) throw new Error(`HTTP ${response.status}`);
           const catalog = await response.json();

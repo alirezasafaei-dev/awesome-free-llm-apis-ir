@@ -176,18 +176,9 @@ runWhenReady(() => {
   if (heroTitle) heroTitle.innerHTML = "برای پروژه‌ات چند API مناسب<br><span>پیدا کن و دلیلش را ببین.</span>";
   if (heroDescription) heroDescription.textContent = "سه سؤال اصلی را جواب بده. سه پیشنهاد اصلی با توضیح ساده نمایش داده می‌شود؛ بعد می‌توانی گزینه‌های بیشتر، شواهد و محدودیت هر سرویس را بررسی کنی.";
 
-  const intro = document.createElement("section");
-  intro.className = "finder-clarity-intro";
-  intro.setAttribute("aria-label", "مراحل استفاده از API Finder");
-  intro.innerHTML = `
-    <article><span>۱</span><strong>کار پروژه را بگو</strong><p>چت‌بات، کدنویسی، استدلال یا جست‌وجوی معنایی.</p></article>
-    <article><span>۲</span><strong>محدودیت را مشخص کن</strong><p>زبان و نوع گزینه رایگان برایت چقدر مهم است؟</p></article>
-    <article><span>۳</span><strong>یک گزینه را فعال کن</strong><p>Provider را انتخاب کن و نمونه‌کد همان سرویس را بساز.</p></article>`;
-  hero.after(intro);
-
   const hint = document.createElement("p");
   hint.className = "finder-start-hint";
-  hint.textContent = "سه پیشنهاد اولیه با تنظیمات رایج کاربران فارسی‌زبان نمایش داده می‌شود. این نمایش خودکار به‌عنوان تکمیل Finder شمرده نمی‌شود.";
+  hint.textContent = "پیشنهاد اولیه با تنظیمات رایج نمایش داده می‌شود؛ برای نتیجه دقیق‌تر انتخاب‌ها را تغییر بده.";
   form.after(hint);
   status.classList.add("clarity-status");
 

@@ -25,7 +25,7 @@ llm.persiantoolbox.ir {
 		X-Frame-Options "DENY"
 		Referrer-Policy "strict-origin-when-cross-origin"
 		Permissions-Policy "camera=(), microphone=(), geolocation=()"
-		Content-Security-Policy "default-src 'self'; script-src 'self' 'sha256-P3a7n+nc/XUcmtb6hjbo81/2DVp5K6tQtbdsQyR5B9c='; style-src 'self' 'sha256-GQQ/EMIT0d/Yat5f7OoduJP6XQT9Aoo7nEXm+Iqbm5E='; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'; upgrade-insecure-requests"
+		Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'; upgrade-insecure-requests"
 	}
 
 	try_files {path} {path}/ =404

@@ -127,7 +127,6 @@ function cleanClarityScript(script) {
   next = replaceRequired(next, '["critical", "سرعت اولویت اصلی است"]', '["critical", "ظرفیت درخواست اولویت اصلی است"]', "critical request-capacity option", relativePath);
   next = replaceRequired(next, "تنظیمات پیشرفته: سرعت و مسیر دسترسی", "تنظیمات پیشرفته: ظرفیت درخواست و مسیر دسترسی", "advanced settings label", relativePath);
   next = replaceRequired(next, "سه سؤال اصلی را جواب بده.", "دو سؤال اصلی را جواب بده.", "hero question count", relativePath);
-  next = replaceRequired(next, "زبان و نوع گزینه رایگان برایت چقدر مهم است؟", "نوع گزینه رایگان و نیاز به کارت بانکی را مشخص کن.", "Finder intro copy", relativePath);
   next = replaceRequired(next, "RPM ثبت‌شده معادل Latency واقعی روی شبکه شما نیست.", "RPM ثبت‌شده ظرفیت درخواست را نشان می‌دهد و معادل Latency واقعی نیست.", "Finder limitation copy", relativePath);
 
   return next;

@@ -17,14 +17,16 @@ if (build.status !== 0) {
   process.exit(1);
 }
 
-const [fa, en, clarity] = await Promise.all([
+const [fa, en, faCore, enCore, clarity] = await Promise.all([
   readFile(path.join(dist, "api-finder", "index.html"), "utf8"),
   readFile(path.join(dist, "en", "api-finder", "index.html"), "utf8"),
+  readFile(path.join(dist, "api-finder", "finder-core.js"), "utf8"),
+  readFile(path.join(dist, "en", "api-finder", "finder-core.js"), "utf8"),
   readFile(path.join(dist, "api-finder", "finder-clarity.js"), "utf8")
 ]);
 
 const failures = [];
-for (const [name, html] of [["Persian Finder", fa], ["English Finder", en]]) {
+for (const [name, html, core] of [["Persian Finder", fa, faCore], ["English Finder", en, enCore]]) {
   for (const forbidden of [
     'id="finder-language"',
     "filters.language",
@@ -32,7 +34,7 @@ for (const [name, html] of [["Persian Finder", fa], ["English Finder", en]]) {
     "langScore",
     "breakdown.language"
   ]) {
-    if (html.includes(forbidden)) failures.push(`${name}: unsupported language scoring remains (${forbidden})`);
+    if (`${html}\n${core}`.includes(forbidden)) failures.push(`${name}: unsupported language scoring remains (${forbidden})`);
   }
 
   const inlineScripts = [...html.matchAll(/<script>\s*([\s\S]*?)<\/script>/gi)].map((match) => match[1]);
@@ -45,8 +47,8 @@ for (const [name, html] of [["Persian Finder", fa], ["English Finder", en]]) {
   }
 }
 
-if (!fa.includes("از ۱۰۰")) failures.push("Persian Finder: score denominator is not 100");
-if (!en.includes("/ 100")) failures.push("English Finder: score denominator is not 100");
+if (!faCore.includes("از ۱۰۰")) failures.push("Persian Finder: score denominator is not 100");
+if (!enCore.includes("/ 100")) failures.push("English Finder: score denominator is not 100");
 if (!fa.includes("ظرفیت درخواست")) failures.push("Persian Finder: request-capacity wording missing");
 if (!en.includes("Request capacity")) failures.push("English Finder: request-capacity wording missing");
 if (fa.includes("پشتیبانی فارسی (+۱۵)")) failures.push("Persian Finder: unsupported Persian-quality score remains");
@@ -61,6 +63,10 @@ if (!clarity.includes("RPM ظرفیت درخواست را نشان می‌دهد
 
 const syntax = spawnSync(process.execPath, ["--check", path.join(dist, "api-finder", "finder-clarity.js")], { encoding: "utf8" });
 if (syntax.status !== 0) failures.push(`Finder clarity script syntax failed: ${syntax.stderr || syntax.stdout}`);
+for (const relativePath of ["api-finder/finder-core.js", "en/api-finder/finder-core.js"]) {
+  const coreSyntax = spawnSync(process.execPath, ["--check", path.join(dist, relativePath)], { encoding: "utf8" });
+  if (coreSyntax.status !== 0) failures.push(`${relativePath} syntax failed: ${coreSyntax.stderr || coreSyntax.stdout}`);
+}
 
 if (failures.length) {
   console.error("Finder ranking semantics contract failed:");

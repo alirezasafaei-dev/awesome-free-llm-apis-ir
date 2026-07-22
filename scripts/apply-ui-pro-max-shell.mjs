@@ -4,6 +4,53 @@ import process from "node:process";
 
 const dist = path.join(process.cwd(), ".site-dist");
 const stylesheetNames = ["ui-pro-max.css", "ui-pro-max-components.css"];
+const finderPages = ["api-finder/index.html", "en/api-finder/index.html"];
+
+/**
+ * Move executable Finder code and page CSS out of HTML so the production CSP
+ * can remain strict and build-time ranking transforms cannot invalidate it.
+ * @param {string} relativePath
+ * @returns {Promise<void>}
+ */
+async function externalizeFinderAssets(relativePath) {
+  const absolutePath = path.join(dist, relativePath);
+  const directory = path.dirname(absolutePath);
+  const before = await readFile(absolutePath, "utf8");
+  const styleMatch = before.match(/<style>([\s\S]*?)<\/style>/);
+  const scriptMatch = before.match(/<script>([\s\S]*?)<\/script>/);
+  if (!styleMatch || !scriptMatch) throw new Error(`${relativePath}: inline Finder assets not found`);
+
+  await writeFile(path.join(directory, "finder-core.css"), `${styleMatch[1].trim()}\n`, "utf8");
+  await writeFile(path.join(directory, "finder-core.js"), `${scriptMatch[1].trim()}\n`, "utf8");
+
+  const after = before
+    .replace(styleMatch[0], '<link rel="stylesheet" href="./finder-core.css">')
+    .replace(scriptMatch[0], '<script defer src="./finder-core.js"></script>');
+  await writeFile(absolutePath, after, "utf8");
+}
+
+/**
+ * Externalize page-specific style blocks for compatibility with the shared CSP.
+ * @param {string} absolutePath
+ * @param {string} relativePath
+ * @returns {Promise<void>}
+ */
+async function externalizePageStyles(absolutePath, relativePath) {
+  const before = await readFile(absolutePath, "utf8");
+  const matches = [...before.matchAll(/<style>([\s\S]*?)<\/style>/g)];
+  if (matches.length === 0) return;
+
+  const css = matches.map((match) => match[1].trim()).filter(Boolean).join("\n\n");
+  const assetName = "page-inline.css";
+  await writeFile(path.join(path.dirname(absolutePath), assetName), `${css}\n`, "utf8");
+
+  let after = before;
+  for (const [index, match] of matches.entries()) {
+    after = after.replace(match[0], index === 0 ? `<link rel="stylesheet" href="./${assetName}">` : "");
+  }
+  await writeFile(absolutePath, after, "utf8");
+  console.log(`externalized page styles: ${relativePath}`);
+}
 
 /**
  * @param {string} directory
@@ -54,12 +101,21 @@ function injectStylesheets(html, hrefs, relativePath) {
   return html.replace(preferred[0], `${preferred[0]}\n  ${tags}`);
 }
 
+for (const finderPage of finderPages) await externalizeFinderAssets(finderPage);
+
 const files = await htmlFiles(dist);
+for (const absolutePath of files) {
+  const relativePath = path.relative(dist, absolutePath).split(path.sep).join("/");
+  await externalizePageStyles(absolutePath, relativePath);
+}
 let changed = 0;
 
 for (const absolutePath of files) {
   const relativePath = path.relative(dist, absolutePath).split(path.sep).join("/");
   const before = await readFile(absolutePath, "utf8");
+  if (/<style>[\s\S]*?<\/style>/.test(before) || /\sstyle="[^"]*"/.test(before)) {
+    throw new Error(`${relativePath}: production HTML contains CSP-blocked inline styles`);
+  }
   const hrefs = stylesheetNames.map((stylesheetName) => stylesheetHref(absolutePath, stylesheetName));
   const after = injectStylesheets(before, hrefs, relativePath);
   if (after === before) continue;
