@@ -13,6 +13,10 @@ const build = spawnSync(process.execPath, [path.join(root, "scripts/build-site-p
 if (build.status !== 0) throw new Error(build.stderr || build.stdout || "Production site build failed");
 
 const home = await readFile(path.join(destination, "index.html"), "utf8");
+const tracker = await readFile(path.join(root, "site", "plausible.js"), "utf8");
+if (!tracker.includes('location.hostname!==document.currentScript?.dataset.domain')) {
+  throw new Error("Plausible tracker must ignore non-canonical mirrors before sending events");
+}
 if ((home.match(/src="\.\/plausible\.js"/g) || []).length !== 1) {
   throw new Error("Homepage must load exactly one root Plausible tracker");
 }
