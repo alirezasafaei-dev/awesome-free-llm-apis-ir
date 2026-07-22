@@ -128,7 +128,12 @@ try {
   if (!builtContextEn.includes('document.querySelector(".qs-en-hero")')) throw new Error("Built English Provider context lost its page selector");
   if (!builtContextEn.includes("quick_start_provider_loaded")) throw new Error("Built English Provider context lost activation analytics");
   if (!builtHomepage.includes(`href="${quickStartUrl}"`)) throw new Error("Built homepage does not link to developer quick start");
-  if (!builtHomepage.includes("شروع مرحله‌ای و نمونه‌کد")) throw new Error("Developer journey is not connected to quick start");
+  const quickStartLink = builtHomepage.match(/<a\b[^>]*href="https:\/\/llm\.persiantoolbox\.ir\/quick-start\/"[^>]*>([\s\S]*?)<\/a>/u);
+  if (!quickStartLink) throw new Error("Built homepage is missing a discoverable Quick Start link");
+  const quickStartLabel = quickStartLink[1].replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
+  if (!/(درخواست|شروع سریع|راه‌اندازی|نمونه)/u.test(quickStartLabel)) {
+    throw new Error(`Quick Start link label does not communicate its purpose: ${quickStartLabel}`);
+  }
   if (!sitemap.includes(`<loc>${quickStartUrl}</loc>`)) throw new Error("Sitemap is missing quick-start route");
   if (!llms.includes(`Developer quick start: ${quickStartUrl}`)) throw new Error("llms.txt is missing quick-start route");
   if (!buildMeta.static_product_pages?.includes("/quick-start/")) throw new Error("build-meta.json is missing quick-start product route");
@@ -136,4 +141,4 @@ try {
   await rm(destination, { recursive: true, force: true });
 }
 
-console.log("Developer quick-start contract passed for Persian and English Provider context, safe model fallback, source-backed Base URL and activation analytics.");
+console.log("Developer quick-start contract passed for Persian and English Provider context, safe model fallback, semantic homepage linkage and activation analytics.");
