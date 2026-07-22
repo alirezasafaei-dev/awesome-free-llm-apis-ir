@@ -70,7 +70,7 @@ function syncLocation(ids) {
   if (next !== location.href) history.replaceState(null, "", next);
 }
 
-function plausible(name, props = {}) {
+function trackPlausible(name, props = {}) {
   if (typeof window.plausible !== "function") return;
   const safeProps = {};
   for (const [key, value] of Object.entries(props)) {
@@ -165,7 +165,7 @@ function render(catalog) {
     return;
   }
   grid.innerHTML = providers.map(providerCard).join("");
-  plausible("compare_loaded", { result_count: String(providers.length), source: idsFromLocation().length ? "shared_url" : "local_shortlist" });
+  trackPlausible("compare_loaded", { result_count: String(providers.length), source: idsFromLocation().length ? "shared_url" : "local_shortlist" });
 }
 
 clear?.addEventListener("click", () => {
@@ -174,7 +174,7 @@ clear?.addEventListener("click", () => {
   results.hidden = true;
   empty.hidden = false;
   grid.replaceChildren();
-  plausible("compare_clear", { result_count: "0", source: "compare_page" });
+  trackPlausible("compare_clear", { result_count: "0", source: "compare_page" });
 });
 
 grid?.addEventListener("click", (event) => {
@@ -186,7 +186,7 @@ grid?.addEventListener("click", (event) => {
     return;
   }
   const docs = event.target.closest(".compare-docs");
-  if (docs) plausible("official_docs_click", { provider_id: docs.dataset.providerId || "unknown", source: "compare_card" });
+  if (docs) trackPlausible("official_docs_click", { provider_id: docs.dataset.providerId || "unknown", source: "compare_card" });
 });
 
 fetch("../../catalog.json", { cache: "no-cache" })

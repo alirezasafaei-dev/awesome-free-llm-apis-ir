@@ -20,6 +20,10 @@ const page = await readFile(comparePage, "utf8");
 const compare = await readFile(compareScript, "utf8");
 const compareCss = await readFile(compareStyles, "utf8");
 
+if (/function\s+plausible\s*\(/.test(compare)) {
+  throw new Error("Compare script must not redeclare the global analytics queue name");
+}
+
 for (const signal of [
   "llm-provider-shortlist-v1",
   "SHORTLIST_LIMIT = 3",
