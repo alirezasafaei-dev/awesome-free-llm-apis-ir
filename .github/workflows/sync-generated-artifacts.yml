@@ -47,25 +47,21 @@ jobs:
               raise SystemExit('validator evidence enum marker not found')
           text = text.replace(before, after, 1)
 
-          marker = '''  if (evidence.type === "official_docs" || evidence.type === "community_report") {
-            if (!validHttps(evidence.url)) fail(file, `${prefix}.url must be an HTTPS URL`);
-            if (!validDate(evidence.checked_at ?? "")) fail(file, `${prefix}.checked_at must be a date`);
-            if (typeof evidence.notes_fa !== "string" || !evidence.notes_fa.trim()) fail(file, `${prefix}.notes_fa must be non-empty`);
-          }
-          '''.replace('          ', '')
-          addition = marker + '''
+          anchor = '\n  if (evidence.type === "live_test") {'
+          signup_rule = '''
+
           if (evidence.type === "signup_test") {
             if (!validDate(evidence.checked_at ?? "")) fail(file, `${prefix}.checked_at must be a date`);
             if (typeof evidence.source !== "string" || !evidence.source.trim()) fail(file, `${prefix}.source must be non-empty`);
             if (typeof evidence.notes_fa !== "string" || !evidence.notes_fa.trim()) fail(file, `${prefix}.notes_fa must be non-empty`);
           }
           '''.replace('          ', '')
-          if marker not in text:
-              raise SystemExit('validator evidence rule marker not found')
-          path.write_text(text.replace(marker, addition, 1))
+          if anchor not in text:
+              raise SystemExit('validator live-test anchor not found')
+          path.write_text(text.replace(anchor, signup_rule + anchor, 1))
           PY
-          git rm .github/workflows/apply-evidence-semantics.yml
-          git rm .github/scripts/apply-evidence-semantics.py
+          git rm -f --ignore-unmatch .github/workflows/apply-evidence-semantics.yml
+          git rm -f --ignore-unmatch .github/scripts/apply-evidence-semantics.py
       - run: npm ci
       - name: Regenerate canonical artifacts
         run: npm run generate
