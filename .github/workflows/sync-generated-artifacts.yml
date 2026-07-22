@@ -68,6 +68,53 @@ jobs:
               raise SystemExit('raw-payload privacy pattern marker not found exactly once')
           privacy_lines[matches[0]] = corrected
           privacy_path.write_text('\n'.join(privacy_lines) + '\n')
+
+          backlog_path = Path('scripts/validate-verification-backlog.mjs')
+          backlog_validator = backlog_path.read_text()
+          exact_unknown_check = '''if (JSON.stringify(backlogIds) !== JSON.stringify(unknownIds)) {
+            fail(`backlog provider set must exactly match unknown providers\n  backlog: ${backlogIds.join(", ")}\n  unknown: ${unknownIds.join(", ")}`);
+          }
+          '''.replace('          ', '')
+          unknown_coverage_check = '''for (const providerId of unknownIds) {
+            if (!backlogIds.includes(providerId)) {
+              fail(`unknown provider ${providerId} must have an explicit backlog action`);
+            }
+          }
+          '''.replace('          ', '')
+          if exact_unknown_check not in backlog_validator:
+              raise SystemExit('exact unknown-backlog equality marker not found')
+          backlog_validator = backlog_validator.replace(exact_unknown_check, unknown_coverage_check, 1)
+
+          map_marker = 'const issueToProviders = new Map();'
+          if map_marker not in backlog_validator:
+              raise SystemExit('backlog issue map marker not found')
+          backlog_validator = backlog_validator.replace(
+              map_marker,
+              map_marker + '\nconst issueToStatus = new Map();',
+              1,
+          )
+
+          status_set_marker = '  issueToProviders.set(track.issue, listed);'
+          if status_set_marker not in backlog_validator:
+              raise SystemExit('backlog track map assignment marker not found')
+          backlog_validator = backlog_validator.replace(
+              status_set_marker,
+              status_set_marker + '\n  issueToStatus.set(track.issue, track.status);',
+              1,
+          )
+
+          item_marker = '''  } else if (!issueToProviders.get(item.track_issue).has(item.provider_id)) {
+            fail(`${item.provider_id} is not listed in track issue ${item.track_issue}`);
+          }
+          '''.replace('          ', '')
+          item_replacement = item_marker + '''  if (["resolved", "completed"].includes(issueToStatus.get(item.track_issue))) {
+            fail(`${item.provider_id} references closed track issue ${item.track_issue}`);
+          }
+          '''.replace('          ', '')
+          if item_marker not in backlog_validator:
+              raise SystemExit('backlog provider-track membership marker not found')
+          backlog_validator = backlog_validator.replace(item_marker, item_replacement, 1)
+          backlog_path.write_text(backlog_validator)
           PY
           git rm -f --ignore-unmatch .github/workflows/apply-evidence-semantics.yml
           git rm -f --ignore-unmatch .github/scripts/apply-evidence-semantics.py
@@ -80,7 +127,7 @@ jobs:
           set -Eeuo pipefail
           changed="$(git diff --name-only)"
           if [[ "${GITHUB_HEAD_REF}" == 'agent/evidence-semantics-fix-20260722' ]]; then
-            allowed='^(README\.md|catalog\.json|data\.json|content/fa/ai-api-iran\.md|docs/METHODOLOGY\.fa\.md|schema/provider\.schema\.json|scripts/(build-guides|build-site|generate-data-json|generate-readme|test-advisor-scoring|test-provider-content-pages|validate|privacy-evidence-rules|test-evidence-privacy)\.mjs|site/(api-finder/index\.html|app\.js|compare/compare\.js|en/api-finder/index\.html|en/compare/compare\.js|en/quick-start/provider-context-en\.js|index\.html|quick-start/provider-context\.js)|data/providers/(agnes-ai|fireworks-ai|freetheai|nvidia-nim|vercel-ai-gateway)\.json|data/verification-backlog\.json|\.github/scripts/apply-evidence-semantics\.py|\.github/workflows/apply-evidence-semantics\.yml)$'
+            allowed='^(README\.md|catalog\.json|data\.json|content/fa/ai-api-iran\.md|docs/METHODOLOGY\.fa\.md|schema/provider\.schema\.json|scripts/(build-guides|build-site|generate-data-json|generate-readme|test-advisor-scoring|test-provider-content-pages|validate|validate-verification-backlog|privacy-evidence-rules|test-evidence-privacy)\.mjs|site/(api-finder/index\.html|app\.js|compare/compare\.js|en/api-finder/index\.html|en/compare/compare\.js|en/quick-start/provider-context-en\.js|index\.html|quick-start/provider-context\.js)|data/providers/(agnes-ai|fireworks-ai|freetheai|nvidia-nim|vercel-ai-gateway)\.json|data/verification-backlog\.json|\.github/scripts/apply-evidence-semantics\.py|\.github/workflows/apply-evidence-semantics\.yml)$'
           else
             allowed='^(README\.md|catalog\.json|data\.json)$'
           fi
