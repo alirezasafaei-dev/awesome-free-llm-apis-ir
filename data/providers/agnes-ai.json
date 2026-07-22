@@ -72,7 +72,7 @@
     "status": "verified_working",
     "official_policy": "not_documented",
     "tested_from_iran": true,
-    "tested_at": "2026-07-21",
+    "tested_at": "2026-07-22",
     "test_method": "live_request",
     "network": {
       "country": "IR",
@@ -108,6 +108,18 @@
         "credential_validated_from": "FOREIGN_SERVER (DE, Hetzner AS24940)",
         "credential_validated_status": 200,
         "notes_fa": "درخواست احراز هویت‌شده با مدل agnes-2.0-flash از مسیر مستقیم ایران با HTTP 200 پاسخ داده شد. مدل از نوع reasoning است و خروجی معنی‌دار در فیلد reasoning_content قرار گرفت. کلید API از سرور خارج (آلمان) نیز با موفقیت تأیید شد. این مدرک فقط برای ASN/مسیر تست‌شده معتبر است."
+      },
+      {
+        "type": "live_test",
+        "timestamp": "2026-07-22T20:06:18.093Z",
+        "http_status": 200,
+        "latency_ms": 7062,
+        "model_tested": "agnes-2.0-flash",
+        "endpoint": "https://apihub.agnes-ai.com/v1/chat/completions",
+        "source": "IRAN_VPS — direct authenticated inference",
+        "credential_validated_from": "FOREIGN_SERVER (DE, Hetzner)",
+        "credential_validated_status": 200,
+        "notes_fa": "تأیید مجدد (۲۰۲۶-۰۷-۲۲): درخواست احراز هویت‌شده با مدل agnes-2.0-flash از ایران و آلمان هر دو با HTTP 200 پاسخ دادند."
       }
     ],
     "notes_fa": "درخواست احراز هویت‌شده با مدل agnes-2.0-flash از ایران با HTTP 200 پاسخ داده است. مدل از نوع reasoning و نتیجه استنتاج در فیلد reasoning_content قرار می‌گیرد. کلید API در سرور خارج (آلمان) نیز تأیید شده است. این نتیجه فقط برای ASN مسیر تست‌شده معتبر است."
@@ -125,7 +137,7 @@
   },
   "verification": {
     "level": "live_verified",
-    "last_checked": "2026-07-21",
+    "last_checked": "2026-07-22",
     "checked_by": "maintainers",
     "stale_after_days": 14
   },

@@ -1,6 +1,6 @@
 {
   "schema_version": "1.1.0",
-  "last_updated": "2026-07-21",
+  "last_updated": "2026-07-22",
   "provider_count": 22,
   "providers": [
     {
@@ -77,7 +77,7 @@
         "status": "verified_working",
         "official_policy": "not_documented",
         "tested_from_iran": true,
-        "tested_at": "2026-07-21",
+        "tested_at": "2026-07-22",
         "test_method": "live_request",
         "network": {
           "country": "IR",
@@ -113,6 +113,18 @@
             "credential_validated_from": "FOREIGN_SERVER (DE, Hetzner AS24940)",
             "credential_validated_status": 200,
             "notes_fa": "درخواست احراز هویت‌شده با مدل agnes-2.0-flash از مسیر مستقیم ایران با HTTP 200 پاسخ داده شد. مدل از نوع reasoning است و خروجی معنی‌دار در فیلد reasoning_content قرار گرفت. کلید API از سرور خارج (آلمان) نیز با موفقیت تأیید شد. این مدرک فقط برای ASN/مسیر تست‌شده معتبر است."
+          },
+          {
+            "type": "live_test",
+            "timestamp": "2026-07-22T20:06:18.093Z",
+            "http_status": 200,
+            "latency_ms": 7062,
+            "model_tested": "agnes-2.0-flash",
+            "endpoint": "https://apihub.agnes-ai.com/v1/chat/completions",
+            "source": "IRAN_VPS — direct authenticated inference",
+            "credential_validated_from": "FOREIGN_SERVER (DE, Hetzner)",
+            "credential_validated_status": 200,
+            "notes_fa": "تأیید مجدد (۲۰۲۶-۰۷-۲۲): درخواست احراز هویت‌شده با مدل agnes-2.0-flash از ایران و آلمان هر دو با HTTP 200 پاسخ دادند."
           }
         ],
         "notes_fa": "درخواست احراز هویت‌شده با مدل agnes-2.0-flash از ایران با HTTP 200 پاسخ داده است. مدل از نوع reasoning و نتیجه استنتاج در فیلد reasoning_content قرار می‌گیرد. کلید API در سرور خارج (آلمان) نیز تأیید شده است. این نتیجه فقط برای ASN مسیر تست‌شده معتبر است."
@@ -130,7 +142,7 @@
       },
       "verification": {
         "level": "live_verified",
-        "last_checked": "2026-07-21",
+        "last_checked": "2026-07-22",
         "checked_by": "maintainers",
         "stale_after_days": 14
       },
@@ -630,9 +642,29 @@
             "credential_validated_from": "FOREIGN_SERVER (DE, Hetzner AS24940)",
             "credential_validated_status": 403,
             "notes_fa": "حساب جدید Fireworks از سرور خارج (آلمان) تست شد و همه endpointها خطای ۴۰۳ با علت sanitized_origin_country برگرداندند. حساب در زمان ثبت‌نام (احتمالاً به دلیل IP ایران) مسدود شده است. این محدودیت در سطح حساب است و به IP درخواست‌دهنده مربوط نیست."
+          },
+          {
+            "type": "live_test",
+            "timestamp": "2026-07-22T20:06:18.093Z",
+            "http_status": null,
+            "latency_ms": 934,
+            "model_tested": "gpt-oss-120b",
+            "endpoint": "https://api.fireworks.ai/inference/v1/chat/completions",
+            "source": "IRAN_VPS — direct",
+            "notes_fa": "از ایران خطای network_error با ۹۳۴ms برگشت (احتمالاً مسدودیت شبکه). از آلمان ۴۰۴ دریافت شد (کلید منقضی/ابطال‌شده)."
+          },
+          {
+            "type": "live_test",
+            "timestamp": "2026-07-22T20:06:44.658Z",
+            "http_status": 404,
+            "latency_ms": 461,
+            "model_tested": "gpt-oss-120b",
+            "endpoint": "https://api.fireworks.ai/inference/v1/chat/completions",
+            "source": "FOREIGN_SERVER (DE)",
+            "notes_fa": "از آلمان ۴۰۴ دریافت شد که نشان‌دهنده ابطال یا انقضای کلید API است (مرتبط با Issue #155)."
           }
         ],
-        "notes_fa": "ثبت‌نام در Fireworks AI از ایران منجر به مسدودیت حساب در سطح سرویس می‌شود (sanctioned origin country). حتی کلید جدید هم از سرور خارج (آلمان) با ۴۰۳ مسدود شد. شبکه از ایران نیز Timeout دارد."
+        "notes_fa": "ثبت‌نام در Fireworks AI از ایران منجر به مسدودیت حساب در سطح سرویس می‌شود (sanctioned origin country). حتی کلید جدید هم از سرور خارج (آلمان) با ۴۰۳ مسدود شد. شبکه از ایران Timeout/network_error دارد. کلید قبلی از آلمان ۴۰۴ برمی‌گرداند (ابطال‌شده)."
       },
       "models": {
         "dynamic": true,
@@ -647,7 +679,7 @@
       },
       "verification": {
         "level": "live_verified",
-        "last_checked": "2026-07-21",
+        "last_checked": "2026-07-22",
         "checked_by": "maintainers",
         "stale_after_days": 14
       },
