@@ -39,13 +39,13 @@ jobs:
           python <<'PY'
           from pathlib import Path
 
-          path = Path('scripts/validate.mjs')
-          text = path.read_text()
+          validator_path = Path('scripts/validate.mjs')
+          validator = validator_path.read_text()
           before = 'evidenceType: new Set(["official_docs", "live_test", "connectivity_test", "community_report"]),'
           after = 'evidenceType: new Set(["official_docs", "live_test", "connectivity_test", "signup_test", "community_report"]),'
-          if before not in text:
+          if before not in validator:
               raise SystemExit('validator evidence enum marker not found')
-          text = text.replace(before, after, 1)
+          validator = validator.replace(before, after, 1)
 
           anchor = '\n  if (evidence.type === "live_test") {'
           signup_rule = '''
@@ -56,9 +56,18 @@ jobs:
             if (typeof evidence.notes_fa !== "string" || !evidence.notes_fa.trim()) fail(file, `${prefix}.notes_fa must be non-empty`);
           }
           '''.replace('          ', '')
-          if anchor not in text:
+          if anchor not in validator:
               raise SystemExit('validator live-test anchor not found')
-          path.write_text(text.replace(anchor, signup_rule + anchor, 1))
+          validator_path.write_text(validator.replace(anchor, signup_rule + anchor, 1))
+
+          privacy_path = Path('scripts/privacy-evidence-rules.mjs')
+          privacy_lines = privacy_path.read_text().splitlines()
+          corrected = r'const RAW_ERROR_PAYLOAD_PATTERN = /\\?\{\s*\\?"(?:error|blocked|reason|message|details|success)\\?"\s*:/i;'
+          matches = [index for index, line in enumerate(privacy_lines) if line.startswith('const RAW_ERROR_PAYLOAD_PATTERN = ')]
+          if len(matches) != 1:
+              raise SystemExit('raw-payload privacy pattern marker not found exactly once')
+          privacy_lines[matches[0]] = corrected
+          privacy_path.write_text('\n'.join(privacy_lines) + '\n')
           PY
           git rm -f --ignore-unmatch .github/workflows/apply-evidence-semantics.yml
           git rm -f --ignore-unmatch .github/scripts/apply-evidence-semantics.py
