@@ -137,7 +137,7 @@ whenReady(() => {
     for (const card of results.querySelectorAll(".finder-card")) enhanceCard(card);
     renderBar();
   });
-  observer.observe(results, { childList: true, subtree: true });
+  observer.observe(results, { childList: true });
   for (const card of results.querySelectorAll(".finder-card")) enhanceCard(card);
 
   open.addEventListener("click", (event) => {

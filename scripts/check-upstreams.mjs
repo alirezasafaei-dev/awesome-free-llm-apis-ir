@@ -79,10 +79,46 @@ export async function collectSnapshot(config, { token = process.env.GITHUB_TOKEN
 
   for (const source of config.sources) {
     const repo = await githubGet(`/repos/${source.repository}`, token);
-    invariant(!repo.missing, `repository not found: ${source.repository}`);
+    if (repo.missing) {
+      sources.push({
+        repository: source.repository,
+        role: source.role,
+        trust_tier: source.trust_tier,
+        classification: source.classification,
+        review_policy: source.review_policy,
+        repository_missing: true,
+        monitored_ref_missing: false,
+        default_branch: null,
+        monitored_ref: source.ref ?? null,
+        head_sha: null,
+        archived: false,
+        disabled: false,
+        pushed_at: null,
+        files: source.paths.map((monitoredPath) => ({ path: monitoredPath, sha: null, missing: true }))
+      });
+      continue;
+    }
     const ref = source.ref || repo.data.default_branch;
     const branch = await githubGet(`/repos/${source.repository}/branches/${encodeURIComponent(ref)}`, token);
-    invariant(!branch.missing, `branch not found: ${source.repository}@${ref}`);
+    if (branch.missing) {
+      sources.push({
+        repository: source.repository,
+        role: source.role,
+        trust_tier: source.trust_tier,
+        classification: source.classification,
+        review_policy: source.review_policy,
+        repository_missing: false,
+        monitored_ref_missing: true,
+        default_branch: repo.data.default_branch,
+        monitored_ref: ref,
+        head_sha: null,
+        archived: Boolean(repo.data.archived),
+        disabled: Boolean(repo.data.disabled),
+        pushed_at: repo.data.pushed_at,
+        files: source.paths.map((monitoredPath) => ({ path: monitoredPath, sha: null, missing: true }))
+      });
+      continue;
+    }
 
     const files = [];
     for (const monitoredPath of source.paths) {
@@ -103,6 +139,8 @@ export async function collectSnapshot(config, { token = process.env.GITHUB_TOKEN
       trust_tier: source.trust_tier,
       classification: source.classification,
       review_policy: source.review_policy,
+      repository_missing: false,
+      monitored_ref_missing: false,
       default_branch: repo.data.default_branch,
       monitored_ref: ref,
       head_sha: branch.data.commit.sha,
@@ -151,6 +189,18 @@ export function compareSnapshots(previous, current) {
     if (!before) {
       changes.push({ type: "source_added", repository, meaningful: true });
       continue;
+    }
+
+    for (const key of ["repository_missing", "monitored_ref_missing"]) {
+      if (Boolean(before[key]) !== Boolean(source[key])) {
+        changes.push({
+          type: `${key}_changed`,
+          repository,
+          before: Boolean(before[key]),
+          after: Boolean(source[key]),
+          meaningful: true
+        });
+      }
     }
 
     for (const key of ["default_branch", "monitored_ref", "archived", "disabled"]) {
@@ -206,13 +256,20 @@ export function renderReport(snapshot, comparison) {
     "",
     "## وضعیت منابع",
     "",
-    "| Repository | نقش | Tier | نوع | Head | فایل‌های مفقود |",
-    "|---|---|---:|---|---|---:|"
+    "| Repository | نقش | Tier | نوع | وضعیت | Head | فایل‌های مفقود |",
+    "|---|---|---:|---|---|---|---:|"
   ];
 
   for (const source of snapshot.sources) {
     const missing = source.files.filter((file) => file.missing).length;
-    lines.push(`| \`${source.repository}\` | \`${source.role}\` | ${source.trust_tier} | \`${source.classification}\` | \`${shortSha(source.head_sha)}\` | ${missing} |`);
+    const status = source.repository_missing
+      ? "repository_missing"
+      : source.monitored_ref_missing
+        ? "ref_missing"
+        : source.archived
+          ? "archived"
+          : "available";
+    lines.push(`| \`${source.repository}\` | \`${source.role}\` | ${source.trust_tier} | \`${source.classification}\` | \`${status}\` | \`${shortSha(source.head_sha)}\` | ${missing} |`);
   }
 
   lines.push("", "## تغییرات نیازمند بررسی", "");

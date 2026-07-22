@@ -101,7 +101,6 @@ await edit("api-finder/index.html", (html) => {
   let next = html;
   next = ensureAlternate(next, "en", "https://llm.persiantoolbox.ir/en/api-finder/");
   next = replaceRequired(next, "بودجه، سرعت و منطقه", "بودجه، ظرفیت درخواست و منطقه", "fa finder meta");
-  next = replaceRequired(next, "کاربرد، زبان، بودجه، سرعت و منطقه", "کاربرد، زبان، بودجه، ظرفیت درخواست و منطقه", "fa finder hero");
   next = replaceRequired(next, "سرعت / Latency", "ظرفیت درخواست / Rate limit", "fa finder field");
   next = replaceRequired(next, "🌐 پشتیبانی فارسی (+۱۵)", "🌐 دسترس‌پذیری و اطلاعات فارسی (+۱۵)", "fa language label");
   next = replaceRequired(
@@ -109,13 +108,6 @@ await edit("api-finder/index.html", (html) => {
     "اگر Provider یادداشت فارسی (<code>notes_fa</code>) داشته و از ایران قابل دسترس باشد.",
     "بر اساس وجود اطلاعات فارسی در کاتالوگ و وضعیت دسترسی ثبت‌شده امتیاز می‌گیرد؛ این معیار کیفیت زبانی مدل یا نتیجه بنچمارک فارسی نیست.",
     "fa language explanation"
-  );
-  next = replaceRequired(next, "⚡ سرعت (تا +۱۵)", "⚡ ظرفیت درخواست (تا +۱۵)", "fa rate label");
-  next = replaceRequired(
-    next,
-    "بر اساس بیشترین RPM ثبت‌شده. بحرانی = امتیاز بالاتر برای RPM بیشتر.",
-    "بر اساس بیشترین RPM ثبت‌شده؛ این معیار ظرفیت درخواست است و Latency یا سرعت پاسخ مدل را اندازه‌گیری نمی‌کند.",
-    "fa rate explanation"
   );
   next = replaceRequired(next, 'breakdown.latency = { label: "سرعت"', 'breakdown.latency = { label: "ظرفیت درخواست"', "fa score breakdown");
   return next;

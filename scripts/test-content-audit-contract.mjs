@@ -57,6 +57,9 @@ if (!Array.isArray(report.reports)) {
 if (!Number.isInteger(reportsTotal) || reportsTotal < 0 || reportsTotal !== report.reports.length) {
   throw new Error(`Content audit reports_total mismatch: ${reportsTotal} vs ${report.reports.length}`);
 }
+if (reportsTotal !== 0) {
+  throw new Error(`Content quality backlog must be empty; found ${reportsTotal} item(s)`);
+}
 
 const validSections = new Set(expectedSections);
 const reportKeys = new Set();

@@ -52,7 +52,6 @@
 | CLIProxyAPI | session_bridge | متوسط | آزمایشی | نامشخص |
 | FreeLLMPool | aggregator | متوسط | نوسانی | نامشخص |
 | Free-Way | router | متوسط | آزمایشی | نامشخص |
-| AnimaRouter | router | متوسط | آزمایشی | نامشخص |
 | g4f-working | monitoring_companion | پایین | نوسانی | سازگار |
 
 ## ارتباط با Upstream Watch

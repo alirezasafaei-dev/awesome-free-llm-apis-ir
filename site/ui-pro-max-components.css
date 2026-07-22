@@ -30,6 +30,24 @@
   display: none;
 }
 
+.inline-accent-link {
+  color: var(--uupm-primary);
+}
+
+.error-hero {
+  min-height: 300px;
+  grid-template-columns: 1fr;
+}
+
+.error-suggestions {
+  margin-top: 30px;
+}
+
+.card-link {
+  color: inherit;
+  text-decoration: none;
+}
+
 @media (max-width: 520px) {
   .search-input-shell {
     grid-template-columns: 1fr;

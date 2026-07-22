@@ -219,6 +219,18 @@ Secretها و شناسه‌های حساب را حذف کنید. فقط داده
 - [GPT API رایگان بدون کارت بانکی](https://llm.persiantoolbox.ir/guides/free-gpt-api-no-credit-card/) — دسترسی GPT بدون پرداخت
 - [جایگزین OpenAI API](https://llm.persiantoolbox.ir/guides/openai-api-alternative/) — گزینه‌های سازگار با OpenAI
 
+## چه زمانی استفاده از API ابری انتخاب مناسبی نیست؟
+
+اگر داده نباید از دستگاه یا شبکه سازمان خارج شود، اتصال پایدار در دسترس نیست، یا پروژه به رفتار کاملاً آفلاین نیاز دارد، API ابری انتخاب مناسبی نیست. در این حالت از مدل محلی استفاده کنید و همچنان مجوز مدل، نیاز سخت‌افزاری و سیاست نگهداری داده را جداگانه بررسی کنید.
+
+## منابع رسمی بررسی‌شده
+
+آخرین بررسی: ۲۰۲۶-۰۷-۲۲.
+
+- [روش اعتبارسنجی دسترسی ایران](https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir/blob/main/docs/IRAN_LIVE_VERIFICATION.fa.md) — قرارداد پروژه برای تفکیک شبکه، حساب، Credential و Inference.
+- [مرجع احراز هویت OpenAI API](https://developers.openai.com/api/reference/overview) — نمونه رسمی نگهداری و ارسال کلید API؛ نه شاهد دسترسی از ایران.
+- [راهنمای Ollama](https://docs.ollama.com/) — مسیر رسمی اجرای مدل محلی برای سناریوهای آفلاین.
+
 ## جمع‌بندی
 
 ارزیابی API هوش مصنوعی در ایران باید دقیق، لایه‌ای و تاریخ‌دار باشد. Website، Signup، Credential، Model و Inference را جدا ببینید. هیچ نتیجه‌ای را از روی حدس یا یک Probe ناقص به کاتالوگ منتقل نکنید. برای آخرین وضعیت به [کاتالوگ زنده](https://llm.persiantoolbox.ir/) مراجعه کنید و گزارش Sanitized را در [GitHub پروژه](https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir) ثبت کنید.
