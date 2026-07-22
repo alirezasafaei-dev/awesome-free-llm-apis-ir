@@ -144,7 +144,7 @@ print(response.choices[0].message.content)
 
 از نام تجاری یا تعداد پارامتر نتیجه قطعی نگیرید. مدل کوچک‌تر ممکن است برای طبقه‌بندی سریع مناسب‌تر باشد و مدل بزرگ‌تر سهمیه را سریع مصرف کند.
 
-## دسترسی ایران و کارت بانکی دو مسئله جدا هستند
+## وضعیت ایران و کارت بانکی دو مسئله جدا هستند
 
 یک Provider ممکن است کارت نخواهد ولی ایران را رسماً پشتیبانی نکند. یا Signup باز باشد اما Inference با IP ایران رد شود. بررسی باید این لایه‌ها را جدا نگه دارد:
 
@@ -258,6 +258,17 @@ Adapter، Provider جایگزین، Budget control و بررسی دوره‌ای
 - [API هوش مصنوعی در ایران](https://llm.persiantoolbox.ir/guides/ai-api-iran/) — ارائه‌دهندگان تأییدشده قابل دسترس از ایران
 - [جایگزین ChatGPT API](https://llm.persiantoolbox.ir/guides/chatgpt-api-alternative/) — مقایسه تخصصی جایگزین‌های ChatGPT
 
+## منابع رسمی بررسی‌شده
+
+آخرین بررسی: ۲۰۲۶-۰۷-۲۲.
+
+- [نمای کلی OpenAI API](https://developers.openai.com/api/reference/overview) — الگوی رسمی احراز هویت و نگهداری کلید.
+- [کاتالوگ ماشین‌خوان پروژه](https://llm.persiantoolbox.ir/catalog.json) — وضعیت تاریخ‌دار `requires_payment_method` بدون جایگزین‌کردن مستندات Provider.
+- [روش اعتبارسنجی دسترسی ایران](https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir/blob/main/docs/IRAN_LIVE_VERIFICATION.fa.md) — مرزبندی Evidence مستقیم، VPN و حساب.
+
 ## جمع‌بندی
 
 API رایگان GPT بدون کارت بانکی می‌تواند شروع سریع و کم‌هزینه‌ای فراهم کند، اما باید ثبت‌نام، سهمیه، مدل، Privacy، Region و پایداری آن دقیق بررسی شود. نبود کارت تنها یکی از معیارهاست. برای اطلاعات تازه به [کاتالوگ زنده](https://llm.persiantoolbox.ir/) مراجعه کنید و تغییرات مستند را در [GitHub پروژه](https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir) گزارش دهید.
+## چه زمانی API بدون کارت انتخاب مناسبی نیست؟
+
+اگر پروژه به SLA، پشتیبانی قراردادی، سقف مصرف قابل پیش‌بینی یا پردازش داده حساس نیاز دارد، «بدون کارت» معیار کافی نیست. در این شرایط پلن رسمی قابل پرداخت یا اجرای محلی را با هزینه کل، سیاست داده و مسیر خروج مقایسه کنید.

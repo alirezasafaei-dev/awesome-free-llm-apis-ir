@@ -213,6 +213,17 @@ Fallback کورکورانه خطر دارد. اگر درخواست مالی یا
 - [جایگزین ChatGPT API](https://llm.persiantoolbox.ir/guides/chatgpt-api-alternative/) — مقایسه تخصصی جایگزین‌های ChatGPT
 - [GPT API رایگان بدون کارت بانکی](https://llm.persiantoolbox.ir/guides/free-gpt-api-no-credit-card/) — دسترسی GPT بدون پرداخت
 
+## منابع رسمی بررسی‌شده
+
+آخرین بررسی: ۲۰۲۶-۰۷-۲۲.
+
+- [نمای کلی OpenAI API](https://developers.openai.com/api/reference/overview) — نمونه رسمی قرارداد API و احراز هویت.
+- [مستندات Ollama](https://docs.ollama.com/) — مرجع رسمی مسیر اجرای محلی.
+- [کاتالوگ JSON پروژه](https://llm.persiantoolbox.ir/catalog.json) — داده ماشین‌خوان تاریخ‌دار Providerها و منابع هر رکورد.
+
 ## جمع‌بندی
 
 API رایگان LLM بهترین ابزار برای آزمایش و ساخت سریع است، به شرطی که قرارداد فنی و محدودیت آن دقیق فهمیده شود. Provider را براساس وظیفه واقعی، سهمیه، کیفیت، Region، Privacy و قابلیت مهاجرت انتخاب کنید. برای داده به‌روز به [کاتالوگ زنده](https://llm.persiantoolbox.ir/) مراجعه کنید و تغییرات مستند را در [GitHub پروژه](https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir) ثبت کنید.
+## چه زمانی API رایگان LLM انتخاب مناسبی نیست؟
+
+اگر بار کاری به ظرفیت تضمین‌شده، نگهداری داده در محیط کنترل‌شده، مدل ثابت یا پشتیبانی قراردادی نیاز دارد، سهمیه رایگان مناسب نیست. برای این سناریوها پلن تجاری، استقرار اختصاصی یا مدل محلی را همراه با هزینه عملیات و مجوز مدل بررسی کنید.

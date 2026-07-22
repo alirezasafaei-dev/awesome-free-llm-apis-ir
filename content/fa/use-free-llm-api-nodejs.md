@@ -173,7 +173,7 @@ npm start
 
 اگر `404` یا `model_not_found` گرفتید، Base URL و Model ID را دوباره با مستندات رسمی مقایسه کنید. نام نمایشی مدل در Dashboard همیشه همان Model ID قابل استفاده در API نیست.
 
-## مدیریت خطاها به‌صورت تخصصی
+## خطاهای رایج و مدیریت تخصصی
 
 بهتر است خطاها بر اساس کد وضعیت تفکیک شوند:
 
@@ -383,6 +383,14 @@ export async function generateText({ messages }) {
 - [راهنمای API رایگان هوش مصنوعی](https://llm.persiantoolbox.ir/guides/free-ai-api/) — نمای کلی APIهای رایگان هوش مصنوعی
 - [ساخت چت‌بات فارسی با Python](https://llm.persiantoolbox.ir/guides/build-persian-chatbot-python/) — آموزش چت‌بات Python
 - [راهنمای عملی API رایگان در ایران](https://llm.persiantoolbox.ir/guides/practical-free-llm-api-iran/) — از ثبت‌نام تا اولین درخواست
+
+## منابع رسمی بررسی‌شده
+
+آخرین بررسی: ۲۰۲۶-۰۷-۲۲.
+
+- [مستندات متغیرهای محیطی Node.js](https://nodejs.org/api/environment_variables.html) — رفتار رسمی `process.env` و فایل‌های env.
+- [مستندات AbortController در Node.js](https://nodejs.org/api/globals.html#class-abortcontroller) — مرجع رسمی لغو درخواست و timeout.
+- [نمای کلی OpenAI API](https://developers.openai.com/api/reference/overview) — قرارداد رسمی احراز هویت و درخواست API.
 
 ## جمع‌بندی
 
