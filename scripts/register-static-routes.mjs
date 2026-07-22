@@ -63,22 +63,36 @@ buildMeta.static_product_pages = [...new Set([
 await writeFile(buildMetaPath, `${JSON.stringify(buildMeta, null, 2)}\n`);
 
 let homepage = await readFile(homepagePath, "utf8");
-if (!homepage.includes(`href="${canonicalOrigin}/quick-start/"`)) {
+// Prefer portable relative links already present on the homepage.
+// Only inject a discoverable Quick Start link when none exists (relative or absolute).
+const hasQuickStartLink =
+  homepage.includes('href="./quick-start/"') ||
+  homepage.includes(`href="${canonicalOrigin}/quick-start/"`) ||
+  homepage.includes('href="/quick-start/"');
+if (!hasQuickStartLink) {
   homepage = homepage.replace(
     '<a href="./api-finder/">انتخاب API</a>',
-    `<a href="./api-finder/">انتخاب API</a>\n        <a href="${canonicalOrigin}/quick-start/">شروع برنامه‌نویسی</a>`
+    `<a href="./api-finder/">انتخاب API</a>\n        <a href="./quick-start/">شروع سریع</a>`
   );
   homepage = homepage.replace(
     '<a class="path-link" href="./api-finder/">بازکردن API Finder ←</a>',
-    `<a class="path-link" href="${canonicalOrigin}/quick-start/">شروع مرحله‌ای و نمونه‌کد ←</a>`
+    '<a class="path-link" href="./quick-start/">شروع سریع و نمونه‌کد ←</a>'
   );
   await writeFile(homepagePath, homepage);
 }
-if (!homepage.includes('href="./methodology/"')) {
-  homepage = homepage.replace(
-    '<a href="./catalog.json">داده JSON</a>',
-    '<a href="./catalog.json">داده JSON</a> · <a href="./methodology/">روش‌شناسی و اصلاح داده</a>'
-  );
+if (!homepage.includes('href="./methodology/"') && !homepage.includes(`href="${canonicalOrigin}/methodology/"`)) {
+  // Support both legacy minimal footer and the expanded site-footer markup.
+  if (homepage.includes('<a href="./catalog.json">داده JSON</a>')) {
+    homepage = homepage.replace(
+      '<a href="./catalog.json">داده JSON</a>',
+      '<a href="./catalog.json">داده JSON</a> · <a href="./methodology/">روش‌شناسی و اصلاح داده</a>'
+    );
+  } else if (homepage.includes('<a href="./catalog.json">catalog.json</a>')) {
+    homepage = homepage.replace(
+      '<a href="./catalog.json">catalog.json</a>',
+      '<a href="./catalog.json">catalog.json</a></li>\n              <li><a href="./methodology/">روش‌شناسی</a>'
+    );
+  }
   await writeFile(homepagePath, homepage);
 }
 
