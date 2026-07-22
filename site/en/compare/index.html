@@ -15,7 +15,7 @@
   <meta name="twitter:image" content="https://llm.persiantoolbox.ir/assets/social/og-default.png">
   <link rel="canonical" href="https://llm.persiantoolbox.ir/en/compare/">
   <link rel="alternate" hreflang="en" href="https://llm.persiantoolbox.ir/en/compare/">
-  <link rel="alternate" hreflang="fa" href="https://llm.persiantoolbox.ir/compare/">
+  <link rel="alternate" hreflang="fa-IR" href="https://llm.persiantoolbox.ir/compare/">
   <link rel="alternate" hreflang="x-default" href="https://llm.persiantoolbox.ir/en/compare/">
   <link rel="alternate" type="application/json" href="../../catalog.json" title="Machine-readable provider catalog">
   <link rel="stylesheet" href="../../styles.css">
@@ -53,6 +53,7 @@
     .compare-en-hero h1 span { color: #34d399; }
     .compare-en-hero p { max-width: 720px; margin: 12px 0; color: #cbd5e1; font-size: clamp(14px,1.6vw,17px); }
   </style>
+  <link rel="stylesheet" href="../../ux-clarity.css">
 </head>
 <body data-page-type="compare">
   <a class="skip-link" href="#compare-content">Skip to main content</a>
@@ -91,7 +92,45 @@
     </section>
   </main>
 
-  <footer><p>Data is sourced from official documentation and dated. Provider terms may change.</p><p><a href="../../catalog.json">Catalog JSON</a> · <a href="https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir/issues/new/choose">Report incorrect data</a></p></footer>
+  <footer class="site-footer" role="contentinfo">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <strong>Awesome Free LLM APIs IR</strong>
+          <p>Evidence-first catalog of free LLM APIs with quotas, OpenAI compatibility, and dated access evidence. No ads. No permanent-access guarantees.</p>
+        </div>
+        <nav class="footer-nav" aria-label="Footer">
+          <div>
+            <h2 class="footer-heading">Product</h2>
+            <ul>
+              <li><a href="../../en/">Home</a></li>
+              <li><a href="../../en/api-finder/">API Finder</a></li>
+              <li><a href="../../en/compare/">Compare</a></li>
+              <li><a href="../../en/quick-start/">Quick Start</a></li>
+              <li><a href="../../tools/">Tools</a></li>
+            </ul>
+          </div>
+          <div>
+            <h2 class="footer-heading">Trust &amp; data</h2>
+            <ul>
+              <li><a href="../../methodology/">Methodology</a></li>
+              <li><a href="../../catalog.json">catalog.json</a></li>
+              <li><a href="../../data.json">data.json</a></li>
+              <li><a href="../../sitemap.xml">Sitemap</a></li>
+              <li><a href="../../llms.txt">llms.txt</a></li>
+            </ul>
+          </div>
+          <div>
+            <h2 class="footer-heading">Contribute</h2>
+            <ul>
+              <li><a href="https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir">GitHub</a></li>
+              <li><a href="https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir/issues/new/choose">Report an issue</a></li>
+              <li><a href="../../">فارسی</a></li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+      <p class="footer-meta">MIT License · No commercial affiliation with providers · Do not publish IPs, API keys, or account data</p>
+    </footer>
   <script defer src="./compare.js"></script>
   <script defer data-domain="llm.persiantoolbox.ir" src="../../plausible.js"></script>
 </body>
