@@ -7,16 +7,18 @@ const files = {
   master: path.join(root, "design-system", "awesome-free-llm-apis-ir", "MASTER.md"),
   html: path.join(root, "site", "index.html"),
   css: path.join(root, "site", "ui-pro-max.css"),
+  components: path.join(root, "site", "ui-pro-max-components.css"),
   js: path.join(root, "site", "ui-pro-max.js"),
   transform: path.join(root, "scripts", "apply-ui-pro-max-shell.mjs")
 };
 
 await Promise.all(Object.values(files).map((file) => access(file)));
 
-const [master, html, css, js, transform] = await Promise.all([
+const [master, html, css, components, js, transform] = await Promise.all([
   readFile(files.master, "utf8"),
   readFile(files.html, "utf8"),
   readFile(files.css, "utf8"),
+  readFile(files.components, "utf8"),
   readFile(files.js, "utf8"),
   readFile(files.transform, "utf8")
 ]);
@@ -84,19 +86,23 @@ if (/transform:\s*translateY\(-/u.test(css)) {
   throw new Error("UI Pro Max layer must not use layout-shifting card hover transforms");
 }
 
+for (const signal of [".search-input-shell", ".clear-search", "min-height: 44px", "@media (max-width: 520px)"]) {
+  if (!components.includes(signal)) throw new Error(`UI Pro Max component CSS is missing: ${signal}`);
+}
+
 const requiredJsSignals = [
   "MutationObserver",
   'aria-keyshortcuts", "/"',
   "account_activation_blocked",
   "structuralEmojiPattern",
-  "dataProviderId"
+  "dataset.providerId"
 ];
 for (const signal of requiredJsSignals) {
   if (!js.includes(signal)) throw new Error(`UI Pro Max behavior is missing: ${signal}`);
 }
 
-if (!transform.includes("ui-pro-max.css") || !transform.includes("htmlFiles")) {
-  throw new Error("Built-page design-system transform is incomplete");
+for (const signal of ["ui-pro-max.css", "ui-pro-max-components.css", "htmlFiles", "injectStylesheets"]) {
+  if (!transform.includes(signal)) throw new Error(`Built-page design-system transform is missing: ${signal}`);
 }
 
 console.log("UI UX Pro Max contract passed: task-first hierarchy, semantic tokens, responsive behavior and evidence-first cards are enforced.");
