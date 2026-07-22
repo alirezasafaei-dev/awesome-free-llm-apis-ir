@@ -75,7 +75,6 @@ for (const id of providerIds) {
   assertFixture(violations.length === 0, `${id} contains no prohibited public evidence`);
 }
 
-
 const providerById = Object.fromEntries(providerIds.map((id) => [
   id,
   JSON.parse(readFileSync(`${root}/data/providers/${id}.json`, "utf8"))
@@ -93,6 +92,16 @@ assertFixture(vercel.iran_access.status === "account_activation_blocked", "Verce
 assertFixture(freetheai.iran_access.status === "signup_blocked", "FreeTheAI remains a bounded signup barrier");
 assertFixture(nvidia.iran_access.status === "signup_blocked", "NVIDIA remains a bounded signup barrier");
 assertFixture(vercel.free_tier.requires_payment_method === null, "Vercel account barrier is not generalized into universal payment policy");
+
+const fireworksFailedRequests = fireworks.iran_access.evidence.filter(
+  (entry) => Number.isInteger(entry.http_status) && entry.http_status >= 400
+);
+assertFixture(
+  fireworksFailedRequests.every(
+    (entry) => !("credential_validated_from" in entry) && !("credential_validated_status" in entry)
+  ),
+  "Failed Fireworks requests do not claim credential validation"
+);
 
 const vercelLive = vercel.iran_access.evidence.find((entry) => entry.timestamp === "2026-07-21T17:28:00.000Z");
 assertFixture(Boolean(vercelLive), "Vercel account-barrier evidence exists");
