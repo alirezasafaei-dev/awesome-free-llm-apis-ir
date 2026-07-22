@@ -1,0 +1,41 @@
+.search-input-shell {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.clear-search {
+  min-height: 44px;
+  padding: 8px 12px;
+  border: 1px solid var(--uupm-border);
+  border-radius: 10px;
+  background: var(--uupm-surface);
+  color: var(--uupm-text-secondary);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: border-color 160ms ease, background-color 160ms ease, color 160ms ease;
+}
+
+.clear-search:hover {
+  border-color: var(--uupm-border-strong);
+  background: var(--uupm-surface-muted);
+  color: var(--uupm-text);
+}
+
+.clear-search[hidden] {
+  display: none;
+}
+
+@media (max-width: 520px) {
+  .search-input-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .clear-search {
+    width: 100%;
+  }
+}
