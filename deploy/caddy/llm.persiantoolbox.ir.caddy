@@ -2,8 +2,17 @@ llm.persiantoolbox.ir {
 	encode zstd gzip
 	root * /srv/awesome-free-llm-apis-ir/current
 
-	handle /api/event {
-		reverse_proxy 127.0.0.1:8002
+	# Preserve route order: Caddy normally sorts try_files before handle, which
+	# would turn analytics POSTs into the static 404 page before proxying them.
+	route {
+		handle /api/event {
+			reverse_proxy 127.0.0.1:8002
+		}
+
+		handle {
+			try_files {path} {path}/ =404
+			file_server
+		}
 	}
 
 	@catalog path /catalog.json
@@ -27,9 +36,6 @@ llm.persiantoolbox.ir {
 		Permissions-Policy "camera=(), microphone=(), geolocation=()"
 		Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'; upgrade-insecure-requests"
 	}
-
-	try_files {path} {path}/ =404
-	file_server
 
 	handle_errors {
 		rewrite * /404.html
