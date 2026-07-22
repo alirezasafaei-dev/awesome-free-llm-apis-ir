@@ -1,6 +1,6 @@
 # راهنمای Analytics و معیارها — Awesome Free LLM APIs IR
 
-آخرین بازبینی: ۲۰۲۶-۰۷-۱۶
+آخرین بازبینی: ۲۰۲۶-۰۷-۲۲
 
 ## ابزار
 
@@ -12,6 +12,7 @@
 - Product events: توسط `site/analytics.js` و تابع `plausible()`
 - Tracker باید فقط یک بار در هر صفحه بارگذاری شود.
 - CSP فقط باید `'self'` را در `script-src` و `connect-src` مجاز کند؛ Tracker خارجی بازنشسته شده است.
+- در Caddy، مسیر `/api/event` باید داخل `route` و پیش از fallback فایل‌های استاتیک تعریف شود؛ در غیر این صورت مرتب‌سازی directiveها، POST را زودتر به 404 تبدیل می‌کند.
 
 ## وضعیت استقرار
 

@@ -52,6 +52,12 @@ for (const directory of enDirectories) {
 const caddy = await readFile(path.join(root, "deploy/caddy/llm.persiantoolbox.ir.caddy"), "utf8");
 if (!caddy.includes("handle /api/event")) throw new Error("Caddy does not own the Plausible event route");
 if (!caddy.includes("reverse_proxy 127.0.0.1:8002")) throw new Error("Caddy Plausible backend does not match the production contract");
+const routeIndex = caddy.indexOf("route {");
+const eventIndex = caddy.indexOf("handle /api/event");
+const fallbackIndex = caddy.indexOf("try_files {path} {path}/ =404");
+if (routeIndex < 0 || eventIndex < routeIndex || fallbackIndex < eventIndex) {
+  throw new Error("Caddy must preserve analytics routing before the static try_files fallback");
+}
 
 const nginx = await readFile(path.join(root, "deploy/nginx/ir.llm.persiantoolbox.ir.conf"), "utf8");
 if (!nginx.includes("script-src 'self'")) throw new Error("Iran mirror CSP must allow the self-hosted tracker");
