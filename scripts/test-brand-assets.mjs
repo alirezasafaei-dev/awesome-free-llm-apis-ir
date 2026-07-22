@@ -8,6 +8,7 @@ const root = process.cwd();
 const dist = path.join(root, ".site-dist");
 const repoPagesBase = "https://alirezasafaei-dev.github.io/awesome-free-llm-apis-ir/";
 const productionBase = "https://llm.persiantoolbox.ir/";
+const brandColor = "#155EEF";
 
 const npmCommand = process.platform === "win32" ? "npm.cmd" : "npm";
 const build = spawnSync(npmCommand, ["run", "site:build"], { cwd: root, encoding: "utf8" });
@@ -63,8 +64,8 @@ assert.ok(brandedPages >= 10, `Expected branding across generated page types, fo
 
 const faHome = await readFile(path.join(dist, "index.html"), "utf8");
 const enHome = await readFile(path.join(dist, "en", "index.html"), "utf8");
-assert.ok(faHome.includes('<link rel="mask-icon" href="./assets/mask-icon.svg" color="#2563EB">'), "Persian home mask icon is missing");
-assert.ok(enHome.includes('<link rel="mask-icon" href="../assets/mask-icon.svg" color="#2563EB">'), "English home mask icon is missing");
+assert.ok(faHome.includes(`<link rel="mask-icon" href="./assets/mask-icon.svg" color="${brandColor}">`), "Persian home mask icon is missing or uses a stale brand color");
+assert.ok(enHome.includes(`<link rel="mask-icon" href="../assets/mask-icon.svg" color="${brandColor}">`), "English home mask icon is missing or uses a stale brand color");
 
 const manifestText = await readFile(path.join(dist, "manifest.webmanifest"), "utf8");
 const manifest = JSON.parse(manifestText);
@@ -82,4 +83,4 @@ for (const asset of sourceAssets) {
   assert.ok(info.isFile() && info.size > 100, `${asset}: built asset is missing or empty`);
 }
 
-console.log(`Brand asset contract passed across ${brandedPages} generated pages.`);
+console.log(`Brand asset contract passed across ${brandedPages} generated pages with ${brandColor} as the shared product color.`);
