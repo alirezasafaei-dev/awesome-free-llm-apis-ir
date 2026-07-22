@@ -426,7 +426,7 @@
           const card = document.createElement("div");
           card.className = "finder-card";
 
-          const statusStyle = provider.iran_access.status === "verified_working" ? "background:#065f46;color:#fff" : "";
+          const statusClass = provider.iran_access.status === "verified_working" ? " access-verified" : "";
 
           card.innerHTML = `
             <div class="finder-card-header">
@@ -447,9 +447,9 @@
               }).join("")}
             </div>
             <div class="finder-card-extra">
-              <span class="access-badge" style="${statusStyle}">${accessEmoji[provider.iran_access.status] ?? ""} ${accessLabels[provider.iran_access.status] ?? provider.iran_access.status}</span>
+              <span class="access-badge${statusClass}">${accessEmoji[provider.iran_access.status] ?? ""} ${accessLabels[provider.iran_access.status] ?? provider.iran_access.status}</span>
               <span class="limit-label">${limitText(provider)}</span>
-              ${isStale(provider) ? '<span class="freshness-badge stale" style="font-size:11px;padding:2px 8px">نیازمند بررسی</span>' : ""}
+              ${isStale(provider) ? '<span class="freshness-badge stale finder-stale-badge">نیازمند بررسی</span>' : ""}
             </div>
             <div class="finder-card-actions">
               <a class="finder-detail-link" href="../providers/${provider.id}/">جزئیات و شواهد</a>
