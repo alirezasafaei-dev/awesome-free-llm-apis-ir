@@ -1,0 +1,39 @@
+name: UI product gate
+
+on:
+  pull_request:
+    paths:
+      - "design-system/**"
+      - "site/**"
+      - "scripts/apply-ui-pro-max-shell.mjs"
+      - "scripts/test-ui-pro-max-contract.mjs"
+      - "scripts/test-ux-clarity-contract.mjs"
+      - "package.json"
+      - ".github/workflows/ui-product-gate.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  ui-product:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.2.1
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.3.0
+        with:
+          node-version: 22
+      - run: npm ci
+      - name: Validate UI Pro Max design system
+        run: npm run ux:pro-max:test
+      - name: Validate task-first homepage hierarchy
+        run: npm run ux:clarity:test
+      - name: Build exact UI artifact
+        run: npm run site:build
+        env:
+          SOURCE_REVISION: ${{ github.sha }}
+      - name: Validate built site
+        run: npm run site:check
+      - name: Validate responsive and portable paths
+        run: npm run pages:paths:test
