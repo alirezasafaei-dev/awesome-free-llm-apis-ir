@@ -40,7 +40,7 @@
 | سرویس | نوع | رایگان | محدودیت نمونه | OpenAI-compatible | دسترسی ایران | آخرین بررسی |
 |---|---|---|---|:---:|---|---|
 | [Agnes AI](https://agnes-ai.com/) | Gateway رسمی | مدل‌های رایگان | 20 RPM | ✅ | ✅ مستقیم تست‌شده | 2026-07-21 |
-| [AI Router](https://ai-router.dev/fa/) | Gateway رسمی | سهمیه دائمی | مدل‌محور | ✅ | ❔ نامشخص | 2026-07-22 |
+| [AI Router](https://ai-router.dev/fa/) | Gateway اجتماعی | آزمایشی | مدل‌محور | ✅ | ❔ نامشخص | 2026-07-22 |
 | [Aion Labs](https://www.aionlabs.ai/) | Provider رسمی | سهمیه دائمی | 15 RPM · 20,000 TPM | ✅ | ⛔ مسدود | 2026-07-20 |
 | [Cerebras Inference](https://cloud.cerebras.ai/) | Gateway رسمی | آزمایشی | 5 RPM · 30,000 TPM | ✅ | ⛔ مسدود | 2026-07-20 |
 | [Cloudflare Workers AI](https://developers.cloudflare.com/workers-ai/) | Gateway رسمی | سهمیه دائمی | 10,000 neurons/day | ✅ | ✅ مستقیم تست‌شده | 2026-07-20 |

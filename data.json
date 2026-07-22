@@ -66,7 +66,7 @@
     {
       "id": "ai-router",
       "name": "AI Router",
-      "serviceType": "official_gateway",
+      "serviceType": "community_gateway",
       "website": "https://ai-router.dev/fa/",
       "api": {
         "baseUrl": "https://api.ai-router.dev/v1",
@@ -74,18 +74,15 @@
         "auth": "api_key"
       },
       "freeTier": {
-        "status": "active",
-        "type": "permanent_allowance",
-        "requiresPaymentMethod": false,
-        "limitExample": "برای کاربر جدید تا ۲۰ دلار اعتبار تبلیغاتی در نظر گرفته می‌شود؛ ۵ دلار پس از ثبت‌نام قابل استفاده است و ۱۵ دلار باقیمانده طبق شرایط سند رسمی به‌تدریج آزاد می‌شود.",
-        "notesFa": "اعتبار ثبت‌نام و پاداش ورود روزانه شرایط جداگانه دارند؛ جزئیات آزادسازی، محدودیت‌ها و تغییرات احتمالی باید از سند رسمی فارسی بررسی شود."
+        "status": "trial",
+        "type": "trial",
+        "requiresPaymentMethod": null,
+        "limitExample": "برای کاربر جدید تا ۵ دلار ممکن است پس از ثبت‌نام قابل استفاده باشد؛ تا ۱۵ دلار دیگر با مصرف واقعی API و طبق شرایط مستندات به‌تدریج آزاد می‌شود.",
+        "notesFa": "این اعتبار دائمی نیست. پاداش ثبت‌نام و check-in روزانه شرایط جداگانه دارند و جزئیات آزادسازی، صلاحیت و محدودیت‌ها باید از مستندات رسمی فارسی بررسی شود."
       },
       "capabilities": [
         "chat",
-        "text_generation",
-        "reasoning",
-        "tool_calling",
-        "structured_output"
+        "text_generation"
       ],
       "iranAccess": {
         "status": "unknown",
