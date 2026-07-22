@@ -101,6 +101,19 @@ function injectStylesheets(html, hrefs, relativePath) {
   return html.replace(preferred[0], `${preferred[0]}\n  ${tags}`);
 }
 
+/**
+ * Load the domain guard before the deferred tracker on every generated page.
+ * @param {string} html
+ * @returns {string}
+ */
+function injectAnalyticsGuard(html) {
+  if (html.includes("plausible-guard.js")) return html;
+  return html.replace(
+    /(<script defer data-domain="llm\.persiantoolbox\.ir" src="([^"]*?)plausible\.js"><\/script>)/,
+    (_tag, trackerTag, prefix) => `<script defer src="${prefix}plausible-guard.js"></script>\n  ${trackerTag}`
+  );
+}
+
 for (const finderPage of finderPages) await externalizeFinderAssets(finderPage);
 
 const files = await htmlFiles(dist);
@@ -117,7 +130,7 @@ for (const absolutePath of files) {
     throw new Error(`${relativePath}: production HTML contains CSP-blocked inline styles`);
   }
   const hrefs = stylesheetNames.map((stylesheetName) => stylesheetHref(absolutePath, stylesheetName));
-  const after = injectStylesheets(before, hrefs, relativePath);
+  const after = injectAnalyticsGuard(injectStylesheets(before, hrefs, relativePath));
   if (after === before) continue;
   await writeFile(absolutePath, after, "utf8");
   changed += 1;
