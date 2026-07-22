@@ -22,7 +22,7 @@
   "free_tier": {
     "status": "active",
     "type": "monthly_credit",
-    "requires_payment_method": true,
+    "requires_payment_method": null,
     "limits": [
       {
         "scope": "team",
@@ -32,10 +32,10 @@
         "notes_fa": "فقط زیرمجموعه‌ای از مدل‌ها واجد اعتبار رایگان‌اند و محدودیت هر مدل می‌تواند پایین‌تر باشد. BYOK در پلن پولی موجود است."
       }
     ],
-    "notes_fa": "اعتبار رایگان ماهانه ۵ دلار روی مدل‌های واجد شرایط. اما Vercel حتی برای فعال‌سازی اعتبار رایگان نیز کارت اعتباری معتبر می‌خواهد (HTTP 403: customer_verification_required). ثبت‌نام نیاز به حساب Vercel دارد."
+    "notes_fa": "اسناد رسمی اعتبار رایگان ماهانه ۵ دلار را برای حساب‌های تیمی اعلام می‌کنند. حساب آزمایش‌شده پیش از اجرای مدل با مانع customer_verification_required روبه‌رو شد؛ این مشاهده الزام عمومی کارت برای همه حساب‌ها را ثابت نمی‌کند."
   },
   "iran_access": {
-    "status": "signup_blocked",
+    "status": "account_activation_blocked",
     "official_policy": "not_documented",
     "tested_from_iran": true,
     "tested_at": "2026-07-21",
@@ -66,17 +66,15 @@
       {
         "type": "live_test",
         "timestamp": "2026-07-21T17:28:00.000Z",
-        "http_status": 200,
+        "http_status": 403,
         "latency_ms": 3500,
-        "model_tested": "models list (GET /v1/models)",
-        "endpoint": "https://ai-gateway.vercel.sh/v1/models",
-        "source": "FOREIGN_SERVER (DE, Hetzner AS24940)",
-        "credential_validated_from": "FOREIGN_SERVER (DE, Hetzner AS24940)",
-        "credential_validated_status": 200,
-        "notes_fa": "کلید Vercel AI Gateway از سرور خارج (آلمان) با موفقیت تأیید شد. 306 مدل قابل دسترس هستند. اما درخواست استنتاج با HTTP 403 رد شد: «AI Gateway requires a valid credit card on file to service requests». این خطمشی عمومی Vercel است و مختص ایران نیست. برای تکمیل آزمایش نیاز به کارت اعتباری معتبر روی حساب Vercel است."
+        "model_tested": "request blocked before model execution",
+        "endpoint": "https://ai-gateway.vercel.sh/v1/chat/completions",
+        "source": "FOREIGN_SERVER — DE direct (AS24940)",
+        "notes_fa": "درخواست استنتاج حساب آزمایش‌شده از مسیر کنترل خارجی پیش از اجرای مدل با HTTP 403 و کلاس خطای customer_verification_required متوقف شد. GET /v1/models عمومی است و اعتبار Credential را اثبات نمی‌کند."
       }
     ],
-    "notes_fa": "کلید API معتبر است (306 مدل قابل دسترس). اما Vercel برای سرویس‌دهی نیاز به کارت اعتباری روی حساب دارد (حتی برای اعتبار رایگان ماهانه ۵ دلار). آزمایش استنتاج از ایران به همین دلیل انجام نشد."
+    "notes_fa": "Endpointها از ایران قابل دسترس‌اند، اما حساب آزمایش‌شده پیش از اجرای مدل با مانع customer_verification_required متوقف شد. فهرست عمومی مدل‌ها اعتبار کلید را اثبات نمی‌کند و استنتاج احراز هویت‌شده از ایران هنوز انجام نشده است."
   },
   "models": {
     "dynamic": true,
@@ -89,7 +87,7 @@
     "checked_by": "maintainers",
     "stale_after_days": 30
   },
-  "notes_fa": "ثبت‌نام، صدور کلید و مصرف اعتبار از شبکهٔ ایران هنوز با درخواست مدل معتبر آزمایش نشده است.",
+  "notes_fa": "برای حساب آزمایش‌شده ثبت‌نام و دسترسی به Endpoint عمومی انجام شد، اما فعال‌سازی استنتاج به مانع بررسی مشتری رسید. این نتیجه حساب‌محور است و نباید به همه حساب‌ها تعمیم داده شود.",
   "sources": [
     "https://vercel.com/docs/ai-gateway/pricing",
     "https://vercel.com/docs/ai-gateway/sdks-and-apis/openai-chat-completions"

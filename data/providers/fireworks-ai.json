@@ -40,11 +40,11 @@
     "notes_fa": "$۱ اعتبار رایگان در شروع کار. بدون نیاز به کارت بانکی. پس از اتمام اعتبار، حساب متوقف می‌شود مگر کارت اضافه کنید."
   },
   "iran_access": {
-    "status": "signup_blocked",
+    "status": "account_activation_blocked",
     "official_policy": "not_documented",
     "tested_from_iran": true,
     "tested_at": "2026-07-21",
-    "test_method": "connectivity_probe",
+    "test_method": "live_request",
     "network": {
       "country": "IR",
       "route": "direct"
@@ -85,10 +85,10 @@
         "latency_ms": 12000,
         "model_tested": "accounts/fireworks/models/gpt-oss-120b",
         "endpoint": "https://api.fireworks.ai/inference/v1/chat/completions",
-        "source": "FOREIGN_SERVER (DE, Hetzner AS24940)",
+        "source": "FOREIGN_SERVER — DE direct (AS24940)",
         "credential_validated_from": "DIRECT_ATTEMPT",
         "credential_validated_status": 404,
-        "notes_fa": "از سرور خارج (آلمان) درخواست با کلید موجود فرستاده شد. حساب آزمایشی معلق است (محدودیت مصرف یا صورت‌حساب پرداخت‌نشده). مدل‌ها قابل لیست نیستند (0 مدل). استنتاج با 404 رد شد. وضعیت شبکه از ایران همچنان Timeout است، اما به‌دلیل تعلیق حساب، نمی‌توان نتیجه گرفت که مسدودیت ایران ناشی از Geo-blocking است."
+        "notes_fa": "حساب آزمایش‌شده از مسیر کنترل خارجی نتوانست مدل‌ها را فهرست کند و درخواست استنتاج با HTTP 404 رد شد؛ خطای حساب یا سهمیه از وضعیت شبکه ایران قابل تفکیک نیست."
       },
       {
         "type": "live_test",
@@ -97,13 +97,13 @@
         "latency_ms": 3500,
         "model_tested": "accounts/fireworks/models/gpt-oss-120b",
         "endpoint": "https://api.fireworks.ai/inference/v1/chat/completions",
-        "source": "FOREIGN_SERVER (DE, Hetzner AS24940)",
-        "credential_validated_from": "FOREIGN_SERVER (DE, Hetzner AS24940)",
+        "source": "FOREIGN_SERVER — DE direct (AS24940)",
+        "credential_validated_from": "FOREIGN_SERVER — DE direct (AS24940)",
         "credential_validated_status": 403,
-        "notes_fa": "حساب جدید Fireworks از سرور خارج (آلمان) تست شد. همه endpointها ۴۰۳ برگرداندند: {\"blocked\":true,\"reason\":\"sanctioned origin country\"}. حساب در زمان ثبت‌نام (احتمالاً به دلیل IP ایران) مسدود شده است. این محدودیت در سطح حساب است و به IP درخواست‌دهنده مربوط نیست."
+        "notes_fa": "حساب جدید آزمایش‌شده پس از ایجاد، از مسیر کنترل خارجی نیز با HTTP 403 و کلاس خطای sanctioned_origin_country رد شد. این نتیجه فقط مانع فعال‌سازی یا استفاده همان حساب آزمایش‌شده را نشان می‌دهد."
       }
     ],
-    "notes_fa": "ثبت‌نام در Fireworks AI از ایران منجر به مسدودیت حساب در سطح سرویس می‌شود (sanctioned origin country). حتی کلید جدید هم از سرور خارج (آلمان) با ۴۰۳ مسدود شد. شبکه از ایران نیز Timeout دارد."
+    "notes_fa": "حساب‌های آزمایش‌شده پس از ایجاد، به‌دلیل مانع سطح حساب نتوانستند استنتاج موفق انجام دهند. مسیر ایران نیز رفتار شبکه‌ای ناپایدار داشت؛ این شواهد به همه کاربران یا همه شبکه‌های ایران تعمیم داده نمی‌شود."
   },
   "models": {
     "dynamic": true,

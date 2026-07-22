@@ -85,7 +85,7 @@
       "additionalProperties": false,
       "required": ["status", "official_policy", "tested_from_iran", "tested_at", "test_method", "network", "evidence"],
       "properties": {
-        "status": { "enum": ["verified_working", "verified_working_vpn", "direct_blocked_vpn_working", "verified_blocked", "officially_unsupported", "intermittent", "signup_blocked", "unknown"] },
+        "status": { "enum": ["verified_working", "verified_working_vpn", "direct_blocked_vpn_working", "verified_blocked", "officially_unsupported", "intermittent", "signup_blocked", "account_activation_blocked", "unknown"] },
         "official_policy": { "enum": ["supported", "unsupported", "not_documented", "unknown"] },
         "tested_from_iran": { "type": "boolean" },
         "tested_at": { "type": ["string", "null"], "format": "date" },
@@ -110,7 +110,7 @@
             "additionalProperties": false,
             "required": ["type"],
             "properties": {
-              "type": { "enum": ["official_docs", "live_test", "connectivity_test", "community_report"] },
+              "type": { "enum": ["official_docs", "live_test", "connectivity_test", "signup_test", "community_report"] },
               "url": { "type": ["string", "null"], "format": "uri" },
               "checked_at": { "type": ["string", "null"], "format": "date" },
               "timestamp": { "type": ["string", "null"], "format": "date-time" },
@@ -135,6 +135,10 @@
               {
                 "if": { "properties": { "type": { "const": "community_report" } } },
                 "then": { "required": ["url", "checked_at", "notes_fa"] }
+              },
+              {
+                "if": { "properties": { "type": { "const": "signup_test" } } },
+                "then": { "required": ["checked_at", "source", "notes_fa"] }
               },
               {
                 "if": { "properties": { "type": { "const": "live_test" } } },

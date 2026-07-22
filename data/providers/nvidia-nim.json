@@ -31,7 +31,7 @@
     "official_policy": "not_documented",
     "tested_from_iran": true,
     "tested_at": "2026-07-21",
-    "test_method": "connectivity_probe",
+    "test_method": "signup_only",
     "network": {
       "country": "IR",
       "route": "direct"
@@ -56,13 +56,14 @@
         "notes_fa": "Endpoint از ایران قابل دسترس است (HTTP 404). نیاز به API key معتبر."
       },
       {
-        "type": "community_report",
+        "type": "signup_test",
         "url": "https://developer.nvidia.com/login",
         "checked_at": "2026-07-21",
-        "notes_fa": "ثبت‌نام در NVIDIA Developer Program نیاز به شماره تلفن خارجی برای احراز هویت دارد. کاربر ایرانی به شماره خارجی دسترسی ندارد. کلید API قابل دریافت نیست."
+        "notes_fa": "حساب آزمایشی NVIDIA Developer Program نتوانست مرحله احراز شماره تلفن را تکمیل کند؛ در این جریان کلید API صادر نشد.",
+        "source": "TESTED_SIGNUP_FLOW"
       }
     ],
-    "notes_fa": "Endpoint از ایران قابل دسترس است. اما ثبت‌نام در NVIDIA Developer Program نیاز به شماره تلفن خارجی دارد."
+    "notes_fa": "Endpoint از ایران قابل دسترس است، اما جریان ثبت‌نام آزمایش‌شده در مرحله احراز شماره تلفن متوقف شد. این نتیجه فقط برای همان حساب و جریان آزمایش‌شده معتبر است."
   },
   "models": {
     "dynamic": true,

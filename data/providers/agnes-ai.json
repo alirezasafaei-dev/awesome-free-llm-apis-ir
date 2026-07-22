@@ -105,7 +105,7 @@
         "model_tested": "agnes-2.0-flash",
         "endpoint": "https://apihub.agnes-ai.com/v1/chat/completions",
         "source": "IRAN_VPS — direct authenticated inference (AS196864)",
-        "credential_validated_from": "FOREIGN_SERVER (DE, Hetzner AS24940)",
+        "credential_validated_from": "FOREIGN_SERVER — DE direct (AS24940)",
         "credential_validated_status": 200,
         "notes_fa": "درخواست احراز هویت‌شده با مدل agnes-2.0-flash از مسیر مستقیم ایران با HTTP 200 پاسخ داده شد. مدل از نوع reasoning است و خروجی معنی‌دار در فیلد reasoning_content قرار گرفت. کلید API از سرور خارج (آلمان) نیز با موفقیت تأیید شد. این مدرک فقط برای ASN/مسیر تست‌شده معتبر است."
       }

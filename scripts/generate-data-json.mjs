@@ -28,6 +28,7 @@ const iranLabels = {
   verified_working: "✅ مستقیم تست‌شده",
   verified_working_vpn: "🛡️ با VPN تست‌شده",
   verified_blocked: "⛔ مستقیم مسدود",
+  account_activation_blocked: "🔒 مانع فعال‌سازی حساب",
   officially_unsupported: "🚫 پشتیبانی‌نشده رسمی",
   unknown: "❔ نامشخص"
 };

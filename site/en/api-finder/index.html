@@ -268,6 +268,7 @@
         officially_unsupported: "Officially unsupported",
         intermittent: "Intermittent",
         signup_blocked: "Signup blocked",
+        account_activation_blocked: "Account activation barrier",
         unknown: "Unknown"
       };
       const accessEmoji = {
@@ -278,6 +279,7 @@
         officially_unsupported: "🚫",
         intermittent: "⚠️",
         signup_blocked: "🧾",
+        account_activation_blocked: "🔒",
         unknown: "❔"
       };
       const serviceLabels = {
@@ -301,7 +303,7 @@
         embeddings: ["embeddings"]
       };
       const iranAccessibleStatuses = ["verified_working", "verified_working_vpn", "direct_blocked_vpn_working", "intermittent"];
-      const iranBlockedStatuses = ["verified_blocked", "officially_unsupported", "signup_blocked"];
+      const iranBlockedStatuses = ["verified_blocked", "officially_unsupported", "signup_blocked", "account_activation_blocked"];
 
       let providers = [];
       const elements = {

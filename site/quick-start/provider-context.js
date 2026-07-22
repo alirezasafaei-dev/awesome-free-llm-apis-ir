@@ -50,6 +50,7 @@ runProviderContextWhenReady(async () => {
       officially_unsupported: "به‌طور رسمی پشتیبانی نمی‌شود",
       intermittent: "ناپایدار",
       signup_blocked: "ثبت‌نام مسدود",
+      account_activation_blocked: "مانع فعال‌سازی حساب",
       unknown: "هنوز مدرک کافی نداریم"
     }
   };

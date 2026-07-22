@@ -50,6 +50,7 @@ runProviderContextWhenReady(async () => {
       officially_unsupported: "Officially unsupported",
       intermittent: "Intermittent",
       signup_blocked: "Signup blocked",
+      account_activation_blocked: "Account activation barrier",
       unknown: "No evidence yet"
     }
   };

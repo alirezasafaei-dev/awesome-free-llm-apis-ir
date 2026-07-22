@@ -10,11 +10,11 @@ const allowed = {
   freeType: new Set(["permanent_allowance", "free_models", "monthly_credit", "trial", "unknown"]),
   serviceType: new Set(["official_provider", "official_gateway", "community_gateway", "session_bridge", "self_hosted"]),
   auth: new Set(["api_key", "oauth", "token", "account_id_and_token", "none_or_api_key", "other"]),
-  iranStatus: new Set(["verified_working", "verified_working_vpn", "direct_blocked_vpn_working", "verified_blocked", "officially_unsupported", "intermittent", "signup_blocked", "unknown"]),
+  iranStatus: new Set(["verified_working", "verified_working_vpn", "direct_blocked_vpn_working", "verified_blocked", "officially_unsupported", "intermittent", "signup_blocked", "account_activation_blocked", "unknown"]),
   officialPolicy: new Set(["supported", "unsupported", "not_documented", "unknown"]),
   testMethod: new Set(["live_request", "connectivity_probe", "signup_only", "community_report", "official_docs", "not_tested"]),
   route: new Set(["direct", "vpn"]),
-  evidenceType: new Set(["official_docs", "live_test", "connectivity_test", "community_report"]),
+  evidenceType: new Set(["official_docs", "live_test", "connectivity_test", "signup_test", "community_report"]),
   connectivityResult: new Set(["http_response", "connection_refused", "timeout", "dns_failure", "tls_failure", "network_error"]),
   verification: new Set(["docs_verified", "live_verified", "community_report", "unverified"])
 };
@@ -124,6 +124,13 @@ function validateEvidence(evidence, file, index) {
     if (!validDate(evidence.checked_at ?? "")) fail(file, `${prefix}.checked_at must be a date`);
     if (typeof evidence.notes_fa !== "string" || !evidence.notes_fa.trim()) fail(file, `${prefix}.notes_fa must be non-empty`);
   }
+
+
+if (evidence.type === "signup_test") {
+  if (!validDate(evidence.checked_at ?? "")) fail(file, `${prefix}.checked_at must be a date`);
+  if (typeof evidence.source !== "string" || !evidence.source.trim()) fail(file, `${prefix}.source must be non-empty`);
+  if (typeof evidence.notes_fa !== "string" || !evidence.notes_fa.trim()) fail(file, `${prefix}.notes_fa must be non-empty`);
+}
 
   if (evidence.type === "live_test") {
     if (!validDateTime(evidence.timestamp)) fail(file, `${prefix}.timestamp must be an ISO date-time`);

@@ -23,6 +23,7 @@ const labels = {
     officially_unsupported: "پشتیبانی‌نشده رسمی",
     intermittent: "ناپایدار",
     signup_blocked: "ثبت‌نام مسدود",
+    account_activation_blocked: "مانع فعال‌سازی حساب",
     unknown: "نامشخص"
   }
 };

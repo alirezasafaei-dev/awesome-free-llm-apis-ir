@@ -7,6 +7,7 @@ const CREDENTIAL_PATTERN = /(?:^|[^A-Za-z0-9])((?:sk-|fw_|vck_|hf_|gsk_|pplx-|xa
 const LABELED_IDENTIFIER_PATTERN = /\b(?:account|team|organization|org|tenant|workspace|customer)\s+(?:id\s*[:=#]?\s*)?([A-Za-z0-9][A-Za-z0-9._-]{5,})\b/gi;
 const EXPLICIT_IDENTIFIER_PATTERN = /\b(?:account|team|organization|org|tenant|workspace|customer)[_-]?id\s*[:=#]\s*([A-Za-z0-9][A-Za-z0-9._-]{5,})\b/gi;
 const PERSIAN_IDENTIFIER_PATTERN = /(?:شناسه\s*)?(?:حساب|تیم|سازمان|فضای\s*کاری)\s*[:=#]\s*([A-Za-z0-9][A-Za-z0-9._-]{5,})/g;
+const RAW_ERROR_PAYLOAD_PATTERN = /\\?\{\s*\\?"(?:error|blocked|reason|message|details|success)\\?"\s*:/i;
 
 const STRICT_EVIDENCE_FILES = new Set([
   "README.md",
@@ -17,7 +18,7 @@ const STRICT_EVIDENCE_FILES = new Set([
   ".github/ISSUE_TEMPLATE/iran-access-report.yml"
 ]);
 
-/** @typedef {"ssh_target" | "ipv4" | "ipv6" | "credential_fragment" | "account_identifier"} PrivacyViolationKind */
+/** @typedef {"ssh_target" | "ipv4" | "ipv6" | "credential_fragment" | "account_identifier" | "raw_error_payload"} PrivacyViolationKind */
 
 /**
  * @param {string} value
@@ -104,6 +105,10 @@ export function detectPrivacyViolations(text, options = {}) {
 
   if (strictEvidence && extractAccountIdentifiers(text).length > 0) {
     violations.push("account_identifier");
+  }
+
+  if (strictEvidence && RAW_ERROR_PAYLOAD_PATTERN.test(text)) {
+    violations.push("raw_error_payload");
   }
 
   return [...new Set(violations)];

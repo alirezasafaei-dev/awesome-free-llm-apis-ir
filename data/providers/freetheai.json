@@ -41,7 +41,7 @@
     "official_policy": "not_documented",
     "tested_from_iran": true,
     "tested_at": "2026-07-21",
-    "test_method": "connectivity_probe",
+    "test_method": "signup_only",
     "network": {
       "country": "IR",
       "route": "direct"
@@ -66,13 +66,14 @@
         "notes_fa": "Endpoint از ایران قابل دسترس است (HTTP 401). نیاز به API key معتبر."
       },
       {
-        "type": "community_report",
+        "type": "signup_test",
         "url": "https://support.discord.com/hc/en-us/articles/360017947012-Phone-Verification",
         "checked_at": "2026-07-21",
-        "notes_fa": "ورود به Discord با اکانت جدید امکان‌پذیر است. اما برای دریافت کلید API از ربات FreeTheAI در دیسکورد، احراز هویت با شماره تلفن الزامی است. کاربر ایرانی به شماره خارجی دسترسی ندارد. در نتیجه کلید قابل دریافت نیست."
+        "notes_fa": "حساب آزمایشی مورد استفاده برای دریافت کلید از ربات FreeTheAI نتوانست مرحله احراز شماره تلفن Discord را تکمیل کند؛ در این جریان کلید صادر نشد.",
+        "source": "TESTED_SIGNUP_FLOW"
       }
     ],
-    "notes_fa": "Endpoint از ایران قابل دسترس است. ورود به Discord ممکن است اما صدور کلید نیاز به شماره تلفن دارد (برای کاربران ایران در دسترس نیست)."
+    "notes_fa": "Endpoint از ایران قابل دسترس است، اما جریان آزمایش‌شده صدور کلید در مرحله احراز شماره تلفن متوقف شد. این نتیجه فقط برای همان جریان و حساب آزمایش‌شده معتبر است."
   },
   "models": {
     "dynamic": true,

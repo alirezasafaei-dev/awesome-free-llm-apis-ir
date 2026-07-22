@@ -324,8 +324,8 @@
         "structured_output"
       ],
       "iranAccess": {
-        "status": "signup_blocked",
-        "label": "❔ نامشخص",
+        "status": "account_activation_blocked",
+        "label": "🔒 مانع فعال‌سازی حساب",
         "tested": true,
         "testedAt": "2026-07-21",
         "network": {
@@ -333,7 +333,7 @@
           "route": "direct"
         },
         "evidenceCount": 5,
-        "notesFa": "ثبت‌نام در Fireworks AI از ایران منجر به مسدودیت حساب در سطح سرویس می‌شود (sanctioned origin country). حتی کلید جدید هم از سرور خارج (آلمان) با ۴۰۳ مسدود شد. شبکه از ایران نیز Timeout دارد."
+        "notesFa": "حساب‌های آزمایش‌شده پس از ایجاد، به‌دلیل مانع سطح حساب نتوانستند استنتاج موفق انجام دهند. مسیر ایران نیز رفتار شبکه‌ای ناپایدار داشت؛ این شواهد به همه کاربران یا همه شبکه‌های ایران تعمیم داده نمی‌شود."
       },
       "models": [
         "llama-3.3-70b",
@@ -397,7 +397,7 @@
           "route": "direct"
         },
         "evidenceCount": 3,
-        "notesFa": "Endpoint از ایران قابل دسترس است. ورود به Discord ممکن است اما صدور کلید نیاز به شماره تلفن دارد (برای کاربران ایران در دسترس نیست)."
+        "notesFa": "Endpoint از ایران قابل دسترس است، اما جریان آزمایش‌شده صدور کلید در مرحله احراز شماره تلفن متوقف شد. این نتیجه فقط برای همان جریان و حساب آزمایش‌شده معتبر است."
       },
       "models": [
         "opc/deepseek-v4-flash-free",
@@ -933,7 +933,7 @@
           "route": "direct"
         },
         "evidenceCount": 3,
-        "notesFa": "Endpoint از ایران قابل دسترس است. اما ثبت‌نام در NVIDIA Developer Program نیاز به شماره تلفن خارجی دارد."
+        "notesFa": "Endpoint از ایران قابل دسترس است، اما جریان ثبت‌نام آزمایش‌شده در مرحله احراز شماره تلفن متوقف شد. این نتیجه فقط برای همان حساب و جریان آزمایش‌شده معتبر است."
       },
       "models": [],
       "verification": {
@@ -1265,9 +1265,9 @@
       "freeTier": {
         "status": "active",
         "type": "monthly_credit",
-        "requiresPaymentMethod": true,
+        "requiresPaymentMethod": null,
         "limitExample": "فقط زیرمجموعه‌ای از مدل‌ها واجد اعتبار رایگان‌اند و محدودیت هر مدل می‌تواند پایین‌تر باشد. BYOK در پلن پولی موجود است.",
-        "notesFa": "اعتبار رایگان ماهانه ۵ دلار روی مدل‌های واجد شرایط. اما Vercel حتی برای فعال‌سازی اعتبار رایگان نیز کارت اعتباری معتبر می‌خواهد (HTTP 403: customer_verification_required). ثبت‌نام نیاز به حساب Vercel دارد."
+        "notesFa": "اسناد رسمی اعتبار رایگان ماهانه ۵ دلار را برای حساب‌های تیمی اعلام می‌کنند. حساب آزمایش‌شده پیش از اجرای مدل با مانع customer_verification_required روبه‌رو شد؛ این مشاهده الزام عمومی کارت برای همه حساب‌ها را ثابت نمی‌کند."
       },
       "capabilities": [
         "chat",
@@ -1278,8 +1278,8 @@
         "structured_output"
       ],
       "iranAccess": {
-        "status": "signup_blocked",
-        "label": "❔ نامشخص",
+        "status": "account_activation_blocked",
+        "label": "🔒 مانع فعال‌سازی حساب",
         "tested": true,
         "testedAt": "2026-07-21",
         "network": {
@@ -1287,7 +1287,7 @@
           "route": "direct"
         },
         "evidenceCount": 3,
-        "notesFa": "کلید API معتبر است (306 مدل قابل دسترس). اما Vercel برای سرویس‌دهی نیاز به کارت اعتباری روی حساب دارد (حتی برای اعتبار رایگان ماهانه ۵ دلار). آزمایش استنتاج از ایران به همین دلیل انجام نشد."
+        "notesFa": "Endpointها از ایران قابل دسترس‌اند، اما حساب آزمایش‌شده پیش از اجرای مدل با مانع customer_verification_required متوقف شد. فهرست عمومی مدل‌ها اعتبار کلید را اثبات نمی‌کند و استنتاج احراز هویت‌شده از ایران هنوز انجام نشده است."
       },
       "models": [],
       "verification": {
