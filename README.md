@@ -200,7 +200,6 @@ npm run benchmark:run
 | CLIProxyAPI | session_bridge | متوسط | oauth | نامشخص |
 | FreeLLMPool | aggregator | متوسط | env | نامشخص |
 | Free-Way | router | متوسط | env | نامشخص |
-| AnimaRouter | router | متوسط | env | نامشخص |
 | g4f-working | monitoring_companion | پایین | بدون | سازگار |
 
 راهنمای کامل: [`docs/TOOLS_CATALOG.fa.md`](docs/TOOLS_CATALOG.fa.md)

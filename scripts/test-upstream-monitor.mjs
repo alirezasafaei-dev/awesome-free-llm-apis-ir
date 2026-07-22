@@ -31,6 +31,8 @@ function source(overrides = {}) {
     role: "source_of_record",
     trust_tier: 1,
     classification: "catalog",
+    repository_missing: false,
+    monitored_ref_missing: false,
     default_branch: "main",
     monitored_ref: "main",
     head_sha: "aaaaaaaaaaaaaaaa",
@@ -81,6 +83,28 @@ assert.equal(fileMissing.changes[0].type, "monitored_file_missing");
 const archived = compareSnapshots(snapshot(), snapshot(source({ archived: true })));
 assert.equal(archived.meaningful, true);
 assert.equal(archived.changes[0].type, "archived_changed");
+
+const repositoryMissing = compareSnapshots(
+  snapshot(),
+  snapshot(source({
+    repository_missing: true,
+    default_branch: null,
+    monitored_ref: null,
+    head_sha: null,
+    pushed_at: null,
+    files: [{ path: "README.md", sha: null, missing: true }]
+  }))
+);
+assert.equal(repositoryMissing.meaningful, true);
+assert.ok(repositoryMissing.changes.some((change) => change.type === "repository_missing_changed"));
+assert.ok(repositoryMissing.changes.some((change) => change.type === "monitored_file_missing"));
+
+const repositoryRestored = compareSnapshots(
+  snapshot(source({ repository_missing: true, head_sha: null })),
+  snapshot()
+);
+assert.equal(repositoryRestored.meaningful, true);
+assert.ok(repositoryRestored.changes.some((change) => change.type === "repository_missing_changed"));
 
 const added = compareSnapshots(
   snapshot(),

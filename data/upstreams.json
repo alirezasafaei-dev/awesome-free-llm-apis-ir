@@ -117,15 +117,6 @@
       "paths": ["README.md"],
       "review_policy": "Experimental project; verify all upstream provider claims independently.",
       "notes_fa": "Gateway محلی آزمایشی با قابلیت Fallback خودکار."
-    },
-    {
-      "repository": "animaios/animarouter",
-      "role": "tooling_watch",
-      "trust_tier": 3,
-      "classification": "router",
-      "paths": ["README.md"],
-      "review_policy": "Lightweight project; validate rate limits and provider support before catalog use.",
-      "notes_fa": "Gateway مسیریابی سبک. پروژه جدید با پشتیبانی محدود."
     }
   ]
 }

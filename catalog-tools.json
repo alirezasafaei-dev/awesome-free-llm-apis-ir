@@ -1,23 +1,8 @@
 {
   "schema_version": "1.0.0",
   "last_updated": "2026-07-16",
-  "tool_count": 8,
+  "tool_count": 7,
   "tools": [
-    {
-      "id": "animarouter",
-      "name": "AnimaRouter",
-      "tool_type": "router",
-      "deployment": "self_hosted",
-      "auth_type": "api_key",
-      "credential_storage": "env_file",
-      "openai_compatible": true,
-      "anthropic_compatible": false,
-      "iran_status": "unknown",
-      "terms_risk": "medium",
-      "stability_risk": "experimental",
-      "credential_safety": "moderate",
-      "last_checked": "2026-07-16"
-    },
     {
       "id": "cliproxyapi",
       "name": "CLIProxyAPI",
