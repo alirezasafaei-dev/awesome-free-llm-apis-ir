@@ -1,0 +1,350 @@
+name: Apply evidence semantics hardening
+
+on:
+  pull_request:
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    if: github.head_ref == 'agent/evidence-semantics-hardening-20260722'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.2.1
+        with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.3.0
+        with:
+          node-version: 22
+      - name: Restore semantic status and sanitize evidence
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          python <<'PY'
+          import json
+          import subprocess
+          from pathlib import Path
+
+          BASE = "bb78c225740d51cdaa2b82161900fe3ed25c93d7"
+          restore_paths = [
+              "content/fa/ai-api-iran.md",
+              "docs/METHODOLOGY.fa.md",
+              "schema/provider.schema.json",
+              "scripts/build-guides.mjs",
+              "scripts/build-site.mjs",
+              "scripts/generate-data-json.mjs",
+              "scripts/generate-readme.mjs",
+              "scripts/test-advisor-scoring.mjs",
+              "scripts/test-provider-content-pages.mjs",
+              "scripts/validate.mjs",
+          ]
+          for path in restore_paths:
+              Path(path).write_bytes(subprocess.check_output(["git", "show", f"{BASE}:{path}"]))
+
+          def load(path):
+              return json.loads(Path(path).read_text())
+
+          def save(path, value):
+              Path(path).write_text(json.dumps(value, ensure_ascii=False, indent=2) + "\n")
+
+          def sanitize_route(value):
+              if not isinstance(value, str):
+                  return value
+              return value.replace(
+                  "FOREIGN_SERVER (DE, Hetzner AS24940)",
+                  "FOREIGN_SERVER — DE direct (AS24940)",
+              )
+
+          agnes_path = "data/providers/agnes-ai.json"
+          agnes = load(agnes_path)
+          for evidence in agnes["iran_access"]["evidence"]:
+              for key in ("source", "credential_validated_from"):
+                  if key in evidence:
+                      evidence[key] = sanitize_route(evidence[key])
+          save(agnes_path, agnes)
+
+          fireworks_path = "data/providers/fireworks-ai.json"
+          fireworks = load(fireworks_path)
+          fireworks["iran_access"]["status"] = "account_activation_blocked"
+          fireworks["iran_access"]["test_method"] = "live_request"
+          fireworks["iran_access"]["notes_fa"] = (
+              "حساب‌های آزمایش‌شده پس از ایجاد، به‌دلیل مانع سطح حساب نتوانستند استنتاج موفق انجام دهند. "
+              "مسیر ایران نیز رفتار شبکه‌ای ناپایدار داشت؛ این شواهد به همه کاربران یا همه شبکه‌های ایران تعمیم داده نمی‌شود."
+          )
+          for evidence in fireworks["iran_access"]["evidence"]:
+              for key in ("source", "credential_validated_from"):
+                  if key in evidence:
+                      evidence[key] = sanitize_route(evidence[key])
+              if evidence.get("timestamp") == "2026-07-21T17:00:00.000Z":
+                  evidence["notes_fa"] = (
+                      "حساب آزمایش‌شده از مسیر کنترل خارجی نتوانست مدل‌ها را فهرست کند و درخواست استنتاج با HTTP 404 رد شد؛ "
+                      "خطای حساب یا سهمیه از وضعیت شبکه ایران قابل تفکیک نیست."
+                  )
+              if evidence.get("timestamp") == "2026-07-21T17:50:00.000Z":
+                  evidence["notes_fa"] = (
+                      "حساب جدید آزمایش‌شده پس از ایجاد، از مسیر کنترل خارجی نیز با HTTP 403 و کلاس خطای "
+                      "sanctioned_origin_country رد شد. این نتیجه فقط مانع فعال‌سازی یا استفاده همان حساب آزمایش‌شده را نشان می‌دهد."
+                  )
+          save(fireworks_path, fireworks)
+
+          vercel_path = "data/providers/vercel-ai-gateway.json"
+          vercel = load(vercel_path)
+          vercel["free_tier"]["requires_payment_method"] = None
+          vercel["free_tier"]["notes_fa"] = (
+              "اسناد رسمی اعتبار رایگان ماهانه ۵ دلار را برای حساب‌های تیمی اعلام می‌کنند. حساب آزمایش‌شده پیش از اجرای مدل "
+              "با مانع customer_verification_required روبه‌رو شد؛ این مشاهده الزام عمومی کارت برای همه حساب‌ها را ثابت نمی‌کند."
+          )
+          vercel["iran_access"]["status"] = "account_activation_blocked"
+          vercel["iran_access"]["test_method"] = "connectivity_probe"
+          vercel["iran_access"]["notes_fa"] = (
+              "Endpointها از ایران قابل دسترس‌اند، اما حساب آزمایش‌شده پیش از اجرای مدل با مانع customer_verification_required متوقف شد. "
+              "فهرست عمومی مدل‌ها اعتبار کلید را اثبات نمی‌کند و استنتاج احراز هویت‌شده از ایران هنوز انجام نشده است."
+          )
+          for evidence in vercel["iran_access"]["evidence"]:
+              for key in ("source", "credential_validated_from"):
+                  if key in evidence:
+                      evidence[key] = sanitize_route(evidence[key])
+              if evidence.get("timestamp") == "2026-07-21T17:28:00.000Z":
+                  evidence["http_status"] = 403
+                  evidence["model_tested"] = "request blocked before model execution"
+                  evidence["endpoint"] = "https://ai-gateway.vercel.sh/v1/chat/completions"
+                  evidence.pop("credential_validated_from", None)
+                  evidence.pop("credential_validated_status", None)
+                  evidence["notes_fa"] = (
+                      "درخواست استنتاج حساب آزمایش‌شده از مسیر کنترل خارجی پیش از اجرای مدل با HTTP 403 و کلاس خطای "
+                      "customer_verification_required متوقف شد. GET /v1/models عمومی است و اعتبار Credential را اثبات نمی‌کند."
+                  )
+          vercel["notes_fa"] = (
+              "برای حساب آزمایش‌شده ثبت‌نام و دسترسی به Endpoint عمومی انجام شد، اما فعال‌سازی استنتاج به مانع بررسی مشتری رسید. "
+              "این نتیجه حساب‌محور است و نباید به همه حساب‌ها تعمیم داده شود."
+          )
+          save(vercel_path, vercel)
+
+          freetheai_path = "data/providers/freetheai.json"
+          freetheai = load(freetheai_path)
+          freetheai["iran_access"]["test_method"] = "signup_only"
+          signup_evidence = freetheai["iran_access"]["evidence"][-1]
+          signup_evidence["type"] = "signup_test"
+          signup_evidence["source"] = "TESTED_SIGNUP_FLOW"
+          signup_evidence["notes_fa"] = (
+              "حساب آزمایشی مورد استفاده برای دریافت کلید از ربات FreeTheAI نتوانست مرحله احراز شماره تلفن Discord را تکمیل کند؛ "
+              "در این جریان کلید صادر نشد."
+          )
+          freetheai["iran_access"]["notes_fa"] = (
+              "Endpoint از ایران قابل دسترس است، اما جریان آزمایش‌شده صدور کلید در مرحله احراز شماره تلفن متوقف شد. "
+              "این نتیجه فقط برای همان جریان و حساب آزمایش‌شده معتبر است."
+          )
+          save(freetheai_path, freetheai)
+
+          nvidia_path = "data/providers/nvidia-nim.json"
+          nvidia = load(nvidia_path)
+          nvidia["iran_access"]["test_method"] = "signup_only"
+          signup_evidence = nvidia["iran_access"]["evidence"][-1]
+          signup_evidence["type"] = "signup_test"
+          signup_evidence["source"] = "TESTED_SIGNUP_FLOW"
+          signup_evidence["notes_fa"] = (
+              "حساب آزمایشی NVIDIA Developer Program نتوانست مرحله احراز شماره تلفن را تکمیل کند؛ در این جریان کلید API صادر نشد."
+          )
+          nvidia["iran_access"]["notes_fa"] = (
+              "Endpoint از ایران قابل دسترس است، اما جریان ثبت‌نام آزمایش‌شده در مرحله احراز شماره تلفن متوقف شد. "
+              "این نتیجه فقط برای همان حساب و جریان آزمایش‌شده معتبر است."
+          )
+          save(nvidia_path, nvidia)
+
+          backlog_path = "data/verification-backlog.json"
+          backlog = load(backlog_path)
+          network_track = next(track for track in backlog["tracks"] if track["id"] == "network_matrix")
+          network_track["status"] = "partially_completed"
+          backlog["providers"] = [
+              {
+                  "provider_id": "fireworks-ai",
+                  "track_issue": 35,
+                  "blocker_type": "account_activation_and_valid_credential",
+                  "next_action": "After credential rotation and account activation, run the identical authorized inference from Iran and foreign direct routes.",
+                  "requires_local_execution": True,
+                  "automatable": False,
+              },
+              {
+                  "provider_id": "freetheai",
+                  "track_issue": 35,
+                  "blocker_type": "credential_issuance",
+                  "next_action": "Complete an authorized signup flow, obtain a key, then run the identical inference from both direct routes.",
+                  "requires_local_execution": True,
+                  "automatable": False,
+              },
+              {
+                  "provider_id": "nvidia-nim",
+                  "track_issue": 35,
+                  "blocker_type": "credential_issuance",
+                  "next_action": "Complete an authorized Developer Program flow, obtain a key, then run the identical inference from both direct routes.",
+                  "requires_local_execution": True,
+                  "automatable": False,
+              },
+              {
+                  "provider_id": "vercel-ai-gateway",
+                  "track_issue": 35,
+                  "blocker_type": "account_activation",
+                  "next_action": "Resolve the tested account verification barrier, then run the identical authenticated inference from both direct routes.",
+                  "requires_local_execution": True,
+                  "automatable": False,
+              },
+          ]
+          save(backlog_path, backlog)
+
+          schema_path = Path("schema/provider.schema.json")
+          schema = schema_path.read_text()
+          old_enum = '"type": { "enum": ["official_docs", "live_test", "connectivity_test", "community_report"] },'
+          new_enum = '"type": { "enum": ["official_docs", "live_test", "connectivity_test", "signup_test", "community_report"] },'
+          if old_enum not in schema:
+              raise SystemExit("provider evidence enum marker not found")
+          schema = schema.replace(old_enum, new_enum, 1)
+          marker = '''              {
+                "if": { "properties": { "type": { "const": "community_report" } } },
+                "then": { "required": ["url", "checked_at", "notes_fa"] }
+              },'''
+          addition = marker + '''
+              {
+                "if": { "properties": { "type": { "const": "signup_test" } } },
+                "then": { "required": ["checked_at", "source", "notes_fa"] }
+              },'''
+          if marker not in schema:
+              raise SystemExit("community report schema marker not found")
+          schema_path.write_text(schema.replace(marker, addition, 1))
+
+          privacy_path = Path("scripts/privacy-evidence-rules.mjs")
+          privacy = privacy_path.read_text()
+          constant_marker = 'const PERSIAN_IDENTIFIER_PATTERN = /(?:شناسه\\s*)?(?:حساب|تیم|سازمان|فضای\\s*کاری)\\s*[:=#]\\s*([A-Za-z0-9][A-Za-z0-9._-]{5,})/g;'
+          raw_constant = constant_marker + '\nconst RAW_ERROR_PAYLOAD_PATTERN = /\\\\?\\{\\s*\\\\?"(?:error|blocked|reason|message|details|success)"\\\\?\\s*:/i;'
+          if constant_marker not in privacy:
+              raise SystemExit("privacy constant marker not found")
+          privacy = privacy.replace(constant_marker, raw_constant, 1)
+          privacy = privacy.replace(
+              '"ssh_target" | "ipv4" | "ipv6" | "credential_fragment" | "account_identifier"',
+              '"ssh_target" | "ipv4" | "ipv6" | "credential_fragment" | "account_identifier" | "raw_error_payload"',
+              1,
+          )
+          detection_marker = '''  if (strictEvidence && extractAccountIdentifiers(text).length > 0) {
+    violations.push("account_identifier");
+  }
+
+  return [...new Set(violations)];'''
+          detection_replacement = '''  if (strictEvidence && extractAccountIdentifiers(text).length > 0) {
+    violations.push("account_identifier");
+  }
+
+  if (strictEvidence && RAW_ERROR_PAYLOAD_PATTERN.test(text)) {
+    violations.push("raw_error_payload");
+  }
+
+  return [...new Set(violations)];'''
+          if detection_marker not in privacy:
+              raise SystemExit("privacy detection marker not found")
+          privacy_path.write_text(privacy.replace(detection_marker, detection_replacement, 1))
+
+          test_privacy_path = Path("scripts/test-evidence-privacy.mjs")
+          test_privacy = test_privacy_path.read_text()
+          fixture_marker = 'mustBlock("شناسه حساب: account_987654", "account_identifier");'
+          fixture_replacement = fixture_marker + '\nmustBlock(\'Provider returned {\\\\"blocked\\\\":true,\\\\"reason\\\\":\\\\"example\\\\"}\', "raw_error_payload");'
+          if fixture_marker not in test_privacy:
+              raise SystemExit("privacy fixture marker not found")
+          test_privacy = test_privacy.replace(fixture_marker, fixture_replacement, 1)
+          pass_marker = 'mustPass("sanctioned_origin_country");'
+          pass_replacement = pass_marker + '\nmustPass("customer_verification_required");'
+          if pass_marker not in test_privacy:
+              raise SystemExit("privacy pass marker not found")
+          test_privacy_path.write_text(test_privacy.replace(pass_marker, pass_replacement, 1))
+
+          package_path = Path("package.json")
+          package = load(package_path)
+          package["scripts"]["evidence:semantics:test"] = "node scripts/test-provider-evidence-semantics.mjs"
+          if "npm run evidence:semantics:test" not in package["scripts"]["test"]:
+              package["scripts"]["test"] = package["scripts"]["test"].replace(
+                  "npm run privacy:evidence:test",
+                  "npm run privacy:evidence:test && npm run evidence:semantics:test",
+                  1,
+              )
+          save(package_path, package)
+          PY
+
+          cat > scripts/test-provider-evidence-semantics.mjs <<'EOF'
+          import { readFileSync } from "node:fs";
+          import process from "node:process";
+
+          /**
+           * @param {boolean} condition
+           * @param {string} message
+           * @returns {void}
+           */
+          function assertContract(condition, message) {
+            if (condition) {
+              console.log(`OK: ${message}`);
+              return;
+            }
+            console.error(`FAIL: ${message}`);
+            process.exitCode = 1;
+          }
+
+          /**
+           * @param {string} id
+           * @returns {Record<string, any>}
+           */
+          function provider(id) {
+            return JSON.parse(readFileSync(`data/providers/${id}.json`, "utf8"));
+          }
+
+          const agnes = provider("agnes-ai");
+          const fireworks = provider("fireworks-ai");
+          const freetheai = provider("freetheai");
+          const nvidia = provider("nvidia-nim");
+          const vercel = provider("vercel-ai-gateway");
+          const backlog = JSON.parse(readFileSync("data/verification-backlog.json", "utf8"));
+
+          assertContract(agnes.iran_access.status === "verified_working", "Agnes retains authenticated Iran inference status");
+          assertContract(fireworks.iran_access.status === "account_activation_blocked", "Fireworks account barrier is not mislabeled as signup failure");
+          assertContract(vercel.iran_access.status === "account_activation_blocked", "Vercel account barrier is not mislabeled as signup failure");
+          assertContract(freetheai.iran_access.status === "signup_blocked", "FreeTheAI remains a tested signup or credential-issuance barrier");
+          assertContract(nvidia.iran_access.status === "signup_blocked", "NVIDIA remains a tested signup barrier");
+          assertContract(vercel.free_tier.requires_payment_method === null, "Vercel account-specific verification is not generalized into universal payment policy");
+
+          const vercelLive = vercel.iran_access.evidence.find((entry) => entry.timestamp === "2026-07-21T17:28:00.000Z");
+          assertContract(Boolean(vercelLive), "Vercel account barrier evidence exists");
+          assertContract(!("credential_validated_from" in vercelLive), "Public model listing is not treated as credential validation");
+          assertContract(vercelLive?.http_status === 403, "Vercel evidence records the inference barrier response");
+
+          for (const item of [freetheai, nvidia]) {
+            assertContract(item.iran_access.test_method === "signup_only", `${item.id} uses signup-only test method`);
+            assertContract(item.iran_access.evidence.some((entry) => entry.type === "signup_test"), `${item.id} uses structured signup evidence`);
+          }
+
+          const serialized = JSON.stringify([agnes, fireworks, freetheai, nvidia, vercel]);
+          for (const [pattern, label] of [
+            [/Hetzner/i, "hosting-provider infrastructure detail"],
+            [/\\{\\s*"blocked"\\s*:/i, "raw JSON error payload"],
+            [/requires a valid credit card on file to service requests/i, "verbatim provider error message"],
+            [/کاربر ایرانی به شماره خارجی دسترسی ندارد/, "unbounded statement about Iranian users"]
+          ]) {
+            assertContract(!pattern.test(serialized), `${label} is absent from public evidence`);
+          }
+
+          const networkTrack = backlog.tracks.find((track) => track.id === "network_matrix");
+          assertContract(networkTrack?.issue === 35, "network matrix remains linked to Issue #35");
+          assertContract(networkTrack?.status === "partially_completed", "network matrix is not closed before identical authenticated tests exist");
+          assertContract(backlog.providers.length === 4, "four externally blocked provider tests remain explicit");
+
+          if (process.exitCode) process.exit(process.exitCode);
+          console.log("Provider evidence semantics tests passed.");
+          EOF
+
+          npm ci
+          npm run generate
+          npm test
+
+          git rm .github/workflows/patch-evidence-semantics.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add README.md catalog.json data.json package.json content/fa/ai-api-iran.md docs/METHODOLOGY.fa.md schema/provider.schema.json scripts data/providers data/verification-backlog.json
+          git commit -m "fix(verification): preserve account barriers and sanitize evidence"
+          git push origin HEAD:${{ github.head_ref }}
