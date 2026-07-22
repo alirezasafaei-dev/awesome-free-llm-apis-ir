@@ -58,8 +58,6 @@
         "model_tested": "gpt-oss-120b",
         "endpoint": "https://api.fireworks.ai/inference/v1/chat/completions",
         "source": "IRAN_VPS — direct",
-        "credential_validated_from": "FOREIGN_SERVER",
-        "credential_validated_status": 412,
         "notes_fa": "کلید از ایران ۴۰۳ و از مسیر غیرایرانی ۴۱۲ برگرداند؛ به‌دلیل تعلیق حساب، اعتبار Credential و Geo-block قابل تفکیک نیست."
       },
       {
@@ -86,8 +84,6 @@
         "model_tested": "accounts/fireworks/models/gpt-oss-120b",
         "endpoint": "https://api.fireworks.ai/inference/v1/chat/completions",
         "source": "FOREIGN_SERVER — DE direct (AS24940)",
-        "credential_validated_from": "DIRECT_ATTEMPT",
-        "credential_validated_status": 404,
         "notes_fa": "حساب آزمایش‌شده از مسیر کنترل خارجی نتوانست مدل‌ها را فهرست کند و درخواست استنتاج با HTTP 404 رد شد؛ خطای حساب یا سهمیه از وضعیت شبکه ایران قابل تفکیک نیست."
       },
       {
@@ -98,8 +94,6 @@
         "model_tested": "accounts/fireworks/models/gpt-oss-120b",
         "endpoint": "https://api.fireworks.ai/inference/v1/chat/completions",
         "source": "FOREIGN_SERVER — DE direct (AS24940)",
-        "credential_validated_from": "FOREIGN_SERVER — DE direct (AS24940)",
-        "credential_validated_status": 403,
         "notes_fa": "حساب جدید آزمایش‌شده پس از ایجاد، از مسیر کنترل خارجی نیز با HTTP 403 و کلاس خطای sanctioned_origin_country رد شد. این نتیجه فقط مانع فعال‌سازی یا استفاده همان حساب آزمایش‌شده را نشان می‌دهد."
       }
     ],
