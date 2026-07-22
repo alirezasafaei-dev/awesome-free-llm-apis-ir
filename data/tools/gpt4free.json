@@ -29,9 +29,9 @@
     "features": ["cookie_injection", "har_import", "session_persistence", "model_discovery"]
   },
   "iran_compatibility": {
-    "status": "requires_configuration",
+    "status": "unknown",
     "last_checked": "2026-07-16",
-    "notes_fa": "قابل استفاده از ایران با VPN. Providerهای زیرمجموعه ممکن است ایران را مسدود کرده باشند."
+    "notes_fa": "تست مستقیم از ایران ثبت نشده است. ابزارهای مبتنی بر Cookie یا Session، وضعیت دسترسی شبکه، حساب و Terms هر Provider را تغییر یا اثبات نمی‌دهند."
   },
   "risk": {
     "terms": "high",

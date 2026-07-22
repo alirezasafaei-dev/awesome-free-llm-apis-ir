@@ -30,7 +30,7 @@
   "iran_compatibility": {
     "status": "unknown",
     "last_checked": "2026-07-16",
-    "notes_fa": "وابسته به Providerهای upstream. ممکن است برخی Providerها از ایران قابل دسترس باشند."
+    "notes_fa": "تست مستقیم از ایران انجام نشده است. دسترسی به هر Provider بالادستی باید با شواهد شبکه، حساب و سیاست رسمی جداگانه بررسی شود."
   },
   "risk": {
     "terms": "medium",
