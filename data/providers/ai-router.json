@@ -1,0 +1,73 @@
+{
+  "schema_version": "1.1.0",
+  "service_type": "official_gateway",
+  "id": "ai-router",
+  "name": "AI Router",
+  "website": "https://ai-router.dev/fa/",
+  "docs": "https://ai-router.dev/fa/openai-compatible-api-gateway/",
+  "signup": "https://ai-router.dev/register",
+  "api": {
+    "base_url": "https://api.ai-router.dev/v1",
+    "openai_compatible": true,
+    "auth": "api_key"
+  },
+  "capabilities": [
+    "chat",
+    "text_generation",
+    "reasoning",
+    "tool_calling",
+    "structured_output"
+  ],
+  "free_tier": {
+    "status": "active",
+    "type": "permanent_allowance",
+    "requires_payment_method": false,
+    "limits": [
+      {
+        "scope": "new-user registration reward",
+        "condition": "Up to 20 USD promotional credit: 5 USD available after registration and 15 USD frozen for gradual release under the documented conditions",
+        "notes_fa": "برای کاربر جدید تا ۲۰ دلار اعتبار تبلیغاتی در نظر گرفته می‌شود؛ ۵ دلار پس از ثبت‌نام قابل استفاده است و ۱۵ دلار باقیمانده طبق شرایط سند رسمی به‌تدریج آزاد می‌شود."
+      },
+      {
+        "scope": "daily check-in",
+        "condition": "1 USD plus 2% of the previous day's total usage, capped at 10 USD",
+        "daily_units": 1,
+        "unit_name": "USD base reward",
+        "notes_fa": "پاداش ورود روزانه از ۱ دلار پایه به‌علاوه ۲٪ مصرف کل روز قبل محاسبه می‌شود و سقف آن ۱۰ دلار است."
+      }
+    ],
+    "notes_fa": "اعتبار ثبت‌نام و پاداش ورود روزانه شرایط جداگانه دارند؛ جزئیات آزادسازی، محدودیت‌ها و تغییرات احتمالی باید از سند رسمی فارسی بررسی شود."
+  },
+  "iran_access": {
+    "status": "unknown",
+    "official_policy": "not_documented",
+    "tested_from_iran": true,
+    "tested_at": "2026-07-22",
+    "test_method": "community_report",
+    "network": {
+      "country": "IR",
+      "route": "direct"
+    },
+    "evidence": [
+      {
+        "type": "community_report",
+        "url": "https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir/issues/170",
+        "checked_at": "2026-07-22",
+        "notes_fa": "اپراتور سرویس اعلام کرده است دسترسی مستقیم از IP ایران در این تاریخ بدون مشکل آزمایش شده است. Endpoint، ISP/ASN، کد وضعیت و تأخیر در گزارش اولیه ثبت نشده‌اند؛ بنابراین وضعیت تا آزمون مستقل دقیق، unknown باقی می‌ماند."
+      }
+    ],
+    "notes_fa": "گزارش مستقیم از IP ایران وجود دارد، اما جزئیات لازم برای سطح live_verified کامل نیست. آزمون مستقل نگه‌دارندگان می‌تواند وضعیت را ارتقا دهد."
+  },
+  "verification": {
+    "level": "community_report",
+    "last_checked": "2026-07-22",
+    "checked_by": "AI Router operator report in issue #170",
+    "stale_after_days": 14
+  },
+  "notes_fa": "Gateway چندارائه‌دهنده با Endpoint سازگار با OpenAI؛ مدل‌ها و قیمت‌ها پویا هستند و باید پیش از استفاده تولیدی در حساب بررسی شوند.",
+  "sources": [
+    "https://ai-router.dev/fa/openai-compatible-api-gateway/",
+    "https://ai-router.dev/fa/docs/billing-quota/rewards-and-affiliate-commissions/",
+    "https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir/issues/170"
+  ]
+}

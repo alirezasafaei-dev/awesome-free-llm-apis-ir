@@ -1,6 +1,6 @@
 {
-  "lastUpdated": "2026-07-21",
-  "providerCount": 22,
+  "lastUpdated": "2026-07-22",
+  "providerCount": 23,
   "providers": [
     {
       "id": "agnes-ai",
@@ -62,6 +62,50 @@
         "notes": "The API host responded with HTTP 404; reachability is confirmed but inference is not verified.",
         "checked_by": "system"
       }
+    },
+    {
+      "id": "ai-router",
+      "name": "AI Router",
+      "serviceType": "official_gateway",
+      "website": "https://ai-router.dev/fa/",
+      "api": {
+        "baseUrl": "https://api.ai-router.dev/v1",
+        "openaiCompatible": true,
+        "auth": "api_key"
+      },
+      "freeTier": {
+        "status": "active",
+        "type": "permanent_allowance",
+        "requiresPaymentMethod": false,
+        "limitExample": "برای کاربر جدید تا ۲۰ دلار اعتبار تبلیغاتی در نظر گرفته می‌شود؛ ۵ دلار پس از ثبت‌نام قابل استفاده است و ۱۵ دلار باقیمانده طبق شرایط سند رسمی به‌تدریج آزاد می‌شود.",
+        "notesFa": "اعتبار ثبت‌نام و پاداش ورود روزانه شرایط جداگانه دارند؛ جزئیات آزادسازی، محدودیت‌ها و تغییرات احتمالی باید از سند رسمی فارسی بررسی شود."
+      },
+      "capabilities": [
+        "chat",
+        "text_generation",
+        "reasoning",
+        "tool_calling",
+        "structured_output"
+      ],
+      "iranAccess": {
+        "status": "unknown",
+        "label": "❔ نامشخص",
+        "tested": true,
+        "testedAt": "2026-07-22",
+        "network": {
+          "country": "IR",
+          "route": "direct"
+        },
+        "evidenceCount": 1,
+        "notesFa": "گزارش مستقیم از IP ایران وجود دارد، اما جزئیات لازم برای سطح live_verified کامل نیست. آزمون مستقل نگه‌دارندگان می‌تواند وضعیت را ارتقا دهد."
+      },
+      "models": [],
+      "verification": {
+        "level": "community_report",
+        "lastChecked": "2026-07-22",
+        "staleAfterDays": 14
+      },
+      "health": null
     },
     {
       "id": "aion-labs",

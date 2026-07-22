@@ -1,0 +1,46 @@
+{
+  "schema_version": "1.0.0",
+  "provider_id": "ai-router",
+  "intent_fa": "AI Router برای توسعه‌دهنده‌ای مناسب است که می‌خواهد با یک Base URL سازگار با OpenAI به مدل‌های چند ارائه‌دهنده متصل شود، کلیدها و مصرف را در یک Gateway مدیریت کند و بدون تغییر اساسی در OpenAI SDK یا ابزارهای Coding Agent، مدل و مسیر بالادستی را عوض کند. شرایط پاداش و وضعیت ایران باید از داده و Evidence تاریخ‌دار همین صفحه خوانده شود.",
+  "signup_steps_fa": [
+    "از صفحه رسمی AI Router حساب بسازید و پس از ورود، یک API Key برای محیط توسعه ایجاد کنید.",
+    "کلید را فقط در متغیر محیطی AI_ROUTER_API_KEY یا Secret Manager سمت سرور نگه دارید و آن را در کد یا مخزن عمومی قرار ندهید.",
+    "Base URL کلاینت سازگار با OpenAI را روی https://api.ai-router.dev/v1 تنظیم کنید و مدل فعال را از حساب یا Endpoint مدل‌ها انتخاب کنید.",
+    "پیش از بار تولیدی، قیمت مدل، موجودی، محدودیت مصرف و رفتار fallback را در حساب بررسی کنید."
+  ],
+  "first_request": {
+    "language": "curl",
+    "code": "curl https://api.ai-router.dev/v1/chat/completions \\\n+  -H \"Authorization: Bearer ${AI_ROUTER_API_KEY}\" \\\n+  -H \"Content-Type: application/json\" \\\n+  -d '{\"model\":\"YOUR_MODEL_ID\",\"messages\":[{\"role\":\"user\",\"content\":\"یک پاسخ کوتاه فارسی بنویس\"}]}'",
+    "notes_fa": "YOUR_MODEL_ID یک placeholder است؛ شناسه مدل فعال را از حساب یا فهرست مدل‌ها بردارید و API Key را فقط از متغیر محیطی بخوانید.",
+    "source_url": "https://ai-router.dev/fa/openai-compatible-api-gateway/",
+    "checked_at": "2026-07-22"
+  },
+  "common_errors": [
+    {
+      "code": "401",
+      "title_fa": "API Key نامعتبر، لغوشده یا ارسال‌نشده",
+      "resolution_fa": "هدر Authorization و متغیر محیطی را بررسی کنید؛ در صورت لغو یا افشای کلید، کلید جدید بسازید و کلید قبلی را غیرفعال کنید."
+    },
+    {
+      "code": "402",
+      "title_fa": "موجودی یا سهمیه قابل استفاده کافی نیست",
+      "resolution_fa": "موجودی قابل استفاده و شرایط آزادسازی پاداش را در حساب بررسی کنید؛ اعتبار منجمد را با اعتبار قابل مصرف یکسان در نظر نگیرید."
+    },
+    {
+      "code": "429",
+      "title_fa": "محدودیت نرخ Gateway یا ارائه‌دهنده بالادستی",
+      "resolution_fa": "Retry-After را رعایت کنید، Backoff نمایی اضافه کنید و محدودیت مدل یا مسیر بالادستی فعال را در حساب بررسی کنید."
+    }
+  ],
+  "when_not_to_use_fa": [
+    "وقتی پروژه باید مستقیماً با قرارداد و SLA یک ارائه‌دهنده بالادستی مشخص کار کند.",
+    "وقتی سیاست سازمانی استفاده از Gateway شخص ثالث یا پردازش برون‌مرزی درخواست‌ها را ممنوع می‌کند.",
+    "وقتی پیش از آزمون مستقل به تضمین قطعی دسترسی مستقیم از همه ISPهای ایران نیاز دارید."
+  ],
+  "related_guides": [
+    "openai-sdk-custom-base-url",
+    "free-tier-vs-trial-vs-credit",
+    "llm-api-rate-limit-429"
+  ],
+  "last_reviewed": "2026-07-22"
+}

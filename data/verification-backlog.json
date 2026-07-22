@@ -1,10 +1,10 @@
 {
   "schema_version": "1.0.0",
-  "last_updated": "2026-07-21",
+  "last_updated": "2026-07-22",
   "parent_issue": 29,
   "summary": {
-    "provider_count": 22,
-    "unknown_count": 0
+    "provider_count": 23,
+    "unknown_count": 1
   },
   "tracks": [
     {
@@ -72,7 +72,27 @@
         "vercel-ai-gateway"
       ],
       "blocker_type": "same_request_direct_route_matrix"
+    },
+    {
+      "id": "ai_router_live_verification",
+      "issue": 170,
+      "priority": "P1",
+      "execution": "local",
+      "status": "open",
+      "providers": [
+        "ai-router"
+      ],
+      "blocker_type": "sanitized_direct_iran_live_test"
     }
   ],
-  "providers": []
+  "providers": [
+    {
+      "provider_id": "ai-router",
+      "track_issue": 170,
+      "blocker_type": "missing_sanitized_live_test_details",
+      "next_action": "Run a direct-Iran live request and record a sanitized endpoint, HTTP status, model and latency.",
+      "requires_local_execution": true,
+      "automatable": false
+    }
+  ]
 }
