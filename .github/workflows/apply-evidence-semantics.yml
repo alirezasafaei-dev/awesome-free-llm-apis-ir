@@ -32,7 +32,23 @@ jobs:
       - name: Regenerate canonical artifacts
         run: npm run generate
       - name: Validate corrected repository
-        run: npm test
+        id: tests
+        shell: bash
+        run: |
+          set -o pipefail
+          npm test 2>&1 | tee test-output.txt
+      - name: Capture failure tail
+        if: failure() && steps.tests.outcome == 'failure'
+        shell: bash
+        run: tail -n 400 test-output.txt > test-failure-tail.txt
+      - name: Upload diagnostic tail
+        if: failure() && steps.tests.outcome == 'failure'
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: evidence-test-failure-${{ github.sha }}
+          path: test-failure-tail.txt
+          if-no-files-found: error
+          retention-days: 1
       - name: Remove one-shot patch machinery and publish correction
         shell: bash
         run: |
