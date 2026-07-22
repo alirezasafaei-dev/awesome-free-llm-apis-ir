@@ -1,0 +1,104 @@
+name: Diagnose required checks
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize, ready_for_review]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  diagnose:
+    if: github.event.pull_request.number == 169
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Query branch protection and check rollup
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPOSITORY_OWNER: ${{ github.repository_owner }}
+          REPOSITORY_NAME: ${{ github.event.repository.name }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          node <<'NODE'
+          const { GH_TOKEN, REPOSITORY_OWNER, REPOSITORY_NAME, PR_NUMBER } = process.env;
+          const query = `query($owner:String!,$name:String!,$number:Int!){
+            repository(owner:$owner,name:$name){
+              branchProtectionRules(first:50){nodes{pattern requiresStatusChecks requiresStrictStatusChecks requiredStatusCheckContexts}}
+              pullRequest(number:$number){
+                url
+                isDraft
+                mergeable
+                mergeStateStatus
+                reviewDecision
+                baseRefName
+                headRefName
+                headRefOid
+                commits(last:1){nodes{commit{oid statusCheckRollup{state contexts(first:100){nodes{
+                  __typename
+                  ... on CheckRun{name conclusion status detailsUrl}
+                  ... on StatusContext{context state targetUrl}
+                }}}}}}
+              }
+            }
+          }`;
+          const response = await fetch('https://api.github.com/graphql', {
+            method: 'POST',
+            headers: {
+              authorization: `Bearer ${GH_TOKEN}`,
+              accept: 'application/vnd.github+json',
+              'content-type': 'application/json'
+            },
+            body: JSON.stringify({
+              query,
+              variables: { owner: REPOSITORY_OWNER, name: REPOSITORY_NAME, number: Number(PR_NUMBER) }
+            })
+          });
+          const payload = await response.json();
+          if (!response.ok || payload.errors) {
+            throw new Error(`GraphQL query failed: HTTP ${response.status}; ${JSON.stringify(payload.errors ?? payload)}`);
+          }
+          const repo = payload.data.repository;
+          const pr = repo.pullRequest;
+          const contexts = pr.commits.nodes[0]?.commit.statusCheckRollup?.contexts.nodes ?? [];
+          const normalized = contexts.map((item) => item.__typename === 'CheckRun'
+            ? { type: 'check', name: item.name, status: item.status, conclusion: item.conclusion }
+            : { type: 'status', name: item.context, state: item.state });
+          const report = {
+            branchProtectionRules: repo.branchProtectionRules.nodes,
+            pullRequest: {
+              isDraft: pr.isDraft,
+              mergeable: pr.mergeable,
+              mergeStateStatus: pr.mergeStateStatus,
+              reviewDecision: pr.reviewDecision,
+              baseRefName: pr.baseRefName,
+              headRefName: pr.headRefName,
+              headRefOid: pr.headRefOid,
+              rollupState: pr.commits.nodes[0]?.commit.statusCheckRollup?.state ?? null,
+              contexts: normalized
+            }
+          };
+          const marker = '<!-- required-check-diagnostic -->';
+          const body = `${marker}\n## Required-check diagnostic\n\n\`\`\`json\n${JSON.stringify(report, null, 2)}\n\`\`\``;
+          const commentsResponse = await fetch(`https://api.github.com/repos/${REPOSITORY_OWNER}/${REPOSITORY_NAME}/issues/${PR_NUMBER}/comments`, {
+            headers: { authorization: `Bearer ${GH_TOKEN}`, accept: 'application/vnd.github+json' }
+          });
+          if (!commentsResponse.ok) throw new Error(`Unable to list PR comments: HTTP ${commentsResponse.status}`);
+          const comments = await commentsResponse.json();
+          const existing = comments.find((comment) => comment.body?.includes(marker));
+          const url = existing
+            ? `https://api.github.com/repos/${REPOSITORY_OWNER}/${REPOSITORY_NAME}/issues/comments/${existing.id}`
+            : `https://api.github.com/repos/${REPOSITORY_OWNER}/${REPOSITORY_NAME}/issues/${PR_NUMBER}/comments`;
+          const method = existing ? 'PATCH' : 'POST';
+          const writeResponse = await fetch(url, {
+            method,
+            headers: {
+              authorization: `Bearer ${GH_TOKEN}`,
+              accept: 'application/vnd.github+json',
+              'content-type': 'application/json'
+            },
+            body: JSON.stringify({ body })
+          });
+          if (!writeResponse.ok) throw new Error(`Unable to publish diagnostic: HTTP ${writeResponse.status}`);
+          NODE
