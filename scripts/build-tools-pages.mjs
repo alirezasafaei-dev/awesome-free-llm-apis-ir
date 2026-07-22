@@ -193,7 +193,7 @@ const page = `<!doctype html>
   <a class="skip-link" href="#tools-content">رفتن به محتوای اصلی</a>
   <header class="topbar">
     <a class="brand" href="../" aria-label="صفحه اصلی"><span class="brand-mark" aria-hidden="true"><img src="../assets/logo-symbol.svg" alt="" width="40" height="40"></span><span>Awesome Free LLM APIs IR</span></a>
-    <nav aria-label="پیوندهای اصلی"><a href="../api-finder/">انتخاب API رسمی</a><a href="../quick-start/">شروع برنامه‌نویسی</a><a href="../#catalog">Providerها</a><a href="https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir">GitHub</a></nav>
+    <nav aria-label="پیوندهای اصلی"><a href="../api-finder/">انتخاب API رسمی</a><a href="../quick-start/">شروع سریع</a><a href="../#catalog">Providerها</a><a href="https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir">GitHub</a></nav>
   </header>
   <main id="tools-content" class="tools-shell">
     <section class="tools-hero" aria-labelledby="tools-title">
