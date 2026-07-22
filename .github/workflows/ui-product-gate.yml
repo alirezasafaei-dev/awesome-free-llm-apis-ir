@@ -18,7 +18,7 @@ permissions:
 jobs:
   ui-product:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.2.1
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.3.0
@@ -29,6 +29,22 @@ jobs:
         run: npm run ux:pro-max:test
       - name: Validate task-first homepage hierarchy
         run: npm run ux:clarity:test
+      - name: Validate SEO-visible catalog controls
+        run: npm run ux:seo:p0:test
+      - name: Validate product navigation
+        run: npm run ux:navigation:test
+      - name: Validate Finder ranking semantics
+        run: npm run ux:ranking:test
+      - name: Validate Quick Start journey
+        run: npm run ux:quick-start:test
+      - name: Validate Finder journey
+        run: npm run ux:finder:test
+      - name: Validate Compare journey
+        run: npm run compare:test
+      - name: Validate usability research contract
+        run: npm run ux:research:test
+      - name: Validate provider content pages
+        run: npm run content:providers:pages:test
       - name: Build exact UI artifact
         run: npm run site:build
         env:
@@ -37,3 +53,9 @@ jobs:
         run: npm run site:check
       - name: Validate responsive and portable paths
         run: npm run pages:paths:test
+      - name: Validate production analytics markup
+        run: npm run analytics:production:test
+      - name: Validate production UX smoke fixtures
+        run: npm run production:ux-smoke:test
+      - name: Validate build regression contract
+        run: npm run check:regression
