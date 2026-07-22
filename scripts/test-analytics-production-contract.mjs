@@ -6,19 +6,23 @@ import process from "node:process";
 const root = process.cwd();
 const destination = path.join(root, ".site-dist");
 
-const build = spawnSync(process.execPath, [path.join(root, "scripts/build-site-production.mjs")], {
+const npmCommand = process.platform === "win32" ? "npm.cmd" : "npm";
+const build = spawnSync(npmCommand, ["run", "site:build"], {
   cwd: root,
   encoding: "utf8"
 });
 if (build.status !== 0) throw new Error(build.stderr || build.stdout || "Production site build failed");
 
 const home = await readFile(path.join(destination, "index.html"), "utf8");
-const tracker = await readFile(path.join(root, "site", "plausible.js"), "utf8");
-if (!tracker.includes('location.hostname!==document.currentScript?.dataset.domain')) {
+const guard = await readFile(path.join(root, "site", "plausible-guard.js"), "utf8");
+if (!guard.includes("location.hostname !== tracker?.dataset.domain")) {
   throw new Error("Plausible tracker must ignore non-canonical mirrors before sending events");
 }
 if ((home.match(/src="\.\/plausible\.js"/g) || []).length !== 1) {
   throw new Error("Homepage must load exactly one root Plausible tracker");
+}
+if (!home.includes('src="./plausible-guard.js"') || home.indexOf("plausible-guard.js") > home.indexOf("plausible.js")) {
+  throw new Error("Homepage must load the domain guard before the Plausible tracker");
 }
 
 for (const section of ["providers", "guides"]) {
