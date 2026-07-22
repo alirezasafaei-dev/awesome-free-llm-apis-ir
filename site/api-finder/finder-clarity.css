@@ -5,6 +5,16 @@
   margin: -14px 0 22px;
 }
 
+.finder-card-extra .access-badge.access-verified {
+  background: #065f46;
+  color: #fff;
+}
+
+.finder-stale-badge {
+  padding: 2px 8px;
+  font-size: 11px;
+}
+
 .finder-clarity-intro article {
   padding: 15px;
   border: 1px solid var(--border);

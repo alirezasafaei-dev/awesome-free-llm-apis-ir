@@ -1,5 +1,6 @@
 import { access, readFile, rm } from "node:fs/promises";
 import { spawnSync } from "node:child_process";
+import { createHash } from "node:crypto";
 import path from "node:path";
 import process from "node:process";
 
@@ -46,6 +47,22 @@ for (const signal of [
 
 if (script.includes("form.requestSubmit()")) {
   throw new Error("Page load must not submit the Finder form or count as an explicit completion");
+}
+
+if (source.includes('style="${')) {
+  throw new Error("API Finder must not render dynamic inline styles under the production CSP");
+}
+
+const inlineScript = source.match(/<script>([\s\S]*?)<\/script>/)?.[1];
+const inlineStyles = source.match(/<style>([\s\S]*?)<\/style>/)?.[1];
+if (!inlineScript || !inlineStyles) throw new Error("API Finder CSP assets could not be located");
+const scriptHash = createHash("sha256").update(inlineScript).digest("base64");
+const styleHash = createHash("sha256").update(inlineStyles).digest("base64");
+for (const configPath of ["deploy/caddy/llm.persiantoolbox.ir.caddy", "deploy/nginx/ir.llm.persiantoolbox.ir.conf"]) {
+  const config = await readFile(path.join(root, configPath), "utf8");
+  if (!config.includes(`'sha256-${scriptHash}'`) || !config.includes(`'sha256-${styleHash}'`)) {
+    throw new Error(`${configPath} does not authorize the exact API Finder CSP hashes`);
+  }
 }
 
 for (const selector of [
