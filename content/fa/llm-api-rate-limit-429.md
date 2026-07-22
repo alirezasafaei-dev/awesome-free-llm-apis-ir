@@ -367,6 +367,14 @@ Retry Storm زمانی رخ می‌دهد که تعداد زیادی Client بع
 - [رفع خطاهای ۴۰۱/۴۰۳/model-not-found](https://llm.persiantoolbox.ir/guides/fix-llm-api-401-403-model-not-found/) — عیب‌یابی خطاهای API رایگان
 - [راهنمای عملی API رایگان در ایران](https://llm.persiantoolbox.ir/guides/practical-free-llm-api-iran/) — از ثبت‌نام تا اولین درخواست
 
+## منابع رسمی بررسی‌شده
+
+نام Headerها، سقف‌ها و زمان Reset میان Providerها تفاوت دارد. برای مقدار اجرایی سهمیه، صفحهٔ رسمی و Dashboard همان حساب مرجع نهایی است. تاریخ بررسی: ۲۲ ژوئیه ۲۰۲۶.
+
+- [راهنمای Rate limits در OpenAI API](https://developers.openai.com/api/docs/guides/rate-limits) — مفهوم محدودیت نرخ و راهنمای مدیریت مصرف.
+- [کدهای خطای OpenAI API](https://developers.openai.com/api/docs/guides/error-codes) — تفکیک خطاهای قابل Retry از خطاهای نیازمند اصلاح درخواست یا مجوز.
+- [کاتالوگ این پروژه](https://llm.persiantoolbox.ir/) — فقط برای مشاهدهٔ داده‌های تاریخ‌دار هر Provider؛ اعداد ثبت‌شده جایگزین منبع رسمی نیستند.
+
 ## جمع‌بندی
 
 رفع خطای 429 فقط افزودن `sleep` نیست. باید نوع محدودیت را بفهمید، ترافیک را قبل از ارسال کنترل کنید، Retry محدود و تصادفی داشته باشید، Context را کوچک نگه دارید و Provider جایگزین تست‌شده تعریف کنید.

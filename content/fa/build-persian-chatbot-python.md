@@ -87,6 +87,10 @@ python-dotenv
 
 ## مرحله دوم: تنظیم متغیرهای محیطی
 
+### مراحل ثبت‌نام و دریافت تنظیمات
+
+ثبت‌نام، فعال‌سازی حساب و ساخت کلید در هر Provider متفاوت است. فقط از صفحهٔ رسمی همان Provider استفاده کنید و پیش از کپی‌کردن تنظیمات، Model ID و روش Authentication را از مستندات آن بخوانید. این راهنما وجود حساب یا امکان ثبت‌نام از ایران را فرض نمی‌کند.
+
 فایل `.env`:
 
 ```dotenv
@@ -250,6 +254,10 @@ messages=messages[-12:]
 
 حذف تاریخچه می‌تواند Context مهم را از بین ببرد؛ خلاصه‌سازی باید با آزمون کیفیت همراه باشد.
 
+## چه زمانی این نمونه انتخاب مناسبی نیست؟
+
+این نمونه برای یادگیری و یک Client خط فرمان کوچک است، نه برای ارسال مستقیم کلید به مرورگر، پردازش دادهٔ محرمانه بدون بررسی سیاست داده، یا سرویس Production بدون احراز هویت کاربر و محدودسازی درخواست. برای هر Provider باید سازگاری Endpoint و قابلیت‌های لازم را با نمونهٔ رسمی خودش تست کنید.
+
 ## مدیریت خطاهای متداول
 
 ### خطای 401 یا Authentication
@@ -381,6 +389,14 @@ LLM_MODEL=new-model-id
 - [راهنمای API رایگان هوش مصنوعی](https://llm.persiantoolbox.ir/guides/free-ai-api/) — نمای کلی APIهای رایگان هوش مصنوعی
 - [استفاده از API رایگان LLM در Node.js](https://llm.persiantoolbox.ir/guides/use-free-llm-api-nodejs/) — راهنمای یکپارچه‌سازی Node.js
 - [رفع خطاهای ۴۰۱/۴۰۳/model-not-found](https://llm.persiantoolbox.ir/guides/fix-llm-api-401-403-model-not-found/) — عیب‌یابی خطاهای API رایگان
+
+## منابع رسمی بررسی‌شده
+
+این منابع برای الگوی SDK، احراز هویت و مدیریت خطا استفاده شده‌اند. سازگاری OpenAI-compatible همیشه باید با مستندات و نمونهٔ رسمی همان Provider آزموده شود. تاریخ بررسی: ۲۲ ژوئیه ۲۰۲۶.
+
+- [نمای کلی مرجع OpenAI API](https://developers.openai.com/api/reference/overview) — احراز هویت و ملاحظات نگهداری کلید API.
+- [کدهای خطای OpenAI API](https://developers.openai.com/api/docs/guides/error-codes) — دسته‌بندی خطاهای Authentication، Rate Limit و خطاهای سرویس.
+- [راهنمای Rate limits در OpenAI API](https://developers.openai.com/api/docs/guides/rate-limits) — مبنای مفهومی محدودسازی درخواست و مصرف.
 
 ## جمع‌بندی
 
