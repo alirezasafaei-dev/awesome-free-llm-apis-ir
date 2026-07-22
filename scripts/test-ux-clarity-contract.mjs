@@ -5,31 +5,33 @@ import process from "node:process";
 const root = process.cwd();
 const homepagePath = path.join(root, "site", "index.html");
 const clarityCssPath = path.join(root, "site", "ux-clarity.css");
+const productCssPath = path.join(root, "site", "ui-pro-max.css");
 const analyticsPath = path.join(root, "site", "analytics.js");
 
-await access(homepagePath);
-await access(clarityCssPath);
-await access(analyticsPath);
+await Promise.all([homepagePath, clarityCssPath, productCssPath, analyticsPath].map((file) => access(file)));
 
-const html = await readFile(homepagePath, "utf8");
-const css = await readFile(clarityCssPath, "utf8");
-const analytics = await readFile(analyticsPath, "utf8");
+const [html, clarityCss, productCss, analytics] = await Promise.all([
+  readFile(homepagePath, "utf8"),
+  readFile(clarityCssPath, "utf8"),
+  readFile(productCssPath, "utf8"),
+  readFile(analyticsPath, "utf8")
+]);
 const plainText = html.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
 
 const requiredHomepageSignals = [
   "API رایگان هوش مصنوعی",
-  'class="audience-paths"',
-  "تازه‌کارم",
-  "برنامه‌نویسم",
-  'id="how-it-works"',
-  "فقط سه قدم",
-  'id="what-is-api"',
+  'class="hero clarity-hero product-hero"',
+  'id="catalog"',
+  'class="catalog-metrics"',
+  'class="search-field catalog-search"',
   'class="advanced-filter-panel"',
   'id="filters"',
+  'class="audience-paths"',
+  'id="how-it-works"',
+  'id="what-is-api"',
   'id="glossary"',
-  "RPM و RPD",
   'href="./api-finder/"',
-  'href="./ux-clarity.css"'
+  'href="./ui-pro-max.css"'
 ];
 
 for (const signal of requiredHomepageSignals) {
@@ -48,26 +50,40 @@ if (html.includes('id="english-guides"')) {
   throw new Error("English tutorial block must not interrupt the Persian homepage journey");
 }
 
-const heroStart = html.indexOf('<section class="hero clarity-hero"');
+const heroStart = html.indexOf('<section class="hero clarity-hero product-hero"');
 const heroEnd = html.indexOf("</section>", heroStart);
 const hero = html.slice(heroStart, heroEnd);
-if (heroStart < 0 || heroEnd < 0) throw new Error("Clarity hero section is missing");
+if (heroStart < 0 || heroEnd < 0) throw new Error("Product hero section is missing");
 
 const primaryFinderPosition = hero.indexOf('class="button primary" href="./api-finder/"');
-const catalogPosition = hero.indexOf('href="#catalog"');
+const catalogPositionInHero = hero.indexOf('href="#catalog"');
 if (primaryFinderPosition < 0) throw new Error("API Finder is not the primary hero CTA");
-if (catalogPosition < 0 || primaryFinderPosition > catalogPosition) {
-  throw new Error("Guided API Finder must appear before the technical catalog CTA");
+if (catalogPositionInHero < 0 || primaryFinderPosition > catalogPositionInHero) {
+  throw new Error("Guided API Finder must appear before the catalog CTA");
 }
 
+const catalogPosition = html.indexOf('id="catalog"');
+const searchPosition = html.indexOf('class="search-field catalog-search"');
 const advancedPanelStart = html.indexOf('<details class="advanced-filter-panel"');
-const filtersStart = html.indexOf('id="filters"');
-if (advancedPanelStart < 0 || filtersStart < advancedPanelStart) {
-  throw new Error("Advanced filters are not protected by progressive disclosure");
+const advancedControlsStart = html.indexOf('<div class="filters">', advancedPanelStart);
+const audiencePosition = html.indexOf('class="audience-paths"');
+const educationalPosition = html.indexOf('id="how-it-works"');
+
+if (!(heroStart < catalogPosition && catalogPosition < audiencePosition && catalogPosition < educationalPosition)) {
+  throw new Error("Catalog must be available before audience segmentation and educational content");
+}
+if (!(catalogPosition < searchPosition && searchPosition < advancedPanelStart)) {
+  throw new Error("Visible catalog search must precede advanced filters");
+}
+if (advancedControlsStart < advancedPanelStart) {
+  throw new Error("Advanced controls are not protected by progressive disclosure");
 }
 
 for (const selector of [".path-grid", ".step-grid", ".advanced-filter-panel", ".glossary-grid"]) {
-  if (!css.includes(selector)) throw new Error(`Clarity CSS is missing ${selector}`);
+  if (!clarityCss.includes(selector)) throw new Error(`Clarity CSS is missing ${selector}`);
+}
+for (const selector of [".product-hero", ".catalog-filter-shell", ".provider-card", ".catalog-metrics"]) {
+  if (!productCss.includes(selector)) throw new Error(`Product design CSS is missing ${selector}`);
 }
 
 for (const eventName of ["ux_path_click", "catalog_advanced_open"]) {
@@ -77,4 +93,4 @@ for (const eventName of ["ux_path_click", "catalog_advanced_open"]) {
 const h1Count = (html.match(/<h1(?:\s|>)/g) || []).length;
 if (h1Count !== 1) throw new Error(`Homepage must keep one H1; found ${h1Count}`);
 
-console.log("UX clarity contract passed: plain-language value, segmented journeys, guided CTA and progressive disclosure are present.");
+console.log("UX clarity contract passed: task-first catalog, visible search, progressive filters and plain-language onboarding are present.");
