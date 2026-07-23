@@ -15,15 +15,17 @@ INSUFFICIENT SAMPLE — DO NOT INTERPRET
 ## نسخه مرجع جاری
 
 ```text
-DEPLOYED_SHA=00e6cf20539921117619e8b95b0fb0ab7378fd78
-EXACT_RELEASE_RUN=30040826620
+PRODUCT_BASELINE_SHA=00e6cf20539921117619e8b95b0fb0ab7378fd78
+PRODUCT_BASELINE_RELEASE_RUN=30040826620
+SESSION_RELEASE_SHA=<read from canonical /build-meta.json before the session>
+SESSION_RELEASE_RUN=<successful production-release/exact-revision run for SESSION_RELEASE_SHA>
 EXACT_REVISION=PASS
 GENERIC_SMOKE=PASS
 UX_SMOKE=PASS
 BROWSER_PRODUCT_GATE=PASS
 ```
 
-این Revision تنها Baseline معتبر برای دور فعلی سنجش UX است. مقایسه قبل/بعد فقط زمانی معتبر است که:
+این Product baseline رفتار UI مورد سنجش را تعریف می‌کند. هر جلسه باید علاوه بر آن، SHA واقعی همان لحظه را از `build-meta.json` ثبت کند و فقط پس از موفقیت `production-release/exact-revision` معتبر است. Commitهای بعدی که صرفاً اسناد یا عملیات داخلی را تغییر می‌دهند Product baseline را عوض نمی‌کنند. مقایسه قبل/بعد فقط زمانی معتبر است که:
 
 - بازه‌ها طول مشابه داشته باشند؛
 - روزهای هفته و فصل ترافیکی قابل مقایسه باشند؛
@@ -199,7 +201,9 @@ Copy code اثبات نمی‌کند درخواست واقعی با موفقیت
 ```text
 PERIOD=
 TIMEZONE=Europe/Sofia
-DEPLOYED_SHA=00e6cf20539921117619e8b95b0fb0ab7378fd78
+PRODUCT_BASELINE_SHA=00e6cf20539921117619e8b95b0fb0ab7378fd78
+SESSION_RELEASE_SHA=
+SESSION_RELEASE_RUN=
 HOMEPAGE_SESSIONS=
 GUIDED_PATH_RATE=
 FINDER_START_RATE=
