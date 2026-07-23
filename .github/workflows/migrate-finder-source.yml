@@ -1,0 +1,51 @@
+name: Migrate Finder source semantics
+
+on:
+  push:
+    branches:
+      - agent/finder-source-truth-20260723
+    paths:
+      - "scripts/migrate-finder-source-semantics.mjs"
+      - "scripts/apply-finder-ranking-p3.mjs"
+      - "scripts/apply-ux-seo-p0.mjs"
+      - ".github/workflows/migrate-finder-source.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  migrate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.2.1
+        with:
+          ref: agent/finder-source-truth-20260723
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.3.0
+        with:
+          node-version: 22
+      - name: Migrate Finder source and remove one-time files
+        run: |
+          set -Eeuo pipefail
+          node scripts/migrate-finder-source-semantics.mjs
+          rm scripts/migrate-finder-source-semantics.mjs
+          rm .github/workflows/migrate-finder-source.yml
+      - name: Verify changed paths
+        run: |
+          set -Eeuo pipefail
+          changed="$(git status --short | awk '{print $2}' | sort)"
+          expected="$(printf '%s\n' \
+            .github/workflows/migrate-finder-source.yml \
+            scripts/migrate-finder-source-semantics.mjs \
+            site/api-finder/finder-clarity.js \
+            site/api-finder/index.html \
+            site/en/api-finder/index.html | sort)"
+          test "$changed" = "$expected"
+      - name: Commit source migration
+        run: |
+          set -Eeuo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "refactor(finder): move final ranking semantics into source"
+          git push origin HEAD:agent/finder-source-truth-20260723
