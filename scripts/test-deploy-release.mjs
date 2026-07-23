@@ -47,3 +47,5 @@ try {
   await rm(tempParent, { recursive: true, force: true });
   await rm(deployRoot, { recursive: true, force: true });
 }
+
+await import("./test-caddy-apply-contract.mjs");
