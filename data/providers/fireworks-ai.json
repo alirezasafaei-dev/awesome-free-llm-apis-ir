@@ -119,10 +119,10 @@
         "model_tested": "gpt-oss-120b",
         "endpoint": "https://api.fireworks.ai/inference/v1/chat/completions",
         "source": "FOREIGN_SERVER (DE)",
-        "notes_fa": "درخواست از مسیر مستقیم آلمان HTTP 404 دریافت کرد. این پاسخ به‌تنهایی وضعیت Credential، حساب یا مدل را اثبات نمی‌کند و باید جداگانه در Dashboard رسمی بررسی شود."
+        "notes_fa": "درخواست از مسیر مستقیم آلمان HTTP 404 دریافت کرد. این پاسخ به‌تنهایی وضعیت Credential، حساب یا مدل را اثبات نمی‌کند؛ نتیجه فقط با Dashboard رسمی یا پاسخ مستند Provider قابل تعیین است."
       }
     ],
-    "notes_fa": "ثبت‌نام با حساب آزمایش‌شده به محدودیت سطح حساب منتهی شد. مسیر مستقیم ایران نیز در چند Probe با Timeout، Connection refused یا network_error شکست خورده است. به‌دلیل معتبرنبودن یک Credential کنترل‌شده و موفق، این نتایج نباید به‌عنوان اثبات قطعی Geo-blocking یا ابطال Credential تفسیر شوند."
+    "notes_fa": "ثبت‌نام با حساب آزمایش‌شده به محدودیت سطح حساب منتهی شد. مسیر مستقیم ایران نیز در چند Probe با Timeout، Connection refused یا network_error شکست خورده است. به‌دلیل نبود یک Credential کنترل‌شده و موفق، این نتایج نباید به‌عنوان اثبات قطعی Geo-blocking یا ابطال Credential تفسیر شوند."
   },
   "models": {
     "dynamic": true,
