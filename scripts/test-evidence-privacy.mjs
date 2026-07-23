@@ -79,3 +79,5 @@ if (process.exitCode) {
   process.exit(1);
 }
 console.log("All evidence privacy tests passed.");
+
+await import("./test-verification-evidence-semantics.mjs");
