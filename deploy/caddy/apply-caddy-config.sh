@@ -1,94 +1,130 @@
 #!/usr/bin/env bash
-# apply-caddy-config.sh — Persist canonical Caddy config to filesystem
-#
-# Run from the project root AFTER the Caddy config has been validated and
-# deployed via the API.  This writes the repo version to /etc/caddy/ with
-# a backup of the existing config, validates it, and reloads Caddy.
-#
-# Prerequisites: sudo, caddy, and a clone of this repo.
-# Usage: bash deploy/caddy/apply-caddy-config.sh
+# Validate, install and reload the canonical Caddy site configuration atomically.
 
 set -Eeuo pipefail
 
-CONFIG_SRC="deploy/caddy/llm.persiantoolbox.ir.caddy"
-CONFIG_DST="/etc/caddy/sites-enabled/llm.persiantoolbox.ir.caddy"
-CADDYFILE="/etc/caddy/Caddyfile"
+readonly CONFIG_SRC="deploy/caddy/llm.persiantoolbox.ir.caddy"
+readonly CONFIG_DST="/etc/caddy/sites-enabled/llm.persiantoolbox.ir.caddy"
+readonly CADDYFILE="/etc/caddy/Caddyfile"
+readonly SITES_DIR="/etc/caddy/sites-enabled"
+readonly IMPORT_LINE="import /etc/caddy/sites-enabled/*"
+readonly TIMESTAMP="$(date -u +%Y%m%dT%H%M%SZ)"
+readonly BACKUP_ROOT="/var/backups/caddy/llm.persiantoolbox.ir/${TIMESTAMP}"
 
-if [[ ! -f "$CONFIG_SRC" ]]; then
-  echo "Source config not found: $CONFIG_SRC" >&2
-  echo "Run this from the repository root." >&2
+WORK_DIR=""
+BACKUP_READY=false
+INSTALL_COMPLETE=false
+HAD_SITE_CONFIG=false
+
+log() {
+  printf '[caddy-deploy] %s\n' "$*"
+}
+
+fail() {
+  printf '[caddy-deploy] ERROR: %s\n' "$*" >&2
   exit 1
-fi
+}
 
-echo "=== Step 1: Validate source config syntax ==="
-if command -v caddy &>/dev/null; then
-  TMPDIR="$(mktemp -d)"
-  cp "$CONFIG_SRC" "$TMPDIR/llm.persiantoolbox.ir.caddy"
-  if [[ -f "$CADDYFILE" ]]; then
-    cp "$CADDYFILE" "$TMPDIR/Caddyfile"
+cleanup() {
+  if [[ -n "$WORK_DIR" && -d "$WORK_DIR" ]]; then
+    rm -rf "$WORK_DIR"
+  fi
+}
+
+rollback() {
+  local exit_code=$?
+  if [[ "$INSTALL_COMPLETE" == true || "$BACKUP_READY" != true ]]; then
+    cleanup
+    exit "$exit_code"
+  fi
+
+  printf '[caddy-deploy] Installation failed; restoring backup from %s\n' "$BACKUP_ROOT" >&2
+  sudo install -m 644 "$BACKUP_ROOT/Caddyfile" "$CADDYFILE"
+  if [[ "$HAD_SITE_CONFIG" == true ]]; then
+    sudo install -m 644 "$BACKUP_ROOT/site.caddy" "$CONFIG_DST"
   else
-    printf 'import /etc/caddy/sites-enabled/*\n' > "$TMPDIR/Caddyfile"
+    sudo rm -f "$CONFIG_DST"
   fi
-  if ! caddy validate --config "$TMPDIR/Caddyfile" 2>&1; then
-    echo "Caddy config validation FAILED. Aborting." >&2
-    rm -rf "$TMPDIR"
-    exit 1
+
+  if sudo caddy validate --config "$CADDYFILE" --adapter caddyfile; then
+    sudo systemctl reload caddy || true
+  else
+    printf '[caddy-deploy] WARNING: restored configuration did not validate; manual intervention required.\n' >&2
   fi
-  rm -rf "$TMPDIR"
-  echo "Caddy config syntax is valid."
+
+  cleanup
+  exit "$exit_code"
+}
+
+trap rollback ERR INT TERM
+trap cleanup EXIT
+
+for command in caddy curl install mktemp sed sudo systemctl; do
+  command -v "$command" >/dev/null 2>&1 || fail "required command is missing: $command"
+done
+
+[[ -f "$CONFIG_SRC" ]] || fail "source configuration not found: $CONFIG_SRC"
+[[ -f "$CADDYFILE" ]] || fail "main Caddyfile not found: $CADDYFILE"
+
+WORK_DIR="$(mktemp -d)"
+readonly CANDIDATE_ROOT="$WORK_DIR/candidate"
+readonly CANDIDATE_CADDYFILE="$CANDIDATE_ROOT/Caddyfile"
+readonly CANDIDATE_SITES="$CANDIDATE_ROOT/sites-enabled"
+readonly CANDIDATE_SITE="$CANDIDATE_SITES/llm.persiantoolbox.ir.caddy"
+
+install -d -m 700 "$CANDIDATE_SITES"
+sudo cat "$CADDYFILE" > "$CANDIDATE_CADDYFILE"
+if [[ -d "$SITES_DIR" ]]; then
+  sudo cp -a "$SITES_DIR/." "$CANDIDATE_SITES/"
+fi
+install -m 644 "$CONFIG_SRC" "$CANDIDATE_SITE"
+
+if grep -qF "$IMPORT_LINE" "$CANDIDATE_CADDYFILE"; then
+  sed -i "s|${IMPORT_LINE}|import ${CANDIDATE_SITES}/*|g" "$CANDIDATE_CADDYFILE"
 else
-  echo "caddy binary not found locally — skipping pre-flight validation."
-  echo "The server-side caddy validate will catch syntax errors."
+  printf '\nimport %s/*\n' "$CANDIDATE_SITES" >> "$CANDIDATE_CADDYFILE"
 fi
 
-echo ""
-echo "=== Step 2: Backup existing config ==="
-BACKUP="/tmp/llm-caddy-backup-$(date -u +%Y%m%dT%H%M%SZ)"
+caddy fmt --overwrite "$CANDIDATE_CADDYFILE" >/dev/null
+caddy fmt --overwrite "$CANDIDATE_SITE" >/dev/null
+log "validating complete candidate configuration"
+caddy validate --config "$CANDIDATE_CADDYFILE" --adapter caddyfile
+
+log "creating protected backup"
+sudo install -d -m 700 "$BACKUP_ROOT"
+sudo install -m 600 "$CADDYFILE" "$BACKUP_ROOT/Caddyfile"
 if [[ -f "$CONFIG_DST" ]]; then
-  sudo cp "$CONFIG_DST" "$BACKUP"
-  echo "Backup saved to $BACKUP"
-else
-  echo "No existing config at $CONFIG_DST — nothing to back up."
+  HAD_SITE_CONFIG=true
+  sudo install -m 600 "$CONFIG_DST" "$BACKUP_ROOT/site.caddy"
+fi
+BACKUP_READY=true
+
+log "installing site configuration atomically"
+sudo install -d -m 755 "$SITES_DIR"
+readonly STAGED_SITE="$SITES_DIR/.llm.persiantoolbox.ir.caddy.${TIMESTAMP}.tmp"
+sudo install -m 644 "$CANDIDATE_SITE" "$STAGED_SITE"
+sudo mv -f "$STAGED_SITE" "$CONFIG_DST"
+
+if ! sudo grep -qF "$IMPORT_LINE" "$CADDYFILE"; then
+  readonly STAGED_CADDYFILE="$WORK_DIR/Caddyfile.live"
+  sudo cat "$CADDYFILE" > "$STAGED_CADDYFILE"
+  printf '\n%s\n' "$IMPORT_LINE" >> "$STAGED_CADDYFILE"
+  caddy fmt --overwrite "$STAGED_CADDYFILE" >/dev/null
+  sudo install -m 644 "$STAGED_CADDYFILE" "$CADDYFILE"
 fi
 
-echo ""
-echo "=== Step 3: Install new config ==="
-sudo cp "$CONFIG_SRC" "$CONFIG_DST"
-echo "Installed $CONFIG_SRC -> $CONFIG_DST"
+log "validating installed configuration"
+sudo caddy validate --config "$CADDYFILE" --adapter caddyfile
 
-echo ""
-echo "=== Step 4: Ensure import in main Caddyfile ==="
-if [[ -f "$CADDYFILE" ]]; then
-  if ! grep -qF 'import /etc/caddy/sites-enabled/*' "$CADDYFILE"; then
-    echo 'import /etc/caddy/sites-enabled/*' | sudo tee -a "$CADDYFILE" >/dev/null
-    echo "Added import line to $CADDYFILE"
-  fi
-fi
-
-echo ""
-echo "=== Step 5: Format and validate ==="
-sudo caddy fmt --overwrite "$CADDYFILE" 2>/dev/null || true
-sudo caddy fmt --overwrite "$CONFIG_DST" 2>/dev/null || true
-sudo caddy validate --config "$CADDYFILE"
-
-echo ""
-echo "=== Step 6: Reload Caddy ==="
+log "reloading Caddy"
 sudo systemctl reload caddy
-echo "Caddy reloaded successfully."
+sudo systemctl is-active --quiet caddy
 
-echo ""
-echo "=== Step 7: Verify analytics proxy ==="
-HTTP_CODE="$(curl -s -o /dev/null -w '%{http_code}' \
-  -X POST -H 'Content-Type: text/plain' \
-  --data '{"n":"pageview","u":"https://llm.persiantoolbox.ir/","d":"llm.persiantoolbox.ir","v":34}' \
-  https://llm.persiantoolbox.ir/api/event 2>/dev/null || echo 'timeout')"
-if [[ "$HTTP_CODE" == "202" ]]; then
-  echo "Analytics endpoint returned HTTP $HTTP_CODE — OK."
-else
-  echo "Warning: analytics endpoint returned HTTP $HTTP_CODE (expected 202)." >&2
-  echo "Check Plausible backend at 127.0.0.1:8002." >&2
-fi
+log "checking canonical site without emitting analytics events"
+curl --fail --silent --show-error --location --max-time 20 --output /dev/null \
+  https://llm.persiantoolbox.ir/
 
-echo ""
-echo "=== Caddy config applied and persisted ==="
-echo "Backup: $BACKUP (if it exists)"
+INSTALL_COMPLETE=true
+trap - ERR INT TERM
+log "configuration installed successfully"
+log "backup retained at: $BACKUP_ROOT"
