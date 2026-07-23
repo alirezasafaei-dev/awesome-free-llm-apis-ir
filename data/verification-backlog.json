@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0.0",
-  "last_updated": "2026-07-21",
+  "last_updated": "2026-07-23",
   "parent_issue": 29,
   "summary": {
     "provider_count": 22,
@@ -63,15 +63,21 @@
       "issue": 35,
       "priority": "P0",
       "execution": "local",
-      "status": "completed",
+      "status": "partially_completed",
       "providers": [
-        "agnes-ai",
         "fireworks-ai",
         "freetheai",
         "nvidia-nim",
         "vercel-ai-gateway"
       ],
-      "blocker_type": "same_request_direct_route_matrix"
+      "blocker_type": "same_request_direct_route_matrix",
+      "resolved_providers": [
+        {
+          "provider_id": "agnes-ai",
+          "resolution": "paired_authenticated_inference",
+          "reason": "Authenticated inference succeeded from the tested Iran direct route and a direct foreign control route"
+        }
+      ]
     }
   ],
   "providers": []
