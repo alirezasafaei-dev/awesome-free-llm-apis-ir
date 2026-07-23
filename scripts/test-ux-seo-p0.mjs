@@ -1,8 +1,21 @@
+import { spawnSync } from "node:child_process";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
 
-const dist = path.join(process.cwd(), ".site-dist");
+const root = process.cwd();
+const dist = path.join(root, ".site-dist");
+const build = spawnSync("npm", ["run", "site:build"], {
+  cwd: root,
+  encoding: "utf8",
+  stdio: "inherit",
+  env: process.env
+});
+if (build.status !== 0) {
+  console.error("UX/SEO P0 contract could not build the final site artifact.");
+  process.exit(build.status ?? 1);
+}
+
 const read = (relative) => readFile(path.join(dist, relative), "utf8");
 const [home, faFinder, enFinder, faCompare, enCompare] = await Promise.all([
   read("index.html"),
