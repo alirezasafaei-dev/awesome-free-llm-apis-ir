@@ -14,12 +14,12 @@ runWhenReady(() => {
 
   const allowed = {
     usecase: new Set(["chat", "coding", "reasoning", "embeddings"]),
-    language: new Set(["persian", "english", "multilingual"]),
+
     budget: new Set(["no-card", "free-only", "any"]),
     latency: new Set(["low", "important", "critical"]),
     region: new Set(["iran", "iran-vpn", "any"])
   };
-  const defaults = { usecase: "chat", language: "persian", budget: "no-card", latency: "low", region: "iran" };
+  const defaults = { usecase: "chat", budget: "no-card", latency: "low", region: "iran" };
   const safeCampaignPattern = /^[a-zA-Z0-9_-]{1,64}$/;
 
   const plausible = (name, props = {}) => {
@@ -35,7 +35,7 @@ runWhenReady(() => {
 
   const fields = {
     usecase: document.getElementById("finder-usecase"),
-    language: document.getElementById("finder-language"),
+
     budget: document.getElementById("finder-budget"),
     latency: document.getElementById("finder-latency"),
     region: document.getElementById("finder-region")
@@ -43,9 +43,9 @@ runWhenReady(() => {
 
   const fieldCopy = {
     usecase: ["چه چیزی می‌سازی؟", "گزینه‌ای را انتخاب کن که به کار اصلی پروژه نزدیک‌تر است."],
-    language: ["خروجی به چه زبانی است؟", "این انتخاب فقط یک سیگنال کمکی است و کیفیت فارسی را تضمین نمی‌کند."],
+
     budget: ["چه محدودیت مالی داری؟", "رایگان بودن می‌تواند مدل رایگان، سهمیه دائمی، اعتبار یا Trial باشد."],
-    latency: ["سرعت پاسخ چقدر مهم است؟", "RPM شاخص کامل Latency نیست؛ فقط در رتبه‌بندی اولیه اثر می‌گذارد."],
+    latency: ["ظرفیت درخواست چقدر مهم است؟", "RPM ظرفیت درخواست را نشان می‌دهد؛ نه Latency یا سرعت پاسخ مدل را."],
     region: ["از کجا استفاده می‌کنی؟", "Reachability، ثبت‌نام، ساخت کلید و Inference چهار مرحله جدا هستند."]
   };
 
@@ -56,11 +56,6 @@ runWhenReady(() => {
       ["reasoning", "حل مسئله و استدلال"],
       ["embeddings", "جست‌وجوی معنایی و Embedding"]
     ],
-    language: [
-      ["persian", "پاسخ فارسی برایم مهم است"],
-      ["english", "فقط انگلیسی کافی است"],
-      ["multilingual", "پروژه چندزبانه است"]
-    ],
     budget: [
       ["no-card", "بدون واردکردن کارت بانکی"],
       ["free-only", "فقط سهمیه یا مدل رایگان"],
@@ -68,8 +63,8 @@ runWhenReady(() => {
     ],
     latency: [
       ["low", "فعلاً اولویت اصلی نیست"],
-      ["important", "سرعت مهم است"],
-      ["critical", "سرعت اولویت اصلی است"]
+      ["important", "ظرفیت درخواست مهم است"],
+      ["critical", "ظرفیت درخواست اولویت اصلی است"]
     ],
     region: [
       ["iran", "استفاده مستقیم از ایران"],
@@ -115,7 +110,7 @@ runWhenReady(() => {
   }
 
   function filterSignature(filters = currentFilters()) {
-    return [filters.usecase, filters.language, filters.budget, filters.latency, filters.region].join("|");
+    return [filters.usecase, filters.budget, filters.latency, filters.region].join("|");
   }
 
   function shareUrl(filters = currentFilters()) {
@@ -144,7 +139,7 @@ runWhenReady(() => {
 
   form.classList.add("clarity-form");
   const usecaseLabel = improveLabel(fields.usecase, "usecase");
-  const languageLabel = improveLabel(fields.language, "language");
+
   const budgetLabel = improveLabel(fields.budget, "budget");
   const latencyLabel = improveLabel(fields.latency, "latency");
   const regionLabel = improveLabel(fields.region, "region");
@@ -153,7 +148,7 @@ runWhenReady(() => {
   const advanced = document.createElement("details");
   advanced.className = "finder-advanced";
   const advancedSummary = document.createElement("summary");
-  advancedSummary.textContent = "تنظیمات پیشرفته: سرعت و مسیر دسترسی";
+  advancedSummary.textContent = "تنظیمات پیشرفته: ظرفیت درخواست و مسیر دسترسی";
   const advancedFields = document.createElement("div");
   advancedFields.className = "finder-advanced-fields";
   if (latencyLabel) advancedFields.append(latencyLabel);
@@ -174,7 +169,7 @@ runWhenReady(() => {
   const heroTitle = hero.querySelector("h1");
   const heroDescription = hero.querySelector("p:not(.eyebrow)");
   if (heroTitle) heroTitle.innerHTML = "برای پروژه‌ات چند API مناسب<br><span>پیدا کن و دلیلش را ببین.</span>";
-  if (heroDescription) heroDescription.textContent = "سه سؤال اصلی را جواب بده. سه پیشنهاد اصلی با توضیح ساده نمایش داده می‌شود؛ بعد می‌توانی گزینه‌های بیشتر، شواهد و محدودیت هر سرویس را بررسی کنی.";
+  if (heroDescription) heroDescription.textContent = "دو سؤال اصلی را جواب بده. سه پیشنهاد اصلی با توضیح ساده نمایش داده می‌شود؛ بعد می‌توانی گزینه‌های بیشتر، شواهد و محدودیت هر سرویس را بررسی کنی.";
 
   const hint = document.createElement("p");
   hint.className = "finder-start-hint";
@@ -193,7 +188,7 @@ runWhenReady(() => {
     <ul>
       <li>امتیاز بالاتر، کیفیت قطعی مدل یا پایداری دائمی سرویس را تضمین نمی‌کند.</li>
       <li>بازشدن سایت یا پاسخ 401، موفقیت ثبت‌نام و اجرای مدل را ثابت نمی‌کند.</li>
-      <li>RPM ثبت‌شده معادل Latency واقعی روی شبکه شما نیست.</li>
+      <li>RPM ثبت‌شده ظرفیت درخواست را نشان می‌دهد و معادل Latency واقعی نیست.</li>
       <li>قبل از انتخاب، صفحه شواهد و مستندات رسمی Provider را بررسی کن.</li>
     </ul>`;
   disclosure.before(limitations);
@@ -387,7 +382,7 @@ runWhenReady(() => {
   loadingObserver.observe(loading, { attributes: true, attributeFilter: ["hidden"] });
   runInitialRecommendation();
 
-  if (!usecaseLabel || !languageLabel || !budgetLabel) {
+  if (!usecaseLabel || !budgetLabel) {
     console.warn("API Finder clarity enhancement could not locate all core fields.");
   }
 });

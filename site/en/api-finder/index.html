@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#111827">
     <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1">
-    <meta name="description" content="Find the best free LLM API for your project. Filter by use case, free-tier type, language, and region. Evidence-based scoring from official sources.">
+    <meta name="description" content="Find the best free LLM API for your project. Filter by use case, free-tier type, request capacity, and region. Evidence-based scoring from official sources.">
     <meta property="og:title" content="Free LLM API Finder — Find Your Ideal Free AI API">
     <meta property="og:description" content="Guided tool to find free LLM APIs matching your use case, budget, and constraints. Compare providers by score, limits, and evidence.">
     <meta property="og:type" content="website">
@@ -167,7 +167,7 @@
       <section class="en-finder-hero" aria-labelledby="finder-hero-title">
         <p class="eyebrow">Guided provider selection</p>
         <h1 id="finder-hero-title">Find the best free LLM API<br><span>for your project.</span></h1>
-        <p>Answer three quick questions — use case, free-access constraint, and language — to get ranked results. Region and latency controls are available in Advanced settings. All data comes from the <a class="inline-accent-link" href="../../catalog.json">evidence-based catalog</a>.</p>
+        <p>Choose a use case and free-access constraint to get ranked results. Region and request-capacity controls are available in Advanced settings. All data comes from the <a class="inline-accent-link" href="../../catalog.json">evidence-based catalog</a>.</p>
       </section>
 
       <form id="finder-form" class="finder-form" role="search" aria-label="API finder form">
@@ -186,16 +186,9 @@
             <option value="any">No preference</option>
           </select>
         </label>
-        <label>Language / output
-          <select id="finder-language">
-            <option value="any">Any language</option>
-            <option value="english">English</option>
-            <option value="multilingual">Multilingual</option>
-          </select>
-        </label>
 
         <details class="finder-advanced">
-          <summary>Advanced settings — region, latency, etc.</summary>
+          <summary>Advanced settings — region and request capacity</summary>
           <div class="finder-advanced-content">
             <label>Region preference
               <select id="finder-region">
@@ -204,7 +197,7 @@
                 <option value="iran-vpn">Iran — via VPN</option>
               </select>
             </label>
-            <label>Latency sensitivity
+            <label>Request-capacity priority
               <select id="finder-latency">
                 <option value="low">Low priority</option>
                 <option value="important">Important</option>
@@ -237,9 +230,8 @@
         <div class="finder-disclosure-content">
           <div><strong>Capability match (max +35)</strong><span>The provider supports the capabilities needed for your use case.</span></div>
           <div><strong>Free-tier type and payment (max +20)</strong><span>No credit card required ranks highest, followed by free models, then anything.</span></div>
-          <div><strong>Latency (max +15)</strong><span>Based on reported RPM — critical sensitivity awards higher scores for faster endpoints.</span></div>
+          <div><strong>Request capacity (max +15)</strong><span>Based on reported RPM. This measures request allowance, not response latency or model speed.</span></div>
           <div><strong>Region preference (max +30)</strong><span>Matches your region filter. Neutral by default; Iran direct and VPN options are scored separately.</span></div>
-          <div><strong>Language support (max +15)</strong><span>Providers with multilingual or English-optimized models score higher.</span></div>
           <div><strong>Penalties (0 to -30)</strong><span>Community gateways, session bridges, or blocked/unknown statuses reduce the score.</span></div>
         </div>
       </details>
@@ -342,7 +334,7 @@
       const elements = {
         form: document.getElementById("finder-form"),
         usecase: document.getElementById("finder-usecase"),
-        language: document.getElementById("finder-language"),
+
         budget: document.getElementById("finder-budget"),
         latency: document.getElementById("finder-latency"),
         region: document.getElementById("finder-region"),
@@ -374,20 +366,7 @@
         const hasCapability = capabilities.some((c) => provider.capabilities.includes(c));
         const capabilityScore = hasCapability ? 35 : 0;
         score += capabilityScore;
-        breakdown.capability = { label: "Capability match", value: capabilityScore, max: 35 };
-
-        let langScore = 0;
-        if (filters.language === "multilingual") {
-          langScore = 15;
-        } else if (filters.language === "english") {
-          langScore = 10;
-        } else {
-          langScore = 5;
-        }
-        score += langScore;
-        breakdown.language = { label: "Language support", value: langScore, max: 15 };
-
-        let budgetScore = 0;
+        breakdown.capability = { label: "Capability match", value: capabilityScore, max: 35 };let budgetScore = 0;
         if (filters.budget === "no-card") {
           if (provider.free_tier.requires_payment_method === false) budgetScore = 20;
           else if (provider.free_tier.requires_payment_method === null) budgetScore = 10;
@@ -410,7 +389,7 @@
           latencyScore = rpm > 0 ? 3 : 0;
         }
         score += latencyScore;
-        breakdown.latency = { label: "Latency", value: latencyScore, max: 15, rpm };
+        breakdown.latency = { label: "Request capacity", value: latencyScore, max: 15, rpm };
 
         let regionScore = 0;
         const status = provider.iran_access.status;
@@ -475,7 +454,7 @@
               </div>
               <div class="finder-total-score">
                 <strong>${score}</strong>
-                <small>/ 130</small>
+                <small>/ 100</small>
               </div>
             </div>
             <div class="finder-breakdown">
@@ -518,7 +497,7 @@
       function getFilters() {
         return {
           usecase: elements.usecase.value,
-          language: elements.language.value,
+
           budget: elements.budget.value,
           latency: elements.latency.value,
           region: elements.region.value
@@ -539,7 +518,7 @@
       function loadUrlFilters() {
         const params = new URLSearchParams(location.search);
         if (params.has("usecase")) elements.usecase.value = params.get("usecase");
-        if (params.has("language")) elements.language.value = params.get("language");
+
         if (params.has("budget")) elements.budget.value = params.get("budget");
         if (params.has("latency")) elements.latency.value = params.get("latency");
         if (params.has("region")) elements.region.value = params.get("region");
@@ -548,7 +527,6 @@
       function updateUrl(filters) {
         const params = new URLSearchParams();
         if (filters.usecase !== "chat") params.set("usecase", filters.usecase);
-        if (filters.language !== "any") params.set("language", filters.language);
         if (filters.budget !== "no-card") params.set("budget", filters.budget);
         if (filters.latency !== "low") params.set("latency", filters.latency);
         if (filters.region !== "any") params.set("region", filters.region);
@@ -564,7 +542,7 @@
           window.plausible("api_finder_search", {
             props: {
               usecase: filters.usecase,
-              language: filters.language,
+
               budget: filters.budget,
               latency: filters.latency,
               region: filters.region
@@ -579,7 +557,7 @@
         elements.form.addEventListener("submit", onFind);
         elements.reset.addEventListener("click", () => {
           elements.usecase.value = "chat";
-          elements.language.value = "any";
+
           elements.budget.value = "no-card";
           elements.latency.value = "low";
           elements.region.value = "any";

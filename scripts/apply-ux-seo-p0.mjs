@@ -17,13 +17,6 @@ async function edit(relativePath, transform) {
   console.log(`patched ${relativePath}`);
 }
 
-function replaceRequired(text, from, to, label) {
-  if (!text.includes(from)) {
-    throw new Error(`Required marker missing (${label})`);
-  }
-  return text.replace(from, to);
-}
-
 function ensureAlternate(html, lang, href) {
   const tag = `<link rel="alternate" hreflang="${lang}" href="${href}">`;
   if (html.includes(tag)) return html;
@@ -50,9 +43,34 @@ function exposeCatalogSearch(html) {
   const advancedControls = match[2].replace(searchPattern, "").trim();
   const summaryAndLead = match[1].trim();
 
-  const replacement = `<form id="filters" class="catalog-filter-shell" role="search" aria-label="جست‌وجو و فیلتر سرویس‌ها">\n          ${search}\n          <details class="advanced-filter-panel">\n            ${summaryAndLead}\n            <div class="filters">\n              ${advancedControls}\n            </div>\n          </details>\n        </form>`;
+  const replacement = `<form id="filters" class="catalog-filter-shell" role="search" aria-label="جست‌وجو و فیلتر سرویس‌ها">
+          ${search}
+          <details class="advanced-filter-panel">
+            ${summaryAndLead}
+            <div class="filters">
+              ${advancedControls}
+            </div>
+          </details>
+        </form>`;
 
   return html.replace(pattern, replacement);
+}
+
+function assertFinderSourceSemantics(html, language) {
+  const name = language === "fa" ? "Persian Finder" : "English Finder";
+  const forbidden = language === "fa"
+    ? ['id="finder-language"', "سرعت / Latency", "پشتیبانی فارسی (+۱۵)"]
+    : ['id="finder-language"', "Latency sensitivity", "Language support (max +15)"];
+  for (const marker of forbidden) {
+    if (html.includes(marker)) throw new Error(`${name}: stale ranking marker remains (${marker})`);
+  }
+  const required = language === "fa"
+    ? ["ظرفیت درخواست / Rate limit", "از ۱۰۰"]
+    : ["Request-capacity priority", "not response latency or model speed", "/ 100"];
+  for (const marker of required) {
+    if (!html.includes(marker)) throw new Error(`${name}: required source semantic is missing (${marker})`);
+  }
+  return html;
 }
 
 await edit("index.html", (html) => exposeCatalogSearch(html));
@@ -97,43 +115,15 @@ await edit("ux-clarity.css", (css) => {
 `;
 });
 
-await edit("api-finder/index.html", (html) => {
-  let next = html;
-  next = ensureAlternate(next, "en", "https://llm.persiantoolbox.ir/en/api-finder/");
-  next = replaceRequired(next, "بودجه، سرعت و منطقه", "بودجه، ظرفیت درخواست و منطقه", "fa finder meta");
-  next = replaceRequired(next, "سرعت / Latency", "ظرفیت درخواست / Rate limit", "fa finder field");
-  next = replaceRequired(next, "🌐 پشتیبانی فارسی (+۱۵)", "🌐 دسترس‌پذیری و اطلاعات فارسی (+۱۵)", "fa language label");
-  next = replaceRequired(
-    next,
-    "اگر Provider یادداشت فارسی (<code>notes_fa</code>) داشته و از ایران قابل دسترس باشد.",
-    "بر اساس وجود اطلاعات فارسی در کاتالوگ و وضعیت دسترسی ثبت‌شده امتیاز می‌گیرد؛ این معیار کیفیت زبانی مدل یا نتیجه بنچمارک فارسی نیست.",
-    "fa language explanation"
-  );
-  next = replaceRequired(next, 'breakdown.latency = { label: "سرعت"', 'breakdown.latency = { label: "ظرفیت درخواست"', "fa score breakdown");
-  return next;
-});
-
-await edit("en/api-finder/index.html", (html) => {
-  let next = html;
-  next = replaceRequired(next, "Region and latency controls", "Region and request-capacity controls", "en finder hero");
-  next = replaceRequired(next, "Advanced settings — region, latency, etc.", "Advanced settings — region and request capacity", "en advanced summary");
-  next = replaceRequired(next, "Latency sensitivity", "Request-capacity priority", "en finder field");
-  next = replaceRequired(next, "Latency (max +15)", "Request capacity (max +15)", "en rate label");
-  next = replaceRequired(
-    next,
-    "Based on reported RPM — critical sensitivity awards higher scores for faster endpoints.",
-    "Based on reported RPM. This measures request allowance, not response latency or model speed.",
-    "en rate explanation"
-  );
-  next = replaceRequired(next, 'breakdown.latency = { label: "Latency"', 'breakdown.latency = { label: "Request capacity"', "en score breakdown");
-  return next;
-});
-
+await edit("api-finder/index.html", (html) => assertFinderSourceSemantics(
+  ensureAlternate(html, "en", "https://llm.persiantoolbox.ir/en/api-finder/"),
+  "fa"
+));
+await edit("en/api-finder/index.html", (html) => assertFinderSourceSemantics(html, "en"));
 await edit("compare/index.html", (html) => ensureAlternate(html, "en", "https://llm.persiantoolbox.ir/en/compare/"));
 await edit("en/compare/index.html", (html) => ensureAlternate(html, "fa", "https://llm.persiantoolbox.ir/compare/"));
 await edit("quick-start/index.html", (html) => ensureAlternate(html, "en", "https://llm.persiantoolbox.ir/en/quick-start/"));
 await edit("en/quick-start/index.html", (html) => ensureAlternate(html, "fa", "https://llm.persiantoolbox.ir/quick-start/"));
-
 await edit("tools/index.html", (html) => ensureAlternate(html, "fa-IR", "https://llm.persiantoolbox.ir/tools/"));
 
-console.log("UX/SEO P0 build transforms complete.");
+console.log("UX/SEO P0 build transforms complete: catalog search and locale alternates verified; Finder semantics are source-owned.");
