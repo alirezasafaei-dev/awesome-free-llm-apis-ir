@@ -1,12 +1,18 @@
 name: Diagnose product phase
 
 on:
+  pull_request:
+    paths:
+      - ".github/workflows/diagnose-product-phase.yml"
+      - "scripts/run-test-phase.mjs"
+      - ".github/workflows/validate.yml"
   push:
     branches:
       - agent/ci-test-phases-20260723
     paths:
       - ".github/workflows/diagnose-product-phase.yml"
       - "scripts/run-test-phase.mjs"
+      - ".github/workflows/validate.yml"
 
 permissions:
   contents: read
