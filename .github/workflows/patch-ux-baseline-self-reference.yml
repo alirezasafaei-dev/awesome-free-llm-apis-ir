@@ -1,0 +1,38 @@
+name: Patch UX baseline self reference
+
+on:
+  push:
+    branches:
+      - agent/future-proof-ux-baseline-20260723
+    paths:
+      - "scripts/patch-ux-baseline-self-reference.mjs"
+      - ".github/workflows/patch-ux-baseline-self-reference.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.2.1
+        with:
+          ref: agent/future-proof-ux-baseline-20260723
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.3.0
+        with:
+          node-version: 22
+      - name: Patch baseline and remove one-time files
+        run: |
+          set -Eeuo pipefail
+          node scripts/patch-ux-baseline-self-reference.mjs
+          rm scripts/patch-ux-baseline-self-reference.mjs
+          rm .github/workflows/patch-ux-baseline-self-reference.yml
+      - name: Commit future-proof baseline
+        run: |
+          set -Eeuo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "docs(ux): separate product and session release baselines"
+          git push origin HEAD:agent/future-proof-ux-baseline-20260723
