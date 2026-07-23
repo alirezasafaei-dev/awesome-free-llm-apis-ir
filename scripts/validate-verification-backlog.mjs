@@ -3,6 +3,7 @@ import { join } from "node:path";
 
 const providersDir = "data/providers";
 const backlogPath = "data/verification-backlog.json";
+const validTrackStatuses = new Set(["open", "partially_completed", "completed", "resolved"]);
 
 function readJson(path) {
   return JSON.parse(readFileSync(path, "utf8"));
@@ -56,12 +57,40 @@ for (const track of backlog.tracks) {
   if (!Number.isInteger(track.issue) || track.issue < 1) fail(`track ${track.id} has an invalid issue number`);
   if (trackIssues.has(track.issue)) fail(`duplicate track issue: ${track.issue}`);
   trackIssues.add(track.issue);
+  if (!validTrackStatuses.has(track.status)) fail(`track ${track.id} has invalid status ${track.status}`);
   if (!Array.isArray(track.providers)) fail(`track ${track.id} providers must be an array`);
+
   const listed = new Set(track.providers ?? []);
   if (listed.size !== (track.providers ?? []).length) fail(`track ${track.id} contains duplicate providers`);
   for (const providerId of listed) {
     if (!providerIds.has(providerId)) fail(`track ${track.id} references unknown provider ${providerId}`);
   }
+
+  const resolvedEntries = track.resolved_providers ?? [];
+  if (!Array.isArray(resolvedEntries)) fail(`track ${track.id} resolved_providers must be an array when present`);
+  const resolvedIds = [];
+  for (const entry of Array.isArray(resolvedEntries) ? resolvedEntries : []) {
+    const providerId = typeof entry === "string" ? entry : entry?.provider_id;
+    if (typeof providerId !== "string" || !providerIds.has(providerId)) {
+      fail(`track ${track.id} has an invalid resolved provider`);
+      continue;
+    }
+    resolvedIds.push(providerId);
+    if (listed.has(providerId)) fail(`track ${track.id} lists ${providerId} as both active and resolved`);
+  }
+  if (new Set(resolvedIds).size !== resolvedIds.length) fail(`track ${track.id} contains duplicate resolved providers`);
+
+  if (["completed", "resolved"].includes(track.status) && listed.size > 0) {
+    fail(`track ${track.id} cannot be ${track.status} while unresolved providers remain`);
+  }
+  if (track.status === "open" && listed.size === 0) {
+    fail(`open track ${track.id} must list at least one unresolved provider`);
+  }
+  if (track.status === "partially_completed") {
+    if (listed.size === 0) fail(`partially_completed track ${track.id} must list unresolved providers`);
+    if (resolvedIds.length === 0) fail(`partially_completed track ${track.id} must list at least one resolved provider`);
+  }
+
   issueToProviders.set(track.issue, listed);
 }
 
