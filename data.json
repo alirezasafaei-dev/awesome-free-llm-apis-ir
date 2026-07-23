@@ -333,7 +333,7 @@
           "route": "direct"
         },
         "evidenceCount": 7,
-        "notesFa": "ثبت‌نام با حساب آزمایش‌شده به محدودیت سطح حساب منتهی شد. مسیر مستقیم ایران نیز در چند Probe با Timeout، Connection refused یا network_error شکست خورده است. به‌دلیل معتبرنبودن یک Credential کنترل‌شده و موفق، این نتایج نباید به‌عنوان اثبات قطعی Geo-blocking یا ابطال Credential تفسیر شوند."
+        "notesFa": "ثبت‌نام با حساب آزمایش‌شده به محدودیت سطح حساب منتهی شد. مسیر مستقیم ایران نیز در چند Probe با Timeout، Connection refused یا network_error شکست خورده است. به‌دلیل نبود یک Credential کنترل‌شده و موفق، این نتایج نباید به‌عنوان اثبات قطعی Geo-blocking یا ابطال Credential تفسیر شوند."
       },
       "models": [
         "llama-3.3-70b",
