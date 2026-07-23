@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#111827">
     <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
-    <meta name="description" content="ابزار هوشمند پیدا کردن API رایگان LLM بر اساس نیاز شما: کاربرد، زبان، بودجه، سرعت و منطقه. با امتیازدهی شفاف و مقایسه دقیق.">
+    <meta name="description" content="ابزار هوشمند پیدا کردن API رایگان LLM بر اساس نیاز شما: کاربرد، بودجه، ظرفیت درخواست و منطقه. با امتیازدهی شفاف و مقایسه دقیق.">
     <meta property="og:title" content="API Finder | پیدا کردن API رایگان LLM">
     <meta property="og:description" content="ابزار هوشمند جست‌وجو و مقایسه APIهای رایگان LLM با فیلترهای دقیق و سیستم امتیازدهی شفاف.">
     <meta property="og:type" content="website">
@@ -174,13 +174,6 @@
             <option value="embeddings">Embedding و جست‌وجو</option>
           </select>
         </label>
-        <label>زبان / Language
-          <select id="finder-language">
-            <option value="persian">فارسی / Persian</option>
-            <option value="english">انگلیسی / English</option>
-            <option value="multilingual">چندزبانه / Multilingual</option>
-          </select>
-        </label>
         <label>بودجه / Budget
           <select id="finder-budget">
             <option value="no-card">بدون کارت بانکی / No credit card</option>
@@ -188,7 +181,7 @@
             <option value="any">هر نوع / Any</option>
           </select>
         </label>
-        <label>سرعت / Latency
+        <label>ظرفیت درخواست / Rate limit
           <select id="finder-latency">
             <option value="low">کم اهمیت / Low priority</option>
             <option value="important">مهم / Important</option>
@@ -224,7 +217,6 @@
         <summary>چرا این امتیاز؟ / Why this score?</summary>
         <div class="finder-disclosure-content">
           <div><strong>تطابق قابلیت (+۳۵)</strong><span>اگر Provider قابلیت‌های موردنیاز کاربرد انتخاب‌شده (چت، کدنویسی، استدلال، Embedding) را داشته باشد.</span></div>
-          <div><strong>🌐 پشتیبانی فارسی (+۱۵)</strong><span>اگر Provider یادداشت فارسی (<code>notes_fa</code>) داشته و از ایران قابل دسترس باشد.</span></div>
           <div><strong>بودجه (تا +۲۰)</strong><span>بدون کارت بانکی +۲۰، فقط مدل رایگان +۱۵، هر نوع +۵.</span></div>
           <div><strong>ظرفیت درخواست (تا +۱۵)</strong><span>بر اساس بیشترین RPM ثبت‌شده؛ RPM معادل سرعت پاسخ نیست.</span></div>
           <div><strong>منطقه (تا +۳۰)</strong><span>ایران مستقیم +۳۰، ایران با VPN +۱۵، هر منطقه +۵.</span></div>
@@ -329,7 +321,7 @@
       const elements = {
         form: document.getElementById("finder-form"),
         usecase: document.getElementById("finder-usecase"),
-        language: document.getElementById("finder-language"),
+
         budget: document.getElementById("finder-budget"),
         latency: document.getElementById("finder-latency"),
         region: document.getElementById("finder-region"),
@@ -363,24 +355,7 @@
         const hasCapability = capabilities.some((c) => provider.capabilities.includes(c));
         const capabilityScore = hasCapability ? 35 : 0;
         score += capabilityScore;
-        breakdown.capability = { label: "تطابق قابلیت", value: capabilityScore, max: 35 };
-
-        const hasFaNotes = !!(provider.notes_fa || provider.free_tier.notes_fa);
-        const isIranAccessible = iranAccessibleStatuses.includes(provider.iran_access.status);
-        let langScore = 0;
-        if (filters.language === "persian" && hasFaNotes && isIranAccessible) {
-          langScore = 15;
-        } else if (filters.language === "persian" && hasFaNotes) {
-          langScore = 5;
-        } else if (filters.language === "multilingual") {
-          langScore = 8;
-        } else {
-          langScore = 3;
-        }
-        score += langScore;
-        breakdown.language = { label: "پشتیبانی زبان", value: langScore, max: 15 };
-
-        let budgetScore = 0;
+        breakdown.capability = { label: "تطابق قابلیت", value: capabilityScore, max: 35 };let budgetScore = 0;
         if (filters.budget === "no-card") {
           if (provider.free_tier.requires_payment_method === false) budgetScore = 20;
           else if (provider.free_tier.requires_payment_method === null) budgetScore = 10;
@@ -404,7 +379,7 @@
           latencyScore = rpm > 0 ? 3 : 0;
         }
         score += latencyScore;
-        breakdown.latency = { label: "سرعت", value: latencyScore, max: 15, rpm };
+        breakdown.latency = { label: "ظرفیت درخواست", value: latencyScore, max: 15, rpm };
 
         let regionScore = 0;
         const status = provider.iran_access.status;
@@ -464,7 +439,7 @@
               </div>
               <div class="finder-total-score">
                 <strong>${score}</strong>
-                <small>از ۱۳۰</small>
+                <small>از ۱۰۰</small>
               </div>
             </div>
             <div class="finder-breakdown">
@@ -507,7 +482,7 @@
       function getFilters() {
         return {
           usecase: elements.usecase.value,
-          language: elements.language.value,
+
           budget: elements.budget.value,
           latency: elements.latency.value,
           region: elements.region.value
@@ -547,7 +522,7 @@
       function loadUrlFilters() {
         const params = new URLSearchParams(location.search);
         if (params.has("usecase")) elements.usecase.value = params.get("usecase");
-        if (params.has("language")) elements.language.value = params.get("language");
+
         if (params.has("budget")) elements.budget.value = params.get("budget");
         if (params.has("latency")) elements.latency.value = params.get("latency");
         if (params.has("region")) elements.region.value = params.get("region");
@@ -556,7 +531,6 @@
       function updateUrl(filters) {
         const params = new URLSearchParams();
         if (filters.usecase !== "chat") params.set("usecase", filters.usecase);
-        if (filters.language !== "persian") params.set("language", filters.language);
         if (filters.budget !== "no-card") params.set("budget", filters.budget);
         if (filters.latency !== "low") params.set("latency", filters.latency);
         if (filters.region !== "iran") params.set("region", filters.region);
@@ -572,7 +546,7 @@
           window.plausible("api_finder_search", {
             props: {
               usecase: filters.usecase,
-              language: filters.language,
+
               budget: filters.budget,
               latency: filters.latency,
               region: filters.region
@@ -589,7 +563,7 @@
         elements.form.addEventListener("submit", onFind);
         elements.reset.addEventListener("click", () => {
           elements.usecase.value = "chat";
-          elements.language.value = "persian";
+
           elements.budget.value = "no-card";
           elements.latency.value = "low";
           elements.region.value = "iran";

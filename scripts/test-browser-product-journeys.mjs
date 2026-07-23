@@ -446,14 +446,29 @@ async function main() {
     console.log("Browser product journeys passed: real JavaScript, Finder, shortlist, Compare, theme, keyboard and responsive behavior are healthy.");
   } finally {
     try { client?.close(); } catch { /* best effort */ }
+    const waitForChromeExit = () => processState.exited
+      ? Promise.resolve()
+      : new Promise((resolve) => chrome.once("exit", resolve));
     chrome.kill("SIGTERM");
-    await Promise.race([
-      new Promise((resolve) => chrome.once("exit", resolve)),
-      sleep(2_000)
-    ]);
-    if (!processState.exited) chrome.kill("SIGKILL");
+    await Promise.race([waitForChromeExit(), sleep(2_000)]);
+    if (!processState.exited) {
+      chrome.kill("SIGKILL");
+      await Promise.race([waitForChromeExit(), sleep(2_000)]);
+    }
     await staticServer.close();
-    await rm(userDataDir, { recursive: true, force: true });
+    let cleanupError = null;
+    for (let attempt = 0; attempt < 8; attempt += 1) {
+      try {
+        await rm(userDataDir, { recursive: true, force: true, maxRetries: 3, retryDelay: 100 });
+        cleanupError = null;
+        break;
+      } catch (error) {
+        cleanupError = error;
+        if (!["ENOTEMPTY", "EBUSY", "EPERM"].includes(error.code)) throw error;
+        await sleep(150 * (attempt + 1));
+      }
+    }
+    if (cleanupError) throw cleanupError;
   }
 }
 

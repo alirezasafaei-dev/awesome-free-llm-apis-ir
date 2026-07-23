@@ -26,15 +26,20 @@ if (/observer\.observe\(results,\s*\{[^}]*subtree:\s*true/.test(shortlist)) {
   throw new Error("API Finder shortlist observer must not watch its own nested button mutations");
 }
 
-for (const id of ["finder-form", "finder-usecase", "finder-language", "finder-budget", "finder-latency", "finder-region", "finder-results", "finder-loading", "finder-disclosure"]) {
+for (const id of ["finder-form", "finder-usecase", "finder-budget", "finder-latency", "finder-region", "finder-results", "finder-loading", "finder-disclosure"]) {
   if (!source.includes(`id="${id}"`)) throw new Error(`API Finder source contract is missing #${id}`);
+}
+if (source.includes('id="finder-language"')) {
+  throw new Error("API Finder source must not expose unsupported language-quality scoring");
 }
 
 for (const signal of [
   "چه چیزی می‌سازی؟",
-  "خروجی به چه زبانی است؟",
   "چه محدودیت مالی داری؟",
-  "تنظیمات پیشرفته: سرعت و مسیر دسترسی",
+  "تنظیمات پیشرفته: ظرفیت درخواست و مسیر دسترسی",
+  "ظرفیت درخواست چقدر مهم است؟",
+  "RPM ظرفیت درخواست را نشان می‌دهد",
+  "دو سؤال اصلی را جواب بده.",
   "این پیشنهاد چه چیزی را تضمین نمی‌کند؟",
   "امتیاز تطابق؛ نه تضمین",
   "انتخاب و ساخت اولین درخواست",
@@ -51,6 +56,9 @@ for (const signal of [
   if (!script.includes(signal)) throw new Error(`API Finder clarity script is missing: ${signal}`);
 }
 
+for (const forbidden of ["fields.language", "filters.language", "languageLabel", 'language: "persian"']) {
+  if (script.includes(forbidden)) throw new Error(`API Finder clarity script retains stale language behavior: ${forbidden}`);
+}
 if (script.includes("form.requestSubmit()")) {
   throw new Error("Page load must not submit the Finder form or count as an explicit completion");
 }
@@ -84,6 +92,7 @@ if (build.status !== 0) throw new Error(build.stderr || build.stdout || "Product
 
 try {
   const built = await readFile(path.join(destination, "api-finder", "index.html"), "utf8");
+  const core = await readFile(path.join(destination, "api-finder", "finder-core.js"), "utf8");
   const buildMeta = JSON.parse(await readFile(path.join(destination, "build-meta.json"), "utf8"));
 
   if (!built.includes('href="./finder-clarity.css"')) throw new Error("Built API Finder is missing clarity CSS");
@@ -98,9 +107,11 @@ try {
   await access(path.join(destination, "api-finder", "finder-core.js"));
   if (!built.includes('id="finder-form"')) throw new Error("Built API Finder lost the scoring form");
   if (!built.includes("application/ld+json")) throw new Error("Built API Finder lost structured data");
+  if (!core.includes("از ۱۰۰") || core.includes("از ۱۳۰")) throw new Error("Built API Finder score denominator is not source-owned at 100");
+  if (core.includes("filters.language") || core.includes("langScore")) throw new Error("Built API Finder recovered stale language ranking behavior");
   if (!buildMeta.static_product_pages?.includes("/api-finder/")) throw new Error("build-meta.json does not identify API Finder as a product page");
 } finally {
   await rm(destination, { recursive: true, force: true });
 }
 
-console.log("API Finder funnel contract passed: default results, intentional completion, safe sharing and Provider-aware activation are protected.");
+console.log("API Finder funnel contract passed: source-owned ranking, intentional completion, safe sharing and Provider-aware activation are protected.");
