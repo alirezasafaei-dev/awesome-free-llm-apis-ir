@@ -1,0 +1,62 @@
+name: Browser product gate
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "site/**"
+      - "design-system/**"
+      - "scripts/apply-*.mjs"
+      - "scripts/build-site*.mjs"
+      - "scripts/test-browser-product-journeys.mjs"
+      - ".github/workflows/browser-product-gate.yml"
+      - "package.json"
+      - "package-lock.json"
+  pull_request:
+    paths:
+      - "site/**"
+      - "design-system/**"
+      - "scripts/apply-*.mjs"
+      - "scripts/build-site*.mjs"
+      - "scripts/test-browser-product-journeys.mjs"
+      - ".github/workflows/browser-product-gate.yml"
+      - "package.json"
+      - "package-lock.json"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: browser-product-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  browser-product:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.2.1
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.3.0
+        with:
+          node-version: 22
+      - run: npm ci
+      - name: Confirm browser runtime
+        run: |
+          set -Eeuo pipefail
+          if command -v google-chrome-stable >/dev/null 2>&1; then
+            google-chrome-stable --version
+          elif command -v google-chrome >/dev/null 2>&1; then
+            google-chrome --version
+          elif command -v chromium >/dev/null 2>&1; then
+            chromium --version
+          else
+            echo "Chrome or Chromium is required for the browser product gate." >&2
+            exit 1
+          fi
+      - name: Build exact product artifact
+        run: npm run site:build
+        env:
+          SOURCE_REVISION: ${{ github.sha }}
+      - name: Run browser product journeys
+        run: node scripts/test-browser-product-journeys.mjs
