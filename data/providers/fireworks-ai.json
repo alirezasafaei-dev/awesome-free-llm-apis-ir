@@ -101,9 +101,28 @@
         "credential_validated_from": "FOREIGN_SERVER (DE, Hetzner AS24940)",
         "credential_validated_status": 403,
         "notes_fa": "حساب جدید Fireworks از سرور خارج (آلمان) تست شد و همه endpointها خطای ۴۰۳ با علت sanitized_origin_country برگرداندند. حساب در زمان ثبت‌نام (احتمالاً به دلیل IP ایران) مسدود شده است. این محدودیت در سطح حساب است و به IP درخواست‌دهنده مربوط نیست."
+      },
+      {
+        "type": "connectivity_test",
+        "checked_at": "2026-07-22",
+        "latency_ms": 934,
+        "endpoint": "https://api.fireworks.ai/inference/v1/chat/completions",
+        "source": "IRAN_VPS — direct connectivity probe",
+        "connectivity_result": "network_error",
+        "notes_fa": "Probe مستقیم از ایران پیش از دریافت پاسخ HTTP با network_error شکست خورد. این نتیجه فقط شکست شبکه در مسیر آزمایش‌شده را ثبت می‌کند و به‌تنهایی مسدودیت جغرافیایی یا وضعیت Credential را اثبات نمی‌کند."
+      },
+      {
+        "type": "live_test",
+        "timestamp": "2026-07-22T20:06:44.658Z",
+        "http_status": 404,
+        "latency_ms": 461,
+        "model_tested": "gpt-oss-120b",
+        "endpoint": "https://api.fireworks.ai/inference/v1/chat/completions",
+        "source": "FOREIGN_SERVER (DE)",
+        "notes_fa": "درخواست از مسیر مستقیم آلمان HTTP 404 دریافت کرد. این پاسخ به‌تنهایی وضعیت Credential، حساب یا مدل را اثبات نمی‌کند؛ نتیجه فقط با Dashboard رسمی یا پاسخ مستند Provider قابل تعیین است."
       }
     ],
-    "notes_fa": "ثبت‌نام در Fireworks AI از ایران منجر به مسدودیت حساب در سطح سرویس می‌شود (sanctioned origin country). حتی کلید جدید هم از سرور خارج (آلمان) با ۴۰۳ مسدود شد. شبکه از ایران نیز Timeout دارد."
+    "notes_fa": "ثبت‌نام با حساب آزمایش‌شده به محدودیت سطح حساب منتهی شد. مسیر مستقیم ایران نیز در چند Probe با Timeout، Connection refused یا network_error شکست خورده است. به‌دلیل نبود یک Credential کنترل‌شده و موفق، این نتایج نباید به‌عنوان اثبات قطعی Geo-blocking یا ابطال Credential تفسیر شوند."
   },
   "models": {
     "dynamic": true,
@@ -118,7 +137,7 @@
   },
   "verification": {
     "level": "live_verified",
-    "last_checked": "2026-07-21",
+    "last_checked": "2026-07-22",
     "checked_by": "maintainers",
     "stale_after_days": 14
   },
