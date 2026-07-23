@@ -1,0 +1,38 @@
+name: Diagnose product phase
+
+on:
+  push:
+    branches:
+      - agent/ci-test-phases-20260723
+    paths:
+      - ".github/workflows/diagnose-product-phase.yml"
+      - "scripts/run-test-phase.mjs"
+
+permissions:
+  contents: read
+
+jobs:
+  product-contracts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.2.1
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.3.0
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: node scripts/run-test-phase.mjs coverage
+      - run: npm run ux:seo:p0:test
+      - run: npm run ux:navigation:test
+      - run: npm run ux:ranking:test
+      - run: npm run ux:pro-max:test
+      - run: npm run ux:clarity:test
+      - run: npm run ux:footer:test
+      - run: npm run ux:quick-start:test
+      - run: npm run ux:finder:test
+      - run: npm run compare:test
+      - run: npm run ux:research:test
+      - run: npm run advisor:test
+      - run: npm run pages:paths:test
+      - run: npm run analytics:production:test
