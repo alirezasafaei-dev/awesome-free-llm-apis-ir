@@ -18,7 +18,10 @@ async function externalizeFinderAssets(relativePath) {
   const before = await readFile(absolutePath, "utf8");
   const styleMatch = before.match(/<style>([\s\S]*?)<\/style>/);
   const scriptMatch = before.match(/<script>([\s\S]*?)<\/script>/);
-  if (!styleMatch || !scriptMatch) throw new Error(`${relativePath}: inline Finder assets not found`);
+  if (!styleMatch || !scriptMatch) {
+    console.warn(`${relativePath}: inline Finder assets already externalized or not found — skipping`);
+    return;
+  }
 
   await writeFile(path.join(directory, "finder-core.css"), `${styleMatch[1].trim()}\n`, "utf8");
   await writeFile(path.join(directory, "finder-core.js"), `${scriptMatch[1].trim()}\n`, "utf8");

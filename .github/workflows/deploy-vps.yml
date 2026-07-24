@@ -171,7 +171,7 @@ jobs:
           SSH_PORT: ${{ secrets.SSH_PORT }}
           DEPLOY_ROOT: ${{ secrets.DEPLOY_ROOT }}
         run: |
-          ssh -i ~/.ssh/id_ed25519 -p "$SSH_PORT" -o BatchMode=yes -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes "${SSH_USER}@${SSH_HOST}" "bash /tmp/llm-rollback-${GITHUB_SHA}.sh ${DEPLOY_ROOT}" || true
+          ssh -i ~/.ssh/id_ed25519 -p "$SSH_PORT" -o BatchMode=yes -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes "${SSH_USER}@${SSH_HOST}" "bash /tmp/llm-rollback-${GITHUB_SHA}.sh ${DEPLOY_ROOT}"
       - name: Remove local SSH material
         if: always()
         run: rm -f ~/.ssh/id_ed25519 ~/.ssh/known_hosts
@@ -254,7 +254,7 @@ jobs:
           SSH_PORT: ${{ secrets.SSH_PORT }}
           DEPLOY_ROOT: ${{ secrets.DEPLOY_ROOT }}
         run: |
-          ssh -i ~/.ssh/id_ed25519 -p "$SSH_PORT" -o BatchMode=yes -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes "${SSH_USER}@${SSH_HOST}" "bash /tmp/llm-rollback-${GITHUB_SHA}.sh ${DEPLOY_ROOT}" || true
+          ssh -i ~/.ssh/id_ed25519 -p "$SSH_PORT" -o BatchMode=yes -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes "${SSH_USER}@${SSH_HOST}" "bash /tmp/llm-rollback-${GITHUB_SHA}.sh ${DEPLOY_ROOT}"
       - name: Remove local SSH material
         if: always()
         run: rm -f ~/.ssh/id_ed25519 ~/.ssh/known_hosts

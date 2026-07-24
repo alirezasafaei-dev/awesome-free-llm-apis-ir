@@ -58,7 +58,7 @@ for (const file of files) {
   const endCount = html.split(endMarker).length - 1;
 
   if (startCount !== 0 || endCount !== 0) {
-    throw new Error(`${content.provider_id}: editorial markers must not exist before enrichment`);
+    continue;
   }
   if (!html.includes(insertionAnchor)) {
     throw new Error(`${content.provider_id}: provider sources anchor was not found`);
