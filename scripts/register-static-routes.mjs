@@ -16,6 +16,7 @@ const enQuickStartPath = path.join(destination, "en", "quick-start", "index.html
 const enComparePath = path.join(destination, "en", "compare", "index.html");
 const enIndexPath = path.join(destination, "en", "index.html");
 const canonicalOrigin = "https://llm.persiantoolbox.ir";
+const today = new Date().toISOString().slice(0, 10);
 
 const productRoutes = [
   { url: `${canonicalOrigin}/api-finder/`, priority: "0.9", hreflang: "fa-IR", label: "API Finder" },
@@ -37,7 +38,7 @@ for (const route of productRoutes) {
     const alternates = route.url.includes("/methodology/")
       ? `      <xhtml:link rel="alternate" hreflang="fa-IR" href="${route.url}"/>\n      <xhtml:link rel="alternate" hreflang="x-default" href="${route.url}"/>`
       : `      <xhtml:link rel="alternate" hreflang="fa-IR" href="${faHref}"/>\n      <xhtml:link rel="alternate" hreflang="en" href="${enHref}"/>\n      <xhtml:link rel="alternate" hreflang="x-default" href="${faHref}"/>`;
-    const entry = `  <url>\n    <loc>${route.url}</loc>\n    <lastmod>2026-07-22</lastmod>\n    <priority>${route.priority}</priority>\n${alternates}\n  </url>\n`;
+    const entry = `  <url>\n    <loc>${route.url}</loc>\n    <lastmod>${today}</lastmod>\n    <priority>${route.priority}</priority>\n${alternates}\n  </url>\n`;
     sitemap = sitemap.replace("</urlset>", `${entry}</urlset>`);
     sitemapChanged = true;
   }

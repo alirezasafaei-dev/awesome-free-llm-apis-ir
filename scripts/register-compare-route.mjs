@@ -11,6 +11,7 @@ const llmsPath = path.join(destination, "llms.txt");
 const buildMetaPath = path.join(destination, "build-meta.json");
 const canonicalOrigin = "https://llm.persiantoolbox.ir";
 const compareUrl = `${canonicalOrigin}/compare/`;
+const today = new Date().toISOString().slice(0, 10);
 
 await readFile(comparePath, "utf8");
 
@@ -25,7 +26,7 @@ await writeFile(finderPath, finder);
 
 let sitemap = await readFile(sitemapPath, "utf8");
 if (!sitemap.includes(`<loc>${compareUrl}</loc>`)) {
-  const entry = `  <url>\n    <loc>${compareUrl}</loc>\n    <lastmod>2026-07-20</lastmod>\n    <priority>0.8</priority>\n      <xhtml:link rel="alternate" hreflang="fa-IR" href="${compareUrl}"/>\n      <xhtml:link rel="alternate" hreflang="x-default" href="${compareUrl}"/>\n  </url>\n`;
+  const entry = `  <url>\n    <loc>${compareUrl}</loc>\n    <lastmod>${today}</lastmod>\n    <priority>0.8</priority>\n      <xhtml:link rel="alternate" hreflang="fa-IR" href="${compareUrl}"/>\n      <xhtml:link rel="alternate" hreflang="x-default" href="${compareUrl}"/>\n  </url>\n`;
   sitemap = sitemap.replace("</urlset>", `${entry}</urlset>`);
   await writeFile(sitemapPath, sitemap);
 }

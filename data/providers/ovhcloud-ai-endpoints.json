@@ -34,13 +34,23 @@
     "status": "verified_working",
     "official_policy": "not_documented",
     "tested_from_iran": true,
-    "tested_at": "2026-07-20",
+    "tested_at": "2026-07-24",
     "test_method": "live_request",
     "network": {
       "country": "IR",
       "route": "direct"
     },
     "evidence": [
+      {
+        "type": "live_test",
+        "timestamp": "2026-07-24T16:39:07Z",
+        "http_status": 200,
+        "latency_ms": 640,
+        "model_tested": "gpt-oss-20b",
+        "endpoint": "https://oai.endpoints.kepler.ai.cloud.ovh.net/v1/chat/completions",
+        "source": "IRAN_SERVER — direct Iran live verification 2026-07-24",
+        "notes_fa": "دسترسی ناشناس از ایران موفق. ۶۴۰ میلی‌ثانیه."
+      },
       {
         "type": "live_test",
         "timestamp": "2026-07-16T13:30:00Z",
@@ -79,7 +89,7 @@
   },
   "verification": {
     "level": "live_verified",
-    "last_checked": "2026-07-20",
+    "last_checked": "2026-07-24",
     "checked_by": "maintainers",
     "stale_after_days": 30
   },
