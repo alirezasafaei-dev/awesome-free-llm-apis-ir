@@ -49,16 +49,16 @@
 | [GitHub Models](https://github.com/marketplace/models) | Gateway رسمی | سهمیه دائمی | 15 RPM · 150 RPD | ✅ | ✅ مستقیم تست‌شده | 2026-07-20 |
 | [Google Gemini API](https://ai.google.dev/) | Provider رسمی | سهمیه دائمی | وابسته به حساب/مدل | ✅ | 🚫 پشتیبانی‌نشده رسمی | 2026-07-20 |
 | [Groq](https://groq.com/) | Gateway رسمی | سهمیه دائمی | 30 RPM · 1000 RPD | ✅ | ⛔ مسدود | 2026-07-20 |
-| [Hugging Face Inference Providers](https://huggingface.co/docs/inference-providers/index) | Gateway رسمی | اعتبار ماهانه | $0.1/month | ✅ | ✅ مستقیم تست‌شده | 2026-07-20 |
+| [Hugging Face Inference Providers](https://huggingface.co/docs/inference-providers/index) | Gateway رسمی | اعتبار ماهانه | $0.1/month | ✅ | ✅ مستقیم تست‌شده | 2026-07-24 |
 | [Kilo Gateway](https://kilo.ai/) | Gateway رسمی | مدل‌های رایگان | 200 RPH | ✅ | ✅ مستقیم تست‌شده | 2026-07-24 |
 | [LLM7.io](https://llm7.io/) | Gateway اجتماعی | مدل‌های رایگان | 30 RPM | ✅ | ✅ مستقیم تست‌شده | 2026-07-20 |
-| [Mistral AI](https://mistral.ai/) | Provider رسمی | سهمیه دائمی | وابسته به حساب/مدل | ✅ | ✅ مستقیم تست‌شده | 2026-07-20 |
+| [Mistral AI](https://mistral.ai/) | Provider رسمی | سهمیه دائمی | وابسته به حساب/مدل | ✅ | ✅ مستقیم تست‌شده | 2026-07-24 |
 | [ModelScope (Alibaba)](https://modelscope.cn/) | Gateway رسمی | مدل‌های رایگان | 2000 RPD | ✅ | 🧾 ثبت‌نام مسدود | 2026-07-20 |
 | [NVIDIA NIM API Catalog](https://build.nvidia.com/) | Gateway رسمی | سهمیه دائمی | وابسته به حساب/مدل | ✅ | 🧾 ثبت‌نام مسدود | 2026-07-21 |
 | [OpenCode Zen](https://opencode.ai/zen) | Gateway رسمی | مدل‌های رایگان | مدل‌محور | ✅ | ✅ مستقیم تست‌شده | 2026-07-20 |
 | [OpenRouter](https://openrouter.ai/) | Gateway رسمی | مدل‌های رایگان | 20 RPM · 50 RPD | ✅ | ⛔ مسدود | 2026-07-20 |
 | [OVHcloud AI Endpoints](https://www.ovhcloud.com/en/public-cloud/ai-endpoints/) | Gateway رسمی | مدل‌های رایگان | 2 RPM | ✅ | ✅ مستقیم تست‌شده | 2026-07-24 |
-| [SambaNova Cloud](https://cloud.sambanova.ai/) | Gateway رسمی | سهمیه دائمی | 20 RPM · 20 RPD | ✅ | ✅ مستقیم تست‌شده | 2026-07-20 |
+| [SambaNova Cloud](https://cloud.sambanova.ai/) | Gateway رسمی | سهمیه دائمی | 20 RPM · 20 RPD | ✅ | ✅ مستقیم تست‌شده | 2026-07-24 |
 | [SiliconFlow](https://cloud.siliconflow.cn/) | Gateway رسمی | مدل‌های رایگان | 30 RPM · 60,000 TPM | ✅ | 🧾 ثبت‌نام مسدود | 2026-07-20 |
 | [Vercel AI Gateway](https://vercel.com/ai) | Gateway رسمی | اعتبار ماهانه | $5/month | ✅ | 🧾 ثبت‌نام مسدود | 2026-07-21 |
 <!-- PROVIDERS_TABLE_END -->

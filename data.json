@@ -628,18 +628,18 @@
         "status": "verified_working",
         "label": "✅ مستقیم تست‌شده",
         "tested": true,
-        "testedAt": "2026-07-16",
+        "testedAt": "2026-07-24",
         "network": {
           "country": "IR",
           "route": "direct"
         },
-        "evidenceCount": 2,
+        "evidenceCount": 4,
         "notesFa": null
       },
       "models": [],
       "verification": {
         "level": "live_verified",
-        "lastChecked": "2026-07-20",
+        "lastChecked": "2026-07-24",
         "staleAfterDays": 30
       },
       "health": {
@@ -802,12 +802,12 @@
         "status": "verified_working",
         "label": "✅ مستقیم تست‌شده",
         "tested": true,
-        "testedAt": "2026-07-16",
+        "testedAt": "2026-07-24",
         "network": {
           "country": "IR",
           "route": "direct"
         },
-        "evidenceCount": 2,
+        "evidenceCount": 4,
         "notesFa": null
       },
       "models": [
@@ -815,7 +815,7 @@
       ],
       "verification": {
         "level": "live_verified",
-        "lastChecked": "2026-07-20",
+        "lastChecked": "2026-07-24",
         "staleAfterDays": 30
       },
       "health": {
@@ -1161,12 +1161,12 @@
         "status": "verified_working",
         "label": "✅ مستقیم تست‌شده",
         "tested": true,
-        "testedAt": "2026-07-16",
+        "testedAt": "2026-07-24",
         "network": {
           "country": "IR",
           "route": "direct"
         },
-        "evidenceCount": 2,
+        "evidenceCount": 4,
         "notesFa": null
       },
       "models": [
@@ -1176,7 +1176,7 @@
       ],
       "verification": {
         "level": "live_verified",
-        "lastChecked": "2026-07-20",
+        "lastChecked": "2026-07-24",
         "staleAfterDays": 30
       },
       "health": {

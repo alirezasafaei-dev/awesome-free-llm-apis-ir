@@ -38,7 +38,7 @@
     "status": "verified_working",
     "official_policy": "not_documented",
     "tested_from_iran": true,
-    "tested_at": "2026-07-16",
+    "tested_at": "2026-07-24",
     "test_method": "live_request",
     "network": {
       "country": "IR",
@@ -63,6 +63,28 @@
         "source": "LOCAL_PC — Iran mobile network (MCI AS44244)",
         "notes_fa": "تأیید مجدد روی اینترنت موبایل ایران — ۲۰۲۶-۰۷-۱۶",
         "latency_ms": 826
+      },
+      {
+        "type": "live_test",
+        "timestamp": "2026-07-24T18:30:14Z",
+        "http_status": 200,
+        "model_tested": "openai/gpt-oss-20b:fastest",
+        "endpoint": "https://router.huggingface.co/v1/chat/completions",
+        "source": "IRAN_SERVER — direct Iran live verification with hermes credentials",
+        "latency_ms": 679,
+        "notes_fa": "تأیید مجدد روی سرور ایران با کلید hermes — ۲۰۲۶-۰۷-۲۴"
+      },
+      {
+        "type": "live_test",
+        "timestamp": "2026-07-24T18:34:00Z",
+        "http_status": 200,
+        "latency_ms": 1477,
+        "model_tested": "openai/gpt-oss-20b:fastest",
+        "endpoint": "https://router.huggingface.co/v1/chat/completions",
+        "source": "AUTOMATION_SERVER — DE (Hetzner AS24940) foreign direct control",
+        "credential_validated_from": "DE",
+        "credential_validated_status": 200,
+        "notes_fa": "همان کلید hermes از خارج ایران (آلمان) ۲۰۰ برگرداند. تأیید کرد که کلید معتبر است و مسدودیت مختص ایران نیست."
       }
     ]
   },
@@ -73,7 +95,7 @@
   },
   "verification": {
     "level": "live_verified",
-    "last_checked": "2026-07-20",
+    "last_checked": "2026-07-24",
     "checked_by": "maintainers",
     "stale_after_days": 30
   },
