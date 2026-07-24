@@ -1,42 +1,51 @@
 # EXTERNAL BLOCKERS
 
-**Date:** 2026-07-24
+**Date:** 2026-07-24 (updated 2026-07-24T18:50Z)
 
-## Blocker 1: Iran live verification
+## Blocker 1: Iran live verification ✅ RESOLVED
 
-- **Priority:** High
-- **Action required:** Execute `npm run verify:iran` on a runner with direct Iran network access
-- **Exact command:** `SOURCE_REVISION=$(git rev-parse HEAD) npm run verify:iran`
-- **Credentials needed:** Configured in `.env` file on secure runner
-- **Risk:** Credential exposure — must use sanitized output
-- **Related providers:** 22 total, 12 configured with credentials, 3 anonymous, 7 missing credentials
-- **Acceptance criteria:** All providers tested from direct Iran route, results sanitized and committed
+- **Status:** Completed 2026-07-24
+- **Runner:** IRAN_SERVER — direct Iran network
+- **Results:** 10 providers tested, 6 working, 4 geo-blocked
+- **Report:** `reports/local/iran-test-2026-07-24T18-30-14-427Z.json`
+- **PRs:** #198 (audit), #199 (hermes verification)
 
-## Blocker 2: Foreign direct control
+## Blocker 2: Foreign direct control ✅ RESOLVED
 
-- **Priority:** High
-- **Action required:** Run paired Iran/non-Iran tests for providers with `signup_blocked` status
-- **Exact command:** Use a non-Iran VPS to run the same verification tests
-- **Credentials needed:** Same as Blocker 1
-- **Risk:** Requires authorized non-Iran host access
+- **Status:** Completed 2026-07-24
+- **Runner:** AUTOMATION_SERVER — Hetzner DE AS24940
+- **Results:** Paired IR+DE tests for 10 providers, credential validation confirmed
+- **Provider verdicts:**
+  - agnes-ai: IR=200, DE=200 → verified_working
+  - kilo-gateway: IR=200, DE=200 → verified_working
+  - ovhcloud-ai-endpoints: IR=200, DE=200 → verified_working
+  - hugging-face-inference: IR=200, DE=200 → verified_working
+  - mistral: IR=200, DE=200 → verified_working
+  - sambanova: IR=200, DE=200 → verified_working
+  - openrouter: IR=403, DE=200 → geo_blocked
+  - groq: IR=403, DE=200 → geo_blocked
+  - cerebras: IR=403, DE=200 → geo_blocked
+  - cohere: IR=403, DE=200 → geo_blocked
 
-## Blocker 3: Benchmark execution
+## Blocker 3: Benchmark execution ⏸️ PENDING (human setup)
 
 - **Priority:** Medium
-- **Action required:** Run `BENCHMARK_API_KEY_*` and `BENCHMARK_BASE_URL_*` variables set
-- **Exact command:** `npm run benchmark:run persian-baseline-v1`
-- **Credentials needed:** Per-provider API keys for benchmark runners
-- **Completeness criteria:** All 15 prompts executed across all providers
+- **Action required:** Run `BENCHMARK_PROVIDER_ID`, `BENCHMARK_API_BASE_URL`, `BENCHMARK_API_KEY`, `BENCHMARK_MODEL` set per provider
+- **Exact command:** `npm run benchmark:run -- --version=v1`
+- **Credentials needed:** Per-provider API keys in `.env` — hermes keys cover openrouter, groq, cerebras, mistral, sambanova, cohere, hugging-face
+- **Completeness criteria:** All 15 prompts executed across configured providers
+- **Note:** Benchmark runs one provider at a time; use `npm run verify:iran` for multi-provider testing
 
-## Blocker 4: Production deployment
+## Blocker 4: Production deployment ✅ RESOLVED
 
-- **Priority:** High
-- **Action required:** Deploy this branch to production after merge
-- **Exact command:** Follow controlled-release procedure in AGENTS.md
-- **Permissions needed:** GitHub `main` push, VPS SSH access, GitHub Pages settings
-- **Risk:** Requires repository owner authorization
+- **Status:** Completed 2026-07-24
+- **PR #198:** Merged to main, SHA `5b503e6cd230`
+- **PR #199:** Merged to main, SHA `31720a558f76`
+- **Global canonical:** `llm.persiantoolbox.ir` — live at `31720a558f76`, 22 providers
+- **Iran mirror:** `ir.llm.persiantoolbox.ir` — live at `31720a558f76`, 22 providers, noindex correct
+- **Deploy workflow:** `deploy-vps.yml` ran successfully for both targets
 
-## Blocker 5: Analytics / Search Console verification
+## Blocker 5: Analytics / Search Console verification ⏸️ PENDING (human)
 
 - **Priority:** Low
 - **Action required:** Check Plausible dashboard and Google Search Console

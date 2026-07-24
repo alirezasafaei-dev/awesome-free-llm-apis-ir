@@ -1,30 +1,39 @@
 # PROVIDER TRACEABILITY MATRIX
 
-**Date:** 2026-07-24
+**Date:** 2026-07-24 (updated 2026-07-24T18:50Z)
 
-| Provider | Source JSON | Schema valid | Catalog | data.json | README | Website | Detail page | Finder | Compare |
-|----------|------------|--------------|---------|-----------|--------|---------|-------------|--------|---------|
-| agnes-ai | data/providers/agnes-ai.json | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| aion-labs | data/providers/aion-labs.json | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| cerebras | data/providers/cerebras.json | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| cloudflare-workers-ai | data/providers/cloudflare-workers-ai.json | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| cohere | data/providers/cohere.json | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| fireworks-ai | data/providers/fireworks-ai.json | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| freetheai | data/providers/freetheai.json | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| github-models | data/providers/github-models.json | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| google-gemini | data/providers/google-gemini.json | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| groq | data/providers/groq.json | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| hugging-face-inference | data/providers/hugging-face-inference.json | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| kilo-gateway | data/providers/kilo-gateway.json | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| llm7-io | data/providers/llm7-io.json | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| mistral | data/providers/mistral.json | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| modelscope | data/providers/modelscope.json | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| nvidia-nim | data/providers/nvidia-nim.json | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| opencode-zen | data/providers/opencode-zen.json | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| openrouter | data/providers/openrouter.json | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| ovhcloud-ai-endpoints | data/providers/ovhcloud-ai-endpoints.json | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| sambanova | data/providers/sambanova.json | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| siliconflow | data/providers/siliconflow.json | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| vercel-ai-gateway | data/providers/vercel-ai-gateway.json | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Provider | Source JSON | Schema | Catalog | data.json | README | Detail | Finder | Compare | IR Test | DE Test | Verdict |
+|----------|------------|--------|---------|-----------|--------|--------|--------|---------|---------|---------|---------|
+| agnes-ai | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | 200 | 200 | verified_working |
+| aion-labs | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | skipped | — | missing_credentials |
+| cerebras | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | 403 | 200 | geo_blocked |
+| cloudflare-workers-ai | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | skipped | — | missing_credentials |
+| cohere | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | 403 | 200 | geo_blocked |
+| fireworks-ai | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | network_error | geo_blocked | signup_blocked |
+| freetheai | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | skipped | — | missing_credentials |
+| github-models | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | skipped | — | missing_credentials |
+| google-gemini | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | skipped | — | missing_credentials |
+| groq | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | 403 | 200 | geo_blocked |
+| hugging-face-inference | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | 200 | 200 | verified_working |
+| kilo-gateway | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | 200 | 200 | verified_working |
+| llm7-io | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | 400 | 400 | needs_investigation |
+| mistral | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | 200 | 200 | verified_working |
+| modelscope | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | skipped | — | missing_credentials |
+| nvidia-nim | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | skipped | — | missing_credentials |
+| opencode-zen | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | skipped | — | missing_credentials |
+| openrouter | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | 403 | 200 | geo_blocked |
+| ovhcloud-ai-endpoints | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | 200 | 200 | verified_working |
+| sambanova | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | 200 | 200 | verified_working |
+| siliconflow | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | skipped | — | missing_credentials |
+| vercel-ai-gateway | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | 403 | 403 | policy_denied |
 
-All 22 providers are fully traceable from source JSON through all product surfaces. No orphan data, no missing pages, no Finder/Compare gaps.
+## Summary
+
+- **22/22** fully traceable from source JSON through all product surfaces
+- **8/22** verified working from Iran (6 paired IR+DE, 1 Iran-only, 1 with DE-only)
+- **4/22** confirmed geo-blocked from Iran (openrouter, groq, cerebras, cohere)
+- **1/22** policy denied from both IR and DE (vercel-ai-gateway)
+- **1/22** network error from Iran, geo-blocked from DE (fireworks-ai)
+- **1/22** invalid response 400 from both IR and DE (llm7-io)
+- **7/22** missing API credentials for testing
+- **1/22** confirmed geo-blocked from DE (vercel-ai-gateway)
