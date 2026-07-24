@@ -37,13 +37,23 @@
     "status": "verified_working",
     "official_policy": "not_documented",
     "tested_from_iran": true,
-    "tested_at": "2026-07-20",
+    "tested_at": "2026-07-24",
     "test_method": "live_request",
     "network": {
       "country": "IR",
       "route": "direct"
     },
     "evidence": [
+      {
+        "type": "live_test",
+        "timestamp": "2026-07-24T16:39:07Z",
+        "http_status": 200,
+        "latency_ms": 1924,
+        "model_tested": "kilo-auto/free",
+        "endpoint": "https://api.kilo.ai/v1/chat/completions",
+        "source": "IRAN_SERVER — direct Iran live verification 2026-07-24",
+        "notes_fa": "تست مستقیم از ایران (شبکه ایران) با موفقیت انجام شد. بدون نیاز به API key."
+      },
       {
         "type": "live_test",
         "timestamp": "2026-07-16T06:01:19Z",
@@ -77,11 +87,11 @@
   },
   "verification": {
     "level": "live_verified",
-    "last_checked": "2026-07-20",
+    "last_checked": "2026-07-24",
     "checked_by": "maintainers",
     "stale_after_days": 14
   },
-  "notes_fa": "دسترسی ناشناس مستقیم از ایران در ۲۰۲۶-۰۷-۱۶ با درخواست زنده تأیید شد. به‌دلیل فهرست پویا، مدل انتخاب‌شده در مسیر رایگان ممکن است تغییر کند.",
+  "notes_fa": "دسترسی ناشناس مستقیم از ایران در ۲۰۲۶-۰۷-۱۶ و ۲۰۲۶-۰۷-۲۴ با درخواست زنده تأیید شد. به‌دلیل فهرست پویا، مدل انتخاب‌شده در مسیر رایگان ممکن است تغییر کند.",
   "sources": [
     "https://kilo.ai/docs/gateway",
     "https://kilo.ai/docs/gateway/authentication",

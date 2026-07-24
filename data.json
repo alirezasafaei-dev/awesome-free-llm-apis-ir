@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-07-22",
+  "lastUpdated": "2026-07-24",
   "providerCount": 22,
   "providers": [
     {
@@ -30,12 +30,12 @@
         "status": "verified_working",
         "label": "✅ مستقیم تست‌شده",
         "tested": true,
-        "testedAt": "2026-07-22",
+        "testedAt": "2026-07-24",
         "network": {
           "country": "IR",
           "route": "direct"
         },
-        "evidenceCount": 4,
+        "evidenceCount": 5,
         "notesFa": "درخواست احراز هویت‌شده با مدل agnes-2.0-flash از ایران با HTTP 200 پاسخ داده است. مدل از نوع reasoning و نتیجه استنتاج در فیلد reasoning_content قرار می‌گیرد. کلید API در سرور خارج (آلمان) نیز تأیید شده است. این نتیجه فقط برای ASN مسیر تست‌شده معتبر است."
       },
       "models": [
@@ -47,7 +47,7 @@
       ],
       "verification": {
         "level": "live_verified",
-        "lastChecked": "2026-07-22",
+        "lastChecked": "2026-07-24",
         "staleAfterDays": 14
       },
       "health": {
@@ -683,12 +683,12 @@
         "status": "verified_working",
         "label": "✅ مستقیم تست‌شده",
         "tested": true,
-        "testedAt": "2026-07-20",
+        "testedAt": "2026-07-24",
         "network": {
           "country": "IR",
           "route": "direct"
         },
-        "evidenceCount": 2,
+        "evidenceCount": 3,
         "notesFa": null
       },
       "models": [
@@ -696,7 +696,7 @@
       ],
       "verification": {
         "level": "live_verified",
-        "lastChecked": "2026-07-20",
+        "lastChecked": "2026-07-24",
         "staleAfterDays": 14
       },
       "health": {
@@ -1099,12 +1099,12 @@
         "status": "verified_working",
         "label": "✅ مستقیم تست‌شده",
         "tested": true,
-        "testedAt": "2026-07-20",
+        "testedAt": "2026-07-24",
         "network": {
           "country": "IR",
           "route": "direct"
         },
-        "evidenceCount": 2,
+        "evidenceCount": 3,
         "notesFa": "دسترسی ناشناس بدون نیاز به کلید API. تست مستقیم از ایران موفق."
       },
       "models": [
@@ -1116,7 +1116,7 @@
       ],
       "verification": {
         "level": "live_verified",
-        "lastChecked": "2026-07-20",
+        "lastChecked": "2026-07-24",
         "staleAfterDays": 30
       },
       "health": {

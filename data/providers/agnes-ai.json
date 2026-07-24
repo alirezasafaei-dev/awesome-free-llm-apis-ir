@@ -72,13 +72,25 @@
     "status": "verified_working",
     "official_policy": "not_documented",
     "tested_from_iran": true,
-    "tested_at": "2026-07-22",
+    "tested_at": "2026-07-24",
     "test_method": "live_request",
     "network": {
       "country": "IR",
       "route": "direct"
     },
     "evidence": [
+      {
+        "type": "live_test",
+        "timestamp": "2026-07-24T16:39:07Z",
+        "http_status": 200,
+        "latency_ms": 916,
+        "model_tested": "agnes-2.0-flash",
+        "endpoint": "https://apihub.agnes-ai.com/v1/chat/completions",
+        "source": "IRAN_SERVER — direct Iran live verification 2026-07-24",
+        "credential_validated_from": "FOREIGN_SERVER (DE, Hetzner AS24940)",
+        "credential_validated_status": 200,
+        "notes_fa": "تأیید مجدد (۲۰۲۶-۰۷-۲۴): درخواست احراز هویت‌شده از ایران و آلمان هر دو HTTP 200. مدل agnes-2.0-flash از ایران با ۹۱۶ میلی‌ثانیه پاسخ داد."
+      },
       {
         "type": "connectivity_test",
         "checked_at": "2026-07-16",
@@ -107,7 +119,7 @@
         "source": "IRAN_VPS — direct authenticated inference (AS196864)",
         "credential_validated_from": "FOREIGN_SERVER (DE, Hetzner AS24940)",
         "credential_validated_status": 200,
-        "notes_fa": "درخواست احراز هویت‌شده با مدل agnes-2.0-flash از مسیر مستقیم ایران با HTTP 200 پاسخ داده شد. مدل از نوع reasoning است و خروجی معنی‌دار در فیلد reasoning_content قرار گرفت. کلید API از سرور خارج (آلمان) نیز با موفقیت تأیید شد. این مدرک فقط برای ASN/مسیر تست‌شده معتبر است."
+        "notes_fa": "درخواست احراز هویت‌شده با مدل agnes-2.0-flash از مسیر مستقیم ایران با HTTP 200 پاسخ داده شد. مدل از نوع reasoning است و خروجی معنی‌دار در فیلد reasoning_content قرار گرفت. کلید API از سرور خارج (آلمان) نیز با موفقیت تأیید شد."
       },
       {
         "type": "live_test",
@@ -137,7 +149,7 @@
   },
   "verification": {
     "level": "live_verified",
-    "last_checked": "2026-07-22",
+    "last_checked": "2026-07-24",
     "checked_by": "maintainers",
     "stale_after_days": 14
   },
