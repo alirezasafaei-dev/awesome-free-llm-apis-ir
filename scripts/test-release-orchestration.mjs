@@ -16,7 +16,7 @@ for (const marker of [
   "current === EXPECTED_SHA",
   "/actions/workflows/deploy-vps.yml/dispatches",
   'JSON.stringify({ ref: "main", inputs: { target: "both" } })',
-  "actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5"
+  "actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1"
 ]) {
   if (!ensureWorkflow.includes(marker)) failures.push(`ensure-vps workflow is missing: ${marker}`);
 }
