@@ -13,3 +13,5 @@ site-release.tar.gz
 deploy-csp.sh
 scripts/launch-readonly-monitor.mjs
 scripts/test-vpn-matrix.sh
+.hermes-api-keys.env
+docs/audits/full-project/**/OWNER_SUPER_PROMPT.md
