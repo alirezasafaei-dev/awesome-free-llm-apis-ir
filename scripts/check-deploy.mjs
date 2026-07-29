@@ -68,8 +68,10 @@ if (strictHostKeyCount < 4) throw new Error(`Expected 4 StrictHostKeyChecking=ye
 if (!workflow.includes("'Iran mirror is missing X-Robots-Tag noindex.'")) throw new Error("Iran mirror job must require X-Robots-Tag noindex");
 if (!workflow.includes("'Canonical endpoint unexpectedly contains noindex.'")) throw new Error("Canonical deployment must reject X-Robots-Tag noindex");
 
-for (const buildInput of ["'assets/**'", "'content/**'", "'data/**'", "'site/**'", "'scripts/build-guides.mjs'"]) {
-  if (!workflow.includes(buildInput)) throw new Error(`VPS deploy trigger is missing build input ${buildInput}`);
+const pushBlock = workflow.match(/on:\s*\n\s*push:\s*\n([\s\S]*?)\n\s*workflow_dispatch:/)?.[1] ?? "";
+if (!pushBlock.includes("branches: [main]")) throw new Error("VPS deploy push trigger must target main");
+if (/^\s*paths(?:-ignore)?:/m.test(pushBlock)) {
+  throw new Error("VPS deploy must run for every main revision and must not use path filters");
 }
 
 const timeoutCount = (workflow.match(/timeout-minutes:\s*\d+/g) || []).length;
