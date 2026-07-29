@@ -19,8 +19,10 @@ llm.persiantoolbox.ir {
 	header @catalog Cache-Control "public, max-age=300, must-revalidate"
 	@buildmeta path /build-meta.json
 	header @buildmeta Cache-Control "no-store"
+	# Asset filenames are currently stable rather than content-hashed. They must
+	# revalidate so a new HTML release cannot execute stale JavaScript or CSS.
 	@static path *.js *.css *.png *.svg *.webmanifest
-	header @static Cache-Control "public, max-age=31536000, immutable"
+	header @static Cache-Control "public, max-age=300, must-revalidate"
 	@index path / /index.html
 	header @index Cache-Control "no-cache, must-revalidate"
 	@sitemap path /sitemap.xml /robots.txt /llms.txt
