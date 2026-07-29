@@ -28,6 +28,26 @@ if (!caddy.includes("llm.persiantoolbox.ir") || !caddy.includes("/srv/awesome-fr
 if (!nginx.includes("ir.llm.persiantoolbox.ir") || !nginx.includes('X-Robots-Tag "noindex, nofollow"')) throw new Error("Nginx mirror policy mismatch");
 if (!caddy.includes('Strict-Transport-Security "max-age=31536000"')) throw new Error("Caddy HSTS policy is missing");
 if (!nginx.includes('Strict-Transport-Security "max-age=31536000"')) throw new Error("Nginx HSTS policy is missing");
+if (!caddy.includes('Cache-Control "public, max-age=300, must-revalidate"')) {
+  throw new Error("Caddy must revalidate unhashed static assets");
+}
+if (!nginx.includes("location ~* \\.(?:js|css|png|svg|webmanifest)$") || !nginx.includes("expires 5m;")) {
+  throw new Error("Nginx must use a short expiry for unhashed static assets");
+}
+for (const [name, config] of [["Caddy", caddy], ["Nginx", nginx]]) {
+  if (/Cache-Control\s+"public, max-age=31536000, immutable"/.test(config)) {
+    throw new Error(`${name} must not mark stable-name assets immutable`);
+  }
+}
+const buildMetaBlock = nginx.match(/location = \/build-meta\.json \{([\s\S]*?)\n    \}/)?.[1] ?? "";
+for (const marker of [
+  'Cache-Control "no-store"',
+  'Strict-Transport-Security "max-age=31536000"',
+  'X-Robots-Tag "noindex, nofollow"',
+  "Content-Security-Policy"
+]) {
+  if (!buildMetaBlock.includes(marker)) throw new Error(`Nginx build metadata location is missing inherited security marker: ${marker}`);
+}
 for (const token of ["production-global", "production-iran", "SSH_PRIVATE_KEY", "SSH_KNOWN_HOSTS", "rollback-release.sh"]) {
   if (!workflow.includes(token)) throw new Error(`VPS workflow is missing ${token}`);
 }

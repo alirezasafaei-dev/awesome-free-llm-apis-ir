@@ -24,6 +24,8 @@ for (const [marker, description] of [
   ["sudo caddy validate --config \"$CADDYFILE\"", "post-install validation"],
   ["sudo systemctl reload caddy", "controlled reload"],
   ["sudo systemctl is-active --quiet caddy", "service health check"],
+  ["restored configuration validated but Caddy reload failed", "rollback reload failure reporting"],
+  ["Caddy is not active after rollback reload", "rollback service health reporting"],
   ["https://llm.persiantoolbox.ir/", "canonical HTTP verification"],
   ["INSTALL_COMPLETE=true", "rollback disarm marker"]
 ]) {
@@ -34,7 +36,8 @@ for (const forbidden of [
   "-X POST",
   "/api/event",
   "127.0.0.1:8002",
-  "skipping pre-flight validation"
+  "skipping pre-flight validation",
+  "systemctl reload caddy || true"
 ]) {
   if (source.includes(forbidden)) failures.push(`forbidden unsafe behavior remains: ${forbidden}`);
 }
