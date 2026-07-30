@@ -322,9 +322,11 @@ async function main() {
           const labelledText = labelledBy
             ? labelledBy.split(/\\s+/).map((id) => document.getElementById(id)?.textContent || "").join(" ")
             : "";
+          const labelText = [...(element.labels || [])].map((label) => label.textContent || "").join(" ");
           return (
             element.getAttribute("aria-label") ||
             labelledText ||
+            labelText ||
             element.getAttribute("alt") ||
             element.getAttribute("title") ||
             element.value ||
