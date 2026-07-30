@@ -127,13 +127,16 @@ for (const forbidden of [
 }
 
 for (const signal of [
-  "assertNoHtmlSinks",
-  "evaluateSafeExternalUrl",
+  "checkSource",
+  "checkDocsFlow",
+  "renderFinder",
+  "compareHarness",
   "createCardElement",
   "providerCard",
   "javascript:alert(1)",
   "insertAdjacentHTML",
-  "PROVIDER_ID_PATTERN"
+  "PROVIDER_ID_PATTERN",
+  "grid.replaceChildren(...providers.map(providerCard))"
 ]) {
   if (!xss.includes(signal)) throw new Error(`Source-owned Finder/Compare XSS contract is missing: ${signal}`);
 }
