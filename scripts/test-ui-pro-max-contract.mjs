@@ -9,18 +9,20 @@ const files = {
   css: path.join(root, "site", "ui-pro-max.css"),
   components: path.join(root, "site", "ui-pro-max-components.css"),
   js: path.join(root, "site", "ui-pro-max.js"),
-  transform: path.join(root, "scripts", "apply-ui-pro-max-shell.mjs")
+  transform: path.join(root, "scripts", "apply-ui-pro-max-shell.mjs"),
+  xss: path.join(root, "scripts", "test-finder-xss-resilience.mjs")
 };
 
 await Promise.all(Object.values(files).map((file) => access(file)));
 
-const [master, html, css, components, js, transform] = await Promise.all([
+const [master, html, css, components, js, transform, xss] = await Promise.all([
   readFile(files.master, "utf8"),
   readFile(files.html, "utf8"),
   readFile(files.css, "utf8"),
   readFile(files.components, "utf8"),
   readFile(files.js, "utf8"),
-  readFile(files.transform, "utf8")
+  readFile(files.transform, "utf8"),
+  readFile(files.xss, "utf8")
 ]);
 
 const requiredMasterSignals = [
@@ -106,12 +108,34 @@ for (const signal of [
   "ui-pro-max-components.css",
   "htmlFiles",
   "injectStylesheets",
-  "hardenFinderScript",
-  "sanitizeCatalogForHtml",
-  "catalog.providers.map(sanitizeCatalogForHtml)",
-  '.replaceAll("<", "&lt;")'
+  "externalizeFinderAssets",
+  'path.join(directory, "finder-core.js")',
+  "scriptMatch[1].trim()",
+  "Finder data safety is source-owned"
 ]) {
   if (!transform.includes(signal)) throw new Error(`Built-page design-system transform is missing: ${signal}`);
 }
 
-console.log("UI UX Pro Max contract passed: task-first hierarchy, semantic tokens, responsive behavior, sanitized Finder data and evidence-first cards are enforced.");
+for (const forbidden of [
+  "hardenFinderScript",
+  "sanitizeCatalogForHtml",
+  "catalog.providers.map(sanitizeCatalogForHtml)"
+]) {
+  if (transform.includes(forbidden)) {
+    throw new Error(`Temporary Finder build sanitizer must not return: ${forbidden}`);
+  }
+}
+
+for (const signal of [
+  "assertNoHtmlSinks",
+  "evaluateSafeExternalUrl",
+  "createCardElement",
+  "providerCard",
+  "javascript:alert(1)",
+  "insertAdjacentHTML",
+  "PROVIDER_ID_PATTERN"
+]) {
+  if (!xss.includes(signal)) throw new Error(`Source-owned Finder/Compare XSS contract is missing: ${signal}`);
+}
+
+console.log("UI UX Pro Max contract passed: task-first hierarchy, semantic tokens, responsive behavior, source-owned Finder safety and evidence-first cards are enforced.");
