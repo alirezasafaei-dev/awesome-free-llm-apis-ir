@@ -56,6 +56,7 @@ runProviderContextWhenReady(async () => {
 
   function safeHttpsUrl(value) {
     if (typeof value !== "string") return null;
+    if (/[\u0000-\u0020\u007f"'`\\]/u.test(value)) return null;
     try {
       const url = new URL(value);
       return url.protocol === "https:" ? url.toString() : null;
