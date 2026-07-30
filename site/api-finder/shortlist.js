@@ -53,15 +53,32 @@ whenReady(() => {
   const bar = document.createElement("aside");
   bar.className = "finder-shortlist";
   bar.setAttribute("aria-label", "فهرست مقایسه Providerها");
-  bar.innerHTML = `
-    <div>
-      <strong>مقایسه Providerها</strong>
-      <span id="finder-shortlist-status" role="status" aria-live="polite"></span>
-    </div>
-    <div class="finder-shortlist-actions">
-      <a id="finder-shortlist-open" class="button primary" href="../compare/">مقایسه انتخاب‌ها</a>
-      <button id="finder-shortlist-clear" class="button secondary" type="button">پاک‌کردن</button>
-    </div>`;
+  const barLabel = document.createElement("div");
+  const barStrong = document.createElement("strong");
+  barStrong.textContent = "مقایسه Providerها";
+  barLabel.appendChild(barStrong);
+  const barStatus = document.createElement("span");
+  barStatus.id = "finder-shortlist-status";
+  barStatus.setAttribute("role", "status");
+  barStatus.setAttribute("aria-live", "polite");
+  barLabel.appendChild(barStatus);
+
+  const barActions = document.createElement("div");
+  barActions.className = "finder-shortlist-actions";
+  const barOpen = document.createElement("a");
+  barOpen.id = "finder-shortlist-open";
+  barOpen.className = "button primary";
+  barOpen.href = "../compare/";
+  barOpen.textContent = "مقایسه انتخاب‌ها";
+  barActions.appendChild(barOpen);
+  const barClear = document.createElement("button");
+  barClear.id = "finder-shortlist-clear";
+  barClear.className = "button secondary";
+  barClear.type = "button";
+  barClear.textContent = "پاک‌کردن";
+  barActions.appendChild(barClear);
+
+  bar.append(barLabel, barActions);
   results.before(bar);
 
   const status = document.getElementById("finder-shortlist-status");

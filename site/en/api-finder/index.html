@@ -422,9 +422,149 @@
         return { score, breakdown };
       }
 
+      function escapeHtml(value) {
+        return String(value ?? "")
+          .replaceAll("&", "&amp;")
+          .replaceAll("<", "&lt;")
+          .replaceAll(">", "&gt;")
+          .replaceAll('"', "&quot;")
+          .replaceAll("'", "&#39;");
+      }
+
+      function safeExternalUrl(href) {
+        try {
+          const url = new URL(href, location.origin);
+          if (url.protocol !== "https:") return null;
+          return url.toString();
+        } catch {
+          return null;
+        }
+      }
+
+      function createBreakdownItem(b) {
+        const item = document.createElement("div");
+        item.className = "finder-breakdown-item";
+
+        const label = document.createElement("span");
+        label.className = "label";
+        label.textContent = b.label;
+        item.appendChild(label);
+
+        const val = document.createElement("span");
+        const cls = b.value > 0 ? "positive" : b.value < 0 ? "negative" : "";
+        val.className = cls ? `value ${cls}` : "value";
+        val.textContent = `${b.value > 0 ? "+" : ""}${b.value}`;
+        item.appendChild(val);
+
+        return item;
+      }
+
+      function createCardElement(provider, score, breakdown, index, usecase, region) {
+        const card = document.createElement("div");
+        card.className = "finder-card";
+
+        const header = document.createElement("div");
+        header.className = "finder-card-header";
+
+        const rank = document.createElement("div");
+        rank.className = "finder-rank";
+        rank.textContent = String(index + 1);
+        header.appendChild(rank);
+
+        const title = document.createElement("div");
+        title.className = "finder-card-title";
+
+        const name = document.createElement("h3");
+        name.textContent = provider.name;
+        title.appendChild(name);
+
+        const id = document.createElement("span");
+        id.className = "finder-id";
+        id.textContent = `${provider.id} · ${serviceLabels[provider.service_type] ?? provider.service_type}`;
+        title.appendChild(id);
+        header.appendChild(title);
+
+        const totalScore = document.createElement("div");
+        totalScore.className = "finder-total-score";
+        const scoreVal = document.createElement("strong");
+        scoreVal.textContent = String(score);
+        totalScore.appendChild(scoreVal);
+        const scoreLabel = document.createElement("small");
+        scoreLabel.textContent = "/ 100";
+        totalScore.appendChild(scoreLabel);
+        header.appendChild(totalScore);
+        card.appendChild(header);
+
+        const breakdownDiv = document.createElement("div");
+        breakdownDiv.className = "finder-breakdown";
+        for (const [, b] of Object.entries(breakdown)) {
+          breakdownDiv.appendChild(createBreakdownItem(b));
+        }
+        card.appendChild(breakdownDiv);
+
+        const extra = document.createElement("div");
+        extra.className = "finder-card-extra";
+
+        const accessBadge = document.createElement("span");
+        accessBadge.className = "access-badge";
+        if (provider.iran_access.status === "verified_working") {
+          accessBadge.style.background = "#065f46";
+          accessBadge.style.color = "#fff";
+        }
+        accessBadge.textContent = `${accessEmoji[provider.iran_access.status] ?? ""} ${accessLabels[provider.iran_access.status] ?? provider.iran_access.status}`.trim();
+        extra.appendChild(accessBadge);
+
+        const limit = document.createElement("span");
+        limit.className = "limit-label";
+        limit.textContent = limitText(provider);
+        extra.appendChild(limit);
+
+        if (isStale(provider)) {
+          const stale = document.createElement("span");
+          stale.className = "freshness-badge stale";
+          stale.style.fontSize = "11px";
+          stale.style.padding = "2px 8px";
+          stale.textContent = "Needs review";
+          extra.appendChild(stale);
+        }
+        card.appendChild(extra);
+
+        const actions = document.createElement("div");
+        actions.className = "finder-card-actions";
+
+        const quickParams = new URLSearchParams({ provider: provider.id, usecase: usecase, region: region });
+        const quickStartLink = document.createElement("a");
+        quickStartLink.className = "finder-quick-start-link";
+        quickStartLink.href = `../quick-start/?${quickParams.toString()}`;
+        quickStartLink.textContent = "Select & build first request";
+        actions.appendChild(quickStartLink);
+
+        const docsUrl = safeExternalUrl(provider.docs);
+        if (docsUrl) {
+          const docsLink = document.createElement("a");
+          docsLink.className = "finder-docs-link";
+          docsLink.href = docsUrl;
+          docsLink.setAttribute("target", "_blank");
+          docsLink.setAttribute("rel", "noopener noreferrer");
+          docsLink.textContent = "Official docs";
+          actions.appendChild(docsLink);
+        }
+
+        if (provider.iran_access.evidence?.length) {
+          const evidenceLink = document.createElement("a");
+          evidenceLink.className = "finder-evidence-link";
+          evidenceLink.href = `../../providers/${provider.id}/#evidence`;
+          evidenceLink.textContent = `${provider.iran_access.evidence.length} evidence items`;
+          actions.appendChild(evidenceLink);
+        }
+        card.appendChild(actions);
+
+        return card;
+      }
+
       function renderResults(results, filters) {
         if (results.length === 0) {
-          elements.results.innerHTML = "";
+          elements.results.replaceChildren();
           elements.status.hidden = true;
           elements.empty.hidden = false;
           return;
@@ -437,45 +577,9 @@
         const regionLabel = { iran: "Iran direct", "iran-vpn": "Iran VPN", any: "Any region" };
         elements.statusText.textContent = `${results.length} of ${providers.length} providers — ${usecaseLabel[filters.usecase] ?? "Chat"} · ${budgetLabel[filters.budget] ?? "Any"} · ${regionLabel[filters.region] ?? "Any"}`;
 
-        const cards = results.map(({ provider, score, breakdown }, index) => {
-          const card = document.createElement("div");
-          card.className = "finder-card";
-
-          const statusStyle = provider.iran_access.status === "verified_working" ? "background:#065f46;color:#fff" : "";
-
-          const quickStartUrl = `../quick-start/?provider=${encodeURIComponent(provider.id)}&usecase=${filters.usecase}&region=${filters.region}`;
-
-          card.innerHTML = `
-            <div class="finder-card-header">
-              <div class="finder-rank">${index + 1}</div>
-              <div class="finder-card-title">
-                <h3>${provider.name}</h3>
-                <span class="finder-id">${provider.id} · ${serviceLabels[provider.service_type] ?? provider.service_type}</span>
-              </div>
-              <div class="finder-total-score">
-                <strong>${score}</strong>
-                <small>/ 100</small>
-              </div>
-            </div>
-            <div class="finder-breakdown">
-              ${Object.entries(breakdown).map(([key, b]) => {
-                const cls = b.value > 0 ? "positive" : b.value < 0 ? "negative" : "";
-                return `<div class="finder-breakdown-item"><span class="label">${b.label}</span><span class="value ${cls}">${b.value > 0 ? "+" : ""}${b.value}</span></div>`;
-              }).join("")}
-            </div>
-            <div class="finder-card-extra">
-              <span class="access-badge" style="${statusStyle}">${accessEmoji[provider.iran_access.status] ?? ""} ${accessLabels[provider.iran_access.status] ?? provider.iran_access.status}</span>
-              <span class="limit-label">${limitText(provider)}</span>
-              ${isStale(provider) ? '<span class="freshness-badge stale" style="font-size:11px;padding:2px 8px">Needs review</span>' : ""}
-            </div>
-            <div class="finder-card-actions">
-              <a class="finder-quick-start-link" href="${quickStartUrl}">Select & build first request</a>
-              <a class="finder-docs-link" href="${provider.docs}" target="_blank" rel="noopener noreferrer">Official docs</a>
-              ${provider.iran_access.evidence?.length ? `<a class="finder-evidence-link" href="../../providers/${provider.id}/#evidence">${provider.iran_access.evidence.length} evidence items</a>` : ""}
-            </div>
-          `;
-          return card;
-        });
+        const cards = results.map(({ provider, score, breakdown }, index) =>
+          createCardElement(provider, score, breakdown, index, filters.usecase, filters.region)
+        );
 
         elements.results.replaceChildren(...cards);
       }
@@ -562,7 +666,7 @@
           elements.latency.value = "low";
           elements.region.value = "any";
           history.replaceState(null, "", location.pathname);
-          elements.results.innerHTML = "";
+          elements.results.replaceChildren();
           elements.status.hidden = true;
           elements.empty.hidden = true;
         });

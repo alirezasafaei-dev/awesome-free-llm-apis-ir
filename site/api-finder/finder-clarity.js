@@ -168,7 +168,14 @@ runWhenReady(() => {
 
   const heroTitle = hero.querySelector("h1");
   const heroDescription = hero.querySelector("p:not(.eyebrow)");
-  if (heroTitle) heroTitle.innerHTML = "برای پروژه‌ات چند API مناسب<br><span>پیدا کن و دلیلش را ببین.</span>";
+  if (heroTitle) {
+    heroTitle.textContent = "";
+    const textBefore = document.createTextNode("برای پروژه‌ات چند API مناسب");
+    const lineBreak = document.createElement("br");
+    const spanHint = document.createElement("span");
+    spanHint.textContent = "پیدا کن و دلیلش را ببین.";
+    heroTitle.append(textBefore, lineBreak, spanHint);
+  }
   if (heroDescription) heroDescription.textContent = "دو سؤال اصلی را جواب بده. سه پیشنهاد اصلی با توضیح ساده نمایش داده می‌شود؛ بعد می‌توانی گزینه‌های بیشتر، شواهد و محدودیت هر سرویس را بررسی کنی.";
 
   const hint = document.createElement("p");
@@ -183,14 +190,22 @@ runWhenReady(() => {
 
   const limitations = document.createElement("section");
   limitations.className = "finder-limitations";
-  limitations.innerHTML = `
-    <h2>این پیشنهاد چه چیزی را تضمین نمی‌کند؟</h2>
-    <ul>
-      <li>امتیاز بالاتر، کیفیت قطعی مدل یا پایداری دائمی سرویس را تضمین نمی‌کند.</li>
-      <li>بازشدن سایت یا پاسخ 401، موفقیت ثبت‌نام و اجرای مدل را ثابت نمی‌کند.</li>
-      <li>RPM ثبت‌شده ظرفیت درخواست را نشان می‌دهد و معادل Latency واقعی نیست.</li>
-      <li>قبل از انتخاب، صفحه شواهد و مستندات رسمی Provider را بررسی کن.</li>
-    </ul>`;
+  const limitationsHeading = document.createElement("h2");
+  limitationsHeading.textContent = "این پیشنهاد چه چیزی را تضمین نمی‌کند؟";
+  limitations.appendChild(limitationsHeading);
+  const limitationsList = document.createElement("ul");
+  const limitationItems = [
+    "امتیاز بالاتر، کیفیت قطعی مدل یا پایداری دائمی سرویس را تضمین نمی‌کند.",
+    "بازشدن سایت یا پاسخ 401، موفقیت ثبت‌نام و اجرای مدل را ثابت نمی‌کند.",
+    "RPM ثبت‌شده ظرفیت درخواست را نشان می‌دهد و معادل Latency واقعی نیست.",
+    "قبل از انتخاب، صفحه شواهد و مستندات رسمی Provider را بررسی کن."
+  ];
+  for (const text of limitationItems) {
+    const li = document.createElement("li");
+    li.textContent = text;
+    limitationsList.appendChild(li);
+  }
+  limitations.appendChild(limitationsList);
   disclosure.before(limitations);
 
   const resultTools = document.createElement("div");

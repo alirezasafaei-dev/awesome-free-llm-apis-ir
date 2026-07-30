@@ -130,7 +130,7 @@ function providerCard(provider) {
     <p class="compare-models"><strong>Notable models:</strong> ${escapeHtml(models.slice(0, 6).join(", ") || "Dynamic list; check official source")}</p>
     <div class="compare-card-actions">
       <a class="button primary" href="../../en/quick-start/?${quickParams.toString()}">Build first request</a>
-      <a class="button secondary compare-docs" data-provider-id="${escapeHtml(provider.id)}" href="${escapeHtml(provider.docs)}" target="_blank" rel="nofollow noopener">Official docs</a>
+      <a class="button secondary compare-docs" data-provider-id="${escapeHtml(provider.id)}" href="${escapeHtml(provider.docs)}" target="_blank" rel="nofollow noopener noreferrer">Official docs</a>
       <a class="button secondary" href="../../providers/${escapeHtml(provider.id)}/#evidence">Evidence & details</a>
     </div>
     <button class="compare-remove" type="button" data-provider-id="${escapeHtml(provider.id)}">Remove from comparison</button>

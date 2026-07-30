@@ -128,7 +128,7 @@ function providerCard(provider) {
     <p class="compare-models"><strong>مدل‌های شاخص:</strong> ${escapeHtml(models.slice(0, 6).join("، ") || "فهرست پویا؛ منبع رسمی را بررسی کنید")}</p>
     <div class="compare-card-actions">
       <a class="button primary" href="../quick-start/?${quickParams.toString()}">ساخت اولین درخواست</a>
-      <a class="button secondary compare-docs" data-provider-id="${escapeHtml(provider.id)}" href="${escapeHtml(provider.docs)}" target="_blank" rel="nofollow noopener">مستندات رسمی</a>
+      <a class="button secondary compare-docs" data-provider-id="${escapeHtml(provider.id)}" href="${escapeHtml(provider.docs)}" target="_blank" rel="nofollow noopener noreferrer">مستندات رسمی</a>
       <a class="button secondary" href="../providers/${escapeHtml(provider.id)}/#evidence">شواهد و جزئیات</a>
     </div>
     <button class="compare-remove" type="button" data-provider-id="${escapeHtml(provider.id)}">حذف از مقایسه</button>
