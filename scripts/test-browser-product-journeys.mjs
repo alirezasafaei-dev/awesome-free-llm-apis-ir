@@ -1,6 +1,6 @@
 import { spawn, spawnSync } from "node:child_process";
 import { createReadStream } from "node:fs";
-import { mkdtemp, readFile, rm, stat } from "node:fs/promises";
+import { mkdtemp, rm, stat } from "node:fs/promises";
 import { createServer } from "node:http";
 import { createServer as createTcpServer } from "node:net";
 import os from "node:os";
@@ -307,6 +307,68 @@ async function main() {
       assert(runtimeErrors.length === 0, `${context} produced JavaScript errors:\n${runtimeErrors.join("\n")}`);
     }
 
+    async function assertBasicAccessibility(context) {
+      const audit = await evaluate(`(() => {
+        const visible = (element) => {
+          if (element.hidden || element.getAttribute("aria-hidden") === "true") return false;
+          if (element.matches('input[type="hidden"]')) return false;
+          const style = getComputedStyle(element);
+          if (style.display === "none" || style.visibility === "hidden") return false;
+          const rect = element.getBoundingClientRect();
+          return rect.width > 0 || rect.height > 0;
+        };
+        const accessibleName = (element) => {
+          const labelledBy = element.getAttribute("aria-labelledby");
+          const labelledText = labelledBy
+            ? labelledBy.split(/\\s+/).map((id) => document.getElementById(id)?.textContent || "").join(" ")
+            : "";
+          return (
+            element.getAttribute("aria-label") ||
+            labelledText ||
+            element.getAttribute("alt") ||
+            element.getAttribute("title") ||
+            element.value ||
+            element.textContent ||
+            ""
+          ).trim();
+        };
+        const ids = [...document.querySelectorAll("[id]")].map((element) => element.id);
+        const duplicates = [...new Set(ids.filter((id, index) => ids.indexOf(id) !== index))];
+        const imagesWithoutAlt = [...document.images]
+          .filter(visible)
+          .filter((image) => !image.hasAttribute("alt"))
+          .map((image) => image.currentSrc || image.src || "image");
+        const unnamedInteractive = [...document.querySelectorAll("a,button,input,select,textarea,summary")]
+          .filter(visible)
+          .filter((element) => !accessibleName(element))
+          .map((element) => element.outerHTML.slice(0, 160));
+        const unlabeledControls = [...document.querySelectorAll("input,select,textarea")]
+          .filter(visible)
+          .filter((element) => !element.labels?.length && !element.getAttribute("aria-label") && !element.getAttribute("aria-labelledby"))
+          .map((element) => element.outerHTML.slice(0, 160));
+        const skip = document.querySelector(".skip-link");
+        const skipTarget = skip?.getAttribute("href")?.startsWith("#")
+          ? document.querySelector(skip.getAttribute("href"))
+          : null;
+        return {
+          h1Count: document.querySelectorAll("h1").length,
+          language: document.documentElement.lang,
+          duplicates,
+          imagesWithoutAlt,
+          unnamedInteractive,
+          unlabeledControls,
+          skipTargetMissing: Boolean(skip && !skipTarget)
+        };
+      })()`);
+      assert(audit.h1Count === 1, `${context} must expose exactly one H1; found ${audit.h1Count}`);
+      assert(Boolean(audit.language), `${context} is missing the document language`);
+      assert(audit.duplicates.length === 0, `${context} has duplicate IDs: ${audit.duplicates.join(", ")}`);
+      assert(audit.imagesWithoutAlt.length === 0, `${context} has visible images without alt: ${audit.imagesWithoutAlt.join(", ")}`);
+      assert(audit.unnamedInteractive.length === 0, `${context} has unnamed interactive elements: ${audit.unnamedInteractive.join(" | ")}`);
+      assert(audit.unlabeledControls.length === 0, `${context} has unlabeled form controls: ${audit.unlabeledControls.join(" | ")}`);
+      assert(!audit.skipTargetMissing, `${context} skip link target is missing`);
+    }
+
     await client.send("Emulation.setDeviceMetricsOverride", {
       width: 1440,
       height: 900,
@@ -333,6 +395,68 @@ async function main() {
     const focusedClass = await evaluate(`document.activeElement?.className || ""`);
     assert(String(focusedClass).includes("skip-link"), "first keyboard focus target is not the skip link");
     await assertNoRuntimeErrors("desktop homepage");
+    await assertBasicAccessibility("desktop homepage");
+
+    console.log("[browser] Provider Detail to Quick Start journey");
+    const providerTarget = await evaluate(`fetch("/catalog.json", { cache: "no-cache" })
+      .then((response) => response.json())
+      .then((catalog) => {
+        const provider = (catalog.providers || []).find((item) =>
+          item.api?.openai_compatible === true &&
+          typeof item.api?.base_url === "string" &&
+          item.api.base_url.startsWith("https://") &&
+          typeof item.docs === "string" &&
+          item.docs.startsWith("https://")
+        );
+        return provider ? { id: provider.id, name: provider.name, baseUrl: provider.api.base_url } : null;
+      })`);
+    assert(providerTarget?.id && providerTarget?.baseUrl, "catalog has no deterministic OpenAI-compatible HTTPS provider for the browser journey");
+
+    await navigate(`/providers/${providerTarget.id}/`);
+    const providerPage = await evaluate(`(() => {
+      const link = document.querySelector(".provider-quick-start-link");
+      return {
+        detailId: document.querySelector(".provider-detail")?.dataset.providerId || "",
+        h1: document.querySelector("h1")?.textContent || "",
+        facts: document.querySelectorAll(".provider-facts dt").length,
+        quickHref: link?.href || "",
+        quickLabel: link?.textContent?.trim() || "",
+        overflow: document.documentElement.scrollWidth - window.innerWidth
+      };
+    })()`);
+    assert(providerPage.detailId === providerTarget.id, "Provider Detail page does not preserve the selected provider ID");
+    assert(providerPage.h1.length > 0 && providerPage.facts >= 4, "Provider Detail page is missing its primary facts");
+    assert(/اولین درخواست/.test(providerPage.quickLabel), "Provider Detail Quick Start CTA is not action-oriented");
+    const providerQuickUrl = new URL(providerPage.quickHref);
+    assert(providerQuickUrl.pathname === "/quick-start/", "Provider Detail CTA does not point to Quick Start");
+    assert(providerQuickUrl.searchParams.get("provider") === providerTarget.id, "Provider Detail CTA lost provider context");
+    assert(providerQuickUrl.searchParams.get("usecase") === "chat", "Provider Detail CTA has an unexpected use case");
+    assert(providerQuickUrl.searchParams.get("region") === "any", "Provider Detail CTA has an unexpected region context");
+    assert(providerPage.overflow <= 1, `Provider Detail has horizontal overflow: ${providerPage.overflow}px`);
+    await assertNoRuntimeErrors("Provider Detail");
+    await assertBasicAccessibility("Provider Detail");
+
+    await navigate(providerPage.quickHref);
+    await waitUntil(`document.body.dataset.providerId === ${JSON.stringify(providerTarget.id)} && document.querySelector("#selected-provider")`);
+    const quickStart = await evaluate(`(() => ({
+      providerId: document.body.dataset.providerId || "",
+      title: document.querySelector("#selected-provider-title")?.textContent || "",
+      docsHref: document.querySelector("#selected-provider .official-docs-link")?.href || "",
+      environment: document.querySelector("#environment details.code-example pre code")?.textContent || "",
+      hasContextStylesheet: [...document.styleSheets].some((sheet) => sheet.href?.includes("provider-context.css")),
+      inlineStyles: document.querySelectorAll("style").length,
+      overflow: document.documentElement.scrollWidth - window.innerWidth
+    }))()`);
+    assert(quickStart.providerId === providerTarget.id, "Quick Start did not activate the selected provider context");
+    assert(quickStart.title.includes(providerTarget.name), "Quick Start context title does not identify the selected provider");
+    assert(quickStart.docsHref.startsWith("https://"), "Quick Start rendered a non-HTTPS documentation link");
+    assert(quickStart.environment.includes(providerTarget.baseUrl), "Quick Start environment example does not use the exact catalog Base URL");
+    assert(!quickStart.environment.includes("VERIFIED_BASE_URL"), "Quick Start retained the Base URL placeholder for a verified provider");
+    assert(quickStart.hasContextStylesheet, "Quick Start Provider context stylesheet was not loaded");
+    assert(quickStart.inlineStyles === 0, "Quick Start Provider context reintroduced runtime inline styles");
+    assert(quickStart.overflow <= 1, `Quick Start has horizontal overflow: ${quickStart.overflow}px`);
+    await assertNoRuntimeErrors("Provider-aware Quick Start");
+    await assertBasicAccessibility("Provider-aware Quick Start");
 
     console.log("[browser] Finder completion, shortlist and theme");
     await navigate("/api-finder/");
@@ -391,6 +515,7 @@ async function main() {
     const themeAfter = await evaluate(`document.documentElement.dataset.theme || ""`);
     assert(themeBefore !== themeAfter, "theme toggle did not change the active theme");
     await assertNoRuntimeErrors("Finder journey");
+    await assertBasicAccessibility("Finder journey");
 
     console.log("[browser] Compare journey");
     runtimeErrors.length = 0;
@@ -407,6 +532,7 @@ async function main() {
     assert(compareState.cards >= 2, "Compare did not render shortlisted providers");
     assert(compareState.resultsHidden === false, "Compare results remain hidden");
     assert(compareState.overflow <= 1, `desktop Compare has horizontal overflow: ${compareState.overflow}px`);
+    await assertBasicAccessibility("Compare journey");
     await evaluate(`document.getElementById("compare-clear")?.click()`);
     const cleared = await evaluate(`({
       emptyVisible: document.getElementById("compare-empty")?.hidden === false,
@@ -431,6 +557,7 @@ async function main() {
     })`);
     assert(mobileHome.overflow <= 1, `mobile homepage has horizontal overflow: ${mobileHome.overflow}px`);
     assert(mobileHome.primaryWidth > 0 && mobileHome.primaryWidth <= mobileHome.viewport, "mobile primary CTA exceeds the viewport");
+    await assertBasicAccessibility("mobile homepage");
 
     await navigate("/api-finder/");
     await waitUntil(`document.querySelectorAll(".finder-card").length >= 1`);
@@ -442,8 +569,9 @@ async function main() {
     assert(mobileFinder.overflow <= 1, `mobile Finder has horizontal overflow: ${mobileFinder.overflow}px`);
     assert(mobileFinder.formWidth > 0 && mobileFinder.formWidth <= mobileFinder.viewport, "mobile Finder form exceeds the viewport");
     await assertNoRuntimeErrors("mobile journeys");
+    await assertBasicAccessibility("mobile Finder");
 
-    console.log("Browser product journeys passed: real JavaScript, Finder, shortlist, Compare, theme, keyboard and responsive behavior are healthy.");
+    console.log("Browser product journeys passed: homepage, Provider Detail, Provider-aware Quick Start, Finder, shortlist, Compare, theme, keyboard, accessibility and responsive behavior are healthy.");
   } finally {
     try { client?.close(); } catch { /* best effort */ }
     const waitForChromeExit = () => processState.exited
