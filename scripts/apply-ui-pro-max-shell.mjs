@@ -7,40 +7,10 @@ const stylesheetNames = ["ui-pro-max.css", "ui-pro-max-components.css"];
 const finderPages = ["api-finder/index.html", "en/api-finder/index.html"];
 
 /**
- * Escape every catalog string before the Finder interpolates provider data into
- * HTML templates. The source pages still need a later source-owned DOM refactor,
- * but production builds must never trust contributor-controlled catalog strings.
- * @param {string} script
- * @param {string} relativePath
- * @returns {string}
- */
-function hardenFinderScript(script, relativePath) {
-  const catalogAssignment = "providers = catalog.providers;";
-  const occurrences = script.split(catalogAssignment).length - 1;
-  if (occurrences !== 1) {
-    throw new Error(`${relativePath}: expected exactly one catalog assignment for Finder hardening; found ${occurrences}`);
-  }
-
-  const guard = `function sanitizeCatalogForHtml(value) {
-  if (Array.isArray(value)) return value.map(sanitizeCatalogForHtml);
-  if (value && typeof value === "object") {
-    return Object.fromEntries(Object.entries(value).map(([key, item]) => [key, sanitizeCatalogForHtml(item)]));
-  }
-  if (typeof value !== "string") return value;
-  return value
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#39;");
-}`;
-
-  return `${guard}\n\n${script.replace(catalogAssignment, "providers = catalog.providers.map(sanitizeCatalogForHtml);")}`;
-}
-
-/**
  * Move executable Finder code and page CSS out of HTML so the production CSP
  * can remain strict and build-time ranking transforms cannot invalidate it.
+ * Finder data safety is source-owned: Finder/Compare render through DOM APIs,
+ * validate external HTTPS links and are covered by malicious-fixture tests.
  * @param {string} relativePath
  * @returns {Promise<void>}
  */
@@ -56,8 +26,7 @@ async function externalizeFinderAssets(relativePath) {
   }
 
   await writeFile(path.join(directory, "finder-core.css"), `${styleMatch[1].trim()}\n`, "utf8");
-  const hardenedScript = hardenFinderScript(scriptMatch[1].trim(), relativePath);
-  await writeFile(path.join(directory, "finder-core.js"), `${hardenedScript}\n`, "utf8");
+  await writeFile(path.join(directory, "finder-core.js"), `${scriptMatch[1].trim()}\n`, "utf8");
 
   const after = before
     .replace(styleMatch[0], '<link rel="stylesheet" href="./finder-core.css">')
