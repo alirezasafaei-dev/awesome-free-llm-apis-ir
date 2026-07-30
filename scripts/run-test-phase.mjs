@@ -47,6 +47,7 @@ const phases = Object.freeze({
     "ux:footer:test",
     "ux:quick-start:test",
     "ux:finder:test",
+    "finder:xss:test",
     "compare:test",
     "ux:research:test",
     "advisor:test",
