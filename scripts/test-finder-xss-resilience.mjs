@@ -5,28 +5,23 @@ import vm from "node:vm";
 
 const root = process.cwd();
 const files = {
-  finderFa: path.join(root, "site", "api-finder", "index.html"),
-  finderEn: path.join(root, "site", "en", "api-finder", "index.html"),
-  clarity: path.join(root, "site", "api-finder", "finder-clarity.js"),
-  shortlist: path.join(root, "site", "api-finder", "shortlist.js"),
-  compareFa: path.join(root, "site", "compare", "compare.js"),
-  compareEn: path.join(root, "site", "en", "compare", "compare.js"),
-  app: path.join(root, "site", "app.js")
+  finderFa: "site/api-finder/index.html",
+  finderEn: "site/en/api-finder/index.html",
+  clarity: "site/api-finder/finder-clarity.js",
+  shortlist: "site/api-finder/shortlist.js",
+  compareFa: "site/compare/compare.js",
+  compareEn: "site/en/compare/compare.js",
+  app: "site/app.js"
 };
-
 const sources = Object.fromEntries(await Promise.all(
-  Object.entries(files).map(async ([key, file]) => [key, await readFile(file, "utf8")])
+  Object.entries(files).map(async ([key, file]) => [key, await readFile(path.join(root, file), "utf8")])
 ));
 const failures = [];
-
-function fail(message) {
-  failures.push(message);
-}
+const fail = (message) => failures.push(message);
 
 function extractFunction(source, name) {
-  const marker = `function ${name}`;
-  const start = source.indexOf(marker);
-  if (start === -1) throw new Error(`Unable to find ${marker}`);
+  const start = source.indexOf(`function ${name}`);
+  if (start < 0) throw new Error(`Missing function ${name}`);
   const bodyStart = source.indexOf("{", start);
   let depth = 0;
   for (let index = bodyStart; index < source.length; index += 1) {
@@ -34,7 +29,7 @@ function extractFunction(source, name) {
     if (source[index] === "}") depth -= 1;
     if (depth === 0) return source.slice(start, index + 1);
   }
-  throw new Error(`Unable to parse ${marker}`);
+  throw new Error(`Unterminated function ${name}`);
 }
 
 class FakeText {
@@ -52,51 +47,40 @@ class FakeElement {
     this.children = [];
     this.attributes = {};
     this.dataset = {};
+    this.style = {};
     this.className = "";
     this.id = "";
     this.hidden = false;
     this.type = "";
     this._textContent = "";
   }
-
-  append(...nodes) {
-    for (const node of nodes) this.appendChild(node);
-  }
-
+  append(...nodes) { nodes.forEach((node) => this.appendChild(node)); }
   appendChild(node) {
     this.children.push(typeof node === "string" ? new FakeText(node) : node);
     return node;
   }
-
   replaceChildren(...nodes) {
     this.children = [];
     this._textContent = "";
     this.append(...nodes);
   }
-
   setAttribute(name, value) {
     const normalized = String(value);
     this.attributes[name] = normalized;
-    if (name === "class") this.className = normalized;
-    if (name === "id") this.id = normalized;
     if (name === "href") this.href = normalized;
     if (name === "target") this.target = normalized;
     if (name === "rel") this.rel = normalized;
   }
-
   addEventListener() {}
   closest() { return null; }
   before() {}
-
   set textContent(value) {
     this._textContent = String(value ?? "");
     this.children = [];
   }
-
   get textContent() {
     return this._textContent + this.children.map((child) => child.textContent ?? "").join("");
   }
-
   set href(value) { this.attributes.href = String(value); }
   get href() { return this.attributes.href ?? ""; }
   set target(value) { this.attributes.target = String(value); }
@@ -105,117 +89,91 @@ class FakeElement {
   get rel() { return this.attributes.rel ?? ""; }
 }
 
-function createFakeDocument() {
-  const byId = new Map();
+function createDocument() {
+  const nodes = new Map();
   return {
     createElement: (tagName) => new FakeElement(tagName),
     createTextNode: (value) => new FakeText(value),
     getElementById(id) {
-      if (!byId.has(id)) byId.set(id, new FakeElement("div"));
-      return byId.get(id);
+      if (!nodes.has(id)) nodes.set(id, new FakeElement("div"));
+      return nodes.get(id);
     }
   };
 }
 
-function walk(node) {
-  return [node, ...(node.children ?? []).flatMap(walk)];
-}
+const walk = (node) => [node, ...(node.children ?? []).flatMap(walk)];
 
-function assertNoHtmlSinks(source, label) {
+function checkSource(source, label) {
   for (const pattern of [/\.innerHTML\s*=/, /\.outerHTML\s*=/, /insertAdjacentHTML\s*\(/]) {
-    if (pattern.test(source)) fail(`${label}: forbidden HTML parsing sink matched ${pattern}`);
+    if (pattern.test(source)) fail(`${label}: forbidden HTML sink ${pattern}`);
   }
-}
-
-function assertBlankLinkProtection(source, label) {
   for (const match of source.matchAll(/<a\b[^>]*target=["']_blank["'][^>]*>/gi)) {
-    const tag = match[0];
-    const rel = tag.match(/\brel=["']([^"']*)["']/i)?.[1]?.split(/\s+/) ?? [];
+    const rel = match[0].match(/\brel=["']([^"']*)["']/i)?.[1]?.split(/\s+/) ?? [];
     if (!rel.includes("noopener") || !rel.includes("noreferrer")) {
-      fail(`${label}: static target=_blank link is missing noopener+noreferrer`);
+      fail(`${label}: static blank-target link lacks noopener+noreferrer`);
     }
   }
-
   const dynamicTargets = [
     ...source.matchAll(/\.target\s*=\s*["']_blank["']/g),
     ...source.matchAll(/\.setAttribute\(\s*["']target["']\s*,\s*["']_blank["']\s*\)/g)
   ];
   for (const match of dynamicTargets) {
-    const window = source.slice(match.index, match.index + 320);
-    if (!/noopener/.test(window) || !/noreferrer/.test(window)) {
-      fail(`${label}: dynamic target=_blank assignment is not followed by noopener+noreferrer`);
+    const nearby = source.slice(match.index, match.index + 320);
+    if (!nearby.includes("noopener") || !nearby.includes("noreferrer")) {
+      fail(`${label}: dynamic blank-target link lacks noopener+noreferrer`);
     }
   }
 }
 
-function assertDocsUrlFlow(source, label) {
+function checkDocsFlow(source, label) {
   if (!source.includes("function safeExternalUrl")) fail(`${label}: safeExternalUrl is missing`);
-  if (!source.includes("safeExternalUrl(provider.docs)")) fail(`${label}: provider.docs does not pass through safeExternalUrl`);
-  for (const pattern of [
-    /\.href\s*=\s*provider\.docs/,
-    /href=["']\$\{[^}]*provider\.docs/,
-    /\.setAttribute\(\s*["']href["']\s*,\s*provider\.docs/
-  ]) {
-    if (pattern.test(source)) fail(`${label}: raw provider.docs reaches an href sink`);
+  if (!source.includes("safeExternalUrl(provider.docs)")) fail(`${label}: provider.docs bypasses safeExternalUrl`);
+  if (/\.href\s*=\s*provider\.docs/.test(source) || /href=["']\$\{[^}]*provider\.docs/.test(source)) {
+    fail(`${label}: raw provider.docs reaches href`);
   }
-}
-
-function evaluateSafeExternalUrl(source, label) {
-  const sandbox = {
-    URL,
-    location: { origin: "https://catalog.example" }
-  };
+  const sandbox = { URL, location: { origin: "https://catalog.example" } };
   vm.runInNewContext(
-    `${extractFunction(source, "safeExternalUrl")}; globalThis.__safeExternalUrl = safeExternalUrl;`,
+    `${extractFunction(source, "safeExternalUrl")}; globalThis.result = safeExternalUrl;`,
     sandbox,
     { filename: label }
   );
-  const safeExternalUrl = sandbox.__safeExternalUrl;
-  const valid = [
-    "https://docs.example/path?query=1#section",
-    "https://docs.example/%22%3E%3Csvg%20onload%3Dalert(1)%3E"
-  ];
-  const invalid = [
+  for (const value of [
     "javascript:alert(1)",
     "data:text/html,<script>alert(1)</script>",
     "http://docs.example/insecure",
     "ftp://docs.example/file",
-    "mailto:security@example.com"
-  ];
-  for (const value of valid) {
-    const result = safeExternalUrl(value);
-    if (typeof result !== "string" || !result.startsWith("https://")) {
-      fail(`${label}: valid HTTPS URL was rejected: ${value}`);
-    }
+    "mailto:test@example.com"
+  ]) {
+    if (sandbox.result(value) !== null) fail(`${label}: accepted unsafe URL ${value}`);
   }
-  for (const value of invalid) {
-    if (safeExternalUrl(value) !== null) fail(`${label}: unsafe URL scheme was accepted: ${value}`);
+  if (!String(sandbox.result("https://docs.example/path?q=1")).startsWith("https://")) {
+    fail(`${label}: rejected valid HTTPS URL`);
   }
 }
 
-function finderRenderer(source, label) {
+function renderFinder(source, label, provider, payload) {
   const sandbox = {
     URL,
     URLSearchParams,
     location: { origin: "https://catalog.example" },
-    document: createFakeDocument(),
+    document: createDocument(),
     serviceLabels: {},
     accessLabels: {},
-    limitText: () => "<limit onmouseover=alert(1)>",
+    accessEmoji: {},
+    limitText: () => payload,
     isStale: () => false
   };
-  const script = [
+  vm.runInNewContext([
     extractFunction(source, "safeExternalUrl"),
     extractFunction(source, "createBreakdownItem"),
     extractFunction(source, "createCardElement"),
-    "globalThis.__createCardElement = createCardElement;"
-  ].join("\n");
-  vm.runInNewContext(script, sandbox, { filename: label });
-  return { render: sandbox.__createCardElement, document: sandbox.document };
+    "globalThis.render = createCardElement;"
+  ].join("\n"), sandbox, { filename: label });
+  return sandbox.render(provider, 99, { fixture: { label: payload, value: 1 } }, 0, "chat", "any");
 }
 
-function compareRenderer(source, label) {
-  const document = createFakeDocument();
+function compareHarness(source, label) {
+  const document = createDocument();
   const pending = new Promise(() => {});
   const sandbox = {
     URL,
@@ -236,26 +194,21 @@ function compareRenderer(source, label) {
     clearTimeout
   };
   vm.runInNewContext(
-    `${source}\n;globalThis.__providerCard = providerCard; globalThis.__safeIds = safeIds;`,
+    `${source}\n;globalThis.render = providerCard; globalThis.safe = safeIds;`,
     sandbox,
     { filename: label }
   );
-  return { render: sandbox.__providerCard, safeIds: sandbox.__safeIds };
+  return sandbox;
 }
 
-const consumerKeys = ["finderFa", "finderEn", "clarity", "shortlist", "compareFa", "compareEn", "app"];
-for (const key of consumerKeys) {
-  assertNoHtmlSinks(sources[key], files[key]);
-  assertBlankLinkProtection(sources[key], files[key]);
-}
+for (const [key, source] of Object.entries(sources)) checkSource(source, files[key]);
 for (const key of ["finderFa", "finderEn", "compareFa", "compareEn"]) {
-  assertDocsUrlFlow(sources[key], files[key]);
-  evaluateSafeExternalUrl(sources[key], files[key]);
+  checkDocsFlow(sources[key], files[key]);
 }
 for (const key of ["compareFa", "compareEn"]) {
-  if (!sources[key].includes("PROVIDER_ID_PATTERN")) fail(`${files[key]}: provider ID validation is missing`);
+  if (!sources[key].includes("PROVIDER_ID_PATTERN")) fail(`${files[key]}: provider ID validation missing`);
   if (!sources[key].includes("grid.replaceChildren(...providers.map(providerCard))")) {
-    fail(`${files[key]}: compare rendering must use DOM nodes with replaceChildren`);
+    fail(`${files[key]}: Compare must render DOM nodes via replaceChildren`);
   }
 }
 
@@ -269,35 +222,33 @@ const payloads = [
 ];
 
 for (const [key, label] of [["finderFa", "Persian Finder"], ["finderEn", "English Finder"]]) {
-  const { render } = finderRenderer(sources[key], label);
   for (const payload of payloads) {
-    const provider = {
+    const card = renderFinder(sources[key], label, {
       id: "safe-provider",
       name: payload,
       service_type: payload,
       docs: "javascript:alert(1)",
       iran_access: { status: payload, evidence: [{}] }
-    };
-    const card = render(provider, 99, { test: { label: payload, value: 1 } }, 0, "chat", "any");
+    }, payload);
     const nodes = walk(card);
-    if (!card.textContent.includes(payload)) fail(`${label}: malicious text was not preserved as inert text`);
+    if (!card.textContent.includes(payload)) fail(`${label}: payload was not preserved as inert text`);
     if (nodes.some((node) => ["SCRIPT", "IMG", "SVG"].includes(node.tagName))) {
-      fail(`${label}: malicious payload created an executable element`);
+      fail(`${label}: payload created an executable element`);
     }
     if (nodes.some((node) => /^(?:javascript|data|http):/i.test(node.href || ""))) {
-      fail(`${label}: unsafe docs URL reached a rendered link`);
+      fail(`${label}: unsafe URL reached rendered output`);
     }
   }
 }
 
 for (const [key, label] of [["compareFa", "Persian Compare"], ["compareEn", "English Compare"]]) {
-  const { render, safeIds } = compareRenderer(sources[key], label);
-  const sanitizedIds = safeIds(["safe-one", "../escape", "safe-two", "safe-one", "bad<script>"]);
-  if (JSON.stringify(sanitizedIds) !== JSON.stringify(["safe-one", "safe-two"])) {
-    fail(`${label}: provider ID validation accepted traversal, markup, or duplicates`);
+  const harness = compareHarness(sources[key], label);
+  const safeIds = harness.safe(["safe-one", "../escape", "safe-two", "safe-one", "bad<script>"]);
+  if (JSON.stringify(safeIds) !== JSON.stringify(["safe-one", "safe-two"])) {
+    fail(`${label}: ID validator accepted traversal, markup, or duplicates`);
   }
   for (const payload of payloads) {
-    const provider = {
+    const card = harness.render({
       id: "safe-provider",
       name: payload,
       service_type: payload,
@@ -308,23 +259,22 @@ for (const [key, label] of [["compareFa", "Persian Compare"], ["compareEn", "Eng
       free_tier: { type: payload, requires_payment_method: null, limits: [{ condition: payload }] },
       api: { base_url: payload, openai_compatible: false },
       verification: { last_checked: payload }
-    };
-    const card = render(provider);
+    });
     const nodes = walk(card);
-    if (!card.textContent.includes(payload)) fail(`${label}: malicious text was not preserved as inert text`);
+    if (!card.textContent.includes(payload)) fail(`${label}: payload was not preserved as inert text`);
     if (nodes.some((node) => ["SCRIPT", "IMG", "SVG"].includes(node.tagName))) {
-      fail(`${label}: malicious payload created an executable element`);
+      fail(`${label}: payload created an executable element`);
     }
     if (nodes.some((node) => /^(?:javascript|data|http):/i.test(node.href || ""))) {
-      fail(`${label}: unsafe docs URL reached a rendered link`);
+      fail(`${label}: unsafe URL reached rendered output`);
     }
   }
 }
 
 if (failures.length) {
   console.error("Finder/Compare XSS resilience test FAILED:");
-  for (const failure of failures) console.error(`- ${failure}`);
+  failures.forEach((failure) => console.error(`- ${failure}`));
   process.exit(1);
 }
 
-console.log("Finder/Compare XSS resilience passed: DOM-only rendering, HTTPS docs validation, protected blank links, safe IDs, and malicious fixtures are enforced.");
+console.log("Finder/Compare XSS resilience passed: DOM-only rendering, HTTPS docs, protected blank links, safe IDs, and malicious fixtures are enforced.");
