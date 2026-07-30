@@ -54,25 +54,15 @@ runProviderContextWhenReady(async () => {
     }
   };
 
-  function addStyles() {
-    const style = document.createElement("style");
-    style.textContent = `
-      .provider-context-panel{margin:22px 0;padding:clamp(18px,4vw,28px);border:1px solid color-mix(in srgb,var(--primary) 30%,var(--border));border-radius:22px;background:color-mix(in srgb,var(--primary) 6%,var(--surface));box-shadow:var(--shadow)}
-      .provider-context-panel h2{margin:4px 0 8px;font-size:clamp(22px,3vw,32px)}
-      .provider-context-panel>p{margin:0;color:var(--muted);line-height:1.9}
-      .provider-context-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:18px 0}
-      .provider-context-item{min-width:0;padding:12px;border:1px solid var(--border);border-radius:14px;background:var(--surface)}
-      .provider-context-item span{display:block;margin-bottom:5px;color:var(--muted);font-size:11px;font-weight:800}
-      .provider-context-item strong,.provider-context-item code{overflow-wrap:anywhere}
-      .provider-context-actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:16px}
-      .provider-context-actions a{min-height:44px;padding:10px 15px;border-radius:11px;text-decoration:none;font-weight:800}
-      .provider-context-actions .official-docs-link{background:var(--primary);color:#fff}
-      .provider-context-actions .evidence-link{border:1px solid var(--border);background:var(--surface);color:var(--text)}
-      .provider-model-guidance{margin-top:12px;padding:12px;border-inline-start:4px solid var(--warning);border-radius:10px;background:color-mix(in srgb,var(--warning) 8%,var(--surface));color:var(--muted);font-size:13px;line-height:1.8}
-      .provider-context-error{margin:20px 0;padding:16px;border:1px solid var(--warning);border-radius:16px;background:color-mix(in srgb,var(--warning) 8%,var(--surface))}
-      @media(max-width:640px){.provider-context-grid{grid-template-columns:1fr}.provider-context-actions{flex-direction:column}.provider-context-actions a{width:100%;text-align:center}}
-    `;
-    document.head.append(style);
+  function safeHttpsUrl(value) {
+    if (typeof value !== "string") return null;
+    if (/[\u0000-\u0020\u007f"'`\\]/u.test(value)) return null;
+    try {
+      const url = new URL(value);
+      return url.protocol === "https:" ? url.toString() : null;
+    } catch {
+      return null;
+    }
   }
 
   function textElement(tag, text, className = "") {
@@ -103,18 +93,17 @@ runProviderContextWhenReady(async () => {
     return "نیاز به پرداخت نامشخص است";
   }
 
-  function environmentText(provider, model) {
-    const baseUrl = provider.api?.base_url || "VERIFIED_BASE_URL";
-    return `export LLM_API_KEY="YOUR_API_KEY"\nexport LLM_BASE_URL="${baseUrl}"\nexport LLM_MODEL="${model || "VERIFIED_MODEL_ID"}"`;
+  function environmentText(baseUrl, model) {
+    return `export LLM_API_KEY="YOUR_API_KEY"\nexport LLM_BASE_URL="${baseUrl || "VERIFIED_BASE_URL"}"\nexport LLM_MODEL="${model || "VERIFIED_MODEL_ID"}"`;
   }
 
-  function updateEnvironmentExample(provider, model) {
+  function updateEnvironmentExample(baseUrl, model) {
     const section = document.getElementById("environment");
     const details = section?.querySelector("details.code-example");
     const code = details?.querySelector("pre code");
     const button = details?.querySelector(".copy-button");
     if (!code || !button) return;
-    const value = environmentText(provider, model);
+    const value = environmentText(baseUrl, model);
     code.textContent = value;
     button.dataset.copyText = value;
   }
@@ -126,8 +115,6 @@ runProviderContextWhenReady(async () => {
     box.setAttribute("role", "status");
     hero.after(box);
   }
-
-  addStyles();
 
   try {
     const response = await fetch("../catalog.json", { cache: "no-cache" });
@@ -144,7 +131,9 @@ runProviderContextWhenReady(async () => {
     document.body.dataset.region = region;
 
     const model = verifiedModel(provider);
-    const baseUrl = provider.api?.base_url || "در کاتالوگ ثبت نشده";
+    const apiBaseUrl = safeHttpsUrl(provider.api?.base_url);
+    const docsUrl = safeHttpsUrl(provider.docs);
+    const baseUrlLabel = apiBaseUrl ?? "در کاتالوگ ثبت نشده یا HTTPS معتبر نیست";
     const hero = document.querySelector(".quick-start-hero");
     if (!hero) return;
 
@@ -158,9 +147,9 @@ runProviderContextWhenReady(async () => {
     panel.append(title);
     panel.append(textElement(
       "p",
-      provider.api?.openai_compatible
+      provider.api?.openai_compatible && apiBaseUrl
         ? "اطلاعات زیر مستقیم از catalog.json بارگذاری شده است. کلید API فقط در متغیر محیطی دستگاه شما قرار می‌گیرد و در این صفحه وارد یا ذخیره نمی‌شود."
-        : "این Provider در کاتالوگ به‌عنوان سازگار با OpenAI تأیید نشده است. از نمونه‌کد عمومی فقط پس از تطبیق با مستندات رسمی استفاده کنید."
+        : "این Provider یا Base URL آن برای نمونه OpenAI-compatible به‌صورت معتبر تأیید نشده است. از نمونه‌کد عمومی فقط پس از تطبیق با مستندات رسمی استفاده کنید."
     ));
 
     const grid = document.createElement("div");
@@ -169,7 +158,7 @@ runProviderContextWhenReady(async () => {
       contextItem("نوع سرویس", labels.service[provider.service_type] ?? provider.service_type ?? "نامشخص"),
       contextItem("نوع دسترسی رایگان", labels.freeTier[provider.free_tier?.type] ?? provider.free_tier?.type ?? "نامشخص"),
       contextItem("پرداخت", paymentLabel(provider.free_tier?.requires_payment_method)),
-      contextItem("Base URL", baseUrl, true),
+      contextItem("Base URL", baseUrlLabel, true),
       contextItem("وضعیت ایران", labels.access[provider.iran_access?.status] ?? provider.iran_access?.status ?? "نامشخص"),
       contextItem("آخرین بررسی", provider.verification?.last_checked ?? "تاریخ ثبت نشده"),
       contextItem("مدل نمونه", model ?? "VERIFIED_MODEL_ID", true),
@@ -188,27 +177,30 @@ runProviderContextWhenReady(async () => {
 
     const actions = document.createElement("div");
     actions.className = "provider-context-actions";
-    const docs = document.createElement("a");
-    docs.className = "official-docs-link";
-    docs.href = provider.docs;
-    docs.target = "_blank";
-    docs.rel = "noopener noreferrer";
-    docs.textContent = "بازکردن مستندات رسمی";
-    docs.addEventListener("click", () => plausible("official_docs_click", {
-      provider_id: provider.id,
-      usecase,
-      region,
-      source: "quick_start_context"
-    }));
+    if (docsUrl) {
+      const docs = document.createElement("a");
+      docs.className = "official-docs-link";
+      docs.href = docsUrl;
+      docs.target = "_blank";
+      docs.rel = "noopener noreferrer";
+      docs.textContent = "بازکردن مستندات رسمی";
+      docs.addEventListener("click", () => plausible("official_docs_click", {
+        provider_id: provider.id,
+        usecase,
+        region,
+        source: "quick_start_context"
+      }));
+      actions.append(docs);
+    }
     const evidence = document.createElement("a");
     evidence.className = "evidence-link";
     evidence.href = `../providers/${provider.id}/#evidence`;
     evidence.textContent = "دیدن شواهد و محدودیت‌ها";
-    actions.append(docs, evidence);
+    actions.append(evidence);
     panel.append(actions);
     hero.after(panel);
 
-    if (provider.api?.openai_compatible) updateEnvironmentExample(provider, model);
+    if (provider.api?.openai_compatible && apiBaseUrl) updateEnvironmentExample(apiBaseUrl, model);
 
     plausible("quick_start_provider_loaded", {
       provider_id: provider.id,

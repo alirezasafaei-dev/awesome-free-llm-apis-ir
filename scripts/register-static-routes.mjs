@@ -130,6 +130,12 @@ if (!apiFinder.includes('src="./finder-clarity.js"')) {
 await writeFile(apiFinderPath, apiFinder);
 
 let quickStart = await readFile(quickStartPath, "utf8");
+if (!quickStart.includes('href="./provider-context.css"')) {
+  quickStart = quickStart.replace(
+    "</head>",
+    '  <link rel="stylesheet" href="./provider-context.css">\n</head>'
+  );
+}
 if (!quickStart.includes('src="./provider-context.js"')) {
   quickStart = quickStart.replace(
     "</body>",
@@ -140,6 +146,12 @@ await writeFile(quickStartPath, quickStart);
 
 if (existsSync(enQuickStartPath)) {
   let enQuickStart = await readFile(enQuickStartPath, "utf8");
+  if (!enQuickStart.includes('href="../../quick-start/provider-context.css"')) {
+    enQuickStart = enQuickStart.replace(
+      "</head>",
+      '  <link rel="stylesheet" href="../../quick-start/provider-context.css">\n</head>'
+    );
+  }
   if (!enQuickStart.includes('src="./provider-context-en.js"')) {
     enQuickStart = enQuickStart.replace(
       "</body>",

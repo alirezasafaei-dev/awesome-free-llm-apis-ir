@@ -2,10 +2,12 @@ import { access, readFile, rm } from "node:fs/promises";
 import { spawnSync } from "node:child_process";
 import path from "node:path";
 import process from "node:process";
+import vm from "node:vm";
 
 const root = process.cwd();
 const sourcePage = path.join(root, "site", "quick-start", "index.html");
 const sourceStyles = path.join(root, "site", "quick-start", "quick-start.css");
+const providerContextStyles = path.join(root, "site", "quick-start", "provider-context.css");
 const providerContext = path.join(root, "site", "quick-start", "provider-context.js");
 const providerContextEn = path.join(root, "site", "en", "quick-start", "provider-context-en.js");
 const destination = path.join(root, ".site-dist");
@@ -13,11 +15,13 @@ const quickStartUrl = "https://llm.persiantoolbox.ir/quick-start/";
 
 await access(sourcePage);
 await access(sourceStyles);
+await access(providerContextStyles);
 await access(providerContext);
 await access(providerContextEn);
 
 const source = await readFile(sourcePage, "utf8");
 const styles = await readFile(sourceStyles, "utf8");
+const contextStyles = await readFile(providerContextStyles, "utf8");
 const contextScript = await readFile(providerContext, "utf8");
 const contextScriptEn = await readFile(providerContextEn, "utf8");
 
@@ -55,13 +59,13 @@ const providerContextSignals = [
   'allowedUsecases',
   'allowedRegions',
   'VERIFIED_MODEL_ID',
-  'provider.api?.base_url',
-  'provider.docs',
+  'safeHttpsUrl(provider.api?.base_url)',
+  'safeHttpsUrl(provider.docs)',
   'quick_start_provider_loaded',
   'official_docs_click',
   'finder_handoff',
   'document.body.dataset.providerId',
-  'updateEnvironmentExample(provider, model)'
+  'updateEnvironmentExample(apiBaseUrl, model)'
 ];
 
 for (const signal of ['fetch("../catalog.json"', ...providerContextSignals]) {
@@ -77,9 +81,55 @@ for (const signal of [
 }
 
 for (const [label, script] of [["Persian", contextScript], ["English", contextScriptEn]]) {
-  if (script.includes('type="password"') || script.includes("localStorage.setItem")) {
-    throw new Error(`${label} Provider-aware Quick Start must not request or persist API credentials`);
+  for (const forbidden of [
+    'type="password"',
+    "localStorage.setItem",
+    'document.createElement("style")',
+    "docs.href = provider.docs",
+    "environmentText(provider, model)"
+  ]) {
+    if (script.includes(forbidden)) throw new Error(`${label} Provider-aware Quick Start contains forbidden behavior: ${forbidden}`);
   }
+}
+
+for (const signal of [
+  ".provider-context-panel",
+  ".provider-context-grid",
+  ".provider-context-actions",
+  ".provider-context-error",
+  "@media (max-width: 640px)"
+]) {
+  if (!contextStyles.includes(signal)) throw new Error(`Provider context stylesheet is missing: ${signal}`);
+}
+
+function extractFunction(sourceText, name) {
+  const start = sourceText.indexOf(`function ${name}`);
+  if (start < 0) throw new Error(`Missing function ${name}`);
+  const bodyStart = sourceText.indexOf("{", start);
+  let depth = 0;
+  for (let index = bodyStart; index < sourceText.length; index += 1) {
+    if (sourceText[index] === "{") depth += 1;
+    if (sourceText[index] === "}") depth -= 1;
+    if (depth === 0) return sourceText.slice(start, index + 1);
+  }
+  throw new Error(`Unterminated function ${name}`);
+}
+
+for (const [label, script] of [["Persian", contextScript], ["English", contextScriptEn]]) {
+  const sandbox = { URL };
+  vm.runInNewContext(`${extractFunction(script, "safeHttpsUrl")}; globalThis.validate = safeHttpsUrl;`, sandbox, { filename: label });
+  const validate = sandbox.validate;
+  for (const unsafe of [
+    "javascript:alert(1)",
+    "data:text/html,<script>alert(1)</script>",
+    "http://provider.example/v1",
+    "ftp://provider.example/file",
+    'https://provider.example/v1"\nexport INJECTED="1'
+  ]) {
+    if (validate(unsafe) !== null) throw new Error(`${label} safeHttpsUrl accepted unsafe input: ${unsafe}`);
+  }
+  const valid = validate("https://provider.example/v1");
+  if (valid !== "https://provider.example/v1") throw new Error(`${label} safeHttpsUrl rejected or rewrote a valid HTTPS URL unexpectedly: ${valid}`);
 }
 
 for (const evidence of ["Reachability", "Signup", "Key issuance", "Inference"]) {
@@ -112,6 +162,7 @@ if (build.status !== 0) throw new Error(build.stderr || build.stdout || "Product
 try {
   const builtPage = await readFile(path.join(destination, "quick-start", "index.html"), "utf8");
   const builtContext = await readFile(path.join(destination, "quick-start", "provider-context.js"), "utf8");
+  const builtContextStyles = await readFile(path.join(destination, "quick-start", "provider-context.css"), "utf8");
   const builtPageEn = await readFile(path.join(destination, "en", "quick-start", "index.html"), "utf8");
   const builtContextEn = await readFile(path.join(destination, "en", "quick-start", "provider-context-en.js"), "utf8");
   const builtHomepage = await readFile(path.join(destination, "index.html"), "utf8");
@@ -121,8 +172,11 @@ try {
 
   if (!builtPage.includes('src="../analytics.js"')) throw new Error("Built quick-start page is missing analytics");
   if (!builtPage.includes('src="../plausible.js"')) throw new Error("Built quick-start page is missing the Plausible tracker");
+  if (!builtPage.includes('href="./provider-context.css"')) throw new Error("Built quick-start page is missing external Provider context styles");
   if (!builtPage.includes('src="./provider-context.js"')) throw new Error("Built quick-start page is missing Provider context activation");
   if (!builtContext.includes("quick_start_provider_loaded")) throw new Error("Built Provider context lost activation analytics");
+  if (!builtContextStyles.includes(".provider-context-panel")) throw new Error("Built Provider context stylesheet lost its panel contract");
+  if (!builtPageEn.includes('href="../../quick-start/provider-context.css"')) throw new Error("Built English quick-start page is missing external Provider context styles");
   if (!builtPageEn.includes('src="./provider-context-en.js"')) throw new Error("Built English quick-start page is missing Provider context activation");
   if (!builtContextEn.includes('fetch("../../catalog.json"')) throw new Error("Built English Provider context has the wrong catalog path");
   if (!builtContextEn.includes('document.querySelector(".qs-en-hero")')) throw new Error("Built English Provider context lost its page selector");
@@ -141,4 +195,4 @@ try {
   await rm(destination, { recursive: true, force: true });
 }
 
-console.log("Developer quick-start contract passed for Persian and English Provider context, safe model fallback, semantic portable homepage linkage and activation analytics.");
+console.log("Developer quick-start contract passed for Persian and English Provider context, HTTPS-only URL flow, external CSP-safe styles, safe model fallback, semantic portable homepage linkage and activation analytics.");
