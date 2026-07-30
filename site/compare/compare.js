@@ -79,13 +79,13 @@ function trackPlausible(name, props = {}) {
   window.plausible(name, { props: safeProps });
 }
 
-function escapeHtml(value) {
-  return String(value ?? "")
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#39;");
+function safeExternalUrl(href) {
+  try {
+    const url = new URL(String(href ?? ""));
+    return url.protocol === "https:" ? url.toString() : null;
+  } catch {
+    return null;
+  }
 }
 
 function limitText(provider) {
@@ -107,32 +107,118 @@ function paymentText(value) {
   return "در منبع مشخص نیست";
 }
 
+function createFact(term, value, { code = false } = {}) {
+  const row = document.createElement("div");
+  const dt = document.createElement("dt");
+  dt.textContent = term;
+  const dd = document.createElement("dd");
+  if (code) {
+    const codeElement = document.createElement("code");
+    codeElement.textContent = String(value ?? "");
+    dd.appendChild(codeElement);
+  } else {
+    dd.textContent = String(value ?? "");
+  }
+  row.append(dt, dd);
+  return row;
+}
+
+function createLabeledParagraph(className, label, value) {
+  const paragraph = document.createElement("p");
+  paragraph.className = className;
+  const strong = document.createElement("strong");
+  strong.textContent = label;
+  paragraph.append(strong, document.createTextNode(` ${value}`));
+  return paragraph;
+}
+
 function providerCard(provider) {
   const models = provider.models?.notable ?? [];
   const capabilities = provider.capabilities ?? [];
   const quickParams = new URLSearchParams({ provider: provider.id, usecase: "chat", region: "iran" });
-  return `<article class="compare-card" data-provider-id="${escapeHtml(provider.id)}">
-    <p class="eyebrow">${escapeHtml(labels.service[provider.service_type] || provider.service_type)}</p>
-    <h3>${escapeHtml(provider.name)}</h3>
-    <p class="compare-card-id">${escapeHtml(provider.id)}</p>
-    <span class="compare-access">${escapeHtml(labels.iran[provider.iran_access?.status] || provider.iran_access?.status || "نامشخص")}</span>
-    <dl class="compare-facts">
-      <div><dt>نوع Free Tier</dt><dd>${escapeHtml(labels.free[provider.free_tier?.type] || provider.free_tier?.type || "نامشخص")}</dd></div>
-      <div><dt>نیاز به کارت/پرداخت</dt><dd>${escapeHtml(paymentText(provider.free_tier?.requires_payment_method))}</dd></div>
-      <div><dt>محدودیت نمونه</dt><dd>${escapeHtml(limitText(provider))}</dd></div>
-      <div><dt>سازگار با OpenAI</dt><dd>${provider.api?.openai_compatible ? "بله" : "خیر"}</dd></div>
-      <div><dt>Base URL</dt><dd><code>${escapeHtml(provider.api?.base_url || "نامشخص")}</code></dd></div>
-      <div><dt>آخرین بررسی</dt><dd>${escapeHtml(provider.verification?.last_checked || "نامشخص")}</dd></div>
-    </dl>
-    <p class="compare-capabilities"><strong>قابلیت‌ها:</strong> ${escapeHtml(capabilities.join("، ") || "ثبت نشده")}</p>
-    <p class="compare-models"><strong>مدل‌های شاخص:</strong> ${escapeHtml(models.slice(0, 6).join("، ") || "فهرست پویا؛ منبع رسمی را بررسی کنید")}</p>
-    <div class="compare-card-actions">
-      <a class="button primary" href="../quick-start/?${quickParams.toString()}">ساخت اولین درخواست</a>
-      <a class="button secondary compare-docs" data-provider-id="${escapeHtml(provider.id)}" href="${escapeHtml(provider.docs)}" target="_blank" rel="nofollow noopener">مستندات رسمی</a>
-      <a class="button secondary" href="../providers/${escapeHtml(provider.id)}/#evidence">شواهد و جزئیات</a>
-    </div>
-    <button class="compare-remove" type="button" data-provider-id="${escapeHtml(provider.id)}">حذف از مقایسه</button>
-  </article>`;
+
+  const article = document.createElement("article");
+  article.className = "compare-card";
+  article.dataset.providerId = provider.id;
+
+  const eyebrow = document.createElement("p");
+  eyebrow.className = "eyebrow";
+  eyebrow.textContent = labels.service[provider.service_type] || provider.service_type;
+  article.appendChild(eyebrow);
+
+  const title = document.createElement("h3");
+  title.textContent = provider.name;
+  article.appendChild(title);
+
+  const id = document.createElement("p");
+  id.className = "compare-card-id";
+  id.textContent = provider.id;
+  article.appendChild(id);
+
+  const access = document.createElement("span");
+  access.className = "compare-access";
+  access.textContent = labels.iran[provider.iran_access?.status] || provider.iran_access?.status || "نامشخص";
+  article.appendChild(access);
+
+  const facts = document.createElement("dl");
+  facts.className = "compare-facts";
+  facts.append(
+    createFact("نوع Free Tier", labels.free[provider.free_tier?.type] || provider.free_tier?.type || "نامشخص"),
+    createFact("نیاز به کارت/پرداخت", paymentText(provider.free_tier?.requires_payment_method)),
+    createFact("محدودیت نمونه", limitText(provider)),
+    createFact("سازگار با OpenAI", provider.api?.openai_compatible ? "بله" : "خیر"),
+    createFact("Base URL", provider.api?.base_url || "نامشخص", { code: true }),
+    createFact("آخرین بررسی", provider.verification?.last_checked || "نامشخص")
+  );
+  article.appendChild(facts);
+
+  article.appendChild(createLabeledParagraph(
+    "compare-capabilities",
+    "قابلیت‌ها:",
+    capabilities.join("، ") || "ثبت نشده"
+  ));
+  article.appendChild(createLabeledParagraph(
+    "compare-models",
+    "مدل‌های شاخص:",
+    models.slice(0, 6).join("، ") || "فهرست پویا؛ منبع رسمی را بررسی کنید"
+  ));
+
+  const actions = document.createElement("div");
+  actions.className = "compare-card-actions";
+
+  const quickStart = document.createElement("a");
+  quickStart.className = "button primary";
+  quickStart.href = `../quick-start/?${quickParams.toString()}`;
+  quickStart.textContent = "ساخت اولین درخواست";
+  actions.appendChild(quickStart);
+
+  const docsUrl = safeExternalUrl(provider.docs);
+  if (docsUrl) {
+    const docs = document.createElement("a");
+    docs.className = "button secondary compare-docs";
+    docs.dataset.providerId = provider.id;
+    docs.href = docsUrl;
+    docs.target = "_blank";
+    docs.rel = "nofollow noopener noreferrer";
+    docs.textContent = "مستندات رسمی";
+    actions.appendChild(docs);
+  }
+
+  const evidence = document.createElement("a");
+  evidence.className = "button secondary";
+  evidence.href = `../providers/${provider.id}/#evidence`;
+  evidence.textContent = "شواهد و جزئیات";
+  actions.appendChild(evidence);
+  article.appendChild(actions);
+
+  const remove = document.createElement("button");
+  remove.className = "compare-remove";
+  remove.type = "button";
+  remove.dataset.providerId = provider.id;
+  remove.textContent = "حذف از مقایسه";
+  article.appendChild(remove);
+
+  return article;
 }
 
 const loading = document.getElementById("compare-loading");
@@ -164,7 +250,7 @@ function render(catalog) {
     grid.replaceChildren();
     return;
   }
-  grid.innerHTML = providers.map(providerCard).join("");
+  grid.replaceChildren(...providers.map(providerCard));
   trackPlausible("compare_loaded", { result_count: String(providers.length), source: idsFromLocation().length ? "shared_url" : "local_shortlist" });
 }
 

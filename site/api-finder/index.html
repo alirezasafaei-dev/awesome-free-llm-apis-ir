@@ -412,9 +412,144 @@
         return { score, breakdown };
       }
 
+      function escapeHtml(value) {
+        return String(value ?? "")
+          .replaceAll("&", "&amp;")
+          .replaceAll("<", "&lt;")
+          .replaceAll(">", "&gt;")
+          .replaceAll('"', "&quot;")
+          .replaceAll("'", "&#39;");
+      }
+
+      function safeExternalUrl(href) {
+        try {
+          const url = new URL(href, location.origin);
+          if (url.protocol !== "https:") return null;
+          return url.toString();
+        } catch {
+          return null;
+        }
+      }
+
+      function createBreakdownItem(b) {
+        const item = document.createElement("div");
+        item.className = "finder-breakdown-item";
+
+        const label = document.createElement("span");
+        label.className = "label";
+        label.textContent = b.label;
+        item.appendChild(label);
+
+        const val = document.createElement("span");
+        const cls = b.value > 0 ? "positive" : b.value < 0 ? "negative" : "";
+        val.className = cls ? `value ${cls}` : "value";
+        val.textContent = `${b.value > 0 ? "+" : ""}${b.value}`;
+        item.appendChild(val);
+
+        return item;
+      }
+
+      function createCardElement(provider, score, breakdown, index) {
+        const card = document.createElement("div");
+        card.className = "finder-card";
+
+        const header = document.createElement("div");
+        header.className = "finder-card-header";
+
+        const rank = document.createElement("div");
+        rank.className = "finder-rank";
+        rank.textContent = String(index + 1);
+        header.appendChild(rank);
+
+        const title = document.createElement("div");
+        title.className = "finder-card-title";
+
+        const name = document.createElement("h3");
+        name.textContent = provider.name;
+        title.appendChild(name);
+
+        const id = document.createElement("span");
+        id.className = "finder-id";
+        id.textContent = `${provider.id} · ${serviceLabels[provider.service_type] ?? provider.service_type}`;
+        title.appendChild(id);
+        header.appendChild(title);
+
+        const totalScore = document.createElement("div");
+        totalScore.className = "finder-total-score";
+        const scoreVal = document.createElement("strong");
+        scoreVal.textContent = String(score);
+        totalScore.appendChild(scoreVal);
+        const scoreLabel = document.createElement("small");
+        scoreLabel.textContent = "از ۱۰۰";
+        totalScore.appendChild(scoreLabel);
+        header.appendChild(totalScore);
+        card.appendChild(header);
+
+        const breakdownDiv = document.createElement("div");
+        breakdownDiv.className = "finder-breakdown";
+        for (const [, b] of Object.entries(breakdown)) {
+          breakdownDiv.appendChild(createBreakdownItem(b));
+        }
+        card.appendChild(breakdownDiv);
+
+        const extra = document.createElement("div");
+        extra.className = "finder-card-extra";
+
+        const accessBadge = document.createElement("span");
+        const verifiedClass = provider.iran_access.status === "verified_working" ? " access-verified" : "";
+        accessBadge.className = `access-badge${verifiedClass}`;
+        accessBadge.setAttribute("data-status", provider.iran_access.status);
+        accessBadge.textContent = accessLabels[provider.iran_access.status] ?? provider.iran_access.status;
+        extra.appendChild(accessBadge);
+
+        const limit = document.createElement("span");
+        limit.className = "limit-label";
+        limit.textContent = limitText(provider);
+        extra.appendChild(limit);
+
+        if (isStale(provider)) {
+          const stale = document.createElement("span");
+          stale.className = "freshness-badge stale finder-stale-badge";
+          stale.textContent = "نیازمند بررسی";
+          extra.appendChild(stale);
+        }
+        card.appendChild(extra);
+
+        const actions = document.createElement("div");
+        actions.className = "finder-card-actions";
+
+        const detailLink = document.createElement("a");
+        detailLink.className = "finder-detail-link";
+        detailLink.href = `../providers/${provider.id}/`;
+        detailLink.textContent = "جزئیات و شواهد";
+        actions.appendChild(detailLink);
+
+        const docsUrl = safeExternalUrl(provider.docs);
+        if (docsUrl) {
+          const docsLink = document.createElement("a");
+          docsLink.className = "finder-docs-link";
+          docsLink.href = docsUrl;
+          docsLink.setAttribute("target", "_blank");
+          docsLink.setAttribute("rel", "noopener noreferrer");
+          docsLink.textContent = "مستندات";
+          actions.appendChild(docsLink);
+        }
+
+        if (provider.iran_access.evidence?.length) {
+          const evidenceLink = document.createElement("a");
+          evidenceLink.className = "finder-evidence-link";
+          evidenceLink.href = `../providers/${provider.id}/#evidence`;
+          evidenceLink.textContent = `${provider.iran_access.evidence.length} شاهد`;
+          actions.appendChild(evidenceLink);
+        }
+        card.appendChild(actions);
+
+        return card;
+      }
+
       function renderResults(results, filters) {
         if (results.length === 0) {
-          elements.results.innerHTML = "";
+          elements.results.replaceChildren();
           elements.status.hidden = true;
           elements.empty.hidden = false;
           return;
@@ -424,43 +559,9 @@
         elements.status.hidden = false;
         elements.statusText.textContent = `${results.length} مورد از ${providers.length} ارائه‌دهنده — ${filters.usecase === "chat" ? "چت" : filters.usecase === "coding" ? "کدنویسی" : filters.usecase === "reasoning" ? "استدلال" : "Embedding"} · ${filters.budget === "no-card" ? "بدون کارت" : filters.budget === "free-only" ? "فقط رایگان" : "هر نوع"} · ${filters.region === "iran" ? "ایران مستقیم" : filters.region === "iran-vpn" ? "ایران با VPN" : "هر منطقه"}`;
 
-        const cards = results.map(({ provider, score, breakdown }, index) => {
-          const card = document.createElement("div");
-          card.className = "finder-card";
-
-          const statusClass = provider.iran_access.status === "verified_working" ? " access-verified" : "";
-
-          card.innerHTML = `
-            <div class="finder-card-header">
-              <div class="finder-rank">${index + 1}</div>
-              <div class="finder-card-title">
-                <h3>${provider.name}</h3>
-                <span class="finder-id">${provider.id} · ${serviceLabels[provider.service_type] ?? provider.service_type}</span>
-              </div>
-              <div class="finder-total-score">
-                <strong>${score}</strong>
-                <small>از ۱۰۰</small>
-              </div>
-            </div>
-            <div class="finder-breakdown">
-              ${Object.entries(breakdown).map(([key, b]) => {
-                const cls = b.value > 0 ? "positive" : b.value < 0 ? "negative" : "";
-                return `<div class="finder-breakdown-item"><span class="label">${b.label}</span><span class="value ${cls}">${b.value > 0 ? "+" : ""}${b.value}</span></div>`;
-              }).join("")}
-            </div>
-            <div class="finder-card-extra">
-              <span class="access-badge${statusClass}" data-status="${provider.iran_access.status}">${accessLabels[provider.iran_access.status] ?? provider.iran_access.status}</span>
-              <span class="limit-label">${limitText(provider)}</span>
-              ${isStale(provider) ? '<span class="freshness-badge stale finder-stale-badge">نیازمند بررسی</span>' : ""}
-            </div>
-            <div class="finder-card-actions">
-              <a class="finder-detail-link" href="../providers/${provider.id}/">جزئیات و شواهد</a>
-              <a class="finder-docs-link" href="${provider.docs}" target="_blank" rel="noopener noreferrer">مستندات</a>
-              ${provider.iran_access.evidence?.length ? `<a class="finder-evidence-link" href="../providers/${provider.id}/#evidence">${provider.iran_access.evidence.length} شاهد</a>` : ""}
-            </div>
-          `;
-          return card;
-        });
+        const cards = results.map(({ provider, score, breakdown }, index) =>
+          createCardElement(provider, score, breakdown, index)
+        );
 
         elements.results.replaceChildren(...cards);
       }
@@ -568,7 +669,7 @@
           elements.latency.value = "low";
           elements.region.value = "iran";
           history.replaceState(null, "", location.pathname);
-          elements.results.innerHTML = "";
+          elements.results.replaceChildren();
           elements.status.hidden = true;
           elements.empty.hidden = true;
         });
