@@ -47,9 +47,16 @@ rollback() {
   fi
 
   if sudo caddy validate --config "$CADDYFILE" --adapter caddyfile; then
-    sudo systemctl reload caddy || true
+    if ! sudo systemctl reload caddy; then
+      printf '[caddy-deploy] ERROR: restored configuration validated but Caddy reload failed.\n' >&2
+      exit_code=1
+    elif ! sudo systemctl is-active --quiet caddy; then
+      printf '[caddy-deploy] ERROR: Caddy is not active after rollback reload.\n' >&2
+      exit_code=1
+    fi
   else
-    printf '[caddy-deploy] WARNING: restored configuration did not validate; manual intervention required.\n' >&2
+    printf '[caddy-deploy] ERROR: restored configuration did not validate; manual intervention required.\n' >&2
+    exit_code=1
   fi
 
   cleanup

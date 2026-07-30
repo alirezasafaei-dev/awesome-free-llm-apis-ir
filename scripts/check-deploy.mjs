@@ -7,6 +7,7 @@ const root = process.cwd();
 const files = {
   release: "deploy/remote-release.sh",
   rollback: "deploy/rollback-release.sh",
+  transport: "deploy/publish-release-over-ssh.sh",
   caddy: "deploy/caddy/llm.persiantoolbox.ir.caddy",
   nginx: "deploy/nginx/ir.llm.persiantoolbox.ir.conf",
   workflow: ".github/workflows/deploy-vps.yml",
@@ -14,7 +15,7 @@ const files = {
 };
 
 for (const file of Object.values(files)) await access(path.join(root, file));
-for (const file of [files.release, files.rollback]) {
+for (const file of [files.release, files.rollback, files.transport]) {
   const check = spawnSync("bash", ["-n", path.join(root, file)], { encoding: "utf8" });
   if (check.status !== 0) throw new Error(check.stderr || `${file} has invalid shell syntax`);
 }
@@ -23,16 +24,53 @@ const caddy = await readFile(path.join(root, files.caddy), "utf8");
 const nginx = await readFile(path.join(root, files.nginx), "utf8");
 const workflow = await readFile(path.join(root, files.workflow), "utf8");
 const release = await readFile(path.join(root, files.release), "utf8");
+const transport = await readFile(path.join(root, files.transport), "utf8");
 
 if (!caddy.includes("llm.persiantoolbox.ir") || !caddy.includes("/srv/awesome-free-llm-apis-ir/current")) throw new Error("Caddy production host/root mismatch");
 if (!nginx.includes("ir.llm.persiantoolbox.ir") || !nginx.includes('X-Robots-Tag "noindex, nofollow"')) throw new Error("Nginx mirror policy mismatch");
 if (!caddy.includes('Strict-Transport-Security "max-age=31536000"')) throw new Error("Caddy HSTS policy is missing");
 if (!nginx.includes('Strict-Transport-Security "max-age=31536000"')) throw new Error("Nginx HSTS policy is missing");
+if (!caddy.includes('Cache-Control "public, max-age=300, must-revalidate"')) {
+  throw new Error("Caddy must revalidate unhashed static assets");
+}
+if (!nginx.includes("location ~* \\.(?:js|css|png|svg|webmanifest)$") || !nginx.includes("expires 5m;")) {
+  throw new Error("Nginx must use a short expiry for unhashed static assets");
+}
+for (const [name, config] of [["Caddy", caddy], ["Nginx", nginx]]) {
+  if (/Cache-Control\s+"public, max-age=31536000, immutable"/.test(config)) {
+    throw new Error(`${name} must not mark stable-name assets immutable`);
+  }
+}
+const buildMetaBlock = nginx.match(/location = \/build-meta\.json \{([\s\S]*?)\n    \}/)?.[1] ?? "";
+for (const marker of [
+  'Cache-Control "no-store"',
+  'Strict-Transport-Security "max-age=31536000"',
+  'X-Robots-Tag "noindex, nofollow"',
+  "Content-Security-Policy"
+]) {
+  if (!buildMetaBlock.includes(marker)) throw new Error(`Nginx build metadata location is missing inherited security marker: ${marker}`);
+}
 for (const token of ["production-global", "production-iran", "SSH_PRIVATE_KEY", "SSH_KNOWN_HOSTS", "rollback-release.sh"]) {
   if (!workflow.includes(token)) throw new Error(`VPS workflow is missing ${token}`);
 }
 if (workflow.includes("BEGIN OPENSSH PRIVATE KEY")) throw new Error("A private key was embedded in the workflow");
 if (!release.includes("Artifact revision mismatch") || !release.includes("mv -Tf")) throw new Error("Atomic release safeguards are missing");
+
+for (const marker of [
+  "set -Eeuo pipefail",
+  "readonly MAX_ATTEMPTS=5",
+  "retry_transport()",
+  "StrictHostKeyChecking=yes",
+  "ConnectTimeout=15",
+  "ConnectionAttempts=2",
+  "ServerAliveInterval=10",
+  "ServerAliveCountMax=2",
+  "SSH transport failed after ${MAX_ATTEMPTS} attempts"
+]) {
+  if (!transport.includes(marker)) throw new Error(`SSH transport helper is missing: ${marker}`);
+}
+const transportUses = (workflow.match(/deploy\/publish-release-over-ssh\.sh/g) || []).length;
+if (transportUses < 3) throw new Error(`SSH transport helper must be packaged once and used by both deploy jobs; found ${transportUses} references`);
 
 // Static guards for deploy hardening
 const concurrencyGroup = workflow.match(/concurrency:\n\s+group:\s*(\S+)/);
@@ -42,21 +80,23 @@ if (!workflow.includes("cancel-in-progress: false")) throw new Error("cancel-in-
 const rollbackCount = (workflow.match(/if:\s+failure\(\)\s*&&\s*steps\.release\.outcome\s*==\s*'success'/g) || []).length;
 if (rollbackCount < 2) throw new Error(`Expected 2 conditional rollback guards, found ${rollbackCount}`);
 
-const strictHostKeyCount = (workflow.match(/StrictHostKeyChecking=yes/g) || []).length;
-if (strictHostKeyCount < 4) throw new Error(`Expected 4 StrictHostKeyChecking=yes occurrences (SSH+SCP x2), found ${strictHostKeyCount}`);
+const rollbackStrictHostCount = (workflow.match(/StrictHostKeyChecking=yes/g) || []).length;
+if (rollbackStrictHostCount < 2) throw new Error(`Expected strict host-key checking on both rollback commands, found ${rollbackStrictHostCount}`);
 
 if (!workflow.includes("'Iran mirror is missing X-Robots-Tag noindex.'")) throw new Error("Iran mirror job must require X-Robots-Tag noindex");
 if (!workflow.includes("'Canonical endpoint unexpectedly contains noindex.'")) throw new Error("Canonical deployment must reject X-Robots-Tag noindex");
 
-for (const buildInput of ["'assets/**'", "'content/**'", "'data/**'", "'site/**'", "'scripts/build-guides.mjs'"]) {
-  if (!workflow.includes(buildInput)) throw new Error(`VPS deploy trigger is missing build input ${buildInput}`);
+const pushBlock = workflow.match(/on:\s*\n\s*push:\s*\n([\s\S]*?)\n\s*workflow_dispatch:/)?.[1] ?? "";
+if (!pushBlock.includes("branches: [main]")) throw new Error("VPS deploy push trigger must target main");
+if (/^\s*paths(?:-ignore)?:/m.test(pushBlock)) {
+  throw new Error("VPS deploy must run for every main revision and must not use path filters");
 }
 
 const timeoutCount = (workflow.match(/timeout-minutes:\s*\d+/g) || []).length;
 if (timeoutCount < 4) throw new Error(`Expected 4 timeout-minutes (build, deploy-global, deploy-iran, verify-mirror-consistency), found ${timeoutCount}`);
 
 const pipefailCount = (workflow.match(/set\s+-Eeuo\s+pipefail/g) || []).length;
-if (pipefailCount < 7) throw new Error(`Expected 7 set -Eeuo pipefail guards, found ${pipefailCount}`);
+if (pipefailCount < 6) throw new Error(`Expected 6 workflow shell guards plus the transport helper guard, found ${pipefailCount}`);
 
 const verifyMirrorJob = workflow.match(/verify-mirror-consistency:/);
 if (!verifyMirrorJob) throw new Error("verify-mirror-consistency job is missing");

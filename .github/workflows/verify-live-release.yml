@@ -25,17 +25,31 @@ jobs:
     timeout-minutes: 20
     env:
       EXPECTED_SHA: ${{ github.event.workflow_run.head_sha || github.sha }}
+      UPSTREAM_WORKFLOW: ${{ github.event.workflow_run.name || 'manual dispatch' }}
       UPSTREAM_CONCLUSION: ${{ github.event.workflow_run.conclusion || 'manual' }}
+      UPSTREAM_RUN_ID: ${{ github.event.workflow_run.id || '' }}
+      UPSTREAM_RUN_URL: ${{ github.event.workflow_run.html_url || '' }}
       STATUS_CONTEXT: production-release/exact-revision
       STATUS_TARGET_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
       GH_TOKEN: ${{ github.token }}
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v4.2.1
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           ref: ${{ env.EXPECTED_SHA }}
-      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v4.3.0
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
           node-version: 22
+
+      - name: Record triggering workflow context
+        run: |
+          set -Eeuo pipefail
+          {
+            echo "## Triggering deployment workflow"
+            echo "- Name: \`$UPSTREAM_WORKFLOW\`"
+            echo "- Conclusion: \`$UPSTREAM_CONCLUSION\`"
+            if [[ -n "$UPSTREAM_RUN_ID" ]]; then echo "- Run ID: \`$UPSTREAM_RUN_ID\`"; fi
+            if [[ -n "$UPSTREAM_RUN_URL" ]]; then echo "- Run: $UPSTREAM_RUN_URL"; fi
+          } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Mark exact-release verification pending
         env:
@@ -65,6 +79,9 @@ jobs:
       - name: Reject failed upstream deployment
         if: github.event_name == 'workflow_run' && env.UPSTREAM_CONCLUSION != 'success'
         run: |
+          echo "Triggering workflow: $UPSTREAM_WORKFLOW" >&2
+          echo "Triggering run ID: $UPSTREAM_RUN_ID" >&2
+          echo "Triggering run URL: $UPSTREAM_RUN_URL" >&2
           echo "Triggering deployment workflow concluded with: $UPSTREAM_CONCLUSION" >&2
           exit 1
 
@@ -132,7 +149,16 @@ jobs:
           COMMIT_STATUS_DESCRIPTION: Exact revision or full live smoke verification failed
         run: |
           node <<'NODE'
-          const { GH_TOKEN, GITHUB_API_URL, GITHUB_REPOSITORY, EXPECTED_SHA, COMMIT_STATUS_STATE, COMMIT_STATUS_DESCRIPTION, STATUS_CONTEXT, STATUS_TARGET_URL } = process.env;
+          const {
+            GH_TOKEN, GITHUB_API_URL, GITHUB_REPOSITORY, EXPECTED_SHA,
+            COMMIT_STATUS_STATE, COMMIT_STATUS_DESCRIPTION, STATUS_CONTEXT, STATUS_TARGET_URL,
+            UPSTREAM_WORKFLOW, UPSTREAM_CONCLUSION, UPSTREAM_RUN_URL
+          } = process.env;
+          const upstreamFailed = UPSTREAM_CONCLUSION !== "success" && UPSTREAM_CONCLUSION !== "manual";
+          const description = upstreamFailed
+            ? `Upstream ${UPSTREAM_WORKFLOW} failed; live checks skipped`
+            : COMMIT_STATUS_DESCRIPTION;
+          const targetUrl = upstreamFailed && UPSTREAM_RUN_URL ? UPSTREAM_RUN_URL : STATUS_TARGET_URL;
           const response = await fetch(`${GITHUB_API_URL}/repos/${GITHUB_REPOSITORY}/statuses/${EXPECTED_SHA}`, {
             method: "POST",
             headers: {
@@ -143,9 +169,9 @@ jobs:
             },
             body: JSON.stringify({
               state: COMMIT_STATUS_STATE,
-              description: COMMIT_STATUS_DESCRIPTION,
+              description: description.slice(0, 140),
               context: STATUS_CONTEXT,
-              target_url: STATUS_TARGET_URL
+              target_url: targetUrl
             })
           });
           if (!response.ok) throw new Error(`Unable to publish failure commit status: HTTP ${response.status}`);

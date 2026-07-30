@@ -1,24 +1,29 @@
 import { access, readFile } from "node:fs/promises";
 import process from "node:process";
 
-const ensureWorkflow = await readFile(new URL("../.github/workflows/ensure-vps-deployment.yml", import.meta.url), "utf8");
+const deployWorkflow = await readFile(new URL("../.github/workflows/deploy-vps.yml", import.meta.url), "utf8");
 const verifyWorkflow = await readFile(new URL("../.github/workflows/verify-live-release.yml", import.meta.url), "utf8");
 
 const failures = [];
 
 for (const marker of [
-  "name: Ensure VPS deployment",
+  "name: Deploy VPS mirrors",
   "branches: [main]",
-  "actions: write",
-  "regular_filter=",
-  "dispatch=false",
-  "dispatch=true",
-  "current === EXPECTED_SHA",
-  "/actions/workflows/deploy-vps.yml/dispatches",
-  'JSON.stringify({ ref: "main", inputs: { target: "both" } })',
-  "actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5"
+  "group: deploy-vps-production",
+  "cancel-in-progress: false",
+  "production-global",
+  "production-iran",
+  "verify-mirror-consistency",
+  "actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+  "actions/setup-node@820762786026740c76f36085b0efc47a31fe5020"
 ]) {
-  if (!ensureWorkflow.includes(marker)) failures.push(`ensure-vps workflow is missing: ${marker}`);
+  if (!deployWorkflow.includes(marker)) failures.push(`deploy-vps workflow is missing: ${marker}`);
+}
+
+const pushBlock = deployWorkflow.match(/on:\s*\n\s*push:\s*\n([\s\S]*?)\n\s*workflow_dispatch:/)?.[1] ?? "";
+if (!pushBlock.includes("branches: [main]")) failures.push("deploy-vps push trigger must target main");
+if (/^\s*paths(?:-ignore)?:/m.test(pushBlock)) {
+  failures.push("deploy-vps must not path-filter main pushes; every main revision requires a release attempt");
 }
 
 for (const marker of [
@@ -37,15 +42,20 @@ for (const marker of [
   if (!verifyWorkflow.includes(marker)) failures.push(`verify-live workflow is missing: ${marker}`);
 }
 
-if (/\bpull_request\s*:/.test(ensureWorkflow) || /\bpull_request\s*:/.test(verifyWorkflow)) {
+if (/\bpull_request\s*:/.test(deployWorkflow) || /\bpull_request\s*:/.test(verifyWorkflow)) {
   failures.push("production deployment orchestration must not execute from pull_request events");
 }
 
-try {
-  await access(new URL("../.github/workflows/patch-full-live-gate.yml", import.meta.url));
-  failures.push("temporary patch workflow was not removed");
-} catch (error) {
-  if (error.code !== "ENOENT") throw error;
+for (const obsoleteWorkflow of [
+  "../.github/workflows/ensure-vps-deployment.yml",
+  "../.github/workflows/patch-full-live-gate.yml"
+]) {
+  try {
+    await access(new URL(obsoleteWorkflow, import.meta.url));
+    failures.push(`obsolete compensating workflow was not removed: ${obsoleteWorkflow}`);
+  } catch (error) {
+    if (error.code !== "ENOENT") throw error;
+  }
 }
 
 if (failures.length) {
@@ -54,4 +64,4 @@ if (failures.length) {
   process.exit(1);
 }
 
-console.log("Release orchestration contract passed: every current Main revision reaches VPS deployment and full live smoke verification.");
+console.log("Release orchestration contract passed: every main revision directly reaches VPS deployment and full live smoke verification.");

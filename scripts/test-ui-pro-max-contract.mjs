@@ -101,8 +101,17 @@ for (const signal of requiredJsSignals) {
   if (!js.includes(signal)) throw new Error(`UI Pro Max behavior is missing: ${signal}`);
 }
 
-for (const signal of ["ui-pro-max.css", "ui-pro-max-components.css", "htmlFiles", "injectStylesheets"]) {
+for (const signal of [
+  "ui-pro-max.css",
+  "ui-pro-max-components.css",
+  "htmlFiles",
+  "injectStylesheets",
+  "hardenFinderScript",
+  "sanitizeCatalogForHtml",
+  "catalog.providers.map(sanitizeCatalogForHtml)",
+  '.replaceAll("<", "&lt;")'
+]) {
   if (!transform.includes(signal)) throw new Error(`Built-page design-system transform is missing: ${signal}`);
 }
 
-console.log("UI UX Pro Max contract passed: task-first hierarchy, semantic tokens, responsive behavior and evidence-first cards are enforced.");
+console.log("UI UX Pro Max contract passed: task-first hierarchy, semantic tokens, responsive behavior, sanitized Finder data and evidence-first cards are enforced.");

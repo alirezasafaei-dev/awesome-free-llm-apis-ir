@@ -3,21 +3,6 @@ name: Deploy VPS mirrors
 on:
   push:
     branches: [main]
-    paths:
-      - 'assets/**'
-      - 'content/**'
-      - 'data/**'
-      - 'deploy/**'
-      - 'site/**'
-      - 'scripts/build-guides.mjs'
-      - 'scripts/build-persian*.mjs'
-      - 'scripts/build-site*.mjs'
-      - 'scripts/generate-*.mjs'
-      - 'catalog.json'
-      - 'data.json'
-      - 'package.json'
-      - 'package-lock.json'
-      - '.github/workflows/deploy-vps.yml'
   workflow_dispatch:
     inputs:
       target:
@@ -33,9 +18,9 @@ on:
 permissions:
   contents: read
 
-# Serialize every production deployment, regardless of whether it was triggered
-# manually or by a push to main. This prevents an older run from finishing after
-# a newer run and accidentally reactivating an older revision.
+# Every main revision must reach the production release workflow. The previous
+# path-filter plus compensating dispatcher allowed a valid main revision to reach
+# GitHub Pages while the canonical VPS remained on an older source revision.
 concurrency:
   group: deploy-vps-production
   cancel-in-progress: false
@@ -49,7 +34,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 2
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v4.2.1
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - name: Ensure no infrastructure secrets in public workflow
         run: |
           set -Eeuo pipefail
@@ -71,8 +56,8 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v4.2.1
-      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v4.3.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
           node-version: 22
       - run: npm ci
@@ -89,6 +74,7 @@ jobs:
             site-release.tar.gz
             deploy/remote-release.sh
             deploy/rollback-release.sh
+            deploy/publish-release-over-ssh.sh
           if-no-files-found: error
           retention-days: 7
 
@@ -124,14 +110,7 @@ jobs:
           SSH_USER: ${{ secrets.SSH_USER }}
           SSH_PORT: ${{ secrets.SSH_PORT }}
           DEPLOY_ROOT: ${{ secrets.DEPLOY_ROOT }}
-        run: |
-          set -Eeuo pipefail
-          SSH=(ssh -i ~/.ssh/id_ed25519 -p "$SSH_PORT" -o BatchMode=yes -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes)
-          SCP=(scp -i ~/.ssh/id_ed25519 -P "$SSH_PORT" -o BatchMode=yes -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes)
-          "${SCP[@]}" site-release.tar.gz "${SSH_USER}@${SSH_HOST}:/tmp/llm-site-${GITHUB_SHA}.tar.gz"
-          "${SCP[@]}" deploy/remote-release.sh "${SSH_USER}@${SSH_HOST}:/tmp/llm-release-${GITHUB_SHA}.sh"
-          "${SCP[@]}" deploy/rollback-release.sh "${SSH_USER}@${SSH_HOST}:/tmp/llm-rollback-${GITHUB_SHA}.sh"
-          "${SSH[@]}" "${SSH_USER}@${SSH_HOST}" "bash /tmp/llm-release-${GITHUB_SHA}.sh ${DEPLOY_ROOT} /tmp/llm-site-${GITHUB_SHA}.tar.gz ${GITHUB_SHA}"
+        run: bash deploy/publish-release-over-ssh.sh
       - name: Verify canonical deployment
         env:
           EXPECTED_SHA: ${{ github.sha }}
@@ -208,14 +187,7 @@ jobs:
           SSH_USER: ${{ secrets.SSH_USER }}
           SSH_PORT: ${{ secrets.SSH_PORT }}
           DEPLOY_ROOT: ${{ secrets.DEPLOY_ROOT }}
-        run: |
-          set -Eeuo pipefail
-          SSH=(ssh -i ~/.ssh/id_ed25519 -p "$SSH_PORT" -o BatchMode=yes -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes)
-          SCP=(scp -i ~/.ssh/id_ed25519 -P "$SSH_PORT" -o BatchMode=yes -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes)
-          "${SCP[@]}" site-release.tar.gz "${SSH_USER}@${SSH_HOST}:/tmp/llm-site-${GITHUB_SHA}.tar.gz"
-          "${SCP[@]}" deploy/remote-release.sh "${SSH_USER}@${SSH_HOST}:/tmp/llm-release-${GITHUB_SHA}.sh"
-          "${SCP[@]}" deploy/rollback-release.sh "${SSH_USER}@${SSH_HOST}:/tmp/llm-rollback-${GITHUB_SHA}.sh"
-          "${SSH[@]}" "${SSH_USER}@${SSH_HOST}" "bash /tmp/llm-release-${GITHUB_SHA}.sh ${DEPLOY_ROOT} /tmp/llm-site-${GITHUB_SHA}.tar.gz ${GITHUB_SHA}"
+        run: bash deploy/publish-release-over-ssh.sh
       - name: Verify Iran mirror deployment
         env:
           EXPECTED_SHA: ${{ github.sha }}
