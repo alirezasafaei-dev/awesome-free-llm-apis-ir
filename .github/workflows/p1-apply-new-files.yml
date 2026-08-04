@@ -8,6 +8,7 @@ on:
 permissions:
   contents: write
 
+# Temporary self-cleaning migration workflow. Deleted by its successful run.
 jobs:
   apply:
     if: contains(github.event.head_commit.message, '[apply-p1-new-files]')
