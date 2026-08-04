@@ -8,7 +8,8 @@ const builder = path.join(root, "scripts", "build-tools-pages.mjs");
 const styles = path.join(root, "site", "tools", "tools.css");
 const script = path.join(root, "site", "tools", "tools.js");
 const destination = path.join(root, ".site-dist");
-const toolsUrl = "https://llm.persiantoolbox.ir/tools/";
+const siteUrl = "https://llm.persiantoolbox.ir/";
+const toolsUrl = new URL("tools/", siteUrl).href;
 
 await access(builder);
 await access(styles);
@@ -90,7 +91,17 @@ try {
   }
   if (!builtScript.includes("tools_filter_changed")) throw new Error("Built tools script lost filter analytics");
   if (catalog.tool_count < 1 || catalog.tools.length !== catalog.tool_count) throw new Error("Published tools catalog count is invalid");
-  if (!homepage.includes(`href="${toolsUrl}"`)) throw new Error("Homepage does not link to the canonical tools catalog");
+
+  const homepageHrefs = [...homepage.matchAll(/<a\b[^>]*\shref=["']([^"']+)["']/gi)].map((match) => match[1]);
+  const hasCanonicalToolsRoute = homepageHrefs.some((href) => {
+    try {
+      return new URL(href, siteUrl).href === toolsUrl;
+    } catch {
+      return false;
+    }
+  });
+  if (!hasCanonicalToolsRoute) throw new Error("Homepage does not resolve a link to the canonical tools catalog route");
+
   if (!sitemap.includes(`<loc>${toolsUrl}</loc>`)) throw new Error("Sitemap is missing tools route");
   if (!llms.includes(`Tools and CLI catalog: ${toolsUrl}`)) throw new Error("llms.txt is missing tools route");
   if (!buildMeta.static_product_pages?.includes("/tools/")) throw new Error("Build metadata is missing /tools/");
