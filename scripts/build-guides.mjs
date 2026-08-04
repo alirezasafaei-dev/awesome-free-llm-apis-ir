@@ -3,13 +3,13 @@ import path from "node:path";
 import process from "node:process";
 
 import { hreflangLinks } from "./locales.mjs";
+import { renderAnalyticsTags, renderUiStyles } from "./lib/ui-shell.mjs";
 
 const root = process.cwd();
 const destination = path.join(root, ".site-dist");
 const guidesDir = path.join(destination, "guides");
 const canonicalOrigin = "https://llm.persiantoolbox.ir";
 const organizationId = `${canonicalOrigin}/#organization`;
-const plausibleScript = "./plausible.js";
 
 const freeLabels = {
   permanent_allowance: "سهمیه رایگان دائمی",
@@ -78,10 +78,6 @@ function officialSourceList(providers) {
   const unique = [...new Map(providers.map((provider) => [provider.id, provider])).values()];
   if (!unique.length) return "<li>برای این دسته هنوز منبع Provider در Catalog ثبت نشده است.</li>";
   return unique.map((provider) => `<li>${providerLink(provider)} — <a href="${escapeHtml(provider.docs)}" rel="nofollow noopener" target="_blank">مستندات رسمی</a> — تاریخ بررسی داده: ${escapeHtml(provider.verification?.last_checked ?? "ثبت نشده")}</li>`).join("\n");
-}
-
-function analyticsTags() {
-  return `<script defer src="../../analytics.js"></script>\n  <script defer data-domain="llm.persiantoolbox.ir" src="${plausibleScript}"></script>`;
 }
 
 const guides = [
@@ -488,6 +484,7 @@ export async function buildGuides(catalog) {
   ])}
   <link rel="stylesheet" href="../../styles.css">
   <link rel="stylesheet" href="../../seo.css">
+  ${renderUiStyles("../../")}
   <title>${escapeHtml(guide.title)}</title>
   <script type="application/ld+json">${JSON.stringify({ "@context": "https://schema.org", "@graph": [
     { "@type": "Organization", "@id": organizationId, "name": "Awesome Free LLM APIs IR", "url": canonicalOrigin, "sameAs": ["https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir"] },
@@ -554,7 +551,7 @@ export async function buildGuides(catalog) {
     </div>
     <p class="footer-meta">MIT License · بدون وابستگی تجاری به Providerها · بدون انتشار IP، کلید API یا داده حساب</p>
   </footer>
-  ${analyticsTags()}
+  ${renderAnalyticsTags("../../")}
 </body>
 </html>`;
     await writeFile(path.join(guideDir, "index.html"), html);

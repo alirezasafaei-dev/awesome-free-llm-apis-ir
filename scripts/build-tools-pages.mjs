@@ -1,6 +1,7 @@
 import { cp, mkdir, readFile, readdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
+import { renderAnalyticsTags, renderUiStyles } from "./lib/ui-shell.mjs";
 
 const root = process.cwd();
 const toolsDir = path.join(root, "data", "tools");
@@ -161,6 +162,7 @@ const page = `<!doctype html>
   <link rel="alternate" type="application/json" href="../catalog-tools.json" title="Machine-readable tools catalog">
   <link rel="stylesheet" href="../styles.css">
   <link rel="stylesheet" href="./tools.css">
+  ${renderUiStyles("../")}
   <title>CLI و ابزارهای رایگان LLM | نصب، ریسک و وضعیت ایران</title>
   <script type="application/ld+json">${jsonLd({
     "@context": "https://schema.org",
@@ -270,8 +272,7 @@ const page = `<!doctype html>
     <p class="footer-meta">MIT License · بدون وابستگی تجاری به Providerها · بدون انتشار IP، کلید API یا داده حساب</p>
   </footer>
   <script defer src="./tools.js"></script>
-  <script defer src="../analytics.js"></script>
-  <script defer data-domain="llm.persiantoolbox.ir" src="../plausible.js"></script>
+  ${renderAnalyticsTags("../")}
 </body>
 </html>`;
 

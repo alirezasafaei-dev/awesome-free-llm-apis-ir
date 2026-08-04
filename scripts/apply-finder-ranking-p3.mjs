@@ -14,11 +14,11 @@ function read(relativePath) {
 
 /**
  * @param {string} name
- * @param {string} html
+ * @param {string} source
  * @param {"fa"|"en"} language
  * @returns {void}
  */
-function validateFinder(name, html, language) {
+function validateFinder(name, source, language) {
   const forbidden = [
     'id="finder-language"',
     "filters.language",
@@ -28,21 +28,21 @@ function validateFinder(name, html, language) {
     "languageLabel"
   ];
   for (const marker of forbidden) {
-    if (html.includes(marker)) throw new Error(`${name}: unsupported language ranking remains (${marker})`);
+    if (source.includes(marker)) throw new Error(`${name}: unsupported language ranking remains (${marker})`);
   }
 
   const required = language === "fa"
     ? ["ظرفیت درخواست / Rate limit", "از ۱۰۰", "کاربرد، بودجه، ظرفیت درخواست و منطقه"]
     : ["Request-capacity priority", "not response latency or model speed", "/ 100"];
   for (const marker of required) {
-    if (!html.includes(marker)) throw new Error(`${name}: required ranking semantic is missing (${marker})`);
+    if (!source.includes(marker)) throw new Error(`${name}: required ranking semantic is missing (${marker})`);
   }
 
   const stale = language === "fa"
     ? ["سرعت / Latency", "پشتیبانی فارسی (+۱۵)", "از ۱۳۰"]
     : ["Latency sensitivity", "Language support (max +15)", "/ 130"];
   for (const marker of stale) {
-    if (html.includes(marker)) throw new Error(`${name}: stale ranking wording remains (${marker})`);
+    if (source.includes(marker)) throw new Error(`${name}: stale ranking wording remains (${marker})`);
   }
 }
 
@@ -59,14 +59,16 @@ function validateClarity(script) {
   }
 }
 
-const [fa, en, clarity] = await Promise.all([
+const [faHtml, faCore, enHtml, enCore, clarity] = await Promise.all([
   read("api-finder/index.html"),
+  read("api-finder/finder-core.js"),
   read("en/api-finder/index.html"),
+  read("en/api-finder/finder-core.js"),
   read("api-finder/finder-clarity.js")
 ]);
 
-validateFinder("Persian Finder", fa, "fa");
-validateFinder("English Finder", en, "en");
+validateFinder("Persian Finder", `${faHtml}\n${faCore}`, "fa");
+validateFinder("English Finder", `${enHtml}\n${enCore}`, "en");
 validateClarity(clarity);
 
 console.log("Finder ranking P3 validation passed: final semantics are owned by source files and no build-time rewrite was required.");

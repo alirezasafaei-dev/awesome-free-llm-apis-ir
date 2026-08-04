@@ -5,6 +5,8 @@ import process from "node:process";
 
 const root = process.cwd();
 const finderSource = path.join(root, "site", "api-finder", "index.html");
+const finderCoreScript = path.join(root, "site", "api-finder", "finder-core.js");
+const finderCoreStyles = path.join(root, "site", "api-finder", "finder-core.css");
 const clarityScript = path.join(root, "site", "api-finder", "finder-clarity.js");
 const clarityStyles = path.join(root, "site", "api-finder", "finder-clarity.css");
 const activationStyles = path.join(root, "site", "api-finder", "funnel-activation.css");
@@ -12,12 +14,16 @@ const shortlistScript = path.join(root, "site", "api-finder", "shortlist.js");
 const destination = path.join(root, ".site-dist");
 
 await access(finderSource);
+await access(finderCoreScript);
+await access(finderCoreStyles);
 await access(clarityScript);
 await access(clarityStyles);
 await access(activationStyles);
 await access(shortlistScript);
 
 const source = await readFile(finderSource, "utf8");
+const finderCore = await readFile(finderCoreScript, "utf8");
+const finderCss = await readFile(finderCoreStyles, "utf8");
 const script = await readFile(clarityScript, "utf8");
 const styles = `${await readFile(clarityStyles, "utf8")}\n${await readFile(activationStyles, "utf8")}`;
 const shortlist = await readFile(shortlistScript, "utf8");
@@ -31,6 +37,15 @@ for (const id of ["finder-form", "finder-usecase", "finder-budget", "finder-late
 }
 if (source.includes('id="finder-language"')) {
   throw new Error("API Finder source must not expose unsupported language-quality scoring");
+}
+if (!source.includes('href="./finder-core.css"') || !source.includes('src="./finder-core.js"')) {
+  throw new Error("API Finder source must own external core CSS and JavaScript");
+}
+if (/<style\b/i.test(source) || /<script>([\s\S]*?)<\/script>/i.test(source)) {
+  throw new Error("API Finder source contains CSP-blocked inline assets");
+}
+if (!finderCore.includes("function scoreProvider") || !finderCss.includes(".finder-form")) {
+  throw new Error("API Finder source-owned core assets are incomplete");
 }
 
 for (const signal of [

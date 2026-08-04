@@ -4,6 +4,7 @@ import path from "node:path";
 import process from "node:process";
 import { buildGuides } from "./build-guides.mjs";
 import { canonicalOrigin, hreflangLinks, languageSwitcher, sitemapXhtmlLinks } from "./locales.mjs";
+import { renderAnalyticsTags, renderUiStyles } from "./lib/ui-shell.mjs";
 
 const root = process.cwd();
 const source = path.join(root, "site");
@@ -11,7 +12,6 @@ const socialAssetsSource = path.join(root, "assets", "social");
 const destination = path.join(root, ".site-dist");
 const catalogPath = path.join(root, "catalog.json");
 const organizationId = `${canonicalOrigin}/#organization`;
-const plausibleScript = "./plausible.js";
 
 const accessLabels = {
   verified_working: "دسترسی مستقیم از ایران تأیید شده",
@@ -56,10 +56,6 @@ function escapeXml(value) {
 
 function jsonLd(value) {
   return JSON.stringify(value).replaceAll("<", "\\u003c");
-}
-
-function analyticsTags(prefix) {
-  return `<script defer src="${prefix}analytics.js"></script>\n  <script defer data-domain="llm.persiantoolbox.ir" src="${plausibleScript}"></script>`;
 }
 
 function normalizeProviderLabel(name) {
@@ -160,6 +156,7 @@ function providerPage(provider, relatedProviders) {
   ])}
   <link rel="stylesheet" href="../../styles.css">
   <link rel="stylesheet" href="../../seo.css">
+  ${renderUiStyles("../../")}
   <title>${escapeHtml(title)}</title>
   <script type="application/ld+json">${jsonLd(structuredData)}</script>
 </head>
@@ -235,7 +232,7 @@ function providerPage(provider, relatedProviders) {
     </div>
     <p class="footer-meta">MIT License · بدون وابستگی تجاری به Providerها · بدون انتشار IP، کلید API یا داده حساب</p>
   </footer>
-  ${analyticsTags("../../")}
+  ${renderAnalyticsTags("../../")}
 </body>
 </html>`;
 }
@@ -259,10 +256,6 @@ indexHtml = indexHtml.replace('<link rel="stylesheet" href="./styles.css">', '<l
 indexHtml = indexHtml.replace(
   /<!-- SEO_PROVIDER_LINKS_START -->[\s\S]*?<!-- SEO_PROVIDER_LINKS_END -->/,
   `<!-- SEO_PROVIDER_LINKS_START -->\n          ${linksHtml}\n          <!-- SEO_PROVIDER_LINKS_END -->`
-);
-indexHtml = indexHtml.replace(
-  `<script defer data-domain="llm.persiantoolbox.ir" src="${plausibleScript}"></script>`,
-  `${analyticsTags("./")}`
 );
 indexHtml = indexHtml.replace(
   "<!-- HREFLANG_TAGS -->",
@@ -292,10 +285,6 @@ enIndexHtml = enIndexHtml.replace(
 enIndexHtml = enIndexHtml.replace(
   "<!-- LANGUAGE_SWITCHER -->",
   languageSwitcher("en", canonicalOrigin + "/")
-);
-enIndexHtml = enIndexHtml.replace(
-  '<script defer data-domain="llm.persiantoolbox.ir" src="../plausible.js"></script>',
-  '<script defer src="../analytics.js"></script>\n  <script defer data-domain="llm.persiantoolbox.ir" src="../plausible.js"></script>'
 );
 await writeFile(enIndexPath, enIndexHtml);
 

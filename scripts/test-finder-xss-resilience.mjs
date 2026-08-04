@@ -5,8 +5,8 @@ import vm from "node:vm";
 
 const root = process.cwd();
 const files = {
-  finderFa: "site/api-finder/index.html",
-  finderEn: "site/en/api-finder/index.html",
+  finderFa: "site/api-finder/finder-core.js",
+  finderEn: "site/en/api-finder/finder-core.js",
   clarity: "site/api-finder/finder-clarity.js",
   shortlist: "site/api-finder/shortlist.js",
   compareFa: "site/compare/compare.js",

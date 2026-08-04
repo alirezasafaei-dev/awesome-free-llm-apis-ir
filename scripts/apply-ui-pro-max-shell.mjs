@@ -1,66 +1,11 @@
-import { readdir, readFile, writeFile } from "node:fs/promises";
+import { access, readFile, readdir } from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
 
-const dist = path.join(process.cwd(), ".site-dist");
-const stylesheetNames = ["ui-pro-max.css", "ui-pro-max-components.css"];
-const finderPages = ["api-finder/index.html", "en/api-finder/index.html"];
+const root = process.cwd();
+const dist = path.join(root, ".site-dist");
+const failures = [];
 
-/**
- * Move executable Finder code and page CSS out of HTML so the production CSP
- * can remain strict and build-time ranking transforms cannot invalidate it.
- * Finder data safety is source-owned: Finder/Compare render through DOM APIs,
- * validate external HTTPS links and are covered by malicious-fixture tests.
- * @param {string} relativePath
- * @returns {Promise<void>}
- */
-async function externalizeFinderAssets(relativePath) {
-  const absolutePath = path.join(dist, relativePath);
-  const directory = path.dirname(absolutePath);
-  const before = await readFile(absolutePath, "utf8");
-  const styleMatch = before.match(/<style>([\s\S]*?)<\/style>/);
-  const scriptMatch = before.match(/<script>([\s\S]*?)<\/script>/);
-  if (!styleMatch || !scriptMatch) {
-    console.warn(`${relativePath}: inline Finder assets already externalized or not found — skipping`);
-    return;
-  }
-
-  await writeFile(path.join(directory, "finder-core.css"), `${styleMatch[1].trim()}\n`, "utf8");
-  await writeFile(path.join(directory, "finder-core.js"), `${scriptMatch[1].trim()}\n`, "utf8");
-
-  const after = before
-    .replace(styleMatch[0], '<link rel="stylesheet" href="./finder-core.css">')
-    .replace(scriptMatch[0], '<script defer src="./finder-core.js"></script>');
-  await writeFile(absolutePath, after, "utf8");
-}
-
-/**
- * Externalize page-specific style blocks for compatibility with the shared CSP.
- * @param {string} absolutePath
- * @param {string} relativePath
- * @returns {Promise<void>}
- */
-async function externalizePageStyles(absolutePath, relativePath) {
-  const before = await readFile(absolutePath, "utf8");
-  const matches = [...before.matchAll(/<style>([\s\S]*?)<\/style>/g)];
-  if (matches.length === 0) return;
-
-  const css = matches.map((match) => match[1].trim()).filter(Boolean).join("\n\n");
-  const assetName = "page-inline.css";
-  await writeFile(path.join(path.dirname(absolutePath), assetName), `${css}\n`, "utf8");
-
-  let after = before;
-  for (const [index, match] of matches.entries()) {
-    after = after.replace(match[0], index === 0 ? `<link rel="stylesheet" href="./${assetName}">` : "");
-  }
-  await writeFile(absolutePath, after, "utf8");
-  console.log(`externalized page styles: ${relativePath}`);
-}
-
-/**
- * @param {string} directory
- * @returns {Promise<string[]>}
- */
 async function htmlFiles(directory) {
   const entries = await readdir(directory, { withFileTypes: true });
   const nested = await Promise.all(entries.map(async (entry) => {
@@ -71,74 +16,79 @@ async function htmlFiles(directory) {
   return nested.flat();
 }
 
-/**
- * @param {string} absolutePath
- * @param {string} stylesheetName
- * @returns {string}
- */
-function stylesheetHref(absolutePath, stylesheetName) {
-  const relativeHtml = path.relative(dist, absolutePath).split(path.sep).join("/");
-  const fromDirectory = path.posix.dirname(relativeHtml);
-  const relativeCss = path.posix.relative(fromDirectory === "." ? "" : fromDirectory, stylesheetName);
-  return relativeCss.startsWith(".") ? relativeCss : `./${relativeCss}`;
+function expectedPrefix(relativePath) {
+  const depth = relativePath.split("/").length - 1;
+  return depth === 0 ? "./" : "../".repeat(depth);
 }
 
-/**
- * @param {string} html
- * @param {string[]} hrefs
- * @param {string} relativePath
- * @returns {string}
- */
-function injectStylesheets(html, hrefs, relativePath) {
-  const missing = hrefs.filter((href) => !html.includes(`href="${href}"`));
-  if (missing.length === 0) return html;
-
-  const links = [...html.matchAll(/<link rel="stylesheet" href="([^"]+)">/g)];
-  if (links.length === 0) throw new Error(`${relativePath}: no stylesheet link found`);
-
-  const preferred = links.find((match) => match[1].endsWith("ui-pro-max.css"))
-    ?? links.find((match) => match[1].endsWith("ux-clarity.css"))
-    ?? links.find((match) => match[1].endsWith("seo.css"))
-    ?? links.at(-1);
-  if (!preferred) throw new Error(`${relativePath}: stylesheet insertion point missing`);
-
-  const tags = missing.map((href) => `<link rel="stylesheet" href="${href}">`).join("\n  ");
-  return html.replace(preferred[0], `${preferred[0]}\n  ${tags}`);
+function count(html, needle) {
+  return html.split(needle).length - 1;
 }
 
-/**
- * Load the domain guard before the deferred tracker on every generated page.
- * @param {string} html
- * @returns {string}
- */
-function injectAnalyticsGuard(html) {
-  if (html.includes("plausible-guard.js")) return html;
-  return html.replace(
-    /(<script defer data-domain="llm\.persiantoolbox\.ir" src="([^"]*?)plausible\.js"><\/script>)/,
-    (_tag, trackerTag, prefix) => `<script defer src="${prefix}plausible-guard.js"></script>\n  ${trackerTag}`
-  );
+function validateScripts(html, relativePath) {
+  for (const match of html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/gi)) {
+    const attributes = match[1];
+    const body = match[2].trim();
+    const type = attributes.match(/\btype=["']([^"']+)["']/i)?.[1]?.toLowerCase();
+    const hasSource = /\bsrc=["'][^"']+["']/i.test(attributes);
+    if (type === "application/ld+json") continue;
+    if (!hasSource || body) failures.push(`${relativePath}: executable inline script violates the production CSP`);
+  }
 }
-
-for (const finderPage of finderPages) await externalizeFinderAssets(finderPage);
 
 const files = await htmlFiles(dist);
 for (const absolutePath of files) {
   const relativePath = path.relative(dist, absolutePath).split(path.sep).join("/");
-  await externalizePageStyles(absolutePath, relativePath);
-}
-let changed = 0;
+  const prefix = expectedPrefix(relativePath);
+  const html = await readFile(absolutePath, "utf8");
+  const primaryCss = `<link rel="stylesheet" href="${prefix}ui-pro-max.css">`;
+  const componentCss = `<link rel="stylesheet" href="${prefix}ui-pro-max-components.css">`;
+  if (count(html, primaryCss) !== 1) failures.push(`${relativePath}: expected exactly one source-owned UI Pro Max stylesheet`);
+  if (count(html, componentCss) !== 1) failures.push(`${relativePath}: expected exactly one source-owned UI component stylesheet`);
+  if (/<style\b/i.test(html) || /\sstyle\s*=/i.test(html)) failures.push(`${relativePath}: inline style violates the production CSP`);
+  validateScripts(html, relativePath);
 
-for (const absolutePath of files) {
-  const relativePath = path.relative(dist, absolutePath).split(path.sep).join("/");
-  const before = await readFile(absolutePath, "utf8");
-  if (/<style>[\s\S]*?<\/style>/.test(before) || /\sstyle="[^"]*"/.test(before)) {
-    throw new Error(`${relativePath}: production HTML contains CSP-blocked inline styles`);
+  const tracker = `<script defer data-domain="llm.persiantoolbox.ir" src="${prefix}plausible.js"></script>`;
+  const guard = `<script defer src="${prefix}plausible-guard.js"></script>`;
+  const hasTracker = html.includes("plausible.js");
+  if (hasTracker) {
+    if (count(html, tracker) !== 1) failures.push(`${relativePath}: tracker path/count is not source-owned`);
+    if (count(html, guard) !== 1) failures.push(`${relativePath}: Plausible guard path/count is not source-owned`);
+    if (html.indexOf(guard) > html.indexOf(tracker)) failures.push(`${relativePath}: Plausible guard must load before tracker`);
+  } else if (html.includes("plausible-guard.js")) {
+    failures.push(`${relativePath}: guard exists without a tracker`);
   }
-  const hrefs = stylesheetNames.map((stylesheetName) => stylesheetHref(absolutePath, stylesheetName));
-  const after = injectAnalyticsGuard(injectStylesheets(before, hrefs, relativePath));
-  if (after === before) continue;
-  await writeFile(absolutePath, after, "utf8");
-  changed += 1;
 }
 
-console.log(`UI Pro Max shell applied to ${files.length} HTML file(s); ${changed} updated.`);
+const requiredAssets = [
+  "ui-pro-max.css",
+  "ui-pro-max-components.css",
+  "plausible-guard.js",
+  "api-finder/finder-core.css",
+  "api-finder/finder-core.js",
+  "en/api-finder/finder-core.css",
+  "en/api-finder/finder-core.js",
+  "en/compare/page-inline.css",
+  "en/quick-start/page-inline.css"
+];
+await Promise.all(requiredAssets.map((relativePath) => access(path.join(dist, relativePath))));
+
+const pageAssets = [
+  ["api-finder/index.html", "./finder-core.css", "./finder-core.js"],
+  ["en/api-finder/index.html", "./finder-core.css", "./finder-core.js"],
+  ["en/compare/index.html", "./page-inline.css", null],
+  ["en/quick-start/index.html", "./page-inline.css", null]
+];
+for (const [relativePath, stylesheet, script] of pageAssets) {
+  const html = await readFile(path.join(dist, relativePath), "utf8");
+  if (count(html, `href="${stylesheet}"`) !== 1) failures.push(`${relativePath}: page stylesheet is not source-owned exactly once`);
+  if (script && count(html, `src="${script}"`) !== 1) failures.push(`${relativePath}: page script is not source-owned exactly once`);
+}
+
+if (failures.length) {
+  console.error("UI shell source-ownership validation failed:");
+  failures.forEach((failure) => console.error(`- ${failure}`));
+  process.exit(1);
+}
+
+console.log(`UI shell source-ownership validation passed for ${files.length} HTML file(s); no build-time mutation was required.`);

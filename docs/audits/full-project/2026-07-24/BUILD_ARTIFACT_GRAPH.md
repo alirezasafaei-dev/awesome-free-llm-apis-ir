@@ -27,7 +27,7 @@ Source (data/providers/*.json, content/providers/*.json)
               ├── apply-product-navigation-p2.mjs → [REMOVED] navigation now source-owned
               ├── apply-finder-ranking-p3.mjs → ranking validation (read-only)
               ├── apply-site-footer-p4.mjs → [REMOVED] footer now source-owned
-              └── apply-ui-pro-max-shell.mjs → CSP hardening, CSS/JS externalization
+              └── apply-ui-pro-max-shell.mjs → source-ownership/CSP validation only
 ```
 
 ## Generated artifacts
