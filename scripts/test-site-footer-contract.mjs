@@ -23,6 +23,15 @@ function normalizeMarkup(value) {
     .trim();
 }
 
+function parityDiagnostic(actual, expected) {
+  const max = Math.max(actual.length, expected.length);
+  let index = 0;
+  while (index < max && actual[index] === expected[index]) index += 1;
+  const start = Math.max(0, index - 80);
+  const end = index + 160;
+  return `first difference at ${index}\nexpected: ${expected.slice(start, end)}\nactual:   ${actual.slice(start, end)}`;
+}
+
 // --- pure unit contracts ---
 assert(normalizeAssetPrefix("") === "./", "empty prefix becomes ./");
 assert(normalizeAssetPrefix("..") === "../", "parent prefix keeps slash");
@@ -129,9 +138,11 @@ for (const filePath of htmlFiles) {
   if (!actualFooter.includes('class="site-footer"')) continue;
 
   const expectedFooter = renderSiteFooter(footerContextFromRelativePath(relativePath));
+  const normalizedActual = normalizeMarkup(actualFooter);
+  const normalizedExpected = normalizeMarkup(expectedFooter);
   assert(
-    normalizeMarkup(actualFooter) === normalizeMarkup(expectedFooter),
-    `${relativePath}: source/generated footer diverges from shared renderer`
+    normalizedActual === normalizedExpected,
+    `${relativePath}: source/generated footer diverges from shared renderer\n${parityDiagnostic(normalizedActual, normalizedExpected)}`
   );
   assert(actualFooter.includes("footer-grid"), `${relativePath} missing footer-grid`);
   assert(actualFooter.includes("footer-nav"), `${relativePath} missing footer-nav`);
