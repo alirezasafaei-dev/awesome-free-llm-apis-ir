@@ -3,6 +3,7 @@ import path from "node:path";
 import process from "node:process";
 
 import { hreflangLinks, languageSwitcher, sitemapXhtmlLinks, getTranslationPair, resolveUrl, canonicalOrigin } from "./locales.mjs";
+import { renderAnalyticsTags, renderUiStyles } from "./lib/ui-shell.mjs";
 
 const root = process.cwd();
 const contentDir = path.join(root, "content", "en");
@@ -284,6 +285,7 @@ function articlePage(article) {
   ${hreflang}
   <link rel="stylesheet" href="../../../styles.css">
   <link rel="stylesheet" href="../../../seo.css">
+  ${renderUiStyles("../../../")}
   <title>${escapeHtml(title)}</title>
   <script type="application/ld+json">${JSON.stringify(structuredData).replaceAll("<", "\\u003c")}</script>
 </head>
@@ -347,8 +349,7 @@ function articlePage(article) {
     </div>
     <p class="footer-meta">MIT License · No commercial affiliation with providers · Do not publish IPs, API keys, or account data</p>
   </footer>
-  <script defer src="../../../analytics.js"></script>
-  <script defer data-domain="llm.persiantoolbox.ir" src="../../../plausible.js"></script>
+  ${renderAnalyticsTags("../../../")}
 </body>
 </html>`;
 }

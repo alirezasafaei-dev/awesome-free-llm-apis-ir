@@ -2,6 +2,7 @@ import { mkdir, readFile, readdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
 import { hreflangLinks, languageSwitcher, sitemapXhtmlLinks, getTranslationPair, resolveUrl, canonicalOrigin } from "./locales.mjs";
+import { renderAnalyticsTags, renderUiStyles } from "./lib/ui-shell.mjs";
 
 const root = process.cwd();
 const contentDir = path.join(root, "content", "fa");
@@ -260,6 +261,7 @@ function articlePage(article) {
   ${hreflang}
   <link rel="stylesheet" href="../../styles.css">
   <link rel="stylesheet" href="../../seo.css">
+  ${renderUiStyles("../../")}
   <title>${escapeHtml(title)}</title>
   <script type="application/ld+json">${JSON.stringify(structuredData).replaceAll("<", "\\u003c")}</script>
 </head>
@@ -324,8 +326,7 @@ function articlePage(article) {
     </div>
     <p class="footer-meta">MIT License · بدون وابستگی تجاری به Providerها · بدون انتشار IP، کلید API یا داده حساب</p>
   </footer>
-  <script defer src="../../analytics.js"></script>
-  <script defer data-domain="llm.persiantoolbox.ir" src="../../plausible.js"></script>
+  ${renderAnalyticsTags("../../")}
 </body>
 </html>`;
 }

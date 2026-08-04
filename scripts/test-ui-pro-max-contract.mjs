@@ -10,19 +10,33 @@ const files = {
   components: path.join(root, "site", "ui-pro-max-components.css"),
   js: path.join(root, "site", "ui-pro-max.js"),
   transform: path.join(root, "scripts", "apply-ui-pro-max-shell.mjs"),
-  xss: path.join(root, "scripts", "test-finder-xss-resilience.mjs")
+  xss: path.join(root, "scripts", "test-finder-xss-resilience.mjs"),
+  shell: path.join(root, "scripts", "lib", "ui-shell.mjs"),
+  finderFaHtml: path.join(root, "site", "api-finder", "index.html"),
+  finderFaCss: path.join(root, "site", "api-finder", "finder-core.css"),
+  finderFaJs: path.join(root, "site", "api-finder", "finder-core.js"),
+  finderEnHtml: path.join(root, "site", "en", "api-finder", "index.html"),
+  finderEnCss: path.join(root, "site", "en", "api-finder", "finder-core.css"),
+  finderEnJs: path.join(root, "site", "en", "api-finder", "finder-core.js")
 };
 
 await Promise.all(Object.values(files).map((file) => access(file)));
 
-const [master, html, css, components, js, transform, xss] = await Promise.all([
+const [master, html, css, components, js, transform, xss, shell, finderFaHtml, finderFaCss, finderFaJs, finderEnHtml, finderEnCss, finderEnJs] = await Promise.all([
   readFile(files.master, "utf8"),
   readFile(files.html, "utf8"),
   readFile(files.css, "utf8"),
   readFile(files.components, "utf8"),
   readFile(files.js, "utf8"),
   readFile(files.transform, "utf8"),
-  readFile(files.xss, "utf8")
+  readFile(files.xss, "utf8"),
+  readFile(files.shell, "utf8"),
+  readFile(files.finderFaHtml, "utf8"),
+  readFile(files.finderFaCss, "utf8"),
+  readFile(files.finderFaJs, "utf8"),
+  readFile(files.finderEnHtml, "utf8"),
+  readFile(files.finderEnCss, "utf8"),
+  readFile(files.finderEnJs, "utf8")
 ]);
 
 const requiredMasterSignals = [
@@ -104,16 +118,29 @@ for (const signal of requiredJsSignals) {
 }
 
 for (const signal of [
-  "ui-pro-max.css",
-  "ui-pro-max-components.css",
   "htmlFiles",
-  "injectStylesheets",
-  "externalizeFinderAssets",
-  'path.join(directory, "finder-core.js")',
-  "scriptMatch[1].trim()",
-  "Finder data safety is source-owned"
+  "expectedPrefix",
+  "validateScripts",
+  "UI shell source-ownership validation passed",
+  "plausible-guard.js",
+  "finder-core.css",
+  "page-inline.css"
 ]) {
-  if (!transform.includes(signal)) throw new Error(`Built-page design-system transform is missing: ${signal}`);
+  if (!transform.includes(signal)) throw new Error(`UI shell validator is missing: ${signal}`);
+}
+for (const forbiddenMutation of ["writeFile", "externalizeFinderAssets", "externalizePageStyles", "injectStylesheets", "injectAnalyticsGuard"]) {
+  if (transform.includes(forbiddenMutation)) throw new Error(`UI shell must remain validation-only: ${forbiddenMutation}`);
+}
+for (const signal of ["renderUiStyles", "renderAnalyticsTags", "plausible-guard.js", "ui-pro-max-components.css"]) {
+  if (!shell.includes(signal)) throw new Error(`Shared UI shell renderer is missing: ${signal}`);
+}
+for (const [label, page, pageCss, pageJs] of [
+  ["Persian Finder", finderFaHtml, finderFaCss, finderFaJs],
+  ["English Finder", finderEnHtml, finderEnCss, finderEnJs]
+]) {
+  if (!page.includes('href="./finder-core.css"') || !page.includes('src="./finder-core.js"')) throw new Error(`${label} does not own external core assets`);
+  if (/<style\b/i.test(page) || /<script>([\s\S]*?)<\/script>/i.test(page)) throw new Error(`${label} contains inline executable assets`);
+  if (!pageCss.includes(".finder-form") || !pageJs.includes("function scoreProvider")) throw new Error(`${label} core source assets are incomplete`);
 }
 
 for (const forbidden of [

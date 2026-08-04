@@ -1,35 +1,35 @@
 # Build Transform Audit: `apply-ui-pro-max-shell.mjs`
 
-**Decision:** `REPLACE_WITH_COMPONENT`
+**Decision:** `VALIDATION_ONLY` — all UI shell and CSP assets are source-owned.
 
-## Current behavior
+## Previous mutation inventory
 
-1. **Externalizes Finder assets**: Moves inline `<style>` and `<script>` from Finder pages into external `finder-core.css` and `finder-core.js` files for CSP compliance. The JavaScript is copied unchanged; Finder/Compare data safety is source-owned and tested with malicious fixtures.
-2. **Externalizes page styles**: Moves all remaining inline `<style>` blocks into `page-inline.css` for every HTML page.
-3. **Injects UI Pro Max stylesheets**: Adds `<link rel="stylesheet">` for `ui-pro-max.css` and `ui-pro-max-components.css` to every page.
-4. **Injects analytics guard**: Adds `plausible-guard.js` before `plausible.js` on every page.
-5. **Validates CSP**: Throws if any inline `<style>` or `style="..."` attributes remain.
+The script previously externalized Finder CSS/JavaScript, extracted page `<style>` blocks, injected two shared UI stylesheets, injected `plausible-guard.js`, repaired nested tracker paths, and rejected remaining inline styles.
 
-## Retired mitigation
+## Source owners after P1-5
 
-The temporary recursive `sanitizeCatalogForHtml` build injection added before the source-owned Finder refactor has been removed. Persian and English Finder and Compare now construct catalog-driven UI with DOM APIs, validate external HTTPS URLs, constrain provider IDs, and execute malicious payload fixtures in `scripts/test-finder-xss-resilience.mjs`. Reintroducing the build sanitizer is prohibited by `scripts/test-ui-pro-max-contract.mjs` because it would mask source regressions and double-encode legitimate catalog text.
+- Persian and English Finder core CSS/JavaScript: `site/*/api-finder/finder-core.css` and `finder-core.js`.
+- English Compare and Quick Start page CSS: source `page-inline.css` files.
+- Static product pages: direct stylesheet, guard, tracker, and analytics tags in `site/**/*.html`.
+- Provider, guide, content, and tools generators: `scripts/lib/ui-shell.mjs` via `renderUiStyles()` and `renderAnalyticsTags()`.
+- Tracker depth: emitted correctly by each source/generator; `build-site-production.mjs` no longer repairs it.
 
-## Why not source-owned now
+## Retained validator
 
-The remaining shell/layout structure—stylesheet inclusion, analytics guard ordering, CSP-safe asset externalization, and page-style extraction—should be defined in source generators or shared templates rather than patched after build.
+`apply-ui-pro-max-shell.mjs` performs fail-closed validation only. It scans every built HTML page and rejects:
 
-## Migration path
+- missing or duplicate shared UI styles;
+- inline `<style>` blocks or `style` attributes;
+- executable inline JavaScript;
+- incorrect guard/tracker paths, counts, or ordering;
+- missing Finder or page-specific external assets.
 
-1. Generate Finder pages with external assets from the start.
-2. Include UI Pro Max stylesheets in a shared base-page template.
-3. Include `plausible-guard.js` in the base template before `plausible.js`.
-4. Move page-specific CSS into source-owned external stylesheets.
-5. Remove this script after source/generated parity tests cover the replacement.
+The validator imports no write API and performs no HTML or asset mutation.
 
-## Regex usage
+## Security boundary
 
-Yes—multiple regexes remain for `<style>...</style>` extraction, stylesheet link insertion, and analytics guard injection. No regex or recursive transform rewrites catalog values.
+Finder and Compare catalog data are rendered through DOM APIs, HTTPS documentation links are validated, Provider IDs are constrained, and malicious fixtures run in `scripts/test-finder-xss-resilience.mjs`. The retired recursive catalog sanitizer remains forbidden.
 
-## Idempotency
+## Idempotency and rollback
 
-Partially idempotent: analytics and stylesheet insertion check for existing assets. Externalization is intentionally one-shot because it removes inline blocks.
+The shell stage is now idempotent because it is read-only. Rollback is a normal revert of the source assets, generator helper, validator, and tests; no hidden generated repair step exists.
