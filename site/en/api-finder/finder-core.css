@@ -1,0 +1,72 @@
+.en-finder-hero { position: relative; overflow: hidden; border-radius: 34px; padding: clamp(24px, 5vw, 52px); margin-bottom: 40px; background: linear-gradient(135deg, #111827 0%, #1e293b 100%); color: #fff; display: flex; flex-direction: column; gap: 20px; }
+      .en-finder-hero::before { content: ""; position: absolute; width: 380px; height: 380px; left: -120px; top: -160px; border-radius: 50%; background: radial-gradient(circle, rgba(109,61,245,.7), transparent 68%); }
+      .en-finder-hero::after { content: ""; position: absolute; width: 260px; height: 260px; right: 10%; bottom: -220px; border-radius: 50%; background: rgba(16,185,129,.3); filter: blur(50px); }
+      .en-finder-hero > * { position: relative; z-index: 1; }
+      .en-finder-hero .eyebrow { color: #a78bfa; }
+      .en-finder-hero h1 { margin: 0; font-size: clamp(28px, 4vw, 52px); line-height: 1.15; letter-spacing: -.04em; }
+      .en-finder-hero h1 span { color: #34d399; }
+      .en-finder-hero p { max-width: 720px; margin: 0; color: #cbd5e1; font-size: clamp(14px, 1.6vw, 17px); }
+
+      .finder-form { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 14px; padding: 24px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); box-shadow: var(--shadow); margin-bottom: 24px; }
+      .finder-form label { display: flex; flex-direction: column; gap: 6px; color: var(--muted); font-size: 12px; font-weight: 700; }
+      .finder-form select, .finder-form button { width: 100%; min-height: 46px; border: 1px solid var(--border); border-radius: 12px; background: var(--surface-soft); color: var(--text); padding: 8px 12px; outline: none; font-size: 14px; }
+      .finder-form select:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(109,61,245,.15); }
+      .finder-form .finder-actions { display: flex; align-items: end; gap: 10px; grid-column: 1 / -1; }
+      .finder-form .button.primary { min-height: 46px; border: 0; font-size: 15px; }
+      .finder-form .button.secondary { min-height: 46px; border: 1px solid var(--border); background: var(--surface); color: var(--muted); font-size: 13px; }
+
+      .finder-advanced { grid-column: 1 / -1; }
+      .finder-advanced summary { cursor: pointer; color: var(--primary); font-weight: 700; font-size: 13px; padding: 8px 0; }
+      .finder-advanced-content { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 14px; padding-top: 12px; }
+
+      .finder-status { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 16px; }
+      .finder-status p { color: var(--muted); font-size: 14px; margin: 0; }
+
+      .finder-results { display: grid; gap: 18px; margin-bottom: 32px; }
+      .finder-card { display: flex; flex-direction: column; padding: 20px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: 0 8px 28px rgba(17,24,39,.05); }
+      .finder-card-header { display: flex; align-items: center; gap: 12px; }
+      .finder-rank { flex: 0 0 auto; display: grid; place-items: center; width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, var(--primary), color-mix(in srgb, var(--primary) 70%, var(--accent))); color: #fff; font-weight: 900; font-size: 15px; }
+      .finder-card-title { flex: 1; }
+      .finder-card-title h3 { margin: 0; font-size: 19px; }
+      .finder-card-title .finder-id { color: var(--muted); font-size: 11px; direction: ltr; }
+      .finder-total-score { flex: 0 0 auto; text-align: center; padding: 8px 16px; border-radius: 12px; background: var(--surface-soft); }
+      .finder-total-score strong { display: block; font-size: 24px; font-weight: 900; color: var(--primary); }
+      .finder-total-score small { color: var(--muted); font-size: 11px; }
+      .finder-breakdown { margin-top: 14px; display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 8px; }
+      .finder-breakdown-item { padding: 8px 10px; border-radius: 10px; background: var(--surface-soft); font-size: 12px; display: flex; justify-content: space-between; align-items: center; }
+      .finder-breakdown-item .label { color: var(--muted); }
+      .finder-breakdown-item .value { font-weight: 800; direction: ltr; }
+      .finder-breakdown-item .value.positive { color: var(--accent); }
+      .finder-breakdown-item .value.negative { color: var(--danger); }
+      .finder-card-extra { margin-top: 14px; display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+      .finder-card-extra .access-badge { background: var(--surface-soft); display: inline-flex; align-items: center; width: fit-content; border-radius: 999px; padding: 4px 9px; font-size: 11px; font-weight: 800; }
+      .finder-card-extra .limit-label { color: var(--muted); font-size: 12px; }
+      .finder-card-actions { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border); display: flex; gap: 8px; }
+      .finder-card-actions a { padding: 8px 16px; border-radius: 10px; text-align: center; text-decoration: none; font-size: 12px; font-weight: 800; }
+      .finder-detail-link { background: var(--surface-soft); color: var(--text); border: 1px solid var(--border); }
+      .finder-detail-link:hover { background: color-mix(in srgb, var(--primary) 12%, var(--surface)); border-color: var(--primary); color: var(--primary); }
+      .finder-docs-link { background: var(--primary); color: #fff; }
+      .finder-evidence-link { background: transparent; color: var(--muted); border: 1px solid var(--border); }
+      .finder-quick-start-link { background: var(--accent); color: #fff; }
+
+      .finder-empty { padding: 48px; text-align: center; color: var(--muted); border: 1px dashed var(--border); border-radius: var(--radius); background: var(--surface); }
+      .finder-empty p { margin: 8px 0; }
+
+      .finder-disclosure { margin-top: 12px; padding: 18px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); }
+      .finder-disclosure summary { color: var(--primary); font-weight: 800; cursor: pointer; font-size: 13px; }
+      .finder-disclosure-content { margin-top: 12px; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
+      .finder-disclosure-content div { padding: 10px; border-radius: 10px; background: var(--surface-soft); font-size: 12px; }
+      .finder-disclosure-content div strong { display: block; margin-bottom: 4px; color: var(--text); }
+
+      .finder-contribute { margin-top: 40px; padding: clamp(24px, 4vw, 40px); border-radius: 30px; background: linear-gradient(135deg, color-mix(in srgb, var(--primary) 13%, var(--surface)), var(--surface)); border: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+      .finder-contribute h2 { margin: 0; font-size: clamp(22px, 3vw, 32px); }
+      .finder-contribute p { color: var(--muted); max-width: 600px; margin: 8px 0 0; font-size: 14px; }
+
+      @media (max-width: 640px) {
+        .finder-form { grid-template-columns: 1fr; }
+        .finder-form .finder-actions { flex-direction: column; }
+        .finder-card-header { flex-wrap: wrap; }
+        .finder-breakdown { grid-template-columns: 1fr 1fr; }
+        .finder-contribute { flex-direction: column; text-align: center; }
+        .finder-card-actions { flex-direction: column; }
+      }

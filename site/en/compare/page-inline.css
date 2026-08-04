@@ -1,0 +1,6 @@
+.compare-en-hero { position: relative; overflow: hidden; border-radius: 34px; padding: clamp(24px,5vw,52px); margin-bottom: 40px; background: linear-gradient(135deg, #111827 0%, #1e293b 100%); color: #fff; }
+    .compare-en-hero > * { position: relative; z-index: 1; }
+    .compare-en-hero .eyebrow { color: #a78bfa; }
+    .compare-en-hero h1 { margin: 0; font-size: clamp(28px, 4vw, 52px); line-height: 1.15; letter-spacing: -.04em; }
+    .compare-en-hero h1 span { color: #34d399; }
+    .compare-en-hero p { max-width: 720px; margin: 12px 0; color: #cbd5e1; font-size: clamp(14px,1.6vw,17px); }
