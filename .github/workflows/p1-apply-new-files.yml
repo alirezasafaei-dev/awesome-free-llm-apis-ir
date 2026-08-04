@@ -1,0 +1,53 @@
+name: Apply P1 source assets
+
+on:
+  push:
+    branches:
+      - agent/build-p1-ui-shell-source-owned-2026-08-04
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    if: contains(github.event.head_commit.message, '[apply-p1-new-files]')
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+      - name: Reconstruct and verify source assets
+        run: |
+          set -Eeuo pipefail
+          cat .github/p1-new-files/chunk-* | base64 -d > /tmp/p1-new-files.tar.gz
+          echo '60b71633258934e977ff0b3c861536488fb6b317b2b9186ff7b64979eb948662  /tmp/p1-new-files.tar.gz' | sha256sum -c -
+          tar -tzf /tmp/p1-new-files.tar.gz | sort > /tmp/p1-new-files.list
+          cat > /tmp/p1-new-files.expected <<'EOF'
+          scripts/lib/ui-shell.mjs
+          site/api-finder/finder-core.css
+          site/api-finder/finder-core.js
+          site/en/api-finder/finder-core.css
+          site/en/api-finder/finder-core.js
+          site/en/compare/page-inline.css
+          site/en/quick-start/page-inline.css
+          EOF
+          sed -i 's/^          //' /tmp/p1-new-files.expected
+          sort -o /tmp/p1-new-files.expected /tmp/p1-new-files.expected
+          diff -u /tmp/p1-new-files.expected /tmp/p1-new-files.list
+      - name: Install source-owned assets
+        run: |
+          set -Eeuo pipefail
+          tar -xzf /tmp/p1-new-files.tar.gz
+          while IFS= read -r file; do test -s "$file"; done < /tmp/p1-new-files.expected
+          git add --pathspec-from-file=/tmp/p1-new-files.expected
+          git rm -r .github/p1-new-files
+          git rm .github/workflows/p1-apply-new-files.yml
+          git diff --cached --check
+      - name: Commit and push source assets
+        run: |
+          set -Eeuo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'refactor(build): add source-owned UI shell assets'
+          git push origin HEAD:agent/build-p1-ui-shell-source-owned-2026-08-04
