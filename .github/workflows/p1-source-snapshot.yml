@@ -1,6 +1,8 @@
 name: P1 source snapshot
 
 on:
+  pull_request:
+    branches: [main]
   push:
     branches:
       - agent/build-p1-ui-shell-source-owned-2026-08-04
