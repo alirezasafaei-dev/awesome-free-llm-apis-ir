@@ -10,6 +10,7 @@ await import("./build-site.mjs");
 await cp(dataPath, path.join(destination, "data.json"));
 await import("./enrich-seo-pages.mjs");
 await import("./register-static-routes.mjs");
+await import("./register-provider-quick-start-links.mjs");
 await import("./build-tools-pages.mjs");
 await import("./normalize-tools-home-links.mjs");
 await import("./register-compare-route.mjs");
@@ -45,4 +46,4 @@ const guidePages = await normalizeNestedTrackerPaths("guides");
 
 await import("./enrich-provider-pages.mjs");
 
-console.log(`Published data catalogs, registered product routes including Compare, applied SEO enrichments and normalized Plausible tracker paths for ${providerPages} provider pages and ${guidePages} Persian guide pages.`);
+console.log(`Published data catalogs, registered product routes including Compare and Provider Quick Start handoff, applied SEO enrichments and normalized Plausible tracker paths for ${providerPages} provider pages and ${guidePages} Persian guide pages.`);
