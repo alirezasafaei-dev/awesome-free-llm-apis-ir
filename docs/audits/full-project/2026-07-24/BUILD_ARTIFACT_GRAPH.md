@@ -22,11 +22,11 @@ Source (data/providers/*.json, content/providers/*.json)
         ├── enrich-provider-pages.mjs → editorial content in provider pages
         │
         └── Phase 2 (apply-* scripts):
-              ├── apply-ux-seo-p0.mjs → catalog search, hreflang, finder validation
-              ├── apply-serp-metadata-p1.mjs → SERP title/description overrides
-              ├── apply-product-navigation-p2.mjs → nav bar
+              ├── apply-ux-seo-p0.mjs → [REMOVED] catalog search/hreflang now source-owned
+              ├── apply-serp-metadata-p1.mjs → [REMOVED] SERP metadata now source-owned
+              ├── apply-product-navigation-p2.mjs → [REMOVED] navigation now source-owned
               ├── apply-finder-ranking-p3.mjs → ranking validation (read-only)
-              ├── apply-site-footer-p4.mjs → shared footer
+              ├── apply-site-footer-p4.mjs → [REMOVED] footer now source-owned
               └── apply-ui-pro-max-shell.mjs → CSP hardening, CSS/JS externalization
 ```
 

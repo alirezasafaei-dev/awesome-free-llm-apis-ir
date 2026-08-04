@@ -1,30 +1,51 @@
 # Build Transform Audit: `apply-ux-seo-p0.mjs`
 
-**Decision:** `MOVE_TO_SOURCE`
+**Decision:** `REMOVED` — migrated to source-owned UX/SEO P0
 
-## Current behavior
+## Previous behavior
 
-Runs after `build-site-production.mjs` + `content:fa:build`. Performs:
-1. **Catalog search refactor** (`.site-dist/index.html`): Restructures the filter HTML from a flat `<form>` to a shell with exposed search + collapsible advanced filters. Uses regex replacement on the built HTML.
-2. **Locale alternate injection** (`*/*/index.html`): Appends `<link rel="alternate" hreflang="...">` tags for 6 product pages (Finder, Compare, Quick Start, Tools) and their English counterparts.
-3. **Finder source semantics assertion** (`api-finder/index.html`): Validates that the built Finder pages use correct ranking labels and no stale language-scoring markers. Read-only assertion, no mutation.
+1. Restructured the catalog filter form in `index.html` to expose search and make advanced filters collapsible.
+2. Added `<link rel="alternate" hreflang>` tags to 7 product pages.
+3. Asserted Finder source semantics (read-only validation).
+4. Appended catalog filter CSS to `ux-clarity.css`.
 
-## Why not source-owned now
+## Migration completed
 
-- The catalog search refactor restructures generated HTML that the build script (`build-site.mjs`) produces. Moving the shell structure into the generator would be cleaner.
-- Locale alternates are static per-page and should be in each page's source template, not injected after build.
+### Previous mutation inventory
 
-## Migration path
+- 1 page patched via regex catalog form restructuring
+- 7 pages patched via hreflang injection
+- 2 Finder pages validated (read-only)
+- CSS appended to `ux-clarity.css` with marker
+- Not idempotent (used marker-based skip)
 
-1. Move catalog filter shell structure into `build-site.mjs` or the HTML generator so it produces the correct DOM from the start.
-2. Add static `<link rel="alternate">` tags to each source HTML template.
-3. Keep the Finder assertion as a standalone test (like `apply-finder-ranking-p3.mjs` is already validation-only).
-4. Remove this script.
+### New owner
 
-## Regex usage
+Source HTML templates and CSS now own all UX/SEO P0 behavior:
 
-Yes — the catalog refactor uses regex to find and restructure the filter form. This is fragile and depends on exact HTML structure remaining stable.
+- **Catalog search shell**: `site/index.html` — source already has `<form class="catalog-filter-shell">` with exposed search
+- **Hreflang alternates**: `site/api-finder/index.html`, `site/quick-start/index.html` — added missing `en` alternate
+- **CSS**: `site/ux-clarity.css` — catalog filter shell styles added to source
+- **Finder assertion**: `scripts/test-ux-seo-p0.mjs` — still validates Finder semantics as read-only test
+- **Finder assertion**: `scripts/test-finder-ranking-semantics.mjs` — additional validation
 
-## Idempotency
+### Deleted behavior
 
-Not idempotent: the script mutates files and checks for its own marker to skip re-application.
+- Removed `scripts/apply-ux-seo-p0.mjs`
+- Removed `node scripts/apply-ux-seo-p0.mjs &&` from `site:build` pipeline in `package.json`
+
+### Retained validation
+
+- `scripts/test-ux-seo-p0.mjs` (`ux:seo:p0:test`) — still validates catalog search visibility, Finder semantics, and hreflang alternates
+- No post-build form restructuring or hreflang injection remains
+
+### Rollback method
+
+Restore `scripts/apply-ux-seo-p0.mjs` from git history and re-add to `site:build` pipeline. Revert source changes.
+
+## Evidence
+
+- All UX/SEO P0 assertions pass without post-build transform
+- Catalog search shell is source-owned in `site/index.html`
+- Hreflang alternates are source-owned in all product pages
+- CSS is source-owned in `site/ux-clarity.css`

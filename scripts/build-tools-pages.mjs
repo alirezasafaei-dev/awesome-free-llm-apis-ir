@@ -193,7 +193,7 @@ const page = `<!doctype html>
   <a class="skip-link" href="#tools-content">رفتن به محتوای اصلی</a>
   <header class="topbar">
     <a class="brand" href="../" aria-label="صفحه اصلی"><span class="brand-mark" aria-hidden="true"><img src="../assets/logo-symbol.svg" alt="" width="40" height="40"></span><span>Awesome Free LLM APIs IR</span></a>
-    <nav aria-label="پیوندهای اصلی"><a href="../api-finder/">انتخاب API رسمی</a><a href="../quick-start/">شروع سریع</a><a href="../#catalog">Providerها</a><a href="https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir">GitHub</a></nav>
+    <nav aria-label="پیوندهای اصلی"><a href="../">خانه</a><a href="../api-finder/">انتخاب API</a><a href="../quick-start/">شروع سریع</a><a href="../compare/">مقایسه</a><a href="../tools/" aria-current="page">ابزارها</a><a class="language-link" href="../en/">EN</a></nav>
   </header>
   <main id="tools-content" class="tools-shell">
     <section class="tools-hero" aria-labelledby="tools-title">
@@ -229,7 +229,46 @@ const page = `<!doctype html>
       <a class="button primary" href="../api-finder/">بازکردن API Finder</a>
     </section>
   </main>
-  <footer><p>داده ابزارها از فایل‌های Schema-validated پروژه تولید شده‌اند و توصیه امنیتی یا تضمین سازگاری نیستند.</p><p><a href="../catalog-tools.json">Catalog JSON ابزارها</a> · <a href="https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir/issues/new/choose">گزارش تغییر یا ریسک</a></p></footer>
+  <footer class="site-footer" role="contentinfo">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <strong>Awesome Free LLM APIs IR</strong>
+        <p>کاتالوگ evidence-first از APIهای رایگان LLM برای توسعه‌دهندگان فارسی و کاربران ایران. داده machine-readable، بدون تبلیغ و بدون تضمین دسترسی دائمی.</p>
+      </div>
+      <nav class="footer-nav" aria-label="پیوندهای پاورقی">
+        <div>
+          <h2 class="footer-heading">محصول</h2>
+          <ul>
+            <li><a href="../">خانه</a></li>
+            <li><a href="../#catalog">کاتالوگ APIها</a></li>
+            <li><a href="../api-finder/">انتخاب هوشمند</a></li>
+            <li><a href="../compare/">مقایسه</a></li>
+            <li><a href="../quick-start/">شروع سریع</a></li>
+            <li><a href="../tools/">ابزارها</a></li>
+          </ul>
+        </div>
+        <div>
+          <h2 class="footer-heading">اعتماد و داده</h2>
+          <ul>
+            <li><a href="../methodology/">روش‌شناسی</a></li>
+            <li><a href="../catalog.json">catalog.json</a></li>
+            <li><a href="../data.json">data.json</a></li>
+            <li><a href="../sitemap.xml">Sitemap</a></li>
+            <li><a href="../llms.txt">llms.txt</a></li>
+          </ul>
+        </div>
+        <div>
+          <h2 class="footer-heading">مشارکت</h2>
+          <ul>
+            <li><a href="https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir">GitHub</a></li>
+            <li><a href="https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir/issues/new/choose">گزارش خطا</a></li>
+            <li><a href="../en/">English</a></li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+    <p class="footer-meta">MIT License · بدون وابستگی تجاری به Providerها · بدون انتشار IP، کلید API یا داده حساب</p>
+  </footer>
   <script defer src="./tools.js"></script>
   <script defer src="../analytics.js"></script>
   <script defer data-domain="llm.persiantoolbox.ir" src="../plausible.js"></script>

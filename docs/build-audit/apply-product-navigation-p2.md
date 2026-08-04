@@ -1,26 +1,45 @@
 # Build Transform Audit: `apply-product-navigation-p2.mjs`
 
-**Decision:** `REPLACE_WITH_COMPONENT`
+**Decision:** `REMOVED` — migrated to source-owned navigation
 
-## Current behavior
+## Previous behavior
 
-Replaces the topbar navigation `<nav>` content in 7 product pages with the correct set of links and active-page marker. Injects responsive navigation CSS into `ux-clarity.css`.
+Replaced the topbar navigation `<nav>` content in 7 product pages with the correct set of links and active-page marker. Injected responsive navigation CSS into `ux-clarity.css`.
 
-## Why not source-owned now
+## Migration completed
 
-The navigation markup is a site-wide concern that varies per page (active link, language toggle). Each page should declare its context in a shared template rather than having navigation injected post-build.
+### Previous mutation inventory
 
-## Migration path
+- 7 pages patched via regex topbar nav replacement
+- Navigation CSS appended to `ux-clarity.css` with marker
+- Partially idempotent (checked CSS marker before writing)
 
-1. Create a shared navigation template/component.
-2. Use the site generator to include the correct navigation in each page at build time.
-3. Include the responsive CSS in a shared stylesheet source.
-4. Remove this script.
+### New owner
 
-## Regex usage
+Source HTML templates and shared CSS now own all product navigation:
 
-Yes — regex `<header class="topbar">...<nav ...>...</nav>` to locate the nav container. Depends on exact class/attribute order.
+- **Static HTML pages**: `site/api-finder/index.html`, `site/quick-start/index.html`, `site/compare/index.html` — standard 6-link Persian nav + EN language switch + theme toggle (api-finder only)
+- **Static HTML pages**: `site/en/api-finder/index.html`, `site/en/quick-start/index.html`, `site/en/compare/index.html` — standard 5-link English nav + فارسی language switch
+- **Generated tools page**: `scripts/build-tools-pages.mjs` — standard tools nav with active state
+- **CSS**: `site/ux-clarity.css` — navigation styles (active page, language link, mobile overflow-x)
+- **Shared module**: `scripts/lib/site-nav.mjs` — deterministic navigation renderer (used by tests, available for future generators)
 
-## Idempotency
+### Deleted behavior
 
-Partially idempotent: checks for existing changes before writing CSS marker.
+- Removed `scripts/apply-product-navigation-p2.mjs`
+- Removed `node scripts/apply-product-navigation-p2.mjs &&` from `site:build` pipeline in `package.json`
+
+### Retained validation
+
+- `scripts/test-product-navigation.mjs` (`ux:navigation:test`) — still validates all 7 pages have correct nav labels, aria-current, and CSS
+- No post-build nav replacement remains in the build pipeline
+
+### Rollback method
+
+Restore `scripts/apply-product-navigation-p2.mjs` from git history and re-add to `site:build` pipeline. Revert source nav changes.
+
+## Evidence
+
+- All 7 product pages now produce correct navigation from source
+- Navigation test passes without post-build transform
+- Provider and guide pages retain their own nav sections (not in scope of this transform)

@@ -1,5 +1,5 @@
 ---
-title: "Building a Persian Chatbot with Python and a Free OpenAI-Compatible API"
+title: "Build a Persian Chatbot in Python with a Free LLM API"
 slug: "en-build-persian-chatbot-python"
 translation_key: "build-persian-chatbot-python-free-llm-api"
 description: "Step-by-step tutorial for building a Persian CLI chatbot in Python using the OpenAI SDK, a custom Base URL, conversation history management, timeout, and error handling."

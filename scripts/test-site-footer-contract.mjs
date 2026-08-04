@@ -77,11 +77,7 @@ assert(build.status === 0, build.stderr || build.stdout || "site production buil
 // Apply the same pipeline tail that package.json site:build uses for footer styles + footer upgrade.
 for (const script of [
   "build-persian-content.mjs",
-  "apply-ux-seo-p0.mjs",
-  "apply-serp-metadata-p1.mjs",
-  "apply-product-navigation-p2.mjs",
   "apply-finder-ranking-p3.mjs",
-  "apply-site-footer-p4.mjs",
   "apply-ui-pro-max-shell.mjs"
 ]) {
   const run = spawnSync(process.execPath, [path.join(root, "scripts", script)], {

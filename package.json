@@ -47,7 +47,7 @@
     "content:audit:test": "node scripts/test-content-audit-contract.mjs",
     "content:guides:test": "node scripts/test-expanded-guides-content.mjs",
     "check:freshness": "node scripts/check-freshness.mjs --strict",
-    "site:build": "node scripts/build-site-production.mjs && npm run content:fa:build && node scripts/apply-ux-seo-p0.mjs && node scripts/apply-serp-metadata-p1.mjs && node scripts/apply-product-navigation-p2.mjs && node scripts/apply-finder-ranking-p3.mjs && node scripts/apply-site-footer-p4.mjs && node scripts/apply-ui-pro-max-shell.mjs",
+    "site:build": "node scripts/build-site-production.mjs && npm run content:fa:build && node scripts/apply-finder-ranking-p3.mjs && node scripts/apply-ui-pro-max-shell.mjs",
     "ux:footer:test": "node scripts/test-site-footer-contract.mjs",
     "site:check": "node scripts/check-site.mjs",
     "site:data:test": "node scripts/test-published-data-json.mjs",

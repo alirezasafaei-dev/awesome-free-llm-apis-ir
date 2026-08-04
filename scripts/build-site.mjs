@@ -63,7 +63,7 @@ function analyticsTags(prefix) {
 }
 
 function normalizeProviderLabel(name) {
-  const trimmed = name.trim().replace(/\s+API(?:\s|$)/, " ").replace(/\s+API\s*$/, "").trim();
+  const trimmed = name.trim().replace(/\s+API(?:\s|$)/, " ").replace(/\s+API\s*$/, "").replace(/\s+Providers(?:\s|$)/, " ").replace(/\s+Providers\s*$/, "").trim();
   if (trimmed.endsWith("API") || trimmed.endsWith("Api") || trimmed.endsWith("api")) {
     return trimmed;
   }
@@ -195,7 +195,46 @@ function providerPage(provider, relatedProviders) {
       <div class="hero-actions"><a class="button primary docs-link" href="${escapeHtml(provider.docs)}" rel="nofollow noopener" target="_blank">مشاهده مستندات</a><a class="button detail-secondary" href="../../#catalog">مقایسه با سایر APIها</a></div>
     </article>
   </main>
-  <footer><p>داده‌های این صفحه از Catalog ماشین‌خوان پروژه تولید شده‌اند.</p><a href="../../catalog.json">دریافت Catalog JSON</a></footer>
+  <footer class="site-footer" role="contentinfo">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <strong>Awesome Free LLM APIs IR</strong>
+        <p>کاتالوگ evidence-first از APIهای رایگان LLM برای توسعه‌دهندگان فارسی و کاربران ایران. داده machine-readable، بدون تبلیغ و بدون تضمین دسترسی دائمی.</p>
+      </div>
+      <nav class="footer-nav" aria-label="پیوندهای پاورقی">
+        <div>
+          <h2 class="footer-heading">محصول</h2>
+          <ul>
+            <li><a href="../../">خانه</a></li>
+            <li><a href="../../#catalog">کاتالوگ APIها</a></li>
+            <li><a href="../../api-finder/">انتخاب هوشمند</a></li>
+            <li><a href="../../compare/">مقایسه</a></li>
+            <li><a href="../../quick-start/">شروع سریع</a></li>
+            <li><a href="../../tools/">ابزارها</a></li>
+          </ul>
+        </div>
+        <div>
+          <h2 class="footer-heading">اعتماد و داده</h2>
+          <ul>
+            <li><a href="../../methodology/">روش‌شناسی</a></li>
+            <li><a href="../../catalog.json">catalog.json</a></li>
+            <li><a href="../../data.json">data.json</a></li>
+            <li><a href="../../sitemap.xml">Sitemap</a></li>
+            <li><a href="../../llms.txt">llms.txt</a></li>
+          </ul>
+        </div>
+        <div>
+          <h2 class="footer-heading">مشارکت</h2>
+          <ul>
+            <li><a href="https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir">GitHub</a></li>
+            <li><a href="https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir/issues/new/choose">گزارش خطا</a></li>
+            <li><a href="../../en/">English</a></li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+    <p class="footer-meta">MIT License · بدون وابستگی تجاری به Providerها · بدون انتشار IP، کلید API یا داده حساب</p>
+  </footer>
   ${analyticsTags("../../")}
 </body>
 </html>`;

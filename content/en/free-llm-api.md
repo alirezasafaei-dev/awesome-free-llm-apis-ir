@@ -2,7 +2,7 @@
 title: "Free LLM API: 22 Verified Providers Compared for 2026"
 slug: "en-free-llm-api"
 translation_key: "free-llm-api"
-description: "Comprehensive comparison of 22 free LLM APIs in 2026. Compare rate limits, models, OpenAI compatibility, and Iran access. Find the best free large language model API for your project."
+description: "Compare free LLM APIs by rate limits, models, OpenAI compatibility, signup requirements, payment method, and Iran access evidence."
 primary_keyword: "free LLM API"
 secondary_keywords:
   - "free large language model API"
