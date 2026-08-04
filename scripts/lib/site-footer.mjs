@@ -23,7 +23,7 @@ export function normalizeAssetPrefix(assetPrefix) {
 export function joinAssetPath(assetPrefix, path) {
   const prefix = normalizeAssetPrefix(assetPrefix);
   const clean = path.replace(/^\//, "");
-  if (prefix === "./") return `./${clean}`;
+  if (prefix === "./") return clean.startsWith("#") ? clean : `./${clean}`;
   return `${prefix}${clean}`;
 }
 
