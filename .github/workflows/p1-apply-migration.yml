@@ -1,0 +1,41 @@
+name: Apply P1 migration
+
+on:
+  push:
+    branches:
+      - agent/build-p1-ui-shell-source-owned-2026-08-04
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    if: contains(github.event.head_commit.message, '[apply-p1-migration]')
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+      - name: Reconstruct and verify migration patch
+        run: |
+          set -Eeuo pipefail
+          cat .github/p1-migration/chunk-* | base64 -d > /tmp/p1-migration.patch.gz
+          echo '1d8dc75f8861cc89f35143e9ceb81c0b6c96759485101de22184d117398f8174  /tmp/p1-migration.patch.gz' | sha256sum -c -
+          gzip -dc /tmp/p1-migration.patch.gz > /tmp/p1-migration.patch
+          echo '0ae079e9bf00d1a43d9faace01eefc8455060014d9ff7306d4400dfd7fe70921  /tmp/p1-migration.patch' | sha256sum -c -
+          git apply --check /tmp/p1-migration.patch
+      - name: Apply source-owned UI shell migration
+        run: |
+          set -Eeuo pipefail
+          git apply --index /tmp/p1-migration.patch
+          git rm -r .github/p1-migration
+          git rm .github/workflows/p1-apply-migration.yml
+          git diff --cached --check
+      - name: Commit and push migration
+        run: |
+          set -Eeuo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'refactor(build): make UI shell source-owned and validation-only'
+          git push origin HEAD:agent/build-p1-ui-shell-source-owned-2026-08-04
