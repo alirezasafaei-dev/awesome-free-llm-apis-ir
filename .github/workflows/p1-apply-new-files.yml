@@ -6,42 +6,58 @@ on:
       - agent/build-p1-ui-shell-source-owned-2026-08-04
 
 permissions:
+  actions: read
   contents: write
 
 # Temporary self-cleaning migration workflow. Deleted by its successful run.
 jobs:
   apply:
-    if: contains(github.event.head_commit.message, '[apply-p1-new-files]')
+    if: contains(github.event.head_commit.message, '[apply-p1-assets-from-artifact]')
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    env:
+      GH_TOKEN: ${{ github.token }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
-      - name: Reconstruct and verify source assets
+      - name: Download and verify accepted build artifact
         run: |
           set -Eeuo pipefail
-          cat .github/p1-new-files/chunk-* | base64 -d > /tmp/p1-new-files.tar.gz
-          echo '60b71633258934e977ff0b3c861536488fb6b317b2b9186ff7b64979eb948662  /tmp/p1-new-files.tar.gz' | sha256sum -c -
-          tar -tzf /tmp/p1-new-files.tar.gz | sort > /tmp/p1-new-files.list
-          cat > /tmp/p1-new-files.expected <<'EOF'
-          scripts/lib/ui-shell.mjs
-          site/api-finder/finder-core.css
-          site/api-finder/finder-core.js
-          site/en/api-finder/finder-core.css
-          site/en/api-finder/finder-core.js
-          site/en/compare/page-inline.css
-          site/en/quick-start/page-inline.css
-          EOF
-          sed -i 's/^          //' /tmp/p1-new-files.expected
-          sort -o /tmp/p1-new-files.expected /tmp/p1-new-files.expected
-          diff -u /tmp/p1-new-files.expected /tmp/p1-new-files.list
+          gh api repos/alirezasafaei-dev/awesome-free-llm-apis-ir/actions/artifacts/8897249922/zip > /tmp/github-pages.zip
+          echo '698b090d14216c2390fb97c40909dd9589e560e55d430038384551cf37b9df37  /tmp/github-pages.zip' | sha256sum -c -
+          mkdir -p /tmp/pages-zip /tmp/pages
+          unzip -q /tmp/github-pages.zip -d /tmp/pages-zip
+          test -s /tmp/pages-zip/artifact.tar
+          tar -xf /tmp/pages-zip/artifact.tar -C /tmp/pages
+          node -e "const m=require('/tmp/pages/build-meta.json'); if(m.source_revision!=='2ee7a4076d24fcc32db8a1877d6b120b6e611545') process.exit(1)"
       - name: Install source-owned assets
         run: |
           set -Eeuo pipefail
-          tar -xzf /tmp/p1-new-files.tar.gz
-          while IFS= read -r file; do test -s "$file"; done < /tmp/p1-new-files.expected
-          git add --pathspec-from-file=/tmp/p1-new-files.expected
+          install -m 0644 /tmp/pages/api-finder/finder-core.css site/api-finder/finder-core.css
+          install -m 0644 /tmp/pages/api-finder/finder-core.js site/api-finder/finder-core.js
+          install -m 0644 /tmp/pages/en/api-finder/finder-core.css site/en/api-finder/finder-core.css
+          install -m 0644 /tmp/pages/en/api-finder/finder-core.js site/en/api-finder/finder-core.js
+          install -m 0644 /tmp/pages/en/compare/page-inline.css site/en/compare/page-inline.css
+          install -m 0644 /tmp/pages/en/quick-start/page-inline.css site/en/quick-start/page-inline.css
+          cat > scripts/lib/ui-shell.mjs <<'EOF'
+          /** Render the shared CSP-safe UI stylesheets for a page depth. */
+          export function renderUiStyles(prefix) {
+            return `<link rel="stylesheet" href="${prefix}ui-pro-max.css">
+            <link rel="stylesheet" href="${prefix}ui-pro-max-components.css">`;
+          }
+
+          /** Render analytics scripts in their required order. */
+          export function renderAnalyticsTags(prefix, { includeAnalytics = true } = {}) {
+            const analytics = includeAnalytics ? `<script defer src="${prefix}analytics.js"></script>
+            ` : "";
+            return `${analytics}<script defer src="${prefix}plausible-guard.js"></script>
+            <script defer data-domain="llm.persiantoolbox.ir" src="${prefix}plausible.js"></script>`;
+          }
+          EOF
+          sed -i 's/^          //' scripts/lib/ui-shell.mjs
+          test -s scripts/lib/ui-shell.mjs
+          git add scripts/lib/ui-shell.mjs site/api-finder/finder-core.css site/api-finder/finder-core.js site/en/api-finder/finder-core.css site/en/api-finder/finder-core.js site/en/compare/page-inline.css site/en/quick-start/page-inline.css
           git rm -r .github/p1-new-files
           git rm .github/workflows/p1-apply-new-files.yml
           git diff --cached --check
