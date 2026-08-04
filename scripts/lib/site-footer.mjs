@@ -98,6 +98,8 @@ export function renderSiteFooter(options) {
   const lead =
     options.brandLead ??
     "کاتالوگ evidence-first از APIهای رایگان LLM برای توسعه‌دهندگان فارسی و کاربران ایران. داده machine-readable، بدون تبلیغ و بدون تضمین دسترسی دائمی.";
+  const homeLink = prefix === "./" ? "" : `
+              <li><a href="${href("")}">خانه</a></li>`;
   return `<footer class="site-footer" role="contentinfo">
       <div class="footer-grid">
         <div class="footer-brand">
@@ -107,8 +109,7 @@ export function renderSiteFooter(options) {
         <nav class="footer-nav" aria-label="پیوندهای پاورقی">
           <div>
             <h2 class="footer-heading">محصول</h2>
-            <ul>
-              <li><a href="${href("")}">خانه</a></li>
+            <ul>${homeLink}
               <li><a href="${href("#catalog")}">کاتالوگ APIها</a></li>
               <li><a href="${href("api-finder/")}">انتخاب هوشمند</a></li>
               <li><a href="${href("compare/")}">مقایسه</a></li>
