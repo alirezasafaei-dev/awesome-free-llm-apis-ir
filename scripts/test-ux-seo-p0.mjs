@@ -37,7 +37,7 @@ const assertions = [
   [!enFinder.includes('id="finder-language"') && !enFinder.includes("Language support (max +15)"), "English Finder does not assign unsupported language-quality points"],
   [faFinder.includes('hreflang="en" href="https://llm.persiantoolbox.ir/en/api-finder/"'), "Persian Finder links English alternate"],
   [faCompare.includes('hreflang="en" href="https://llm.persiantoolbox.ir/en/compare/"'), "Persian Compare links English alternate"],
-  [enCompare.includes('hreflang="fa" href="https://llm.persiantoolbox.ir/compare/"'), "English Compare links Persian alternate"]
+  [enCompare.includes('hreflang="fa" href="https://llm.persiantoolbox.ir/compare/"') || enCompare.includes('hreflang="fa-IR" href="https://llm.persiantoolbox.ir/compare/"'), "English Compare links Persian alternate"]
 ];
 
 const failed = assertions.filter(([condition]) => !condition).map(([, label]) => label);

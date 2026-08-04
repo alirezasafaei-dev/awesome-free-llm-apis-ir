@@ -529,3 +529,78 @@
   backdrop-filter: blur(12px);
   background: color-mix(in srgb, var(--bg, #f7f8fa) 88%, transparent);
 }
+
+/* Product navigation P2 */
+.topbar nav a[aria-current="page"] {
+  color: var(--text);
+  font-weight: 900;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 6px;
+}
+
+.topbar nav .language-link {
+  color: var(--primary);
+  font-weight: 900;
+}
+
+@media (max-width: 720px) {
+  .topbar {
+    align-items: center;
+  }
+
+  .topbar nav {
+    min-width: 0;
+    max-width: calc(100vw - 76px);
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    padding: 4px 2px 8px;
+    white-space: nowrap;
+    scrollbar-width: none;
+  }
+
+  .topbar nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  .topbar nav a,
+  .topbar nav button {
+    flex: 0 0 auto;
+  }
+}
+
+/* UX/SEO P0 — catalog filter shell */
+.catalog-filter-shell {
+  display: grid;
+  gap: 14px;
+}
+
+.catalog-search {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  padding: 16px 18px;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  background: var(--surface);
+  box-shadow: 0 8px 24px rgba(17, 24, 39, .04);
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.catalog-search input {
+  width: 100%;
+  min-height: 48px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface-soft);
+  color: var(--text);
+  padding: 9px 13px;
+}
+
+.catalog-search input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(109, 61, 245, .15);
+  outline: none;
+}

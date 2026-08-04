@@ -2,7 +2,7 @@
 title: "Choosing a Free LLM API in Iran: From Signup to First Request"
 slug: "en-practical-free-llm-api-iran"
 translation_key: "practical-free-llm-api-iran"
-description: "Practical guide for selecting, signing up, testing connectivity, and making your first free LLM API request from inside Iran. Covers security, quota types, and access evidence."
+description: "Choose a free LLM API from Iran, verify signup and connectivity, and send your first request with clear security, quota, and access checks."
 primary_keyword: "Free LLM API Iran"
 secondary_keywords:
   - "free AI API without credit card"

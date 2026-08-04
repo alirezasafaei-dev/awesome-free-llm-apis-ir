@@ -2,7 +2,7 @@
 title: "Free AI API: Complete Guide to 22 Free LLM APIs in 2026"
 slug: "en-free-ai-api"
 translation_key: "free-ai-api"
-description: "Complete guide to 22 free AI APIs in 2026. Compare free LLM APIs for chat, coding, and text generation. Find OpenAI-compatible alternatives without credit card. Updated catalog with Iran access status."
+description: "Compare free AI APIs for chat, coding, and text generation, including limits, OpenAI compatibility, signup requirements, and Iran access evidence."
 primary_keyword: "free AI API"
 secondary_keywords:
   - "free AI API without credit card"

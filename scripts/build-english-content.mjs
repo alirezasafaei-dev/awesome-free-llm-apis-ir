@@ -308,7 +308,45 @@ function articlePage(article) {
       <div class="hero-actions"><a class="button primary" href="../../../#catalog">Compare all APIs</a><a class="button detail-secondary" href="../../../en/#english-guides">English Guides</a></div>
     </article>
   </main>
-  <footer><p>Quota and access information should be verified against the timestamped catalog and official sources.</p><a href="../../../catalog.json">Download Catalog JSON</a></footer>
+  <footer class="site-footer" role="contentinfo">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <strong>Awesome Free LLM APIs IR</strong>
+        <p>Evidence-first catalog of free LLM APIs with quotas, OpenAI compatibility, and dated access evidence. No ads. No permanent-access guarantees.</p>
+      </div>
+      <nav class="footer-nav" aria-label="Footer">
+        <div>
+          <h2 class="footer-heading">Product</h2>
+          <ul>
+            <li><a href="../../../en/">Home</a></li>
+            <li><a href="../../../en/api-finder/">API Finder</a></li>
+            <li><a href="../../../en/compare/">Compare</a></li>
+            <li><a href="../../../en/quick-start/">Quick Start</a></li>
+            <li><a href="../../../tools/">Tools</a></li>
+          </ul>
+        </div>
+        <div>
+          <h2 class="footer-heading">Trust &amp; data</h2>
+          <ul>
+            <li><a href="../../../methodology/">Methodology</a></li>
+            <li><a href="../../../catalog.json">catalog.json</a></li>
+            <li><a href="../../../data.json">data.json</a></li>
+            <li><a href="../../../sitemap.xml">Sitemap</a></li>
+            <li><a href="../../../llms.txt">llms.txt</a></li>
+          </ul>
+        </div>
+        <div>
+          <h2 class="footer-heading">Contribute</h2>
+          <ul>
+            <li><a href="https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir">GitHub</a></li>
+            <li><a href="https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir/issues/new/choose">Report an issue</a></li>
+            <li><a href="../../../">فارسی</a></li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+    <p class="footer-meta">MIT License · No commercial affiliation with providers · Do not publish IPs, API keys, or account data</p>
+  </footer>
   <script defer src="../../../analytics.js"></script>
   <script defer data-domain="llm.persiantoolbox.ir" src="../../../plausible.js"></script>
 </body>

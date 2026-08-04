@@ -2,7 +2,7 @@
 title: "AI API Iran: 9 Free LLM APIs Verified Working From Iran in 2026"
 slug: "en-ai-api-iran"
 translation_key: "ai-api-iran"
-description: "Complete guide to free AI APIs that work from Iran in 2026. 9 providers verified with direct Iran access. Cloudflare, Mistral, GitHub Models, and more. No credit card needed."
+description: "Compare free AI APIs tested for Iran access, with signup requirements, quotas, models, payment conditions, and dated provider evidence."
 primary_keyword: "AI API Iran"
 secondary_keywords:
   - "free AI API Iran"
