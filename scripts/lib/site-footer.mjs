@@ -36,7 +36,7 @@ export function footerContextFromRelativePath(relativePath) {
   const normalized = relativePath.replaceAll("\\", "/");
   const depth = normalized.split("/").length - 1;
   const assetPrefix = depth <= 0 ? "./" : "../".repeat(depth);
-  const lang = normalized.startsWith("en/") ? "en" : "fa";
+  const lang = normalized.startsWith("en/") || normalized.startsWith("guides/en/") ? "en" : "fa";
   return { lang, assetPrefix };
 }
 
@@ -46,7 +46,7 @@ export function footerContextFromRelativePath(relativePath) {
  */
 export function renderSiteFooter(options) {
   const prefix = normalizeAssetPrefix(options.assetPrefix);
-  const href = (path) => joinAssetPath(prefix, path);
+  const href = (sitePath) => joinAssetPath(prefix, sitePath);
   const github = "https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir";
   const issues = `${github}/issues/new/choose`;
 
@@ -138,24 +138,4 @@ export function renderSiteFooter(options) {
       </div>
       <p class="footer-meta">MIT License · بدون وابستگی تجاری به Providerها · بدون انتشار IP، کلید API یا داده حساب</p>
     </footer>`;
-}
-
-/**
- * Replace the first <footer>...</footer> block with the shared site footer.
- * @param {string} html
- * @param {FooterOptions} options
- * @returns {{ html: string, changed: boolean }}
- */
-export function replaceFooter(html, options) {
-  const nextFooter = renderSiteFooter(options);
-  if (!/<footer\b[\s\S]*?<\/footer>/i.test(html)) {
-    return { html, changed: false };
-  }
-  if (html.includes('class="site-footer"') && html.includes("footer-grid")) {
-    // Upgrade in place so content stays synchronized with the shared renderer.
-    const upgraded = html.replace(/<footer\b[\s\S]*?<\/footer>/i, nextFooter);
-    return { html: upgraded, changed: upgraded !== html };
-  }
-  const upgraded = html.replace(/<footer\b[\s\S]*?<\/footer>/i, nextFooter);
-  return { html: upgraded, changed: upgraded !== html };
 }
