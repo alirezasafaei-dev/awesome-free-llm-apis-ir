@@ -27,6 +27,7 @@ function normalizeMarkup(value) {
 assert(normalizeAssetPrefix("") === "./", "empty prefix becomes ./");
 assert(normalizeAssetPrefix("..") === "../", "parent prefix keeps slash");
 assert(joinAssetPath("./", "catalog.json") === "./catalog.json", "root catalog path");
+assert(joinAssetPath("./", "#catalog") === "#catalog", "root fragment stays on current page");
 assert(joinAssetPath("../", "api-finder/") === "../api-finder/", "nested finder path");
 assert(joinAssetPath("../", "#catalog") === "../#catalog", "hash path stays on parent home");
 
