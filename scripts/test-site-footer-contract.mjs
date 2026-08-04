@@ -6,20 +6,21 @@ import {
   footerContextFromRelativePath,
   joinAssetPath,
   normalizeAssetPrefix,
-  renderSiteFooter,
-  replaceFooter
+  renderSiteFooter
 } from "./lib/site-footer.mjs";
 
 const root = process.cwd();
 const dist = path.join(root, ".site-dist");
 
-/**
- * @param {string} condition
- * @param {string} message
- * @returns {void}
- */
 function assert(condition, message) {
   if (!condition) throw new Error(message);
+}
+
+function normalizeMarkup(value) {
+  return value
+    .replace(/>\s+</g, "><")
+    .replace(/\s+/g, " ")
+    .trim();
 }
 
 // --- pure unit contracts ---
@@ -43,17 +44,9 @@ assert(enFooter.includes('href="../../en/api-finder/"'), "EN finder depth for en
 assert(enFooter.includes("Quick Start"), "EN quick start label");
 assert(enFooter.includes("Methodology"), "EN methodology link");
 
-const replaced = replaceFooter("<html><body><footer>old</footer></body></html>", {
-  lang: "fa",
-  assetPrefix: "./"
-});
-assert(replaced.changed, "replaceFooter reports change");
-assert(replaced.html.includes("site-footer"), "replaceFooter injects shared footer");
-assert(!replaced.html.includes("<footer>old</footer>"), "legacy footer removed");
-
-const ctx = footerContextFromRelativePath("en/compare/index.html");
-assert(ctx.lang === "en", "en path language");
-assert(ctx.assetPrefix === "../../", "en/compare depth");
+const enGuideContext = footerContextFromRelativePath("guides/en/example/index.html");
+assert(enGuideContext.lang === "en", "English guide path language");
+assert(enGuideContext.assetPrefix === "../../../", "English guide asset depth");
 
 // --- source contracts already shipped on homepage ---
 const home = await readFile(path.join(root, "site", "index.html"), "utf8");
@@ -74,7 +67,6 @@ const build = spawnSync(process.execPath, [path.join(root, "scripts", "build-sit
 });
 assert(build.status === 0, build.stderr || build.stdout || "site production build failed");
 
-// Apply the same pipeline tail that package.json site:build uses for footer styles + footer upgrade.
 for (const script of [
   "build-persian-content.mjs",
   "apply-finder-ranking-p3.mjs",
@@ -88,15 +80,10 @@ for (const script of [
   assert(run.status === 0, `${script} failed: ${run.stderr || run.stdout}`);
 }
 
-/**
- * @param {string} dir
- * @returns {Promise<string[]>}
- */
-async function collectHtml(dir) {
-  /** @type {string[]} */
+async function collectHtml(directory) {
   const out = [];
-  for (const entry of await readdir(dir, { withFileTypes: true })) {
-    const full = path.join(dir, entry.name);
+  for (const entry of await readdir(directory, { withFileTypes: true })) {
+    const full = path.join(directory, entry.name);
     if (entry.isDirectory()) out.push(...(await collectHtml(full)));
     else if (entry.name.endsWith(".html")) out.push(full);
   }
@@ -116,30 +103,46 @@ const requiredProductPages = [
   "en/quick-start/index.html"
 ];
 
-for (const relative of requiredProductPages) {
-  const filePath = path.join(dist, relative);
-  await access(filePath);
+for (const relative of requiredProductPages) await access(path.join(dist, relative));
+
+const htmlFiles = await collectHtml(dist);
+let parityPages = 0;
+let providerPages = 0;
+let guidePages = 0;
+
+for (const filePath of htmlFiles) {
+  const relativePath = path.relative(dist, filePath).replaceAll(path.sep, "/");
   const html = await readFile(filePath, "utf8");
-  assert(html.includes('class="site-footer"'), `${relative} missing site-footer`);
-  assert(html.includes("footer-grid"), `${relative} missing footer-grid`);
-  assert(html.includes("footer-nav"), `${relative} missing footer-nav`);
-  assert(html.includes("catalog.json"), `${relative} footer missing catalog.json`);
-  assert(!html.includes("شروع برنامه‌نویسی"), `${relative} still has legacy quick-start label`);
-  if (relative === "index.html") {
-    assert(html.includes("FAQPage"), "built homepage missing FAQPage");
-    assert(html.includes("status-legend"), "built homepage missing status legend");
+  const isNoindex = /name="robots"\s+content="[^"]*noindex/i.test(html);
+  const isRequiredProduct = requiredProductPages.includes(relativePath);
+  const isProvider = relativePath.startsWith("providers/");
+  const isGuide = relativePath.startsWith("guides/");
+
+  if (isProvider) providerPages += 1;
+  if (isGuide) guidePages += 1;
+
+  const actualFooter = html.match(/<footer\b[\s\S]*?<\/footer>/i)?.[0] ?? "";
+  if ((isRequiredProduct || isProvider || isGuide) && !isNoindex) {
+    assert(actualFooter.includes('class="site-footer"'), `${relativePath} missing shared site footer`);
   }
+  if (!actualFooter.includes('class="site-footer"')) continue;
+
+  const expectedFooter = renderSiteFooter(footerContextFromRelativePath(relativePath));
+  assert(
+    normalizeMarkup(actualFooter) === normalizeMarkup(expectedFooter),
+    `${relativePath}: source/generated footer diverges from shared renderer`
+  );
+  assert(actualFooter.includes("footer-grid"), `${relativePath} missing footer-grid`);
+  assert(actualFooter.includes("footer-nav"), `${relativePath} missing footer-nav`);
+  assert(actualFooter.includes("catalog.json"), `${relativePath} footer missing catalog.json`);
+  assert(!actualFooter.includes("شروع برنامه‌نویسی"), `${relativePath} still has legacy quick-start label`);
+  parityPages += 1;
 }
 
-// Provider pages also get the shared footer after P4.
-const providerDir = path.join(dist, "providers");
-const providerPages = (await collectHtml(providerDir)).slice(0, 5);
-assert(providerPages.length >= 1, "expected provider pages in dist");
-for (const filePath of providerPages) {
-  const html = await readFile(filePath, "utf8");
-  assert(html.includes('class="site-footer"'), `${path.relative(dist, filePath)} missing site-footer`);
-}
+assert(providerPages >= 1, "expected provider pages in dist");
+assert(guidePages >= 1, "expected guide pages in dist");
+assert(parityPages >= requiredProductPages.length + providerPages + guidePages, "not all required pages entered footer parity validation");
 
 console.log(
-  `Site footer contract passed (unit + ${requiredProductPages.length} product pages + ${providerPages.length} provider samples).`
+  `Site footer contract passed (${parityPages} source/generated pages; ${providerPages} providers; ${guidePages} guides).`
 );
