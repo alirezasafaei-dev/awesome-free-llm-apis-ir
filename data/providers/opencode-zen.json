@@ -66,12 +66,15 @@
       "mimo-v2.5-free",
       "north-mini-code-free",
       "nemotron-3-ultra-free",
-      "big-pickle"
+      "big-pickle",
+      "ling-3.0-flash-free",
+      "laguna-s-2.1-free",
+      "longcat-2.0-free"
     ]
   },
   "verification": {
     "level": "live_verified",
-    "last_checked": "2026-07-20",
+    "last_checked": "2026-08-05",
     "checked_by": "maintainers",
     "stale_after_days": 14
   },

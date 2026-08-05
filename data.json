@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-07-24",
+  "lastUpdated": "2026-08-05",
   "providerCount": 22,
   "providers": [
     {
@@ -407,7 +407,7 @@
       ],
       "verification": {
         "level": "live_verified",
-        "lastChecked": "2026-07-21",
+        "lastChecked": "2026-08-05",
         "staleAfterDays": 14
       },
       "health": {
@@ -753,11 +753,16 @@
         "fast",
         "pro",
         "gpt-5.4",
-        "gpt-5.4-mini"
+        "gpt-5.5",
+        "gpt-5.6-luna",
+        "codestral-latest",
+        "deepseek-v4-flash",
+        "claude-sonnet-5",
+        "gpt-image-2"
       ],
       "verification": {
         "level": "live_verified",
-        "lastChecked": "2026-07-20",
+        "lastChecked": "2026-08-05",
         "staleAfterDays": 14
       },
       "health": {
@@ -880,7 +885,7 @@
       ],
       "verification": {
         "level": "live_verified",
-        "lastChecked": "2026-07-20",
+        "lastChecked": "2026-08-05",
         "staleAfterDays": 14
       },
       "health": {
@@ -995,11 +1000,14 @@
         "mimo-v2.5-free",
         "north-mini-code-free",
         "nemotron-3-ultra-free",
-        "big-pickle"
+        "big-pickle",
+        "ling-3.0-flash-free",
+        "laguna-s-2.1-free",
+        "longcat-2.0-free"
       ],
       "verification": {
         "level": "live_verified",
-        "lastChecked": "2026-07-20",
+        "lastChecked": "2026-08-05",
         "staleAfterDays": 14
       },
       "health": {

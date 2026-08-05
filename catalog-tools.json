@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0.0",
-  "last_updated": "2026-07-16",
+  "last_updated": "2026-08-05",
   "tool_count": 7,
   "tools": [
     {
@@ -16,7 +16,7 @@
       "terms_risk": "medium",
       "stability_risk": "experimental",
       "credential_safety": "moderate",
-      "last_checked": "2026-07-16"
+      "last_checked": "2026-08-05"
     },
     {
       "id": "free-way",
@@ -31,7 +31,7 @@
       "terms_risk": "medium",
       "stability_risk": "experimental",
       "credential_safety": "moderate",
-      "last_checked": "2026-07-16"
+      "last_checked": "2026-08-05"
     },
     {
       "id": "freellmapi",
@@ -46,7 +46,7 @@
       "terms_risk": "medium",
       "stability_risk": "volatile",
       "credential_safety": "moderate",
-      "last_checked": "2026-07-16"
+      "last_checked": "2026-08-05"
     },
     {
       "id": "freellmpool",
@@ -61,7 +61,7 @@
       "terms_risk": "medium",
       "stability_risk": "volatile",
       "credential_safety": "moderate",
-      "last_checked": "2026-07-16"
+      "last_checked": "2026-08-05"
     },
     {
       "id": "g4f-working",
@@ -76,7 +76,7 @@
       "terms_risk": "low",
       "stability_risk": "volatile",
       "credential_safety": "safe",
-      "last_checked": "2026-07-16"
+      "last_checked": "2026-08-05"
     },
     {
       "id": "gpt4free",
@@ -91,7 +91,7 @@
       "terms_risk": "high",
       "stability_risk": "volatile",
       "credential_safety": "risky",
-      "last_checked": "2026-07-16"
+      "last_checked": "2026-08-05"
     },
     {
       "id": "token-free-gateway",
@@ -106,7 +106,7 @@
       "terms_risk": "high",
       "stability_risk": "volatile",
       "credential_safety": "risky",
-      "last_checked": "2026-07-16"
+      "last_checked": "2026-08-05"
     }
   ]
 }

@@ -65,12 +65,17 @@
       "fast",
       "pro",
       "gpt-5.4",
-      "gpt-5.4-mini"
+      "gpt-5.5",
+      "gpt-5.6-luna",
+      "codestral-latest",
+      "deepseek-v4-flash",
+      "claude-sonnet-5",
+      "gpt-image-2"
     ]
   },
   "verification": {
     "level": "live_verified",
-    "last_checked": "2026-07-20",
+    "last_checked": "2026-08-05",
     "checked_by": "maintainers",
     "stale_after_days": 14
   },
