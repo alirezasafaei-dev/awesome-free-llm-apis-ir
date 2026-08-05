@@ -41,6 +41,7 @@ const phases = Object.freeze({
   product: [
     "ux:seo:p0:test",
     "ux:navigation:test",
+    "ux:internal-nav:test",
     "ux:ranking:test",
     "ux:pro-max:test",
     "ux:clarity:test",
