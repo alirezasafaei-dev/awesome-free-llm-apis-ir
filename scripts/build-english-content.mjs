@@ -405,30 +405,15 @@ const articleLine = `English article pages: ${articleUrls.join(" ")}`;
 if (!llmsText.includes("English article pages:")) llmsText += `${articleLine}\n`;
 await writeFile(llmsPath, llmsText);
 
-const indexPath = path.join(destination, "index.html");
-let indexHtml = await readFile(indexPath, "utf8");
-if (!indexHtml.includes('id="english-guides"')) {
-  const cards = articles.map((article) => `<article><h3><a href="./guides/en/${escapeHtml(article.metadata.slug)}/">${escapeHtml(article.metadata.title)}</a></h3><p>${escapeHtml(article.metadata.description)}</p></article>`).join("\n          ");
-  const section = `      <section id="english-guides" class="seo-intro" aria-labelledby="english-guides-title">
-        <p class="eyebrow">English Tutorials</p>
-        <h2 id="english-guides-title">Free LLM API Guides for English Readers</h2>
-        <p>Practical guides for using free LLM APIs from Iran: selection, secure signup, error handling, rate limiting, and code examples in Python and Node.js.</p>
-        <div class="seo-guide-grid">
-          ${cards}
-        </div>
-      </section>\n\n`;
-  const persianMarker = '      <section id="guide" class="seo-intro" aria-labelledby="guide-title">';
-  if (!indexHtml.includes(persianMarker)) throw new Error("Homepage guide marker not found for English section insertion");
-  indexHtml = indexHtml.replace(persianMarker, section + persianMarker);
-}
-await writeFile(indexPath, indexHtml);
-
 const enIndexPath = path.join(destination, "en", "index.html");
 let enIndexHtml = await readFile(enIndexPath, "utf8");
-if (enIndexHtml.includes("<!-- ENGLISH_GUIDE_CARDS -->")) {
+const englishGuideCardsMarker = "<!-- ENGLISH_GUIDE_CARDS -->";
+if (enIndexHtml.includes(englishGuideCardsMarker)) {
   const cards = articles.map((article) => `<article><h3><a href="../guides/en/${escapeHtml(article.metadata.slug)}/">${escapeHtml(article.metadata.title)}</a></h3><p>${escapeHtml(article.metadata.description)}</p></article>`).join("\n          ");
   const grid = `<div class="seo-guide-grid">\n          ${cards}\n        </div>`;
-  enIndexHtml = enIndexHtml.replace("<!-- ENGLISH_GUIDE_CARDS -->", grid);
+  enIndexHtml = enIndexHtml.replace(englishGuideCardsMarker, grid);
+} else if (!enIndexHtml.includes('id="english-guides"') || !enIndexHtml.includes('class="seo-guide-grid"')) {
+  throw new Error("English homepage guide hub is missing or incomplete");
 }
 await writeFile(enIndexPath, enIndexHtml);
 
@@ -438,4 +423,4 @@ buildMeta.guide_page_count = Number(buildMeta.guide_page_count ?? 0) + articles.
 buildMeta.english_article_count = articles.length;
 await writeFile(metaPath, `${JSON.stringify(buildMeta, null, 2)}\n`);
 
-console.log(`Built ${articles.length} English article pages and added them to sitemap, llms.txt, homepage and build metadata.`);
+console.log(`Built ${articles.length} English article pages and added them to sitemap, llms.txt, the English homepage and build metadata.`);
