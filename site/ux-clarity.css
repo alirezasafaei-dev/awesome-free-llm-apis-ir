@@ -36,6 +36,13 @@
   background: var(--surface);
   box-shadow: 0 12px 34px rgba(17, 24, 39, .06);
   overflow: hidden;
+  transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+}
+
+.path-card:hover {
+  border-color: color-mix(in srgb, var(--primary) 40%, var(--border));
+  box-shadow: 0 16px 40px rgba(17, 24, 39, .1);
+  transform: translateY(-3px);
 }
 
 .path-card::after {
@@ -132,6 +139,13 @@
   border: 1px solid var(--border);
   border-radius: 18px;
   background: var(--surface);
+  transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+}
+
+.step-grid li:hover {
+  border-color: color-mix(in srgb, var(--primary) 40%, var(--border));
+  box-shadow: 0 4px 12px rgba(17,24,39,.06);
+  transform: translateY(-2px);
 }
 
 .step-grid li > span {
@@ -290,6 +304,12 @@
   border: 1px solid var(--border);
   border-radius: 16px;
   background: var(--surface);
+  transition: border-color 160ms ease, box-shadow 160ms ease;
+}
+
+.glossary-grid details:hover {
+  border-color: color-mix(in srgb, var(--primary) 40%, var(--border));
+  box-shadow: 0 4px 12px rgba(17,24,39,.06);
 }
 
 .glossary-grid summary {
@@ -429,6 +449,92 @@
   .status-legend {
     justify-content: flex-start;
   }
+}
+
+/* SEO: Comparison and topics sections */
+.seo-comparison,
+.seo-topics {
+  margin-top: 46px;
+}
+
+.comparison-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.comparison-card {
+  padding: 24px;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background: var(--surface);
+  box-shadow: 0 8px 28px rgba(17,24,39,.05);
+  transition: transform 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
+}
+
+.comparison-card:hover {
+  transform: translateY(-4px);
+  border-color: color-mix(in srgb, var(--primary) 40%, var(--border));
+  box-shadow: 0 12px 36px rgba(17,24,39,.08);
+}
+
+.comparison-icon {
+  font-size: 32px;
+  margin-bottom: 12px;
+  display: block;
+}
+
+.comparison-card h3 {
+  margin: 0 0 8px;
+  font-size: 18px;
+}
+
+.comparison-card p {
+  margin: 0 0 16px;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.topics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px;
+}
+
+.topic-card {
+  padding: 20px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--surface);
+  transition: border-color 160ms ease, box-shadow 160ms ease;
+}
+
+.topic-card:hover {
+  border-color: color-mix(in srgb, var(--accent) 40%, var(--border));
+  box-shadow: 0 8px 24px rgba(17,24,39,.06);
+}
+
+.topic-card h3 {
+  margin: 0 0 8px;
+  font-size: 16px;
+}
+
+.topic-card p {
+  margin: 0 0 12px;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.topic-card a {
+  color: var(--accent);
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.topic-card a:hover {
+  color: var(--primary);
 }
 
 /* --- SEO/UX audit P0: status legend + full footer --- */

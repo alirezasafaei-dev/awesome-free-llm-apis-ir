@@ -65,6 +65,66 @@
           "itemListElement": [
             { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://llm.persiantoolbox.ir/en/" }
           ]
+        },
+        {
+          "@type": "HowTo",
+          "name": "How to find a free LLM API",
+          "description": "Define your use case, compare free tiers, and start with official documentation.",
+          "inLanguage": "en",
+          "step": [
+            { "@type": "HowToStep", "position": 1, "name": "Define your use case" },
+            { "@type": "HowToStep", "position": 2, "name": "Compare free tiers and limits" },
+            { "@type": "HowToStep", "position": 3, "name": "Review evidence and start building" }
+          ]
+        },
+        {
+          "@type": "FAQPage",
+          "@id": "https://llm.persiantoolbox.ir/en/#faq",
+          "inLanguage": "en",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "Do I need to be a developer to use this site?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "No — comparing options requires no coding skills. Using an API inside an application requires basic programming knowledge."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "What is the difference between a free tier and a trial?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "A trial expires after a time or credit limit. A permanent free tier remains usable until the provider changes its policy."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Are all APIs accessible from Iran?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "No. Network reachability, signup, account activation, and inference are checked separately for each provider."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "What does OpenAI-compatible mean?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "The request format is similar to the widely-used OpenAI API. You can usually switch by changing the Base URL and API key."
+              }
+            }
+          ]
+        },
+        {
+          "@type": "ItemList",
+          "@id": "https://llm.persiantoolbox.ir/en/#product-paths",
+          "name": "Main product paths",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "API Finder", "url": "https://llm.persiantoolbox.ir/en/api-finder/" },
+            { "@type": "ListItem", "position": 2, "name": "Compare providers", "url": "https://llm.persiantoolbox.ir/en/compare/" },
+            { "@type": "ListItem", "position": 3, "name": "Quick Start", "url": "https://llm.persiantoolbox.ir/en/quick-start/" }
+          ]
         }
       ]
     }
@@ -108,13 +168,20 @@
         </div>
       </section>
 
-      <section class="seo-intro" aria-labelledby="how-title">
-        <p class="eyebrow">Three steps</p>
-        <h2 id="how-title">How to choose a free LLM API</h2>
-        <ol class="activation-steps">
-          <li><span>1</span><strong>Define your use case</strong><p>Chat, coding, reasoning, or embeddings — each capability maps to different providers and free tiers.</p></li>
-          <li><span>2</span><strong>Compare free tiers</strong><p>Permanent allowance, free models, monthly credits, or trial. Check if a payment method is required.</p></li>
-          <li><span>3</span><strong>Review evidence layers</strong><p>Reachability, signup, key issuance, and inference are four separate claims. Know what each badge means.</p></li>
+      <ul class="status-legend" aria-label="Iran access status legend">
+        <li><span class="access-badge" data-status="verified_working">Directly tested</span></li>
+        <li><span class="access-badge" data-status="verified_working_vpn">Tested with VPN</span></li>
+        <li><span class="access-badge" data-status="verified_blocked">Confirmed blocked</span></li>
+        <li><span class="access-badge" data-status="unknown">Unknown</span></li>
+      </ul>
+
+      <section id="how-it-works" class="how-it-works" aria-labelledby="how-title">
+        <p class="eyebrow">Just three steps</p>
+        <h2 id="how-title">From selection to first request</h2>
+        <ol class="step-grid">
+          <li><span>1</span><div><strong>Define your need</strong><p>Chat, coding, reasoning, or embeddings.</p></div></li>
+          <li><span>2</span><div><strong>Compare conditions</strong><p>Quota, account, payment, Iran status, and evidence date.</p></div></li>
+          <li><span>3</span><div><strong>Start from official source</strong><p>Open docs and make your first request.</p></div></li>
         </ol>
       </section>
 
@@ -129,6 +196,19 @@
         <div class="hero-actions">
           <a class="button primary" href="./api-finder/">Start the API Finder</a>
           <a class="button detail-secondary" href="../verification-policy.txt">Read verification policy</a>
+        </div>
+      </section>
+
+      <section id="glossary" class="glossary" aria-labelledby="glossary-title">
+        <p class="eyebrow">Glossary</p>
+        <h2 id="glossary-title">Key terms on provider cards</h2>
+        <div class="glossary-grid">
+          <details open><summary>API</summary><p>The communication channel between your application and an AI model service.</p></details>
+          <details><summary>LLM</summary><p>A large language model for understanding and generating text.</p></details>
+          <details><summary>Provider</summary><p>A company or service that offers API access to AI models.</p></details>
+          <details><summary>OpenAI-compatible</summary><p>The request format resembles the widely-used OpenAI API. Usually usable by changing Base URL and key.</p></details>
+          <details><summary>RPM and RPD</summary><p>Allowed requests per minute and per day. These are capacity limits, not response speed.</p></details>
+          <details><summary>Iran status</summary><p>Network, signup, account activation, and inference are reported separately.</p></details>
         </div>
       </section>
 
@@ -155,6 +235,76 @@
         </div>
         <p>Use the catalog in real projects with focused guides for provider selection, secure setup, error handling, rate limits, Python, and Node.js.</p>
         <!-- ENGLISH_GUIDE_CARDS -->
+      </section>
+
+      <section class="language-note" aria-label="Persian version">
+        <div><strong>Persian version is available.</strong><p>Use the language switcher at the top of the page for the full Persian interface and guides.</p></div>
+        <a href="../">بازگشت به نسخه فارسی</a>
+      </section>
+
+      <section class="faq" aria-labelledby="faq-title">
+        <p class="eyebrow">Frequently asked questions</p>
+        <h2 id="faq-title">Common questions about free LLM APIs</h2>
+        <details><summary>Do I need to be a developer to use this site?</summary><p>No — comparing options requires no coding skills. Using an API inside an application requires basic programming knowledge.</p></details>
+        <details><summary>What is the difference between a free tier and a trial?</summary><p>A trial expires after a time or credit limit. A permanent free tier remains usable until the provider changes its policy.</p></details>
+        <details><summary>Are all APIs accessible from Iran?</summary><p>No. Network reachability, signup, account activation, and inference are checked separately for each provider.</p></details>
+        <details><summary>What does OpenAI-compatible mean?</summary><p>The request format is similar to the widely-used OpenAI API. You can usually switch by changing the Base URL and API key.</p></details>
+      </section>
+
+      <section class="seo-comparison" aria-labelledby="compare-title">
+        <div class="section-heading compact-heading">
+          <div>
+            <p class="eyebrow">Quick comparison</p>
+            <h2 id="compare-title">Why comparison matters</h2>
+          </div>
+        </div>
+        <div class="comparison-grid">
+          <article class="comparison-card">
+            <span class="comparison-icon" aria-hidden="true">📊</span>
+            <h3>Real quotas</h3>
+            <p>RPM, RPD, and monthly credits documented for each service. Not just marketing claims.</p>
+            <a class="path-link" href="./compare/">View comparison ←</a>
+          </article>
+          <article class="comparison-card">
+            <span class="comparison-icon" aria-hidden="true">🔍</span>
+            <h3>Iran access status</h3>
+            <p>Network, signup, key, and inference checked separately. Nothing is guessed.</p>
+            <a class="path-link" href="./api-finder/">Find API ←</a>
+          </article>
+          <article class="comparison-card">
+            <span class="comparison-icon" aria-hidden="true">⚡</span>
+            <h3>Quick start</h3>
+            <p>Ready-to-use code samples in cURL, Python, and Node.js for your first request.</p>
+            <a class="path-link" href="./quick-start/">Get started ←</a>
+          </article>
+        </div>
+      </section>
+
+      <section class="seo-topics" aria-labelledby="topics-title">
+        <p class="eyebrow">Related topics</p>
+        <h2 id="topics-title">Guides and tutorials</h2>
+        <div class="topics-grid">
+          <article class="topic-card">
+            <h3>What is an API and how does it work?</h3>
+            <p>Simple explanation for beginners: from request to AI model response.</p>
+            <a href="#how-it-works">Learn more ←</a>
+          </article>
+          <article class="topic-card">
+            <h3>Free tier vs trial differences</h3>
+            <p>Why is one service free and another temporary? Understand the differences.</p>
+            <a href="#glossary">Glossary ←</a>
+          </article>
+          <article class="topic-card">
+            <h3>How to choose the best API</h3>
+            <p>From technical criteria to account requirements, everything in one guide.</p>
+            <a href="./api-finder/">Find API ←</a>
+          </article>
+          <article class="topic-card">
+            <h3>Getting started with OpenAI-compatible API</h3>
+            <p>How to use a similar SDK by changing the Base URL.</p>
+            <a href="./quick-start/">Quick start ←</a>
+          </article>
+        </div>
       </section>
 
       <section class="contribute"><div><p class="eyebrow">Data outdated or incorrect?</p><h2>Help improve this catalog.</h2><p>Reports must include the official source, date, and connection path — no full IPs or API keys.</p></div><a class="button primary" href="https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir/issues/new/choose">Submit a report</a></section>

@@ -146,6 +146,30 @@
             { "@type": "ListItem", "position": 3, "name": "شروع سریع", "url": "https://llm.persiantoolbox.ir/quick-start/" },
             { "@type": "ListItem", "position": 4, "name": "کاتالوگ سرویس‌ها", "url": "https://llm.persiantoolbox.ir/#catalog" }
           ]
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": "https://llm.persiantoolbox.ir/#breadcrumb",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "خانه", "item": "https://llm.persiantoolbox.ir/" }
+          ]
+        },
+        {
+          "@type": "WebApplication",
+          "@id": "https://llm.persiantoolbox.ir/#webapp",
+          "url": "https://llm.persiantoolbox.ir/",
+          "name": "کاتالوگ API رایگان LLM برای ایران",
+          "inLanguage": ["fa", "en"],
+          "description": "ابزار مقایسه و انتخاب API رایگان هوش مصنوعی با شواهد دسترسی ایران",
+          "applicationCategory": "DeveloperApplication",
+          "operatingSystem": "All",
+          "browserRequirements": "Requires JavaScript for interactive features",
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+          },
+          "publisher": { "@id": "https://llm.persiantoolbox.ir/#organization" }
         }
       ]
     }
@@ -354,6 +378,62 @@
         <details><summary>API رایگان دائمی با Trial چه تفاوتی دارد؟</summary><p>Trial پس از زمان یا اعتبار مشخص تمام می‌شود؛ سهمیه دائمی تا زمان تغییر سیاست سرویس قابل استفاده است.</p></details>
         <details><summary>آیا همه APIها از ایران در دسترس‌اند؟</summary><p>خیر. نتیجه شبکه، ثبت‌نام، فعال‌سازی حساب و اجرای مدل برای هر سرویس جدا بررسی می‌شود.</p></details>
         <details><summary>سازگار با OpenAI یعنی چه؟</summary><p>ساختار درخواست مشابه است و معمولاً با تغییر Base URL و کلید می‌توان از SDK مشابه استفاده کرد.</p></details>
+      </section>
+
+      <section class="seo-comparison" aria-labelledby="compare-title">
+        <div class="section-heading compact-heading">
+          <div>
+            <p class="eyebrow">مقایسه سریع</p>
+            <h2 id="compare-title">چرا مقایسه مهم است؟</h2>
+          </div>
+        </div>
+        <div class="comparison-grid">
+          <article class="comparison-card">
+            <span class="comparison-icon" aria-hidden="true">📊</span>
+            <h3>سهمیه واقعی</h3>
+            <p>RPM، RPD و اعتبار ماهانه برای هر سرویس ثبت شده. فقط تبلیغات نیست.</p>
+            <a class="path-link" href="./compare/">مشاهده مقایسه ←</a>
+          </article>
+          <article class="comparison-card">
+            <span class="comparison-icon" aria-hidden="true">🔍</span>
+            <h3>وضعیت دسترسی ایران</h3>
+            <p>شبکه، ثبت‌نام، کلید و استنتاج جداگانه بررسی می‌شود. هیچ چیز حدسی نیست.</p>
+            <a class="path-link" href="./api-finder/">انتخاب API ←</a>
+          </article>
+          <article class="comparison-card">
+            <span class="comparison-icon" aria-hidden="true">⚡</span>
+            <h3>شروع سریع</h3>
+            <p>نمونه کد cURL، Python و Node.js برای اولین درخواست آماده است.</p>
+            <a class="path-link" href="./quick-start/">شروع کن ←</a>
+          </article>
+        </div>
+      </section>
+
+      <section class="seo-topics" aria-labelledby="topics-title">
+        <p class="eyebrow">موضوعات مرتبط</p>
+        <h2 id="topics-title">مقالات و راهنماها</h2>
+        <div class="topics-grid">
+          <article class="topic-card">
+            <h3>API چیست و چطور کار می‌کند؟</h3>
+            <p>توضیح ساده برای مبتدیان: از درخواست تا پاسخ مدل هوش مصنوعی.</p>
+            <a href="#what-is-api">ادامه مطلب ←</a>
+          </article>
+          <article class="topic-card">
+            <h3>تفاوت سهمیه رایگان و Trial</h3>
+            <p>چرا یک سرویس رایگان است و دیگری موقتی؟ تفاوت‌ها را بفهمید.</p>
+            <a href="#glossary">واژه‌نامه ←</a>
+          </article>
+          <article class="topic-card">
+            <h3>نحوه انتخاب بهترین API</h3>
+            <p>از معیارهای فنی تا شرایط حساب، همه چیز در یک راهنما.</p>
+            <a href="./api-finder/">انتخاب API ←</a>
+          </article>
+          <article class="topic-card">
+            <h3>شروع با OpenAI-compatible API</h3>
+            <p>چطور با تغییر Base URL از SDK مشابه استفاده کنیم.</p>
+            <a href="./quick-start/">شروع سریع ←</a>
+          </article>
+        </div>
       </section>
 
       <section class="contribute">
