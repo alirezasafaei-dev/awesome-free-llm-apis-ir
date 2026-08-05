@@ -1,7 +1,7 @@
 {
   "schema_version": "1.1.0",
   "last_updated": "2026-08-05",
-  "provider_count": 22,
+  "provider_count": 27,
   "providers": [
     {
       "schema_version": "1.1.0",
@@ -1220,6 +1220,127 @@
       ]
     },
     {
+      "schema_version": "1.2.0",
+      "service_type": "official_provider",
+      "id": "ibm-watsonx-ai",
+      "name": "IBM watsonx.ai",
+      "website": "https://www.ibm.com/products/watsonx-ai",
+      "docs": "https://dataplatform.cloud.ibm.com/docs/content/watsonx-ai",
+      "signup": null,
+      "api": {
+        "base_url": "https://us-south.ml.cloud.ibm.com/ml/v1",
+        "openai_compatible": false,
+        "auth": "api_key"
+      },
+      "capabilities": [
+        "chat",
+        "text_generation"
+      ],
+      "free_tier": {
+        "status": "unknown",
+        "type": "unknown",
+        "requires_payment_method": null,
+        "limits": [],
+        "notes_fa": "وضعیت سهمیه رایگان (Lite plan) هنوز بررسی نشده است."
+      },
+      "iran_access": {
+        "status": "unknown",
+        "official_policy": "unknown",
+        "tested_from_iran": false,
+        "tested_at": null,
+        "test_method": "not_tested",
+        "network": null,
+        "evidence": [],
+        "notes_fa": "هنوز تست نشده است."
+      },
+      "models": {
+        "dynamic": false,
+        "source": null,
+        "notable": []
+      },
+      "verification": {
+        "level": "unverified",
+        "last_checked": "2026-08-05",
+        "checked_by": "expansion_backlog",
+        "stale_after_days": 30,
+        "stages": {
+          "documentary": false,
+          "signup": false,
+          "credential_issuance": false,
+          "model_listing": false,
+          "authenticated_inference": false,
+          "metering": false,
+          "iran_direct": false,
+          "foreign_control": false
+        }
+      },
+      "notes_fa": "کاندید موج A — نیاز به بررسی مستندات رسمی، جزئیات Lite plan، و درخواست احراز هویت‌شده.",
+      "sources": [
+        "https://www.ibm.com/products/watsonx-ai"
+      ]
+    },
+    {
+      "schema_version": "1.2.0",
+      "service_type": "official_provider",
+      "id": "jina-ai",
+      "name": "Jina AI",
+      "website": "https://jina.ai/",
+      "docs": "https://jina.ai/docs",
+      "signup": null,
+      "api": {
+        "base_url": "https://api.jina.ai/v1",
+        "openai_compatible": true,
+        "auth": "api_key"
+      },
+      "capabilities": [
+        "chat",
+        "text_generation",
+        "embeddings"
+      ],
+      "free_tier": {
+        "status": "unknown",
+        "type": "unknown",
+        "requires_payment_method": null,
+        "limits": [],
+        "notes_fa": "وضعیت سهمیه رایگان هنوز بررسی نشده است."
+      },
+      "iran_access": {
+        "status": "unknown",
+        "official_policy": "unknown",
+        "tested_from_iran": false,
+        "tested_at": null,
+        "test_method": "not_tested",
+        "network": null,
+        "evidence": [],
+        "notes_fa": "هنوز تست نشده است."
+      },
+      "models": {
+        "dynamic": false,
+        "source": null,
+        "notable": []
+      },
+      "verification": {
+        "level": "unverified",
+        "last_checked": "2026-08-05",
+        "checked_by": "expansion_backlog",
+        "stale_after_days": 30,
+        "stages": {
+          "documentary": false,
+          "signup": false,
+          "credential_issuance": false,
+          "model_listing": false,
+          "authenticated_inference": false,
+          "metering": false,
+          "iran_direct": false,
+          "foreign_control": false
+        }
+      },
+      "notes_fa": "کاندید موج A — نیاز به بررسی مستندات رسمی، فهرست مدل رایگان، و درخواست احراز هویت‌شده.",
+      "sources": [
+        "https://jina.ai/"
+      ]
+    },
+    {
       "schema_version": "1.1.0",
       "service_type": "official_gateway",
       "id": "kilo-gateway",
@@ -1954,6 +2075,67 @@
       ]
     },
     {
+      "schema_version": "1.2.0",
+      "service_type": "official_gateway",
+      "id": "pinecone-inference",
+      "name": "Pinecone Inference",
+      "website": "https://www.pinecone.io/",
+      "docs": "https://docs.pinecone.io/",
+      "signup": null,
+      "api": {
+        "base_url": "https://api.pinecone.io/v1",
+        "openai_compatible": true,
+        "auth": "api_key"
+      },
+      "capabilities": [
+        "chat",
+        "text_generation",
+        "embeddings"
+      ],
+      "free_tier": {
+        "status": "unknown",
+        "type": "unknown",
+        "requires_payment_method": null,
+        "limits": [],
+        "notes_fa": "وضعیت سهمیه رایگان هنوز بررسی نشده است."
+      },
+      "iran_access": {
+        "status": "unknown",
+        "official_policy": "unknown",
+        "tested_from_iran": false,
+        "tested_at": null,
+        "test_method": "not_tested",
+        "network": null,
+        "evidence": [],
+        "notes_fa": "هنوز تست نشده است."
+      },
+      "models": {
+        "dynamic": false,
+        "source": null,
+        "notable": []
+      },
+      "verification": {
+        "level": "unverified",
+        "last_checked": "2026-08-05",
+        "checked_by": "expansion_backlog",
+        "stale_after_days": 30,
+        "stages": {
+          "documentary": false,
+          "signup": false,
+          "credential_issuance": false,
+          "model_listing": false,
+          "authenticated_inference": false,
+          "metering": false,
+          "iran_direct": false,
+          "foreign_control": false
+        }
+      },
+      "notes_fa": "کاندید موج A — نیاز به بررسی مستندات رسمی، مدل‌های رایگان، و درخواست احراز هویت‌شده.",
+      "sources": [
+        "https://www.pinecone.io/"
+      ]
+    },
+    {
       "schema_version": "1.1.0",
       "service_type": "official_gateway",
       "id": "sambanova",
@@ -2264,6 +2446,125 @@
       "sources": [
         "https://vercel.com/docs/ai-gateway/pricing",
         "https://vercel.com/docs/ai-gateway/sdks-and-apis/openai-chat-completions"
+      ]
+    },
+    {
+      "schema_version": "1.2.0",
+      "service_type": "official_provider",
+      "id": "weaviate-embeddings",
+      "name": "Weaviate Embeddings",
+      "website": "https://weaviate.io/",
+      "docs": "https://weaviate.io/developers/weaviate",
+      "signup": null,
+      "api": {
+        "base_url": "https://api.weaviate.io/v1",
+        "openai_compatible": true,
+        "auth": "api_key"
+      },
+      "capabilities": [
+        "embeddings"
+      ],
+      "free_tier": {
+        "status": "unknown",
+        "type": "unknown",
+        "requires_payment_method": null,
+        "limits": [],
+        "notes_fa": "وضعیت سهمیه رایگان هنوز بررسی نشده است."
+      },
+      "iran_access": {
+        "status": "unknown",
+        "official_policy": "unknown",
+        "tested_from_iran": false,
+        "tested_at": null,
+        "test_method": "not_tested",
+        "network": null,
+        "evidence": [],
+        "notes_fa": "هنوز تست نشده است."
+      },
+      "models": {
+        "dynamic": false,
+        "source": null,
+        "notable": []
+      },
+      "verification": {
+        "level": "unverified",
+        "last_checked": "2026-08-05",
+        "checked_by": "expansion_backlog",
+        "stale_after_days": 30,
+        "stages": {
+          "documentary": false,
+          "signup": false,
+          "credential_issuance": false,
+          "model_listing": false,
+          "authenticated_inference": false,
+          "metering": false,
+          "iran_direct": false,
+          "foreign_control": false
+        }
+      },
+      "notes_fa": "کاندید موج A — نیاز به بررسی مستندات رسمی، مدل‌های Embedding رایگان، و درخواست احراز هویت‌شده.",
+      "sources": [
+        "https://weaviate.io/"
+      ]
+    },
+    {
+      "schema_version": "1.2.0",
+      "service_type": "official_gateway",
+      "id": "z-ai",
+      "name": "Z.AI",
+      "website": "https://z.ai/",
+      "docs": "https://z.ai/docs",
+      "signup": null,
+      "api": {
+        "base_url": "https://api.z.ai/v1",
+        "openai_compatible": true,
+        "auth": "api_key"
+      },
+      "capabilities": [
+        "chat",
+        "text_generation"
+      ],
+      "free_tier": {
+        "status": "unknown",
+        "type": "unknown",
+        "requires_payment_method": null,
+        "limits": [],
+        "notes_fa": "وضعیت سهمیه رایگان هنوز بررسی نشده است."
+      },
+      "iran_access": {
+        "status": "unknown",
+        "official_policy": "unknown",
+        "tested_from_iran": false,
+        "tested_at": null,
+        "test_method": "not_tested",
+        "network": null,
+        "evidence": [],
+        "notes_fa": "هنوز تست نشده است."
+      },
+      "models": {
+        "dynamic": false,
+        "source": null,
+        "notable": []
+      },
+      "verification": {
+        "level": "unverified",
+        "last_checked": "2026-08-05",
+        "checked_by": "expansion_backlog",
+        "stale_after_days": 30,
+        "stages": {
+          "documentary": false,
+          "signup": false,
+          "credential_issuance": false,
+          "model_listing": false,
+          "authenticated_inference": false,
+          "metering": false,
+          "iran_direct": false,
+          "foreign_control": false
+        }
+      },
+      "notes_fa": "کاندید موج A — نیاز به بررسی مستندات رسمی، وضعیت ثبت‌نام، و صدور Credential.",
+      "sources": [
+        "https://z.ai/"
       ]
     }
   ]

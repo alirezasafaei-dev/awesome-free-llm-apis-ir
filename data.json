@@ -1,6 +1,6 @@
 {
   "lastUpdated": "2026-08-05",
-  "providerCount": 22,
+  "providerCount": 27,
   "providers": [
     {
       "id": "agnes-ai",
@@ -656,6 +656,83 @@
       }
     },
     {
+      "id": "ibm-watsonx-ai",
+      "name": "IBM watsonx.ai",
+      "serviceType": "official_provider",
+      "website": "https://www.ibm.com/products/watsonx-ai",
+      "api": {
+        "baseUrl": "https://us-south.ml.cloud.ibm.com/ml/v1",
+        "openaiCompatible": false,
+        "auth": "api_key"
+      },
+      "freeTier": {
+        "status": "unknown",
+        "type": "unknown",
+        "requiresPaymentMethod": null,
+        "limitExample": null,
+        "notesFa": "وضعیت سهمیه رایگان (Lite plan) هنوز بررسی نشده است."
+      },
+      "capabilities": [
+        "chat",
+        "text_generation"
+      ],
+      "iranAccess": {
+        "status": "unknown",
+        "label": "❔ نامشخص",
+        "tested": false,
+        "testedAt": null,
+        "network": null,
+        "evidenceCount": 0,
+        "notesFa": "هنوز تست نشده است."
+      },
+      "models": [],
+      "verification": {
+        "level": "unverified",
+        "lastChecked": "2026-08-05",
+        "staleAfterDays": 30
+      },
+      "health": null
+    },
+    {
+      "id": "jina-ai",
+      "name": "Jina AI",
+      "serviceType": "official_provider",
+      "website": "https://jina.ai/",
+      "api": {
+        "baseUrl": "https://api.jina.ai/v1",
+        "openaiCompatible": true,
+        "auth": "api_key"
+      },
+      "freeTier": {
+        "status": "unknown",
+        "type": "unknown",
+        "requiresPaymentMethod": null,
+        "limitExample": null,
+        "notesFa": "وضعیت سهمیه رایگان هنوز بررسی نشده است."
+      },
+      "capabilities": [
+        "chat",
+        "text_generation",
+        "embeddings"
+      ],
+      "iranAccess": {
+        "status": "unknown",
+        "label": "❔ نامشخص",
+        "tested": false,
+        "testedAt": null,
+        "network": null,
+        "evidenceCount": 0,
+        "notesFa": "هنوز تست نشده است."
+      },
+      "models": [],
+      "verification": {
+        "level": "unverified",
+        "lastChecked": "2026-08-05",
+        "staleAfterDays": 30
+      },
+      "health": null
+    },
+    {
       "id": "kilo-gateway",
       "name": "Kilo Gateway",
       "serviceType": "official_gateway",
@@ -1141,6 +1218,45 @@
       }
     },
     {
+      "id": "pinecone-inference",
+      "name": "Pinecone Inference",
+      "serviceType": "official_gateway",
+      "website": "https://www.pinecone.io/",
+      "api": {
+        "baseUrl": "https://api.pinecone.io/v1",
+        "openaiCompatible": true,
+        "auth": "api_key"
+      },
+      "freeTier": {
+        "status": "unknown",
+        "type": "unknown",
+        "requiresPaymentMethod": null,
+        "limitExample": null,
+        "notesFa": "وضعیت سهمیه رایگان هنوز بررسی نشده است."
+      },
+      "capabilities": [
+        "chat",
+        "text_generation",
+        "embeddings"
+      ],
+      "iranAccess": {
+        "status": "unknown",
+        "label": "❔ نامشخص",
+        "tested": false,
+        "testedAt": null,
+        "network": null,
+        "evidenceCount": 0,
+        "notesFa": "هنوز تست نشده است."
+      },
+      "models": [],
+      "verification": {
+        "level": "unverified",
+        "lastChecked": "2026-08-05",
+        "staleAfterDays": 30
+      },
+      "health": null
+    },
+    {
       "id": "sambanova",
       "name": "SambaNova Cloud",
       "serviceType": "official_gateway",
@@ -1315,6 +1431,81 @@
         "notes": "The API host responded with HTTP 404; reachability is confirmed but inference is not verified.",
         "checked_by": "system"
       }
+    },
+    {
+      "id": "weaviate-embeddings",
+      "name": "Weaviate Embeddings",
+      "serviceType": "official_provider",
+      "website": "https://weaviate.io/",
+      "api": {
+        "baseUrl": "https://api.weaviate.io/v1",
+        "openaiCompatible": true,
+        "auth": "api_key"
+      },
+      "freeTier": {
+        "status": "unknown",
+        "type": "unknown",
+        "requiresPaymentMethod": null,
+        "limitExample": null,
+        "notesFa": "وضعیت سهمیه رایگان هنوز بررسی نشده است."
+      },
+      "capabilities": [
+        "embeddings"
+      ],
+      "iranAccess": {
+        "status": "unknown",
+        "label": "❔ نامشخص",
+        "tested": false,
+        "testedAt": null,
+        "network": null,
+        "evidenceCount": 0,
+        "notesFa": "هنوز تست نشده است."
+      },
+      "models": [],
+      "verification": {
+        "level": "unverified",
+        "lastChecked": "2026-08-05",
+        "staleAfterDays": 30
+      },
+      "health": null
+    },
+    {
+      "id": "z-ai",
+      "name": "Z.AI",
+      "serviceType": "official_gateway",
+      "website": "https://z.ai/",
+      "api": {
+        "baseUrl": "https://api.z.ai/v1",
+        "openaiCompatible": true,
+        "auth": "api_key"
+      },
+      "freeTier": {
+        "status": "unknown",
+        "type": "unknown",
+        "requiresPaymentMethod": null,
+        "limitExample": null,
+        "notesFa": "وضعیت سهمیه رایگان هنوز بررسی نشده است."
+      },
+      "capabilities": [
+        "chat",
+        "text_generation"
+      ],
+      "iranAccess": {
+        "status": "unknown",
+        "label": "❔ نامشخص",
+        "tested": false,
+        "testedAt": null,
+        "network": null,
+        "evidenceCount": 0,
+        "notesFa": "هنوز تست نشده است."
+      },
+      "models": [],
+      "verification": {
+        "level": "unverified",
+        "lastChecked": "2026-08-05",
+        "staleAfterDays": 30
+      },
+      "health": null
     }
   ]
 }

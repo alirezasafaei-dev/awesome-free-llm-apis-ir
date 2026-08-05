@@ -1,0 +1,42 @@
+{
+  "schema_version": "1.0.0",
+  "provider_id": "weaviate-embeddings",
+  "intent_fa": "Weaviate Embeddings برای توسعه‌دهنده‌ای مناسب است که API برای Embedding می‌خواهد. وضعیت سهمیه و دسترسی ایران باید از خلاصه فنی و Evidence تاریخ‌دار همین صفحه خوانده شود.",
+  "signup_steps_fa": [
+    "از صفحه رسمی Weaviate وارد حساب شوید و کلید API بسازید.",
+    "کلید را در متغیر محیطی ذخیره کنید و آن را در کد یا مخزن Git قرار ندهید.",
+    "پیش از انتخاب مدل، مستندات API و فهرست مدل‌های رایگان را بررسی کنید."
+  ],
+  "first_request": {
+    "language": "curl",
+    "code": "curl https://api.weaviate.io/v1/chat/completions \\\n  -H \"Authorization: Bearer ${WEAVIATE_API_KEY}\" \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\"model\":\"weaviate-embed\",\"messages\":[{\"role\":\"user\",\"content\":\"یک پاسخ کوتاه فارسی بنویس\"}]}'",
+    "notes_fa": "نمونه از Endpoint سازگار با OpenAI استفاده می‌کند. شناسه مدل باید با مستندات رسمی تطبیق داده شود.",
+    "source_url": "https://weaviate.io/",
+    "checked_at": "2026-08-05"
+  },
+  "common_errors": [
+    {
+      "code": "401",
+      "title_fa": "کلید API نامعتبر یا ارسال‌نشده",
+      "resolution_fa": "وجود متغیر WEAVIATE_API_KEY را بررسی کنید و هدر Bearer را درست بسازید.",
+      "source_url": "https://weaviate.io/",
+      "checked_at": "2026-08-05"
+    },
+    {
+      "code": "429",
+      "title_fa": "عبور از Rate Limit",
+      "resolution_fa": "هدر Retry-After را بخوانید و درخواست‌ها را با تأخیر ارسال کنید.",
+      "source_url": "https://weaviate.io/",
+      "checked_at": "2026-08-05"
+    }
+  ],
+  "when_not_to_use_fa": [
+    "وقتی وضعیت دسترسی نمایش‌داده‌شده در همین صفحه با الزامات پروژه شما سازگار نیست.",
+    "وقتی بدون بررسی مدل و محدودیت حساب، به ظرفیت ثابت و SLA تضمین‌شده نیاز دارید."
+  ],
+  "related_guides": [
+    "openai-sdk-custom-base-url",
+    "free-embedding-api"
+  ],
+  "last_reviewed": "2026-08-05"
+}

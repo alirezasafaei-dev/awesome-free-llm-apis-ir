@@ -28,6 +28,12 @@ const freeLabels = {
   permanent_allowance: "سهمیه رایگان دائمی",
   free_models: "مدل‌های رایگان",
   monthly_credit: "اعتبار رایگان ماهانه",
+  recurring_credit: "اعتبار تکرارشونده رایگان",
+  community_funded: "تامین‌شده توسط جامعه",
+  one_time_credit: "اعتبار یک‌بار مصرف",
+  time_limited_credit: "اعتبار محدود به زمان",
+  conditional_program: "برنامه مشروط",
+  host_your_own_compute_credit: "اعتبار میزبانی محاسبات",
   trial: "دوره آزمایشی",
   unknown: "نوع سهمیه نامشخص"
 };
