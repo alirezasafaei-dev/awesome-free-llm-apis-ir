@@ -6,6 +6,10 @@ on:
       - agent/ui-seo-home-language-focus-2026-08-05
     paths:
       - ".github/workflows/_source-snapshot-ui-seo.yml"
+  pull_request:
+    branches: [main]
+    paths:
+      - ".github/workflows/_source-snapshot-ui-seo.yml"
 
 permissions:
   contents: read
