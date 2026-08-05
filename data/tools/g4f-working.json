@@ -26,7 +26,7 @@
   },
   "iran_compatibility": {
     "status": "unknown",
-    "last_checked": "2026-07-16",
+    "last_checked": "2026-08-05",
     "notes_fa": "این ابزار فقط‌خوان و بدون احراز هویت معرفی شده است، اما تست مستقیم از ایران برای آن ثبت نشده است."
   },
   "risk": {
@@ -37,7 +37,7 @@
   },
   "verification": {
     "level": "community_verified",
-    "last_checked": "2026-07-16",
+    "last_checked": "2026-08-05",
     "checked_by": "upstream_monitor",
     "stale_after_days": 14
   },
