@@ -17,8 +17,9 @@ if (build.status !== 0) {
 }
 
 const read = (relative) => readFile(path.join(dist, relative), "utf8");
-const [home, faFinder, enFinder, faCompare, enCompare] = await Promise.all([
+const [home, enHome, faFinder, enFinder, faCompare, enCompare] = await Promise.all([
   read("index.html"),
+  read("en/index.html"),
   read("api-finder/index.html"),
   read("en/api-finder/index.html"),
   read("compare/index.html"),
@@ -28,6 +29,10 @@ const [home, faFinder, enFinder, faCompare, enCompare] = await Promise.all([
 const assertions = [
   [home.includes('class="search-field catalog-search"'), "catalog search is always visible"],
   [home.indexOf('class="search-field catalog-search"') < home.indexOf('class="advanced-filter-panel"'), "catalog search precedes advanced filters"],
+  [!home.includes('id="english-guides"') && !home.includes("English Tutorials"), "Persian homepage stays language-focused"],
+  [home.includes('href="./en/"'), "Persian homepage preserves the English handoff"],
+  [enHome.includes('id="english-guides"') && enHome.includes('class="seo-guide-grid"'), "English homepage owns the English guide hub"],
+  [!enHome.includes("<!-- ENGLISH_GUIDE_CARDS -->"), "English guide cards render into the final artifact"],
   [faFinder.includes("ظرفیت درخواست / Rate limit"), "Persian Finder labels RPM as request capacity"],
   [!faFinder.includes("سرعت / Latency"), "Persian Finder no longer calls RPM latency"],
   [!faFinder.includes('id="finder-language"') && !faFinder.includes("پشتیبانی فارسی (+۱۵)"), "Persian Finder does not infer language quality from documentation or access"],

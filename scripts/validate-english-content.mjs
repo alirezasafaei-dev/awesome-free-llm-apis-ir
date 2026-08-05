@@ -108,11 +108,21 @@ try {
   if (contentBuild.status !== 0) throw new Error(contentBuild.stderr || contentBuild.stdout || "English content build failed");
 
   const sitemap = await readFile(path.join(destination, "sitemap.xml"), "utf8");
-  const homepage = await readFile(path.join(destination, "index.html"), "utf8");
+  const persianHomepage = await readFile(path.join(destination, "index.html"), "utf8");
+  const englishHomepage = await readFile(path.join(destination, "en", "index.html"), "utf8");
   const buildMeta = JSON.parse(await readFile(path.join(destination, "build-meta.json"), "utf8"));
 
-  if (!homepage.includes('id="english-guides"')) {
-    throw new Error("Homepage is missing the English guides section");
+  if (persianHomepage.includes('id="english-guides"') || persianHomepage.includes("English Tutorials")) {
+    throw new Error("Persian homepage must not duplicate the English guide directory");
+  }
+  if (!persianHomepage.includes('href="./en/"')) {
+    throw new Error("Persian homepage must preserve a compact handoff to the English experience");
+  }
+  if (!englishHomepage.includes('id="english-guides"')) {
+    throw new Error("English homepage is missing the English guides hub");
+  }
+  if (englishHomepage.includes("<!-- ENGLISH_GUIDE_CARDS -->")) {
+    throw new Error("English homepage guide-card placeholder was not rendered");
   }
   if (buildMeta.english_article_count !== articles.length) {
     throw new Error("build-meta English article count mismatch");
@@ -129,6 +139,10 @@ try {
     if (h1Count !== 1) throw new Error(`${article.slug}: expected exactly one H1, found ${h1Count}`);
     if (!sitemap.includes(`<loc>${article.canonical_target}</loc>`)) {
       throw new Error(`${article.slug}: sitemap entry is missing`);
+    }
+    const englishHomepageHref = `../guides/en/${article.slug}/`;
+    if (!englishHomepage.includes(`href="${englishHomepageHref}"`)) {
+      throw new Error(`${article.slug}: English homepage hub link is missing`);
     }
   }
 } finally {
