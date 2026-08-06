@@ -2,6 +2,10 @@ import { readFile, readdir } from "node:fs/promises";
 import { spawnSync } from "node:child_process";
 import path from "node:path";
 import process from "node:process";
+import {
+  accountRequirementPresentation,
+  connectionPresentation
+} from "../site/provider-presentation.js";
 
 const root = process.cwd();
 const build = spawnSync(process.execPath, [path.join(root, "scripts", "build-site-production.mjs")], {
@@ -12,17 +16,6 @@ const build = spawnSync(process.execPath, [path.join(root, "scripts", "build-sit
 if (build.status !== 0) {
   throw new Error(build.stderr || build.stdout || "Production site build failed");
 }
-
-const accessLabels = {
-  verified_working: "دسترسی مستقیم از ایران تأیید شده",
-  verified_working_vpn: "دسترسی با VPN تأیید شده",
-  direct_blocked_vpn_working: "مستقیم مسدود و VPN موفق",
-  verified_blocked: "محدودیت جغرافیایی تأیید شده",
-  officially_unsupported: "ایران رسماً پشتیبانی نمی‌شود",
-  intermittent: "دسترسی ناپایدار",
-  signup_blocked: "مانع ثبت‌نام یا احراز حساب",
-  unknown: "وضعیت دسترسی نامشخص"
-};
 
 const catalog = JSON.parse(await readFile(path.join(root, "catalog.json"), "utf8"));
 const providerById = new Map(catalog.providers.map((provider) => [provider.id, provider]));
@@ -80,9 +73,19 @@ for (const providerId of enrichedProviderIds) {
     }
   }
 
-  const expectedAccessLabel = accessLabels[provider.iran_access.status];
-  if (!expectedAccessLabel || !html.includes(expectedAccessLabel)) {
-    throw new Error(`${providerId}: factual Iran-access label changed or disappeared`);
+  const connection = connectionPresentation(provider, "fa");
+  const account = accountRequirementPresentation(provider, "fa");
+  if (!html.includes(connection.label)) {
+    throw new Error(`${providerId}: factual connection-method label changed or disappeared`);
+  }
+  if (!html.includes(account.label)) {
+    throw new Error(`${providerId}: factual account-requirement label changed or disappeared`);
+  }
+  if (!html.includes("روش اتصال از ایران") || !html.includes("پیش‌نیاز حساب")) {
+    throw new Error(`${providerId}: connection method and account requirements must be separate facts`);
+  }
+  if ((connection.status === "verified_working_vpn" || connection.status === "direct_blocked_vpn_working") && html.includes("مستقیم مسدود")) {
+    throw new Error(`${providerId}: VPN-capable provider must not be described as directly blocked`);
   }
   if (/\bsk-[A-Za-z0-9_-]{12,}\b/.test(html) || /-----BEGIN [A-Z ]*PRIVATE KEY-----/.test(html)) {
     throw new Error(`${providerId}: generated HTML contains a secret-like value`);
