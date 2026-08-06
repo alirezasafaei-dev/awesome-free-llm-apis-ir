@@ -66,8 +66,11 @@ assert(home.includes("status-legend"), "homepage source ships status legend");
 assert((home.match(/<h1\b/g) || []).length === 1, "homepage has exactly one H1");
 
 const appJs = await readFile(path.join(root, "site", "app.js"), "utf8");
-assert(appJs.includes("accessBadge.dataset.status = accessStatus"), "cards set data-status for CSS badges");
-assert(appJs.includes("account_activation_blocked"), "activation-blocked status is labeled");
+assert(appJs.includes("accessBadge.dataset.status = connection.status"), "cards set connection status for CSS badges");
+assert(appJs.includes("accountRequirementPresentation(provider, \"fa\")"), "cards derive account requirements independently");
+assert(appJs.includes(".account-requirement-label"), "cards render a separate account-requirement fact");
+assert(appJs.includes("account_activation_blocked"), "account activation is handled without becoming a network penalty");
+assert(!/iranNetworkPenalties[^\n]*signup_blocked/.test(appJs), "signup requirements are not network penalties");
 
 // --- build + dist contracts ---
 const build = spawnSync(process.execPath, [path.join(root, "scripts", "build-site-production.mjs")], {
