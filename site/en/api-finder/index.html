@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#111827">
     <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1">
-    <meta name="description" content="Find the best free LLM API for your project. Filter by use case, free-tier type, request capacity, and region. Evidence-based scoring from official sources.">
-    <meta property="og:title" content="Free LLM API Finder — Find Your Ideal Free AI API">
-    <meta property="og:description" content="Guided tool to find free LLM APIs matching your use case, budget, and constraints. Compare providers by score, limits, and evidence.">
+    <meta name="description" content="Find a free LLM API by use case, request capacity, connection method, and account requirements such as an international card or foreign mobile number.">
+    <meta property="og:title" content="Free LLM API Finder — Connection and account requirements">
+    <meta property="og:description" content="Compare free LLM APIs with separate connection-method and account-requirement facts.">
     <meta property="og:type" content="website">
     <meta property="og:locale" content="en_US">
     <meta property="og:site_name" content="Awesome Free LLM APIs">
@@ -17,7 +17,7 @@
     <meta property="og:image:height" content="630">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Free LLM API Finder">
-    <meta name="twitter:description" content="Find free AI APIs matching your use case, budget, and constraints.">
+    <meta name="twitter:description" content="Compare free AI APIs by connection method and account requirements.">
     <meta name="twitter:image" content="https://llm.persiantoolbox.ir/assets/social/og-default.png">
     <link rel="canonical" href="https://llm.persiantoolbox.ir/en/api-finder/">
     <link rel="alternate" hreflang="en" href="https://llm.persiantoolbox.ir/en/api-finder/">
@@ -26,7 +26,7 @@
     <link rel="alternate" type="application/json" href="../../catalog.json" title="Machine-readable provider catalog">
     <link rel="manifest" href="../../manifest.webmanifest">
     <link rel="stylesheet" href="../../styles.css">
-    <title>Free LLM API Finder — Compare Providers</title>
+    <title>Free LLM API Finder — Connection and account requirements</title>
     <link rel="icon" type="image/svg+xml" href="../../assets/favicon.svg">
     <link rel="mask-icon" href="../../assets/mask-icon.svg" color="#2563EB">
     <link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32x32.png">
@@ -49,15 +49,11 @@
           "url": "https://llm.persiantoolbox.ir/en/api-finder/",
           "name": "Free LLM API Finder",
           "inLanguage": ["en"],
-          "description": "Guided tool to find free LLM APIs matching your use case, budget, and constraints.",
+          "description": "Guided tool that separates connection evidence from payment, phone, identity, and activation requirements.",
           "applicationCategory": "DeveloperApplication",
           "operatingSystem": "All",
           "browserRequirements": "Requires JavaScript",
-          "offers": {
-            "@type": "Offer",
-            "price": "0",
-            "priceCurrency": "USD"
-          },
+          "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
           "publisher": { "@id": "https://llm.persiantoolbox.ir/#organization" }
         },
         {
@@ -75,148 +71,61 @@
     <link rel="stylesheet" href="../../ux-clarity.css">
     <link rel="stylesheet" href="../../ui-pro-max.css">
     <link rel="stylesheet" href="../../ui-pro-max-components.css">
-</head>
+  </head>
   <body>
     <a class="skip-link" href="#main-content">Skip to main content</a>
-
     <header class="topbar">
-      <a class="brand" href="../" aria-label="Home">
-        <span class="brand-mark" aria-hidden="true"><img src="../../assets/logo-symbol.svg" alt="" width="40" height="40"></span>
-        <span>Awesome Free LLM APIs</span>
-      </a>
-      <nav aria-label="Main links">
-        <a href="../">Home</a>
-        <a href="../api-finder/" aria-current="page">API Finder</a>
-        <a href="../quick-start/">Quick Start</a>
-        <a href="../compare/">Compare</a>
-        <a class="language-link" href="../../api-finder/">فارسی</a>
-      </nav>
+      <a class="brand" href="../" aria-label="Home"><span class="brand-mark" aria-hidden="true"><img src="../../assets/logo-symbol.svg" alt="" width="40" height="40"></span><span>Awesome Free LLM APIs</span></a>
+      <nav aria-label="Main links"><a href="../">Home</a><a href="../api-finder/" aria-current="page">API Finder</a><a href="../quick-start/">Quick Start</a><a href="../compare/">Compare</a><a class="language-link" href="../../api-finder/">فارسی</a></nav>
     </header>
 
     <main id="main-content">
       <section class="en-finder-hero" aria-labelledby="finder-hero-title">
         <p class="eyebrow">Guided provider selection</p>
         <h1 id="finder-hero-title">Find the best free LLM API<br><span>for your project.</span></h1>
-        <p>Choose a use case and free-access constraint to get ranked results. Region and request-capacity controls are available in Advanced settings. All data comes from the <a class="inline-accent-link" href="../../catalog.json">evidence-based catalog</a>.</p>
+        <p>Connection evidence and account requirements are separate. A required card, foreign phone number, identity check, or account activation is not presented as a network block.</p>
       </section>
 
       <form id="finder-form" class="finder-form" role="search" aria-label="API finder form">
-        <label>Use case
-          <select id="finder-usecase">
-            <option value="chat">Chat & text generation</option>
-            <option value="coding">Coding & tool calling</option>
-            <option value="reasoning">Reasoning</option>
-            <option value="embeddings">Embeddings & search</option>
-          </select>
-        </label>
-        <label>Free-access constraint
-          <select id="finder-budget">
-            <option value="no-card">No credit card required</option>
-            <option value="free-only">Free tier only (any type)</option>
-            <option value="any">No preference</option>
-          </select>
-        </label>
-
+        <label>Use case<select id="finder-usecase"><option value="chat">Chat &amp; text generation</option><option value="coding">Coding &amp; tool calling</option><option value="reasoning">Reasoning</option><option value="embeddings">Embeddings &amp; search</option></select></label>
+        <label>Free-access constraint<select id="finder-budget"><option value="no-card">No international card required</option><option value="free-only">Free tier only (any type)</option><option value="any">No preference</option></select></label>
         <details class="finder-advanced">
-          <summary>Advanced settings — region and request capacity</summary>
+          <summary>Advanced settings — connection method and request capacity</summary>
           <div class="finder-advanced-content">
-            <label>Region preference
-              <select id="finder-region">
-                <option value="any">Any region</option>
-                <option value="iran">Iran — direct connection</option>
-                <option value="iran-vpn">Iran — via VPN</option>
-              </select>
-            </label>
-            <label>Request-capacity priority
-              <select id="finder-latency">
-                <option value="low">Low priority</option>
-                <option value="important">Important</option>
-                <option value="critical">Critical</option>
-              </select>
-            </label>
+            <label>Connection preference<select id="finder-region"><option value="any">Any connection method</option><option value="iran">Direct from Iran</option><option value="iran-vpn">Works with a VPN</option></select></label>
+            <label>Request-capacity priority<select id="finder-latency"><option value="low">Low priority</option><option value="important">Important</option><option value="critical">Critical</option></select></label>
           </div>
         </details>
-
-        <div class="finder-actions">
-          <button class="button primary" type="submit" id="finder-submit">Find APIs</button>
-          <button class="button secondary" type="reset" id="finder-reset">Reset filters</button>
-        </div>
+        <div class="finder-actions"><button class="button primary" type="submit" id="finder-submit">Find APIs</button><button class="button secondary" type="reset" id="finder-reset">Reset filters</button></div>
       </form>
 
-      <div id="finder-status" class="finder-status" hidden>
-        <p id="finder-status-text"></p>
-      </div>
-
+      <div id="finder-status" class="finder-status" hidden><p id="finder-status-text"></p></div>
       <div id="finder-results" class="finder-results"></div>
       <div id="finder-loading" class="message-card">Loading provider data…</div>
       <div id="finder-error" class="message-card error" hidden>Failed to load catalog. Reload the page and try again.</div>
-      <div id="finder-empty" class="finder-empty" hidden>
-        <p><strong>No providers match your filters.</strong></p>
-        <p>Try different criteria or <a href="https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir/issues/new/choose">report a missing provider</a>.</p>
-      </div>
+      <div id="finder-empty" class="finder-empty" hidden><p><strong>No providers match your filters.</strong></p><p>Try different criteria or <a href="https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir/issues/new/choose">report a missing provider</a>.</p></div>
 
       <details id="finder-disclosure" class="finder-disclosure">
         <summary>How is the score calculated?</summary>
         <div class="finder-disclosure-content">
-          <div><strong>Capability match (max +35)</strong><span>The provider supports the capabilities needed for your use case.</span></div>
-          <div><strong>Free-tier type and payment (max +20)</strong><span>No credit card required ranks highest, followed by free models, then anything.</span></div>
-          <div><strong>Request capacity (max +15)</strong><span>Based on reported RPM. This measures request allowance, not response latency or model speed.</span></div>
-          <div><strong>Region preference (max +30)</strong><span>Matches your region filter. Neutral by default; Iran direct and VPN options are scored separately.</span></div>
-          <div><strong>Penalties (0 to -30)</strong><span>Community gateways, session bridges, or blocked/unknown statuses reduce the score.</span></div>
+          <div><strong>Capability match (max +35)</strong><span>Required capabilities for the selected use case.</span></div>
+          <div><strong>Free tier (max +20)</strong><span>No-card access and persistent free access rank higher.</span></div>
+          <div><strong>Request capacity (max +15)</strong><span>Reported RPM is capacity, not response speed.</span></div>
+          <div><strong>Connection method (max +30)</strong><span>Direct and VPN-tested access are evaluated from dated evidence.</span></div>
+          <div><strong>Account requirements</strong><span>Card, foreign phone, identity verification, and account activation are separate friction signals.</span></div>
+          <div><strong>Service risk</strong><span>Community gateways, actual network restrictions, and unknown evidence are handled separately.</span></div>
         </div>
       </details>
 
-      <section class="finder-contribute">
-        <div>
-          <p class="eyebrow">Help improve this tool</p>
-          <h2>Contributions make the finder more accurate.</h2>
-          <p>Is the scoring fair? Missing a constraint you need? Submit your feedback on GitHub.</p>
-        </div>
-        <a class="button primary" href="https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir/issues/new/choose">Submit feedback</a>
-      </section>
+      <section class="finder-contribute"><div><p class="eyebrow">Help improve this tool</p><h2>Contributions make the finder more accurate.</h2><p>Report incorrect data with a date and source.</p></div><a class="button primary" href="https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir/issues/new/choose">Submit feedback</a></section>
     </main>
 
     <footer class="site-footer" role="contentinfo">
-      <div class="footer-grid">
-        <div class="footer-brand">
-          <strong>Awesome Free LLM APIs IR</strong>
-          <p>Evidence-first catalog of free LLM APIs with quotas, OpenAI compatibility, and dated access evidence. No ads. No permanent-access guarantees.</p>
-        </div>
-        <nav class="footer-nav" aria-label="Footer">
-          <div>
-            <h2 class="footer-heading">Product</h2>
-            <ul>
-              <li><a href="../../en/">Home</a></li>
-              <li><a href="../../en/api-finder/">API Finder</a></li>
-              <li><a href="../../en/compare/">Compare</a></li>
-              <li><a href="../../en/quick-start/">Quick Start</a></li>
-              <li><a href="../../tools/">Tools</a></li>
-            </ul>
-          </div>
-          <div>
-            <h2 class="footer-heading">Trust &amp; data</h2>
-            <ul>
-              <li><a href="../../methodology/">Methodology</a></li>
-              <li><a href="../../catalog.json">catalog.json</a></li>
-              <li><a href="../../data.json">data.json</a></li>
-              <li><a href="../../sitemap.xml">Sitemap</a></li>
-              <li><a href="../../llms.txt">llms.txt</a></li>
-            </ul>
-          </div>
-          <div>
-            <h2 class="footer-heading">Contribute</h2>
-            <ul>
-              <li><a href="https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir">GitHub</a></li>
-              <li><a href="https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir/issues/new/choose">Report an issue</a></li>
-              <li><a href="../../">فارسی</a></li>
-            </ul>
-          </div>
-        </nav>
-      </div>
+      <div class="footer-grid"><div class="footer-brand"><strong>Awesome Free LLM APIs IR</strong><p>Evidence-first catalog of free LLM APIs with quotas, OpenAI compatibility, and dated access evidence.</p></div><nav class="footer-nav" aria-label="Footer"><div><h2 class="footer-heading">Product</h2><ul><li><a href="../../en/">Home</a></li><li><a href="../../en/api-finder/">API Finder</a></li><li><a href="../../en/compare/">Compare</a></li><li><a href="../../en/quick-start/">Quick Start</a></li><li><a href="../../tools/">Tools</a></li></ul></div><div><h2 class="footer-heading">Trust &amp; data</h2><ul><li><a href="../../methodology/">Methodology</a></li><li><a href="../../catalog.json">catalog.json</a></li><li><a href="../../data.json">data.json</a></li><li><a href="../../sitemap.xml">Sitemap</a></li><li><a href="../../llms.txt">llms.txt</a></li></ul></div><div><h2 class="footer-heading">Contribute</h2><ul><li><a href="https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir">GitHub</a></li><li><a href="https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir/issues/new/choose">Report an issue</a></li><li><a href="../../">فارسی</a></li></ul></div></nav></div>
       <p class="footer-meta">MIT License · No commercial affiliation with providers · Do not publish IPs, API keys, or account data</p>
     </footer>
 
-    <script defer src="./finder-core.js"></script>
+    <script type="module" src="./finder-core.js"></script>
     <script defer src="../../plausible-guard.js"></script>
     <script defer data-domain="llm.persiantoolbox.ir" src="../../plausible.js"></script>
   </body>
