@@ -1,39 +1,18 @@
 import { readdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
+import {
+  accountRequirementPresentation,
+  connectionPresentation,
+  freeTierLabel,
+  serviceTypeLabel
+} from "../site/provider-presentation.js";
 
 const root = process.cwd();
 const dir = path.join(root, "data", "providers");
 const readmePath = path.join(root, "README.md");
 const start = "<!-- PROVIDERS_TABLE_START -->";
 const end = "<!-- PROVIDERS_TABLE_END -->";
-
-const labels = {
-  permanent_allowance: "سهمیه دائمی",
-  free_models: "مدل‌های رایگان",
-  monthly_credit: "اعتبار ماهانه",
-  trial: "آزمایشی",
-  unknown: "نامشخص"
-};
-
-const iranLabels = {
-  verified_working: "✅ مستقیم تست‌شده",
-  verified_working_vpn: "🛡️ با VPN تست‌شده",
-  direct_blocked_vpn_working: "🛡️ مستقیم مسدود / VPN موفق",
-  verified_blocked: "⛔ مسدود",
-  officially_unsupported: "🚫 پشتیبانی‌نشده رسمی",
-  intermittent: "⚠️ ناپایدار",
-  signup_blocked: "🧾 ثبت‌نام مسدود",
-  unknown: "❔ نامشخص"
-};
-
-const serviceLabels = {
-  official_provider: "Provider رسمی",
-  official_gateway: "Gateway رسمی",
-  community_gateway: "Gateway اجتماعی",
-  session_bridge: "Session bridge",
-  self_hosted: "Self-hosted"
-};
 
 function compactLimit(provider) {
   const limits = provider.free_tier.limits;
@@ -57,9 +36,13 @@ for (const file of (await readdir(dir)).filter((f) => f.endsWith(".json")).sort(
 providers.sort((a, b) => a.name.localeCompare(b.name, "en"));
 
 const rows = [
-  "| سرویس | نوع | رایگان | محدودیت نمونه | OpenAI-compatible | دسترسی ایران | آخرین بررسی |",
-  "|---|---|---|---|:---:|---|---|",
-  ...providers.map((p) => `| [${p.name}](${p.website}) | ${serviceLabels[p.service_type] ?? p.service_type} | ${labels[p.free_tier.type]} | ${compactLimit(p)} | ${p.api.openai_compatible ? "✅" : "—"} | ${iranLabels[p.iran_access.status]} | ${p.verification.last_checked} |`)
+  "| سرویس | نوع | رایگان | محدودیت نمونه | OpenAI-compatible | روش اتصال | پیش‌نیاز حساب | آخرین بررسی |",
+  "|---|---|---|---|:---:|---|---|---|",
+  ...providers.map((provider) => {
+    const connection = connectionPresentation(provider, "fa");
+    const account = accountRequirementPresentation(provider, "fa");
+    return `| [${provider.name}](${provider.website}) | ${serviceTypeLabel(provider.service_type, "fa")} | ${freeTierLabel(provider.free_tier.type, "fa")} | ${compactLimit(provider)} | ${provider.api.openai_compatible ? "✅" : "—"} | ${connection.label} | ${account.label} | ${provider.verification.last_checked} |`;
+  })
 ];
 
 const generated = `${start}\n<!-- This section is generated. Run: npm run generate -->\n${rows.join("\n")}\n${end}`;
