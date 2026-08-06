@@ -1,6 +1,11 @@
+import assert from "node:assert/strict";
 import { access, readFile } from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
+import {
+  accountRequirementPresentation,
+  connectionPresentation
+} from "../site/provider-presentation.js";
 
 const root = process.cwd();
 const homepagePath = path.join(root, "site", "index.html");
@@ -93,4 +98,68 @@ for (const eventName of ["ux_path_click", "catalog_advanced_open"]) {
 const h1Count = (html.match(/<h1(?:\s|>)/g) || []).length;
 if (h1Count !== 1) throw new Error(`Homepage must keep one H1; found ${h1Count}`);
 
-console.log("UX clarity contract passed: task-first catalog, visible search, progressive filters and plain-language onboarding are present.");
+const baseProvider = {
+  free_tier: { requires_payment_method: false },
+  signup_requirements: [],
+  iran_access: { status: "verified_working", evidence: [] }
+};
+
+const vpn = connectionPresentation({
+  ...baseProvider,
+  iran_access: { status: "direct_blocked_vpn_working", evidence: [] }
+}, "fa");
+assert.equal(vpn.label, "متصل با فیلترشکن");
+assert.ok(!vpn.label.includes("مسدود"), "VPN-capable providers must not be labeled blocked");
+
+const vpnOnly = connectionPresentation({
+  ...baseProvider,
+  iran_access: { status: "verified_working_vpn", evidence: [] }
+}, "fa");
+assert.equal(vpnOnly.label, "متصل با فیلترشکن");
+
+const directReachableSignupRequirement = connectionPresentation({
+  ...baseProvider,
+  iran_access: {
+    status: "signup_blocked",
+    evidence: [{
+      type: "connectivity_test",
+      connectivity_result: "http_response",
+      source: "IRAN_SERVER — direct connectivity probe"
+    }]
+  }
+}, "fa");
+assert.equal(directReachableSignupRequirement.label, "Endpoint مستقیم در دسترس است");
+
+const card = accountRequirementPresentation({
+  ...baseProvider,
+  free_tier: { requires_payment_method: true }
+}, "fa");
+assert.equal(card.label, "نیاز به کارت بانکی بین‌المللی");
+assert.ok(!card.label.includes("مسدود"));
+
+const phone = accountRequirementPresentation({
+  ...baseProvider,
+  signup_requirements: ["foreign_mobile_number"]
+}, "fa");
+assert.equal(phone.label, "نیاز به شماره موبایل خارجی");
+assert.ok(!phone.label.includes("مسدود"));
+
+const identity = accountRequirementPresentation({
+  ...baseProvider,
+  signup_requirements: ["identity_verification"]
+}, "fa");
+assert.equal(identity.label, "نیاز به احراز هویت");
+
+const ordinary = accountRequirementPresentation(baseProvider, "fa");
+assert.equal(ordinary.label, "بدون نیاز به کارت بانکی بین‌المللی");
+
+assert.equal(connectionPresentation({
+  ...baseProvider,
+  iran_access: { status: "direct_blocked_vpn_working", evidence: [] }
+}, "en").label, "Works with a VPN");
+assert.equal(accountRequirementPresentation({
+  ...baseProvider,
+  signup_requirements: ["foreign_mobile_number"]
+}, "en").label, "Foreign mobile number required");
+
+console.log("UX clarity contract passed: task-first catalog, plain-language onboarding, and separate connection/account semantics are enforced.");
