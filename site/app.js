@@ -16,10 +16,22 @@ const capabilityLabels = {
 
 const elements = Object.fromEntries([
   "provider-grid", "provider-template", "loading", "error", "empty", "result-count",
-  "catalog-updated", "search", "free-type", "access-status", "capability", "openai-only",
+  "catalog-updated", "search", "free-type", "access-status", "account-requirement", "capability", "openai-only",
   "sort", "filters", "reset-filters", "theme-toggle", "stat-total", "stat-free", "stat-openai", "stat-fresh",
   "advisor-usecase", "advisor-priority", "advisor-results"
 ].map((id) => [id, document.getElementById(id)]));
+
+const legacyAccessAliases = Object.freeze({
+  verified_working: "direct",
+  verified_working_vpn: "vpn",
+  direct_blocked_vpn_working: "vpn",
+  verified_blocked: "direct-unavailable",
+  officially_unsupported: "unsupported",
+  intermittent: "intermittent",
+  signup_blocked: "direct-endpoint",
+  account_activation_blocked: "direct-endpoint",
+  unknown: "unknown"
+});
 
 let providers = [];
 
@@ -63,6 +75,31 @@ function searchText(provider) {
   ].join(" "));
 }
 
+function connectionCategory(provider) {
+  const status = provider.iran_access.status;
+  if (status === "verified_working") return "direct";
+  if (status === "verified_working_vpn" || status === "direct_blocked_vpn_working") return "vpn";
+  if (status === "verified_blocked") return "direct-unavailable";
+  if (status === "officially_unsupported") return "unsupported";
+  if (status === "intermittent") return "intermittent";
+  if (["signup_blocked", "account_activation_blocked"].includes(status)) {
+    return connectionPresentation(provider, "fa").label === "Endpoint مستقیم در دسترس است" ? "direct-endpoint" : "unknown";
+  }
+  return "unknown";
+}
+
+function matchesAccountRequirement(provider, filter) {
+  if (!filter) return true;
+  const requirements = accountRequirementPresentation(provider, "fa").requirements;
+  if (filter === "no-card") return requirements.includes("no_payment_card");
+  if (filter === "card") return requirements.includes("international_payment_card");
+  if (filter === "foreign-phone") return requirements.includes("foreign_mobile_number");
+  if (filter === "identity") return requirements.includes("identity_verification");
+  if (filter === "activation") return requirements.includes("account_activation") || requirements.includes("signup");
+  if (filter === "unknown") return requirements.includes("unknown");
+  return true;
+}
+
 function sendAnalytics(name, props = {}) {
   if (typeof window.plausible === "function") {
     window.plausible(name, { props });
@@ -74,6 +111,7 @@ function currentFilters() {
     query: normalize(elements.search.value),
     freeType: elements["free-type"].value,
     access: elements["access-status"].value,
+    account: elements["account-requirement"].value,
     capability: elements.capability.value,
     openai: elements["openai-only"].checked,
     sort: elements.sort.value
@@ -85,6 +123,7 @@ function updateUrl(filters) {
   if (filters.query) params.set("q", filters.query);
   if (filters.freeType) params.set("free", filters.freeType);
   if (filters.access) params.set("access", filters.access);
+  if (filters.account) params.set("account", filters.account);
   if (filters.capability) params.set("capability", filters.capability);
   if (filters.openai) params.set("openai", "1");
   if (filters.sort !== "name") params.set("sort", filters.sort);
@@ -97,7 +136,8 @@ function filteredProviders() {
   const result = providers.filter((provider) => {
     if (filters.query && !searchText(provider).includes(filters.query)) return false;
     if (filters.freeType && provider.free_tier.type !== filters.freeType) return false;
-    if (filters.access && provider.iran_access.status !== filters.access) return false;
+    if (filters.access && connectionCategory(provider) !== filters.access) return false;
+    if (!matchesAccountRequirement(provider, filters.account)) return false;
     if (filters.capability && !provider.capabilities.includes(filters.capability)) return false;
     if (filters.openai && !provider.api.openai_compatible) return false;
     return true;
@@ -279,7 +319,9 @@ function loadUrlFilters() {
   const params = new URLSearchParams(location.search);
   elements.search.value = params.get("q") ?? "";
   elements["free-type"].value = params.get("free") ?? "";
-  elements["access-status"].value = params.get("access") ?? "";
+  const requestedAccess = params.get("access") ?? "";
+  elements["access-status"].value = legacyAccessAliases[requestedAccess] ?? requestedAccess;
+  elements["account-requirement"].value = params.get("account") ?? "";
   elements.capability.value = params.get("capability") ?? "";
   elements["openai-only"].checked = params.get("openai") === "1";
   elements.sort.value = params.get("sort") ?? "name";
@@ -311,10 +353,11 @@ function trackFilterChanges() {
     clearTimeout(timeout);
     timeout = setTimeout(() => {
       const filters = currentFilters();
-      const hasActive = filters.query || filters.freeType || filters.access || filters.capability || filters.openai || filters.sort !== "name";
+      const hasActive = filters.query || filters.freeType || filters.access || filters.account || filters.capability || filters.openai || filters.sort !== "name";
       sendAnalytics(hasActive ? "filter_apply" : "filter_reset", {
         free_type: filters.freeType || "all",
         access_status: filters.access || "all",
+        account_requirement: filters.account || "all",
         capability: filters.capability || "all"
       });
     }, 800);
