@@ -359,7 +359,7 @@ async function init() {
     const catalog = await response.json();
     providers = catalog.providers;
     elements.loading.hidden = true;
-    if (location.search.includes("usecase=") || location.search.includes("budget=") || location.search.includes("region=")) runFinder();
+    runFinder();
   } catch (error) {
     console.error(error);
     elements.loading.hidden = true;

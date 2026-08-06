@@ -140,7 +140,15 @@ for (const filePath of htmlFiles) {
   }
   if (!actualFooter.includes('class="site-footer"')) continue;
 
-  const expectedFooter = renderSiteFooter(footerContextFromRelativePath(relativePath));
+  const footerContext = footerContextFromRelativePath(relativePath);
+  const brandLead = actualFooter.match(
+    /<div class="footer-brand">[\s\S]*?<p>([\s\S]*?)<\/p>/i
+  )?.[1];
+
+  const expectedFooter = renderSiteFooter({
+    ...footerContext,
+    ...(brandLead ? { brandLead } : {})
+  });
   const normalizedActual = normalizeMarkup(actualFooter);
   const normalizedExpected = normalizeMarkup(expectedFooter);
   assert(

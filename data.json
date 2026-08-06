@@ -397,7 +397,7 @@
           "route": "direct"
         },
         "evidenceCount": 3,
-        "notesFa": "Endpoint از ایران قابل دسترس است. ورود به Discord ممکن است اما صدور کلید نیاز به شماره تلفن دارد (برای کاربران ایران در دسترس نیست)."
+        "notesFa": "Endpoint از ایران قابل دسترس است. ورود به Discord ممکن است اما صدور کلید نیاز به شماره تلفن خارجی دارد."
       },
       "models": [
         "opc/deepseek-v4-flash-free",
@@ -851,7 +851,7 @@
         "type": "free_models",
         "requiresPaymentMethod": false,
         "limitExample": "۲,۰۰۰ RPD کل. حداکثر ۲۰۰ RPD per model (پیش‌فرض). برخی مدل‌های بزرگ ۱۰۰ RPD. محدودیت‌ها پویا هستند و ممکن است تغییر کنند.",
-        "notesFa": "پلتفرم چینی API-Inference رایگان. ۵۴+ مدل: DeepSeek-V4، Qwen3.5-397B، GLM-5.2، Kimi-K2.5 و غیره. نیاز به ثبت‌نام و احراز هویت. محدودیت per-model پویا و معمولاً ۱۰۰-۲۰۰ RPD."
+        "notesFa": "پلتفرم چینی API-Inference رایگان. ۵۴+ مدل: DeepSeek-V4، Qwen3.5-397B، GLM-5.2، Kimi-K2.5 و غیره. دریافت Credential نیاز به حساب Alibaba Cloud و احراز هویت دارد."
       },
       "capabilities": [
         "chat",
@@ -870,7 +870,7 @@
           "route": "direct"
         },
         "evidenceCount": 2,
-        "notesFa": "Endpoint از ایران قابل دسترس است، اما دریافت Credential به احراز هویت موردنیاز سرویس وابسته است؛ این محدودیت بدون دورزدن کنترل هویت ثبت شده است."
+        "notesFa": "Endpoint مستقیم از ایران در دسترس است؛ دریافت Credential نیاز به احراز هویت موردنیاز سرویس دارد."
       },
       "models": [
         "Qwen/Qwen3.5-397B-A17B",
@@ -936,7 +936,7 @@
           "route": "direct"
         },
         "evidenceCount": 3,
-        "notesFa": "Endpoint از ایران قابل دسترس است. اما ثبت‌نام در NVIDIA Developer Program نیاز به شماره تلفن خارجی دارد."
+        "notesFa": "Endpoint مستقیم از ایران در دسترس است؛ ثبت‌نام در NVIDIA Developer Program نیاز به شماره موبایل خارجی دارد."
       },
       "models": [],
       "verification": {
@@ -1215,7 +1215,7 @@
         "type": "free_models",
         "requiresPaymentMethod": false,
         "limitExample": "30 RPM",
-        "notesFa": "Provider چینی با مدل‌های رایگان دائمی. Qwen3-8B و DeepSeek-R1-Distill-Qwen-7B رایگان. نیاز به API Key و تأیید شماره تلفن چینی دارد."
+        "notesFa": "Provider چینی با مدل‌های رایگان دائمی. Qwen3-8B و DeepSeek-R1-Distill-Qwen-7B رایگان. دریافت کلید نیاز به شماره موبایل خارجی (+86) دارد."
       },
       "capabilities": [
         "chat",
@@ -1234,7 +1234,7 @@
           "route": "direct"
         },
         "evidenceCount": 2,
-        "notesFa": "Endpoint از ایران قابل دسترس است، اما دریافت Credential به تأیید حساب موردنیاز سرویس وابسته است؛ این محدودیت بدون دورزدن کنترل پلتفرم ثبت شده است."
+        "notesFa": "Endpoint مستقیم از ایران در دسترس است؛ دریافت Credential نیاز به شماره موبایل خارجی (+86) دارد."
       },
       "models": [
         "Qwen/Qwen3-8B",

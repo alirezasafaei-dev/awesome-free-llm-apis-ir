@@ -708,6 +708,9 @@
       "website": "https://freetheai.xyz/",
       "docs": "https://freetheai.xyz/docs",
       "signup": "https://freetheai.xyz/",
+      "signup_requirements": [
+        "foreign_mobile_number"
+      ],
       "api": {
         "base_url": "https://api.freetheai.xyz/v1",
         "openai_compatible": true,
@@ -774,7 +777,7 @@
             "notes_fa": "ورود به Discord با اکانت جدید امکان‌پذیر است. اما برای دریافت کلید API از ربات FreeTheAI در دیسکورد، احراز هویت با شماره تلفن الزامی است. کاربر ایرانی به شماره خارجی دسترسی ندارد. در نتیجه کلید قابل دریافت نیست."
           }
         ],
-        "notes_fa": "Endpoint از ایران قابل دسترس است. ورود به Discord ممکن است اما صدور کلید نیاز به شماره تلفن دارد (برای کاربران ایران در دسترس نیست)."
+        "notes_fa": "Endpoint از ایران قابل دسترس است. ورود به Discord ممکن است اما صدور کلید نیاز به شماره تلفن خارجی دارد."
       },
       "models": {
         "dynamic": true,
@@ -792,7 +795,7 @@
         "checked_by": "maintainers",
         "stale_after_days": 14
       },
-      "notes_fa": "این سرویس یک Gateway اجتماعی است، نه Provider اصلی مدل. پایداری، قوانین و ظرفیت آن باید مستقل از Providerهای رسمی پایش شود. ثبت‌نام از طریق Discord (/signup) امکان‌پذیر است و مانع باقی‌مانده دریافت کلید و اجرای درخواست مدل است.",
+      "notes_fa": "این سرویس یک Gateway اجتماعی است، نه Provider اصلی مدل. پایداری، قوانین و ظرفیت آن باید مستقل از Providerهای رسمی پایش شود. Endpoint مستقیم در دسترس است؛ پیش‌نیاز حساب برای صدور کلید، شماره موبایل خارجی است.",
       "sources": [
         "https://github.com/Free-The-Ai/free-ai",
         "https://freetheai.xyz/docs",
@@ -1516,6 +1519,9 @@
       "website": "https://modelscope.cn/",
       "docs": "https://modelscope.cn/my/myaccesstoken",
       "signup": "https://modelscope.cn/my/myaccesstoken",
+      "signup_requirements": [
+        "identity_verification"
+      ],
       "api": {
         "base_url": "https://api-inference.modelscope.cn/v1",
         "openai_compatible": true,
@@ -1540,7 +1546,7 @@
             "notes_fa": "۲,۰۰۰ RPD کل. حداکثر ۲۰۰ RPD per model (پیش‌فرض). برخی مدل‌های بزرگ ۱۰۰ RPD. محدودیت‌ها پویا هستند و ممکن است تغییر کنند."
           }
         ],
-        "notes_fa": "پلتفرم چینی API-Inference رایگان. ۵۴+ مدل: DeepSeek-V4، Qwen3.5-397B، GLM-5.2، Kimi-K2.5 و غیره. نیاز به ثبت‌نام و احراز هویت. محدودیت per-model پویا و معمولاً ۱۰۰-۲۰۰ RPD."
+        "notes_fa": "پلتفرم چینی API-Inference رایگان. ۵۴+ مدل: DeepSeek-V4، Qwen3.5-397B، GLM-5.2، Kimi-K2.5 و غیره. دریافت Credential نیاز به حساب Alibaba Cloud و احراز هویت دارد."
       },
       "iran_access": {
         "status": "signup_blocked",
@@ -1566,10 +1572,10 @@
             "endpoint": "https://api-inference.modelscope.cn/v1/models",
             "source": "IRAN_SERVER — direct connectivity probe",
             "connectivity_result": "http_response",
-            "notes_fa": "Endpoint از مسیر مستقیم ایران پاسخ HTTP 200 داد؛ مانع ثبت‌نام هویتی مستقل از Reachability شبکه است."
+            "notes_fa": "Endpoint از مسیر مستقیم ایران پاسخ HTTP 200 داد؛ پیش‌نیاز احراز هویت مستقل از Reachability شبکه است."
           }
         ],
-        "notes_fa": "Endpoint از ایران قابل دسترس است، اما دریافت Credential به احراز هویت موردنیاز سرویس وابسته است؛ این محدودیت بدون دورزدن کنترل هویت ثبت شده است."
+        "notes_fa": "Endpoint مستقیم از ایران در دسترس است؛ دریافت Credential نیاز به احراز هویت موردنیاز سرویس دارد."
       },
       "models": {
         "dynamic": true,
@@ -1606,6 +1612,9 @@
       "website": "https://build.nvidia.com/",
       "docs": "https://docs.api.nvidia.com/nim/docs/product",
       "signup": "https://developer.nvidia.com/login",
+      "signup_requirements": [
+        "foreign_mobile_number"
+      ],
       "api": {
         "base_url": "https://integrate.api.nvidia.com/v1",
         "openai_compatible": true,
@@ -1662,7 +1671,7 @@
             "notes_fa": "ثبت‌نام در NVIDIA Developer Program نیاز به شماره تلفن خارجی برای احراز هویت دارد. کاربر ایرانی به شماره خارجی دسترسی ندارد. کلید API قابل دریافت نیست."
           }
         ],
-        "notes_fa": "Endpoint از ایران قابل دسترس است. اما ثبت‌نام در NVIDIA Developer Program نیاز به شماره تلفن خارجی دارد."
+        "notes_fa": "Endpoint مستقیم از ایران در دسترس است؛ ثبت‌نام در NVIDIA Developer Program نیاز به شماره موبایل خارجی دارد."
       },
       "models": {
         "dynamic": true,
@@ -1675,7 +1684,7 @@
         "checked_by": "maintainers",
         "stale_after_days": 30
       },
-      "notes_fa": "این دسترسی برای Production رایگان نیست و سقف عددی ثابت عمومی در منبع بررسی‌شده اعلام نشده است.",
+      "notes_fa": "این دسترسی برای Production رایگان نیست و سقف عددی ثابت عمومی در منبع بررسی‌شده اعلام نشده است. Endpoint مستقیم قابل دسترس است، اما صدور Credential نیاز به شماره موبایل خارجی دارد.",
       "sources": [
         "https://docs.api.nvidia.com/nim/docs/product",
         "https://build.nvidia.com/explore/discover"
@@ -2092,6 +2101,9 @@
       "website": "https://cloud.siliconflow.cn/",
       "docs": "https://cloud.siliconflow.cn/account/ak",
       "signup": "https://cloud.siliconflow.cn/account/ak",
+      "signup_requirements": [
+        "foreign_mobile_number"
+      ],
       "api": {
         "base_url": "https://api.siliconflow.cn/v1",
         "openai_compatible": true,
@@ -2117,7 +2129,7 @@
             "notes_fa": "۳۰ RPM · ۶۰K TPM. نیاز به تأیید شماره تلفن چینی. ۲۰۰+ مدل پولی نیز موجود است."
           }
         ],
-        "notes_fa": "Provider چینی با مدل‌های رایگان دائمی. Qwen3-8B و DeepSeek-R1-Distill-Qwen-7B رایگان. نیاز به API Key و تأیید شماره تلفن چینی دارد."
+        "notes_fa": "Provider چینی با مدل‌های رایگان دائمی. Qwen3-8B و DeepSeek-R1-Distill-Qwen-7B رایگان. دریافت کلید نیاز به شماره موبایل خارجی (+86) دارد."
       },
       "iran_access": {
         "status": "signup_blocked",
@@ -2143,10 +2155,10 @@
             "endpoint": "https://api.siliconflow.cn/v1/models",
             "source": "IRAN_SERVER — direct connectivity probe",
             "connectivity_result": "http_response",
-            "notes_fa": "Endpoint از مسیر مستقیم ایران پاسخ HTTP 401 داد؛ مانع تأیید حساب مستقل از Reachability شبکه است."
+            "notes_fa": "Endpoint از مسیر مستقیم ایران پاسخ HTTP 401 داد؛ پیش‌نیاز شماره تلفن مستقل از Reachability شبکه است."
           }
         ],
-        "notes_fa": "Endpoint از ایران قابل دسترس است، اما دریافت Credential به تأیید حساب موردنیاز سرویس وابسته است؛ این محدودیت بدون دورزدن کنترل پلتفرم ثبت شده است."
+        "notes_fa": "Endpoint مستقیم از ایران در دسترس است؛ دریافت Credential نیاز به شماره موبایل خارجی (+86) دارد."
       },
       "models": {
         "dynamic": true,

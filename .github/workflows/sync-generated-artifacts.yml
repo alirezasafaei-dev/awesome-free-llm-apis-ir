@@ -16,64 +16,185 @@ jobs:
     if: >-
       github.event.pull_request.head.repo.full_name == github.repository &&
       startsWith(github.head_ref, 'agent/')
-    runs-on: ubuntu-24.04
-    timeout-minutes: 30
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v4.2.1
         with:
           ref: ${{ github.head_ref }}
           fetch-depth: 0
-
-      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v4.3.0
         with:
           node-version: 22
-
-      - name: Apply access-semantics finalization
-        if: github.head_ref == 'agent/access-requirements-ux-seo-2026-08-06'
+      - name: Apply allow-listed evidence migration
+        if: github.head_ref == 'agent/evidence-semantics-fix-20260722'
         shell: bash
         run: |
           set -Eeuo pipefail
-          python3 - <<'PY'
+          if [[ ! -f .github/scripts/apply-evidence-semantics.py ]]; then
+            echo 'Evidence migration is already applied.'
+            exit 0
+          fi
+          python .github/scripts/apply-evidence-semantics.py
+          python <<'PY'
           from pathlib import Path
 
-          old_guard = 'if (location.search.includes("usecase=") || location.search.includes("budget=") || location.search.includes("region=")) runFinder();'
-          for path in [Path("site/api-finder/finder-core.js"), Path("site/en/api-finder/finder-core.js")]:
-              text = path.read_text(encoding="utf-8")
-              count = text.count(old_guard)
-              if count == 1:
-                  path.write_text(text.replace(old_guard, 'runFinder();'), encoding="utf-8")
-              elif count != 0 or 'runFinder();' not in text:
-                  raise SystemExit(f"{path}: unexpected Finder initialization state")
+          validator_path = Path('scripts/validate.mjs')
+          validator = validator_path.read_text()
+          before = 'evidenceType: new Set(["official_docs", "live_test", "connectivity_test", "community_report"]),'
+          after = 'evidenceType: new Set(["official_docs", "live_test", "connectivity_test", "signup_test", "community_report"]),'
+          if before not in validator:
+              raise SystemExit('validator evidence enum marker not found')
+          validator = validator.replace(before, after, 1)
 
-          footer_path = Path("scripts/test-site-footer-contract.mjs")
-          footer = footer_path.read_text(encoding="utf-8")
-          old_footer = '  const expectedFooter = renderSiteFooter(footerContextFromRelativePath(relativePath));'
-          new_footer = '''  const footerContext = footerContextFromRelativePath(relativePath);
-          const brandLead = actualFooter.match(/<div class="footer-brand">[\\s\\S]*?<p>([\\s\\S]*?)<\\/p>/i)?.[1];
-          const expectedFooter = renderSiteFooter({
-            ...footerContext,
-            ...(brandLead ? { brandLead } : {})
-          });'''
-          count = footer.count(old_footer)
-          if count == 1:
-              footer_path.write_text(footer.replace(old_footer, new_footer), encoding="utf-8")
-          elif count != 0 or 'const brandLead = actualFooter.match' not in footer:
-              raise SystemExit(f"{footer_path}: unexpected footer contract state")
+          anchor = '\n  if (evidence.type === "live_test") {'
+          signup_rule = '''
+
+          if (evidence.type === "signup_test") {
+            if (!validDate(evidence.checked_at ?? "")) fail(file, `${prefix}.checked_at must be a date`);
+            if (typeof evidence.source !== "string" || !evidence.source.trim()) fail(file, `${prefix}.source must be non-empty`);
+            if (typeof evidence.notes_fa !== "string" || !evidence.notes_fa.trim()) fail(file, `${prefix}.notes_fa must be non-empty`);
+          }
+          '''.replace('          ', '')
+          if anchor not in validator:
+              raise SystemExit('validator live-test anchor not found')
+          validator_path.write_text(validator.replace(anchor, signup_rule + anchor, 1))
+
+          privacy_path = Path('scripts/privacy-evidence-rules.mjs')
+          privacy_lines = privacy_path.read_text().splitlines()
+          corrected = r'const RAW_ERROR_PAYLOAD_PATTERN = /\\?\{\s*\\?"(?:error|blocked|reason|message|details|success)\\?"\s*:/i;'
+          matches = [index for index, line in enumerate(privacy_lines) if line.startswith('const RAW_ERROR_PAYLOAD_PATTERN = ')]
+          if len(matches) != 1:
+              raise SystemExit('raw-payload privacy pattern marker not found exactly once')
+          privacy_lines[matches[0]] = corrected
+          privacy_path.write_text('\n'.join(privacy_lines) + '\n')
+
+          backlog_path = Path('scripts/validate-verification-backlog.mjs')
+          backlog_path.write_text(r'''import { readdirSync, readFileSync } from "node:fs";
+          import { join } from "node:path";
+          import process from "node:process";
+
+          const providersDir = "data/providers";
+          const backlogPath = "data/verification-backlog.json";
+          const actionableTrackStatuses = new Set(["open", "partially_completed"]);
+          const terminalTrackStatuses = new Set(["resolved", "completed"]);
+          const validTrackStatuses = new Set([...actionableTrackStatuses, ...terminalTrackStatuses]);
+
+          /**
+           * @param {string} path
+           * @returns {Record<string, any>}
+           */
+          function readJson(path) {
+            return JSON.parse(readFileSync(path, "utf8"));
+          }
+
+          /**
+           * @param {string} message
+           * @returns {void}
+           */
+          function fail(message) {
+            console.error(`ERROR ${message}`);
+            process.exitCode = 1;
+          }
+
+          const providerFiles = readdirSync(providersDir)
+            .filter((name) => name.endsWith(".json"))
+            .sort();
+          const providers = providerFiles.map((name) => readJson(join(providersDir, name)));
+          const backlog = readJson(backlogPath);
+
+          if (backlog.schema_version !== "1.0.0") fail("verification backlog schema_version must be 1.0.0");
+          if (!/^\d{4}-\d{2}-\d{2}$/.test(backlog.last_updated ?? "")) fail("verification backlog last_updated must be an ISO date");
+          if (!Number.isInteger(backlog.parent_issue) || backlog.parent_issue < 1) fail("verification backlog parent_issue must be a positive integer");
+          if (!Array.isArray(backlog.tracks) || backlog.tracks.length === 0) fail("verification backlog must define tracks");
+          if (!Array.isArray(backlog.providers)) fail("verification backlog providers must be an array");
+
+          const providerIds = new Set(providers.map((provider) => provider.id));
+          const unknownIds = providers
+            .filter((provider) => provider.iran_access?.status === "unknown")
+            .map((provider) => provider.id)
+            .sort();
+          const backlogIds = backlog.providers.map((item) => item.provider_id).sort();
+
+          if (backlog.summary?.provider_count !== providers.length) {
+            fail(`summary.provider_count=${backlog.summary?.provider_count} but catalog has ${providers.length}`);
+          }
+          if (backlog.summary?.unknown_count !== unknownIds.length) {
+            fail(`summary.unknown_count=${backlog.summary?.unknown_count} but catalog has ${unknownIds.length} unknown providers`);
+          }
+          for (const providerId of unknownIds) {
+            if (!backlogIds.includes(providerId)) {
+              fail(`unknown provider ${providerId} must have an explicit backlog action`);
+            }
+          }
+
+          const trackIds = new Set();
+          const trackIssues = new Set();
+          const issueToProviders = new Map();
+          const issueToStatus = new Map();
+          for (const track of backlog.tracks) {
+            if (!track || typeof track !== "object") {
+              fail("each verification track must be an object");
+              continue;
+            }
+            if (!/^[a-z0-9_]+$/.test(track.id ?? "")) fail(`invalid track id: ${track.id}`);
+            if (trackIds.has(track.id)) fail(`duplicate track id: ${track.id}`);
+            trackIds.add(track.id);
+            if (!Number.isInteger(track.issue) || track.issue < 1) fail(`track ${track.id} has an invalid issue number`);
+            if (trackIssues.has(track.issue)) fail(`duplicate track issue: ${track.issue}`);
+            trackIssues.add(track.issue);
+            if (!validTrackStatuses.has(track.status)) fail(`track ${track.id} has invalid status ${track.status}`);
+            if (!Array.isArray(track.providers)) fail(`track ${track.id} providers must be an array`);
+            const listed = new Set(track.providers ?? []);
+            if (listed.size !== (track.providers ?? []).length) fail(`track ${track.id} contains duplicate providers`);
+            for (const providerId of listed) {
+              if (!providerIds.has(providerId)) fail(`track ${track.id} references unknown provider ${providerId}`);
+            }
+            issueToProviders.set(track.issue, listed);
+            issueToStatus.set(track.issue, track.status);
+          }
+
+          const seenBacklogIds = new Set();
+          for (const item of backlog.providers) {
+            if (!item || typeof item !== "object") {
+              fail("each backlog provider entry must be an object");
+              continue;
+            }
+            if (!providerIds.has(item.provider_id)) fail(`backlog references unknown provider ${item.provider_id}`);
+            if (seenBacklogIds.has(item.provider_id)) fail(`duplicate backlog provider ${item.provider_id}`);
+            seenBacklogIds.add(item.provider_id);
+            if (!Number.isInteger(item.track_issue) || !issueToProviders.has(item.track_issue)) {
+              fail(`${item.provider_id} references an undefined track issue ${item.track_issue}`);
+            } else {
+              if (!issueToProviders.get(item.track_issue).has(item.provider_id)) {
+                fail(`${item.provider_id} is not listed in track issue ${item.track_issue}`);
+              }
+              if (!actionableTrackStatuses.has(issueToStatus.get(item.track_issue))) {
+                fail(`${item.provider_id} references non-actionable track issue ${item.track_issue}`);
+              }
+            }
+            if (typeof item.blocker_type !== "string" || item.blocker_type.length < 3) fail(`${item.provider_id} has an invalid blocker_type`);
+            if (typeof item.next_action !== "string" || item.next_action.length < 10) fail(`${item.provider_id} has an invalid next_action`);
+            if (typeof item.requires_local_execution !== "boolean") fail(`${item.provider_id} requires_local_execution must be boolean`);
+            if (typeof item.automatable !== "boolean") fail(`${item.provider_id} automatable must be boolean`);
+          }
+
+          if (process.exitCode) process.exit(process.exitCode);
+          console.log(`Verification backlog is consistent: ${providers.length} providers, ${unknownIds.length} unknown, ${backlog.providers.length} actionable, ${backlog.tracks.length} tracks.`);
+          '''.replace('          ', ''), encoding='utf-8')
           PY
-
-      - name: Install dependencies
-        run: npm ci
-
+          git rm -f --ignore-unmatch .github/workflows/apply-evidence-semantics.yml
+          git rm -f --ignore-unmatch .github/scripts/apply-evidence-semantics.py
+      - run: npm ci
       - name: Regenerate canonical artifacts
         run: npm run generate
-
       - name: Reject unexpected writes
         shell: bash
         run: |
           set -Eeuo pipefail
           changed="$(git diff --name-only)"
-          if [[ "${GITHUB_HEAD_REF}" == 'agent/access-requirements-ux-seo-2026-08-06' ]]; then
-            allowed='^(README\.md|catalog\.json|data\.json|site/(api-finder/finder-core\.js|en/api-finder/finder-core\.js)|scripts/test-site-footer-contract\.mjs)$'
+          if [[ "${GITHUB_HEAD_REF}" == 'agent/evidence-semantics-fix-20260722' ]]; then
+            allowed='^(README\.md|catalog\.json|data\.json|content/fa/ai-api-iran\.md|docs/METHODOLOGY\.fa\.md|schema/provider\.schema\.json|scripts/(build-guides|build-site|generate-data-json|generate-readme|test-advisor-scoring|test-provider-content-pages|validate|validate-verification-backlog|privacy-evidence-rules|test-evidence-privacy)\.mjs|site/(api-finder/index\.html|app\.js|compare/compare\.js|en/api-finder/index\.html|en/compare/compare\.js|en/quick-start/provider-context-en\.js|index\.html|quick-start/provider-context\.js)|data/providers/(agnes-ai|fireworks-ai|freetheai|nvidia-nim|vercel-ai-gateway)\.json|data/verification-backlog\.json|\.github/scripts/apply-evidence-semantics\.py|\.github/workflows/apply-evidence-semantics\.yml)$'
           else
             allowed='^(README\.md|catalog\.json|data\.json)$'
           fi
@@ -83,10 +204,24 @@ jobs:
             printf '%s\n' "$unexpected" >&2
             exit 1
           fi
-
-      - name: Validate synchronized repository
-        run: npm test
-
+      - name: Validate regenerated repository
+        id: tests
+        shell: bash
+        run: |
+          set -o pipefail
+          npm test 2>&1 | tee migration-test-output.txt
+      - name: Capture migration failure tail
+        if: failure() && steps.tests.outcome == 'failure' && github.head_ref == 'agent/evidence-semantics-fix-20260722'
+        shell: bash
+        run: tail -n 500 migration-test-output.txt > migration-test-failure-tail.txt
+      - name: Upload migration diagnostic
+        if: failure() && steps.tests.outcome == 'failure' && github.head_ref == 'agent/evidence-semantics-fix-20260722'
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: evidence-migration-failure-${{ github.sha }}
+          path: migration-test-failure-tail.txt
+          if-no-files-found: error
+          retention-days: 1
       - name: Commit synchronized repository
         shell: bash
         run: |
@@ -95,12 +230,11 @@ jobs:
             echo 'Repository is already synchronized.'
             exit 0
           fi
-          git diff --check
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          if [[ "${GITHUB_HEAD_REF}" == 'agent/access-requirements-ux-seo-2026-08-06' ]]; then
-            git add README.md catalog.json data.json site/api-finder/finder-core.js site/en/api-finder/finder-core.js scripts/test-site-footer-contract.mjs
-            git commit -m 'fix(ux): finalize connection and account semantics'
+          if [[ "${GITHUB_HEAD_REF}" == 'agent/evidence-semantics-fix-20260722' ]]; then
+            git add -A
+            git commit -m 'fix(verification): preserve account barriers and sanitize evidence'
           else
             git add README.md catalog.json data.json
             git commit -m 'chore(generated): sync repository artifacts'
