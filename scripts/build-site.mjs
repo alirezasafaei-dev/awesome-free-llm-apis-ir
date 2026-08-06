@@ -78,13 +78,13 @@ function limitText(provider) {
 function providerDescription(provider) {
   const connection = connectionPresentation(provider, "fa");
   const account = accountRequirementPresentation(provider, "fa");
-  return `${provider.name}: ${freeTierLabel(provider.free_tier.type, "fa")}، ${limitText(provider)}، روش اتصال: ${connection.label}، پیش‌نیاز حساب: ${account.label}. اطلاعات با منبع و تاریخ بررسی.`;
+  return `اطلاعات ${provider.name}: سهمیه رایگان، روش اتصال (${connection.label}) و پیش‌نیاز حساب (${account.label}) با منبع و تاریخ بررسی.`;
 }
 
 function providerPage(provider, relatedProviders) {
   const canonicalUrl = `${canonicalOrigin}/providers/${provider.id}/`;
   const displayTitle = providerDisplaySuffix(provider.name);
-  const title = `${displayTitle} | سهمیه، روش اتصال و پیش‌نیاز حساب`;
+  const title = `${displayTitle} | اتصال و شرایط حساب`;
   const description = providerDescription(provider);
   const connection = connectionPresentation(provider, "fa");
   const account = accountRequirementPresentation(provider, "fa");
