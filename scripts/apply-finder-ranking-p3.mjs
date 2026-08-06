@@ -32,7 +32,7 @@ function validateFinder(name, source, language) {
       ]
     : [
         "Request-capacity priority",
-        "not response speed",
+        "not response latency or model speed",
         "/ 100",
         "Connection method",
         "Account requirements",
