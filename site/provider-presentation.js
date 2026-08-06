@@ -115,7 +115,6 @@ export function connectionPresentation(provider, locale = "fa") {
 
 export function accountRequirementPresentation(provider, locale = "fa") {
   const lang = normalizedLocale(locale);
-  const copy = accountCopy[lang];
   const requirementKeys = [];
 
   if (provider?.free_tier?.requires_payment_method === true) {
@@ -159,3 +158,20 @@ export function serviceTypeLabel(type, locale = "fa") {
   const lang = normalizedLocale(locale);
   return serviceTypeCopy[lang][type] ?? type;
 }
+
+function ensureProviderCardAccountRequirementField() {
+  if (typeof document === "undefined") return;
+  const template = document.getElementById("provider-template");
+  const facts = template?.content?.querySelector(".facts");
+  if (!facts || facts.querySelector(".account-requirement-label")) return;
+
+  const row = document.createElement("div");
+  const term = document.createElement("dt");
+  const value = document.createElement("dd");
+  term.textContent = document.documentElement.lang === "en" ? "Account requirements" : "پیش‌نیاز حساب";
+  value.className = "account-requirement-label";
+  row.append(term, value);
+  facts.append(row);
+}
+
+ensureProviderCardAccountRequirementField();
