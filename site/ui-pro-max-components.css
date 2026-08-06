@@ -48,6 +48,26 @@
   text-decoration: none;
 }
 
+/* Signup/account prerequisites are not network blocks. */
+.access-badge[data-status="signup_blocked"],
+.access-badge[data-status="account_activation_blocked"] {
+  color: var(--uupm-info);
+  background: var(--uupm-info-soft);
+  border-color: color-mix(in srgb, var(--uupm-info) 24%, transparent);
+}
+
+.account-requirement-label[data-tone="warning"] {
+  color: var(--uupm-warning);
+}
+
+.account-requirement-label[data-tone="positive"] {
+  color: var(--uupm-success);
+}
+
+.account-requirement-label[data-tone="neutral"] {
+  color: var(--uupm-text-secondary);
+}
+
 @media (max-width: 520px) {
   .search-input-shell {
     grid-template-columns: 1fr;
