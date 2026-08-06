@@ -160,6 +160,17 @@ function renderFinder(source, label, provider, payload) {
     serviceLabels: {},
     accessLabels: {},
     accessEmoji: {},
+    serviceTypeLabel: (value) => String(value ?? ""),
+    connectionPresentation: (value) => ({
+      status: String(value?.iran_access?.status ?? "unknown"),
+      tone: "unknown",
+      label: String(value?.iran_access?.status ?? "")
+    }),
+    accountRequirementPresentation: (value) => ({
+      requirements: [],
+      tone: "unknown",
+      label: String(value?.service_type ?? "")
+    }),
     limitText: () => payload,
     isStale: () => false
   };
