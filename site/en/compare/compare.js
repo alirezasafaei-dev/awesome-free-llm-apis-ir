@@ -1,33 +1,13 @@
+import {
+  accountRequirementPresentation,
+  connectionPresentation,
+  freeTierLabel,
+  serviceTypeLabel
+} from "../../provider-presentation.js";
+
 const SHORTLIST_STORAGE_KEY = "llm-provider-shortlist-v1";
 const SHORTLIST_LIMIT = 3;
 const PROVIDER_ID_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
-
-const labels = {
-  service: {
-    official_provider: "Official provider",
-    official_gateway: "Official gateway",
-    community_gateway: "Community gateway",
-    session_bridge: "Session bridge",
-    self_hosted: "Self-hosted"
-  },
-  free: {
-    permanent_allowance: "Permanent allowance",
-    free_models: "Free models",
-    monthly_credit: "Monthly credit",
-    trial: "Trial",
-    unknown: "Unknown"
-  },
-  iran: {
-    verified_working: "Direct — verified working",
-    verified_working_vpn: "VPN — verified working",
-    direct_blocked_vpn_working: "Direct blocked, VPN works",
-    verified_blocked: "Verified blocked",
-    officially_unsupported: "Officially unsupported",
-    intermittent: "Intermittent",
-    signup_blocked: "Signup blocked",
-    unknown: "Unknown"
-  }
-};
 
 function safeIds(values) {
   const ids = [];
@@ -103,12 +83,6 @@ function limitText(provider) {
   return values.slice(0, 3).join(" · ") || limit.condition || "Model-specific";
 }
 
-function paymentText(value) {
-  if (value === true) return "Required";
-  if (value === false) return "Not required";
-  return "Not specified in source";
-}
-
 function createFact(term, value, { code = false } = {}) {
   const row = document.createElement("div");
   const dt = document.createElement("dt");
@@ -138,6 +112,8 @@ function providerCard(provider) {
   const models = provider.models?.notable ?? [];
   const capabilities = provider.capabilities ?? [];
   const quickParams = new URLSearchParams({ provider: provider.id, usecase: "chat", region: "any" });
+  const connection = connectionPresentation(provider, "en");
+  const account = accountRequirementPresentation(provider, "en");
 
   const article = document.createElement("article");
   article.className = "compare-card";
@@ -145,7 +121,7 @@ function providerCard(provider) {
 
   const eyebrow = document.createElement("p");
   eyebrow.className = "eyebrow";
-  eyebrow.textContent = labels.service[provider.service_type] || provider.service_type;
+  eyebrow.textContent = serviceTypeLabel(provider.service_type, "en");
   article.appendChild(eyebrow);
 
   const title = document.createElement("h3");
@@ -158,15 +134,18 @@ function providerCard(provider) {
   article.appendChild(id);
 
   const access = document.createElement("span");
-  access.className = "compare-access";
-  access.textContent = labels.iran[provider.iran_access?.status] || provider.iran_access?.status || "Unknown";
+  access.className = "compare-access access-badge";
+  access.dataset.status = connection.status;
+  access.dataset.tone = connection.tone;
+  access.textContent = connection.label;
   article.appendChild(access);
 
   const facts = document.createElement("dl");
   facts.className = "compare-facts";
   facts.append(
-    createFact("Free-tier type", labels.free[provider.free_tier?.type] || provider.free_tier?.type || "Unknown"),
-    createFact("Payment method", paymentText(provider.free_tier?.requires_payment_method)),
+    createFact("Free-tier type", freeTierLabel(provider.free_tier?.type, "en")),
+    createFact("Connection method", connection.label),
+    createFact("Account requirements", account.label),
     createFact("Sample limit", limitText(provider)),
     createFact("OpenAI compatible", provider.api?.openai_compatible ? "Yes" : "No"),
     createFact("Base URL", provider.api?.base_url || "Unknown", { code: true }),
