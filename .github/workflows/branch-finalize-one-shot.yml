@@ -75,14 +75,13 @@ jobs:
           npm run ux:footer:test
           npm run ux:finder:test
 
-      - name: Commit verified fixes and remove one-shot workflow
+      - name: Commit verified source fixes
         shell: bash
         run: |
           set -Eeuo pipefail
-          git rm .github/workflows/branch-finalize-one-shot.yml
           git add site/api-finder/finder-core.js site/en/api-finder/finder-core.js scripts/test-site-footer-contract.mjs
           if git diff --cached --quiet; then
-            echo "No changes to commit" >&2
+            echo "No source changes to commit" >&2
             exit 1
           fi
           git config user.name "github-actions[bot]"
