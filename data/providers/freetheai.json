@@ -6,6 +6,9 @@
   "website": "https://freetheai.xyz/",
   "docs": "https://freetheai.xyz/docs",
   "signup": "https://freetheai.xyz/",
+  "signup_requirements": [
+    "foreign_mobile_number"
+  ],
   "api": {
     "base_url": "https://api.freetheai.xyz/v1",
     "openai_compatible": true,
@@ -72,7 +75,7 @@
         "notes_fa": "ورود به Discord با اکانت جدید امکان‌پذیر است. اما برای دریافت کلید API از ربات FreeTheAI در دیسکورد، احراز هویت با شماره تلفن الزامی است. کاربر ایرانی به شماره خارجی دسترسی ندارد. در نتیجه کلید قابل دریافت نیست."
       }
     ],
-    "notes_fa": "Endpoint از ایران قابل دسترس است. ورود به Discord ممکن است اما صدور کلید نیاز به شماره تلفن دارد (برای کاربران ایران در دسترس نیست)."
+    "notes_fa": "Endpoint از ایران قابل دسترس است. ورود به Discord ممکن است اما صدور کلید نیاز به شماره تلفن خارجی دارد."
   },
   "models": {
     "dynamic": true,
@@ -90,7 +93,7 @@
     "checked_by": "maintainers",
     "stale_after_days": 14
   },
-  "notes_fa": "این سرویس یک Gateway اجتماعی است، نه Provider اصلی مدل. پایداری، قوانین و ظرفیت آن باید مستقل از Providerهای رسمی پایش شود. ثبت‌نام از طریق Discord (/signup) امکان‌پذیر است و مانع باقی‌مانده دریافت کلید و اجرای درخواست مدل است.",
+  "notes_fa": "این سرویس یک Gateway اجتماعی است، نه Provider اصلی مدل. پایداری، قوانین و ظرفیت آن باید مستقل از Providerهای رسمی پایش شود. Endpoint مستقیم در دسترس است؛ پیش‌نیاز حساب برای صدور کلید، شماره موبایل خارجی است.",
   "sources": [
     "https://github.com/Free-The-Ai/free-ai",
     "https://freetheai.xyz/docs",
