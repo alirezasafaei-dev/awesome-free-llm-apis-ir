@@ -1,13 +1,13 @@
 const statusDefinitions = [
-  { status: "account_activation_blocked", labels: ["فعال‌سازی حساب", "account activation"] },
-  { status: "direct_blocked_vpn_working", labels: ["مستقیم مسدود / vpn موفق", "مستقیم مسدود، vpn موفق"] },
-  { status: "verified_working_vpn", labels: ["با vpn تست‌شده"] },
-  { status: "verified_working", labels: ["مستقیم تست‌شده", "اجرای مستقیم تأییدشده"] },
-  { status: "officially_unsupported", labels: ["پشتیبانی‌نشده رسمی"] },
-  { status: "verified_blocked", labels: ["مستقیم مسدود", "مسدودیت تأییدشده"] },
-  { status: "signup_blocked", labels: ["ثبت‌نام مسدود", "مانع ثبت‌نام"] },
-  { status: "intermittent", labels: ["ناپایدار"] },
-  { status: "unknown", labels: ["نامشخص"] }
+  { status: "direct_blocked_vpn_working", labels: ["متصل با فیلترشکن", "works with a vpn"] },
+  { status: "verified_working_vpn", labels: ["متصل با فیلترشکن", "works with a vpn"] },
+  { status: "verified_working", labels: ["متصل مستقیم", "works directly"] },
+  { status: "officially_unsupported", labels: ["ایران رسماً پشتیبانی نمی‌شود", "officially unsupported"] },
+  { status: "verified_blocked", labels: ["اتصال مستقیم برقرار نشد", "direct connection unavailable"] },
+  { status: "signup_blocked", labels: ["endpoint مستقیم در دسترس است", "endpoint is directly reachable"] },
+  { status: "account_activation_blocked", labels: ["endpoint مستقیم در دسترس است", "endpoint is directly reachable"] },
+  { status: "intermittent", labels: ["اتصال ناپایدار", "intermittent connection"] },
+  { status: "unknown", labels: ["وضعیت اتصال نامشخص", "connection status unknown"] }
 ];
 
 const structuralEmojiPattern = /^[✅🛡️⛔🚫⚠️🧾❔]\s*/u;
@@ -28,14 +28,10 @@ function enhanceStatusBadge(badge) {
   const visibleText = badge.textContent?.replace(structuralEmojiPattern, "").trim() ?? "";
   if (visibleText && badge.textContent !== visibleText) badge.textContent = visibleText;
 
+  if (badge.dataset.status) return;
   const searchable = normalize(`${visibleText} ${badge.getAttribute("aria-label") ?? ""}`);
   const definition = statusDefinitions.find((item) => item.labels.some((label) => searchable.includes(normalize(label))));
   if (definition) badge.dataset.status = definition.status;
-
-  if (definition?.status === "account_activation_blocked") {
-    badge.textContent = "مانع فعال‌سازی حساب";
-    badge.setAttribute("aria-label", "وضعیت دسترسی ایران: مانع فعال‌سازی یا استفاده از حساب آزمایش‌شده");
-  }
 }
 
 /**
