@@ -5,6 +5,11 @@ import process from "node:process";
 import { buildGuides } from "./build-guides.mjs";
 import { canonicalOrigin, hreflangLinks, languageSwitcher, sitemapXhtmlLinks } from "./locales.mjs";
 import { renderAnalyticsTags, renderUiStyles } from "./lib/ui-shell.mjs";
+import {
+  accountRequirementPresentation,
+  connectionPresentation,
+  freeTierLabel
+} from "../site/provider-presentation.js";
 
 const root = process.cwd();
 const source = path.join(root, "site");
@@ -12,25 +17,6 @@ const socialAssetsSource = path.join(root, "assets", "social");
 const destination = path.join(root, ".site-dist");
 const catalogPath = path.join(root, "catalog.json");
 const organizationId = `${canonicalOrigin}/#organization`;
-
-const accessLabels = {
-  verified_working: "دسترسی مستقیم از ایران تأیید شده",
-  verified_working_vpn: "دسترسی با VPN تأیید شده",
-  direct_blocked_vpn_working: "مستقیم مسدود و VPN موفق",
-  verified_blocked: "محدودیت جغرافیایی تأیید شده",
-  officially_unsupported: "ایران رسماً پشتیبانی نمی‌شود",
-  intermittent: "دسترسی ناپایدار",
-  signup_blocked: "مانع ثبت‌نام یا احراز حساب",
-  unknown: "وضعیت دسترسی نامشخص"
-};
-
-const freeLabels = {
-  permanent_allowance: "سهمیه رایگان دائمی",
-  free_models: "مدل‌های رایگان",
-  monthly_credit: "اعتبار رایگان ماهانه",
-  trial: "دوره آزمایشی",
-  unknown: "نوع سهمیه نامشخص"
-};
 
 const capabilityLabels = {
   chat: "چت",
@@ -90,14 +76,18 @@ function limitText(provider) {
 }
 
 function providerDescription(provider) {
-  return `${provider.name}: ${freeLabels[provider.free_tier.type] ?? provider.free_tier.type}، ${limitText(provider)}، ${accessLabels[provider.iran_access.status] ?? provider.iran_access.status}. اطلاعات API و وضعیت ایران با منبع و تاریخ بررسی.`;
+  const connection = connectionPresentation(provider, "fa");
+  const account = accountRequirementPresentation(provider, "fa");
+  return `${provider.name}: ${freeTierLabel(provider.free_tier.type, "fa")}، ${limitText(provider)}، روش اتصال: ${connection.label}، پیش‌نیاز حساب: ${account.label}. اطلاعات با منبع و تاریخ بررسی.`;
 }
 
 function providerPage(provider, relatedProviders) {
   const canonicalUrl = `${canonicalOrigin}/providers/${provider.id}/`;
   const displayTitle = providerDisplaySuffix(provider.name);
-  const title = `${displayTitle} | سهمیه و وضعیت دسترسی ایران`;
+  const title = `${displayTitle} | سهمیه، روش اتصال و پیش‌نیاز حساب`;
   const description = providerDescription(provider);
+  const connection = connectionPresentation(provider, "fa");
+  const account = accountRequirementPresentation(provider, "fa");
   const capabilities = provider.capabilities.map((item) => capabilityLabels[item] ?? item);
   const models = provider.models?.notable ?? [];
   const sources = [...new Set([provider.docs, provider.website, ...(provider.sources ?? [])])];
@@ -172,16 +162,16 @@ function providerPage(provider, relatedProviders) {
       <p class="eyebrow">صفحه اختصاصی Provider</p>
       <h1>${escapeHtml(displayTitle)}</h1>
       <p class="provider-lead">${escapeHtml(description)}</p>
-      <div class="provider-status-row"><span class="access-badge">${escapeHtml(accessLabels[provider.iran_access.status] ?? provider.iran_access.status)}</span><span class="freshness-badge">آخرین بررسی: ${escapeHtml(provider.verification.last_checked)}</span></div>
+      <div class="provider-status-row"><span class="access-badge" data-status="${escapeHtml(connection.status)}" data-tone="${escapeHtml(connection.tone)}">${escapeHtml(connection.label)}</span><span class="freshness-badge">آخرین بررسی: ${escapeHtml(provider.verification.last_checked)}</span></div>
       <section class="provider-facts" aria-labelledby="facts-title">
         <h2 id="facts-title">خلاصه فنی</h2>
         <dl>
-          <div><dt>نوع سهمیه</dt><dd>${escapeHtml(freeLabels[provider.free_tier.type] ?? provider.free_tier.type)}</dd></div>
+          <div><dt>نوع سهمیه</dt><dd>${escapeHtml(freeTierLabel(provider.free_tier.type, "fa"))}</dd></div>
           <div><dt>محدودیت نمونه</dt><dd>${escapeHtml(limitText(provider))}</dd></div>
           <div><dt>سازگار با OpenAI</dt><dd>${provider.api.openai_compatible ? "بله" : "خیر"}</dd></div>
-          <div><dt>نیاز به روش پرداخت</dt><dd>${provider.free_tier.requires_payment_method === true ? "بله" : provider.free_tier.requires_payment_method === false ? "خیر" : "در منابع رسمی مشخص نیست"}</dd></div>
+          <div><dt>روش اتصال از ایران</dt><dd>${escapeHtml(connection.label)}</dd></div>
+          <div><dt>پیش‌نیاز حساب</dt><dd>${escapeHtml(account.label)}</dd></div>
           <div><dt>Base URL</dt><dd><code>${escapeHtml(provider.api.base_url)}</code> <button class="copy-button" type="button" data-copy-text="${escapeHtml(provider.api.base_url)}" aria-label="کپی Base URL"><span class="copy-text">کپی</span><span class="copy-status" role="status" aria-live="polite" hidden></span></button></dd></div>
-          <div><dt>وضعیت ایران</dt><dd>${escapeHtml(accessLabels[provider.iran_access.status] ?? provider.iran_access.status)}</dd></div>
         </dl>
       </section>
       <section><h2>قابلیت‌ها</h2><div class="tag-list">${capabilities.map((item) => `<span>${escapeHtml(item)}</span>`).join("")}</div></section>
@@ -248,7 +238,7 @@ const catalog = JSON.parse(await readFile(catalogPath, "utf8"));
 const providers = [...catalog.providers].sort((a, b) => a.name.localeCompare(b.name, "en"));
 const sourceRevision = process.env.SOURCE_REVISION?.trim() || null;
 const linksHtml = providers
-  .map((provider) => `<li><a href="./providers/${provider.id}/">${escapeHtml(providerDirectoryLabel(provider.name))}</a><span>${escapeHtml(freeLabels[provider.free_tier.type] ?? provider.free_tier.type)}</span></li>`)
+  .map((provider) => `<li><a href="./providers/${provider.id}/">${escapeHtml(providerDirectoryLabel(provider.name))}</a><span>${escapeHtml(freeTierLabel(provider.free_tier.type, "fa"))}</span></li>`)
   .join("\n          ");
 const indexPath = path.join(destination, "index.html");
 let indexHtml = await readFile(indexPath, "utf8");
