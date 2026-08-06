@@ -2,7 +2,7 @@ import {
   accountRequirementPresentation,
   connectionPresentation,
   freeTierLabel,
-  serviceTypeLabel
+  serviceTypeLabel as serviceLabels
 } from "./provider-presentation.js";
 
 const capabilityLabels = {
@@ -53,7 +53,7 @@ function searchText(provider) {
     provider.name,
     provider.id,
     provider.service_type,
-    serviceTypeLabel(provider.service_type, "fa"),
+    serviceLabels(provider.service_type, "fa"),
     provider.notes_fa,
     provider.free_tier.notes_fa,
     connection.label,
@@ -134,7 +134,7 @@ function createCard(provider) {
   freshness.setAttribute("aria-label", stale ? "تازگی داده: نیازمند بررسی" : "تازگی داده: تازه");
   setText(card, ".provider-avatar", provider.name.slice(0, 2).toUpperCase());
   setText(card, "h3", provider.name);
-  setText(card, ".provider-id", `${provider.id} · ${serviceTypeLabel(provider.service_type, "fa")}`);
+  setText(card, ".provider-id", `${provider.id} · ${serviceLabels(provider.service_type, "fa")}`);
   setText(card, ".provider-note", provider.notes_fa || provider.free_tier.notes_fa);
   setText(card, ".free-label", freeTierLabel(provider.free_tier.type, "fa"));
   setText(card, ".limit-label", limitText(provider));
@@ -249,7 +249,7 @@ function renderAdvisor() {
     const title = document.createElement("strong");
     title.textContent = provider.name;
     const meta = document.createElement("span");
-    meta.textContent = `${freeTierLabel(provider.free_tier.type, "fa")} · ${serviceTypeLabel(provider.service_type, "fa")} · امتیاز ${score.toLocaleString("fa-IR")}`;
+    meta.textContent = `${freeTierLabel(provider.free_tier.type, "fa")} · ${serviceLabels(provider.service_type, "fa")} · امتیاز ${score.toLocaleString("fa-IR")}`;
     const reason = document.createElement("small");
     const connection = connectionPresentation(provider, "fa");
     const account = accountRequirementPresentation(provider, "fa");
