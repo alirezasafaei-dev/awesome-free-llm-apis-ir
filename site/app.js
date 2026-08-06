@@ -1,54 +1,9 @@
-const accessLabels = {
-  verified_working: "مستقیم تست‌شده",
-  verified_working_vpn: "با VPN تست‌شده",
-  direct_blocked_vpn_working: "مستقیم مسدود / VPN موفق",
-  verified_blocked: "مستقیم مسدود",
-  officially_unsupported: "پشتیبانی‌نشده رسمی",
-  intermittent: "ناپایدار",
-  signup_blocked: "مانع ثبت‌نام",
-  account_activation_blocked: "مانع فعال‌سازی حساب",
-  unknown: "نامشخص"
-};
-
-const accessEmoji = {
-  verified_working: "✅",
-  verified_working_vpn: "🛡️",
-  direct_blocked_vpn_working: "🛡️",
-  verified_blocked: "⛔",
-  officially_unsupported: "🚫",
-  intermittent: "⚠️",
-  signup_blocked: "🧾",
-  account_activation_blocked: "🧾",
-  unknown: "❔"
-};
-
-const accessAriaLabel = {
-  verified_working: "وضعیت دسترسی ایران: مستقیم تست‌شده",
-  verified_working_vpn: "وضعیت دسترسی ایران: با VPN تست‌شده",
-  direct_blocked_vpn_working: "وضعیت دسترسی ایران: مستقیم مسدود، VPN موفق",
-  verified_blocked: "وضعیت دسترسی ایران: مستقیم مسدود",
-  officially_unsupported: "وضعیت دسترسی ایران: پشتیبانی‌نشده رسمی",
-  intermittent: "وضعیت دسترسی ایران: ناپایدار",
-  signup_blocked: "وضعیت دسترسی ایران: مانع ثبت‌نام",
-  account_activation_blocked: "وضعیت دسترسی ایران: مانع فعال‌سازی حساب",
-  unknown: "وضعیت دسترسی ایران: نامشخص"
-};
-
-const freeLabels = {
-  permanent_allowance: "سهمیه دائمی",
-  free_models: "مدل‌های رایگان",
-  monthly_credit: "اعتبار ماهانه",
-  trial: "آزمایشی",
-  unknown: "نامشخص"
-};
-
-const serviceLabels = {
-  official_provider: "Provider رسمی",
-  official_gateway: "Gateway رسمی",
-  community_gateway: "Gateway اجتماعی",
-  session_bridge: "Session bridge",
-  self_hosted: "Self-hosted"
-};
+import {
+  accountRequirementPresentation,
+  connectionPresentation,
+  freeTierLabel,
+  serviceTypeLabel
+} from "./provider-presentation.js";
 
 const capabilityLabels = {
   chat: "چت",
@@ -92,9 +47,19 @@ function limitText(provider) {
 }
 
 function searchText(provider) {
+  const connection = connectionPresentation(provider, "fa");
+  const account = accountRequirementPresentation(provider, "fa");
   return normalize([
-    provider.name, provider.id, provider.service_type, serviceLabels[provider.service_type], provider.notes_fa, provider.free_tier.notes_fa,
-    ...provider.capabilities, ...(provider.models?.notable ?? [])
+    provider.name,
+    provider.id,
+    provider.service_type,
+    serviceTypeLabel(provider.service_type, "fa"),
+    provider.notes_fa,
+    provider.free_tier.notes_fa,
+    connection.label,
+    account.label,
+    ...provider.capabilities,
+    ...(provider.models?.notable ?? [])
   ].join(" "));
 }
 
@@ -154,13 +119,14 @@ function setText(root, selector, value) {
 function createCard(provider) {
   const card = elements["provider-template"].content.firstElementChild.cloneNode(true);
   const stale = isStale(provider);
+  const connection = connectionPresentation(provider, "fa");
+  const account = accountRequirementPresentation(provider, "fa");
   const accessBadge = card.querySelector(".access-badge");
-  const accessStatus = provider.iran_access.status;
-  // Color-coded status is driven by data-status (CSS); emoji is stripped by ui-pro-max enhance.
-  accessBadge.dataset.status = accessStatus;
-  accessBadge.textContent = `${accessEmoji[accessStatus] ?? ""} ${accessLabels[accessStatus] ?? accessStatus}`.trim();
-  accessBadge.setAttribute("aria-label", accessAriaLabel[accessStatus] ?? `وضعیت دسترسی ایران: ${accessStatus}`);
-  accessBadge.title = accessAriaLabel[accessStatus] ?? accessStatus;
+  accessBadge.dataset.status = connection.status;
+  accessBadge.dataset.tone = connection.tone;
+  accessBadge.textContent = connection.label;
+  accessBadge.setAttribute("aria-label", `روش اتصال از ایران: ${connection.ariaLabel}`);
+  accessBadge.title = `روش اتصال از ایران: ${connection.label}`;
   const freshness = card.querySelector(".freshness-badge");
   freshness.textContent = stale ? "نیازمند بررسی" : "دادهٔ تازه";
   freshness.classList.toggle("stale", stale);
@@ -168,10 +134,12 @@ function createCard(provider) {
   freshness.setAttribute("aria-label", stale ? "تازگی داده: نیازمند بررسی" : "تازگی داده: تازه");
   setText(card, ".provider-avatar", provider.name.slice(0, 2).toUpperCase());
   setText(card, "h3", provider.name);
-  setText(card, ".provider-id", `${provider.id} · ${serviceLabels[provider.service_type] ?? provider.service_type}`);
+  setText(card, ".provider-id", `${provider.id} · ${serviceTypeLabel(provider.service_type, "fa")}`);
   setText(card, ".provider-note", provider.notes_fa || provider.free_tier.notes_fa);
-  setText(card, ".free-label", freeLabels[provider.free_tier.type] ?? provider.free_tier.type);
+  setText(card, ".free-label", freeTierLabel(provider.free_tier.type, "fa"));
   setText(card, ".limit-label", limitText(provider));
+  setText(card, ".account-requirement-label", account.label);
+  card.querySelector(".account-requirement-label").dataset.tone = account.tone;
   setText(card, ".openai-label", provider.api.openai_compatible ? "بله" : "خیر");
   setText(card, ".checked-label", provider.verification.last_checked);
   setText(card, ".free-note", provider.free_tier.notes_fa);
@@ -227,7 +195,17 @@ function usecaseCapabilities(usecase) {
   return map[usecase] ?? map.chat;
 }
 
-const iranScorePenalties = ["officially_unsupported", "verified_blocked", "signup_blocked"];
+const iranNetworkPenalties = ["officially_unsupported", "verified_blocked"];
+
+function accountFrictionPenalty(provider) {
+  const requirements = accountRequirementPresentation(provider, "fa").requirements;
+  let penalty = 0;
+  if (requirements.includes("international_payment_card")) penalty -= 14;
+  if (requirements.includes("foreign_mobile_number")) penalty -= 18;
+  if (requirements.includes("identity_verification")) penalty -= 14;
+  if (requirements.includes("account_activation") || requirements.includes("signup")) penalty -= 10;
+  return penalty;
+}
 
 function recommendationScore(provider, usecase, priority) {
   const capabilities = usecaseCapabilities(usecase);
@@ -240,12 +218,13 @@ function recommendationScore(provider, usecase, priority) {
   if (!isStale(provider)) score += priority === "fresh" ? 20 : 8;
   if (priority === "iran-aware") {
     if (provider.iran_access.status === "verified_working") score += 30;
-    else if (provider.iran_access.status === "verified_working_vpn") score += 12;
-    else if (iranScorePenalties.includes(provider.iran_access.status)) score -= 30;
+    else if (provider.iran_access.status === "verified_working_vpn" || provider.iran_access.status === "direct_blocked_vpn_working") score += 12;
+    else if (iranNetworkPenalties.includes(provider.iran_access.status)) score -= 30;
   } else {
-    if (provider.iran_access.status !== "unknown") score += 5;
-    if (iranScorePenalties.includes(provider.iran_access.status)) score -= 12;
+    if (provider.iran_access.status !== "unknown" && !["signup_blocked", "account_activation_blocked"].includes(provider.iran_access.status)) score += 5;
+    if (iranNetworkPenalties.includes(provider.iran_access.status)) score -= 12;
   }
+  if (priority === "low-friction") score += accountFrictionPenalty(provider);
   if (provider.service_type === "community_gateway") score -= 20;
   if (provider.service_type === "session_bridge") score -= 30;
   return score;
@@ -270,9 +249,11 @@ function renderAdvisor() {
     const title = document.createElement("strong");
     title.textContent = provider.name;
     const meta = document.createElement("span");
-    meta.textContent = `${freeLabels[provider.free_tier.type] ?? provider.free_tier.type} · ${serviceLabels[provider.service_type] ?? provider.service_type} · امتیاز ${score.toLocaleString("fa-IR")}`;
+    meta.textContent = `${freeTierLabel(provider.free_tier.type, "fa")} · ${serviceTypeLabel(provider.service_type, "fa")} · امتیاز ${score.toLocaleString("fa-IR")}`;
     const reason = document.createElement("small");
-    reason.textContent = `${limitText(provider)} · ${accessLabels[provider.iran_access.status] ?? provider.iran_access.status}${provider.service_type === "community_gateway" ? " ⚠️ سرویس غیررسمی" : ""}`;
+    const connection = connectionPresentation(provider, "fa");
+    const account = accountRequirementPresentation(provider, "fa");
+    reason.textContent = `${limitText(provider)} · ${connection.label} · ${account.label}${provider.service_type === "community_gateway" ? " · سرویس اجتماعی" : ""}`;
     link.append(title, meta, reason);
     item.append(link);
     return item;
