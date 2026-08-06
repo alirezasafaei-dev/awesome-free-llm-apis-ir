@@ -162,4 +162,20 @@ assert.equal(accountRequirementPresentation({
   signup_requirements: ["foreign_mobile_number"]
 }, "en").label, "Foreign mobile number required");
 
+const expectedSignupRequirements = new Map([
+  ["freetheai", ["foreign_mobile_number"]],
+  ["siliconflow", ["foreign_mobile_number"]],
+  ["nvidia-nim", ["foreign_mobile_number"]],
+  ["modelscope", ["identity_verification"]]
+]);
+for (const [providerId, expected] of expectedSignupRequirements) {
+  const provider = JSON.parse(await readFile(path.join(root, "data", "providers", `${providerId}.json`), "utf8"));
+  assert.deepEqual(provider.signup_requirements, expected, `${providerId} must expose its account prerequisite as structured data`);
+  const presentation = accountRequirementPresentation(provider, "fa");
+  assert.ok(!presentation.label.includes("مسدود"), `${providerId} account requirement must not be described as blocked`);
+}
+
+const vercel = JSON.parse(await readFile(path.join(root, "data", "providers", "vercel-ai-gateway.json"), "utf8"));
+assert.equal(accountRequirementPresentation(vercel, "fa").label, "نیاز به کارت بانکی بین‌المللی");
+
 console.log("UX clarity contract passed: task-first catalog, plain-language onboarding, and separate connection/account semantics are enforced.");
