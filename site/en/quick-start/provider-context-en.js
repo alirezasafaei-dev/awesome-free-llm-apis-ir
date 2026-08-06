@@ -1,3 +1,10 @@
+import {
+  accountRequirementPresentation,
+  connectionPresentation,
+  freeTierLabel,
+  serviceTypeLabel
+} from "../../provider-presentation.js";
+
 const runProviderContextWhenReady = (callback) => {
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", callback, { once: true });
   else callback();
@@ -25,33 +32,6 @@ runProviderContextWhenReady(async () => {
       safeProps[key] = value;
     }
     window.plausible(name, { props: safeProps });
-  };
-
-  const labels = {
-    service: {
-      official_provider: "Official provider",
-      official_gateway: "Official gateway",
-      community_gateway: "Community gateway",
-      session_bridge: "Session bridge",
-      self_hosted: "Self-hosted"
-    },
-    freeTier: {
-      permanent_allowance: "Permanent allowance",
-      free_models: "Free models",
-      monthly_credit: "Monthly credit",
-      trial: "Trial",
-      unknown: "Unknown"
-    },
-    access: {
-      verified_working: "Tested from Iran directly",
-      verified_working_vpn: "Tested with VPN",
-      direct_blocked_vpn_working: "Direct blocked; VPN working",
-      verified_blocked: "Verified blocked",
-      officially_unsupported: "Officially unsupported",
-      intermittent: "Intermittent",
-      signup_blocked: "Signup blocked",
-      unknown: "No evidence yet"
-    }
   };
 
   function safeHttpsUrl(value) {
@@ -85,12 +65,6 @@ runProviderContextWhenReady(async () => {
       .map((limit) => typeof limit.model === "string" ? limit.model.trim() : "")
       .filter((model) => modelPattern.test(model));
     return [...new Set(models)][0] ?? null;
-  }
-
-  function paymentLabel(value) {
-    if (value === false) return "No payment method required";
-    if (value === true) return "Payment method required";
-    return "Payment requirement unknown";
   }
 
   function environmentText(baseUrl, model) {
@@ -134,6 +108,8 @@ runProviderContextWhenReady(async () => {
     const apiBaseUrl = safeHttpsUrl(provider.api?.base_url);
     const docsUrl = safeHttpsUrl(provider.docs);
     const baseUrlLabel = apiBaseUrl ?? "Not recorded or not a valid HTTPS URL";
+    const connection = connectionPresentation(provider, "en");
+    const account = accountRequirementPresentation(provider, "en");
     const hero = document.querySelector(".qs-en-hero");
     if (!hero) return;
 
@@ -148,18 +124,18 @@ runProviderContextWhenReady(async () => {
     panel.append(textElement(
       "p",
       provider.api?.openai_compatible && apiBaseUrl
-        ? "The information below is loaded directly from catalog.json. Your API key stays in your environment variables and is never entered or stored on this page."
+        ? "The information below is loaded directly from catalog.json. Connection method and account requirements are separate facts. Your API key stays in environment variables and is never entered or stored on this page."
         : "This provider or its Base URL is not verified for the OpenAI-compatible example. Adapt the general code samples only after checking official API documentation."
     ));
 
     const grid = document.createElement("div");
     grid.className = "provider-context-grid";
     grid.append(
-      contextItem("Service type", labels.service[provider.service_type] ?? provider.service_type ?? "Unknown"),
-      contextItem("Free tier type", labels.freeTier[provider.free_tier?.type] ?? provider.free_tier?.type ?? "Unknown"),
-      contextItem("Payment", paymentLabel(provider.free_tier?.requires_payment_method)),
+      contextItem("Service type", serviceTypeLabel(provider.service_type, "en")),
+      contextItem("Free-tier type", freeTierLabel(provider.free_tier?.type, "en")),
+      contextItem("Connection method", connection.label),
+      contextItem("Account requirements", account.label),
       contextItem("Base URL", baseUrlLabel, true),
-      contextItem("Iran access", labels.access[provider.iran_access?.status] ?? provider.iran_access?.status ?? "Unknown"),
       contextItem("Last checked", provider.verification?.last_checked ?? "No date recorded"),
       contextItem("Sample model", model ?? "VERIFIED_MODEL_ID", true),
       contextItem("Selected use case", usecase)
