@@ -6,6 +6,9 @@
   "website": "https://build.nvidia.com/",
   "docs": "https://docs.api.nvidia.com/nim/docs/product",
   "signup": "https://developer.nvidia.com/login",
+  "signup_requirements": [
+    "foreign_mobile_number"
+  ],
   "api": {
     "base_url": "https://integrate.api.nvidia.com/v1",
     "openai_compatible": true,
@@ -62,7 +65,7 @@
         "notes_fa": "ثبت‌نام در NVIDIA Developer Program نیاز به شماره تلفن خارجی برای احراز هویت دارد. کاربر ایرانی به شماره خارجی دسترسی ندارد. کلید API قابل دریافت نیست."
       }
     ],
-    "notes_fa": "Endpoint از ایران قابل دسترس است. اما ثبت‌نام در NVIDIA Developer Program نیاز به شماره تلفن خارجی دارد."
+    "notes_fa": "Endpoint مستقیم از ایران در دسترس است؛ ثبت‌نام در NVIDIA Developer Program نیاز به شماره موبایل خارجی دارد."
   },
   "models": {
     "dynamic": true,
@@ -75,7 +78,7 @@
     "checked_by": "maintainers",
     "stale_after_days": 30
   },
-  "notes_fa": "این دسترسی برای Production رایگان نیست و سقف عددی ثابت عمومی در منبع بررسی‌شده اعلام نشده است.",
+  "notes_fa": "این دسترسی برای Production رایگان نیست و سقف عددی ثابت عمومی در منبع بررسی‌شده اعلام نشده است. Endpoint مستقیم قابل دسترس است، اما صدور Credential نیاز به شماره موبایل خارجی دارد.",
   "sources": [
     "https://docs.api.nvidia.com/nim/docs/product",
     "https://build.nvidia.com/explore/discover"
