@@ -31,6 +31,11 @@ const requiredHomepageSignals = [
   'class="search-field catalog-search"',
   'class="advanced-filter-panel"',
   'id="filters"',
+  'id="access-status"',
+  'id="account-requirement"',
+  "متصل با فیلترشکن",
+  "نیاز به کارت بانکی بین‌المللی",
+  "نیاز به شماره موبایل خارجی",
   'class="audience-paths"',
   'id="how-it-works"',
   'id="what-is-api"',
@@ -43,8 +48,16 @@ for (const signal of requiredHomepageSignals) {
   if (!html.includes(signal)) throw new Error(`Homepage clarity contract is missing: ${signal}`);
 }
 
+for (const staleCopy of ["مستقیم مسدود / VPN موفق", "مانع ثبت‌نام", "ثبت‌نام مسدود"]) {
+  if (html.includes(staleCopy)) throw new Error(`Homepage returned stale blocked-oriented copy: ${staleCopy}`);
+}
+
 if (!plainText.includes("API راهی است که برنامه، سایت یا ربات شما را به یک مدل هوش مصنوعی وصل می‌کند")) {
   throw new Error("Homepage does not explain the API concept in plain language");
+}
+
+if (!plainText.includes("روش اتصال شبکه و پیش‌نیاز حساب دو موضوع جدا هستند")) {
+  throw new Error("Homepage does not explain that connection method and account requirements are separate");
 }
 
 if (html.includes("مرجع فارسی، آزاد و ماشین‌خوان")) {
