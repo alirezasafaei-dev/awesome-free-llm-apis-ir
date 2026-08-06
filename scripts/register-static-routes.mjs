@@ -133,7 +133,9 @@ if (existsSync(enQuickStartPath)) {
     enQuickStart = enQuickStart.replace("</head>", '  <link rel="stylesheet" href="../../quick-start/provider-context.css">\n</head>');
   }
   if (!enQuickStart.includes('src="./provider-context-en.js"')) {
-    enQuickStart = enQuickStart.replace("</body>", '  <script defer src="./provider-context-en.js"></script>\n</body>');
+    enQuickStart = enQuickStart.replace("</body>", '  <script type="module" src="./provider-context-en.js"></script>\n</body>');
+  } else {
+    enQuickStart = enQuickStart.replace('<script defer src="./provider-context-en.js"></script>', '<script type="module" src="./provider-context-en.js"></script>');
   }
   await writeFile(enQuickStartPath, enQuickStart);
 }
