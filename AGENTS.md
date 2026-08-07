@@ -4,6 +4,29 @@
 
 Maintain this repository as an evidence-backed, machine-readable catalog of free LLM APIs for Persian speakers and users in Iran. Prefer correctness, reproducibility, privacy, and explicit uncertainty over coverage or speed.
 
+## Current operating mode — maintenance + growth
+
+Effective 2026-08-07, the repository and public website remain active while product development and provider expansion are frozen. The primary active workstreams are SEO/Search Console, evidence-backed maintenance, measured content/distribution, security/privacy, and production reliability.
+
+Unless the repository owner explicitly reopens product development in the active conversation, agents must not:
+
+- add new providers or pursue a numerical catalog-growth target;
+- perform new provider-account, credential, benchmark, or regional-verification work solely to expand coverage;
+- add speculative product features or redesign the interface based on preference;
+- reopen deferred provider-expansion or human-UX research work without measured demand or a concrete defect.
+
+During this mode, a proposed repository change must fit at least one of these categories:
+
+1. security or privacy remediation;
+2. production availability, deployment, rollback, or release reliability;
+3. correction of a stale or incorrect published fact with sufficient evidence;
+4. indexing, canonical, sitemap, structured-data, robots, or crawlability defect;
+5. SEO/content improvement supported by Search Console or analytics evidence;
+6. growth attribution, UTM, or instrumentation defect;
+7. reproducible accessibility or user-flow defect.
+
+Existing `unknown`/`null` provider evidence must remain explicit. Maintenance mode never authorizes converting uncertainty into a positive or negative claim. See `docs/MAINTENANCE_GROWTH_MODE.fa.md` and `docs/GROWTH_90_DAY_EXECUTION.fa.md`.
+
 ## Source-of-truth rules
 
 1. Use first-party provider documentation for plan, quota, pricing, model, authentication, and regional-policy claims.
