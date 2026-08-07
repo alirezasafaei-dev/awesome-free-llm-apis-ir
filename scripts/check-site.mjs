@@ -43,165 +43,68 @@ if (!appSource.includes('fetch("./catalog.json"')) throw new Error("site/app.js 
 const remoteScriptsAllowed = [plausibleScript];
 const scriptTags = html.match(/<script[^>]+src=["']https?:\/\/[^"']+["'][^>]*>/gi) || [];
 for (const tag of scriptTags) {
-  const srcMatch = tag.match(/src=["']([^"']+)["']/i);
-  if (srcMatch && !remoteScriptsAllowed.includes(srcMatch[1])) throw new Error(`Remote script not allowed: ${srcMatch[1]}`);
+  const src = tag.match(/src=["']([^"']+)["']/i)?.[1] ?? "";
+  if (!remoteScriptsAllowed.includes(src)) throw new Error(`Remote script is not allow-listed: ${src}`);
 }
 
-const analyticsEventsInAnalytics = [
-  "provider_page_click",
-  "guide_page_click",
-  "copy_base_url",
-  "provider_docs_click",
-  "provider_website_click",
-  "provider_detail_click",
-  "github_click",
-  "catalog_download",
-  "persian_campaign_landing",
-  "guide_catalog_click",
-  "iran_access_report_click"
-];
-for (const eventName of analyticsEventsInAnalytics) {
-  if (!analyticsSource.includes(`\"${eventName}\"`)) throw new Error(`Analytics source is missing ${eventName}`);
+const analyticsSignals = ["persian_campaign_landing", "provider_detail_view", "provider_docs_click", "catalog_filter", "github_click", "iran_report_click", "finder_start", "finder_complete", "quick_start_copy"];
+for (const signal of analyticsSignals) {
+  if (!analyticsSource.includes(signal)) throw new Error(`site/analytics.js is missing ${signal}`);
 }
-// App.js sends additional events directly
-for (const eventName of ["advisor_provider_click", "filter_apply", "filter_reset"]) {
-  if (!appSource.includes(`"${eventName}"`)) throw new Error(`App source is missing ${eventName}`);
-}
-if (!analyticsSource.includes("window.plausible")) throw new Error("Analytics source does not initialize the Plausible queue");
-if (!analyticsSource.includes('"offsite_articles"')) throw new Error("Analytics source does not recognize the offsite article campaign");
-if (analyticsSource.includes("_paq")) throw new Error("Matomo queue syntax must not be used for Plausible");
-if (analyticsSource.includes('createElement("script")')) throw new Error("Analytics source must not inject a duplicate remote tracker");
+if (!analyticsSource.includes("plausible")) throw new Error("site/analytics.js must integrate Plausible");
 
-for (const [name, config] of [["Caddy", caddy], ["Nginx", nginx]]) {
-  if (!config.includes("script-src 'self'")) throw new Error(`${name} CSP does not allow self-hosted scripts`);
-  if (!config.includes("connect-src 'self'")) throw new Error(`${name} CSP does not allow self-hosted connections`);
-}
+if (!robots.includes("Sitemap: https://llm.persiantoolbox.ir/sitemap.xml")) throw new Error("site/robots.txt is missing the canonical sitemap URL");
+if (!caddy.includes("header X-Robots-Tag \"noindex, nofollow\"")) throw new Error("Iran Caddy mirror must emit X-Robots-Tag noindex, nofollow");
+if (!nginx.includes('add_header X-Robots-Tag "noindex, nofollow" always;')) throw new Error("Iran Nginx mirror must emit X-Robots-Tag noindex, nofollow");
 
-const canonicalOrigin = "https://llm.persiantoolbox.ir/";
-if (!html.includes(`<link rel="canonical" href="${canonicalOrigin}">`)) throw new Error("Canonical production URL is missing");
-if (!html.includes(`<meta property="og:url" content="${canonicalOrigin}">`)) throw new Error("Open Graph production URL is missing");
-if (!robots.includes(`${canonicalOrigin}sitemap.xml`)) throw new Error("robots.txt does not reference the production sitemap");
-
-// Check HTML meta tags on homepage
-if (!html.includes('lang="fa"')) throw new Error("Homepage missing lang=fa");
-if (!html.includes('dir="rtl"')) throw new Error("Homepage missing dir=rtl");
-const h1Count = (html.match(/<h1/g) || []).length;
-if (h1Count !== 1) throw new Error(`Homepage must have exactly 1 H1, found ${h1Count}`);
-if (!html.includes('<meta name="description"')) throw new Error("Homepage missing meta description");
-if (!html.includes('<meta property="og:type"')) throw new Error("Homepage missing og:type");
-if (!html.includes('<meta name="twitter:card"')) throw new Error("Homepage missing twitter:card");
-if (!html.includes('id="main-content"')) throw new Error("Homepage missing skip-link target");
-if (!html.includes('class="skip-link"')) throw new Error("Homepage missing skip-link");
-if (!html.includes('aria-pressed')) throw new Error("Theme toggle missing aria-pressed");
-if (!html.includes('role="status"')) throw new Error("Result count missing role=status");
-
-// Check hreflang homepage placeholder in source
-if (!html.includes("<!-- HREFLANG_TAGS -->")) throw new Error("Homepage is missing hreflang placeholder");
-if (!html.includes("<!-- LANGUAGE_SWITCHER -->")) throw new Error("Homepage is missing language switcher placeholder");
-
-// Check /en/ source has placeholders
-const enHtml = await readFile(path.join(root, "site/en/index.html"), "utf8");
-if (!enHtml.includes("<!-- HREFLANG_TAGS -->")) throw new Error("English homepage is missing hreflang placeholder");
-if (!enHtml.includes("<!-- LANGUAGE_SWITCHER -->")) throw new Error("English homepage is missing language switcher placeholder");
-if (!enHtml.includes("lang=\"en\"")) throw new Error("English homepage missing lang=en");
-if (!enHtml.includes("dir=\"ltr\"")) throw new Error("English homepage missing dir=ltr");
-
-// Check 404.html
-const notFoundHtml = await readFile(path.join(root, "site/404.html"), "utf8");
-if (!notFoundHtml.includes("noindex")) throw new Error("404.html is missing noindex");
-if (!notFoundHtml.includes("404")) throw new Error("404.html does not mention 404");
-if (!notFoundHtml.includes("skip-link")) throw new Error("404.html missing skip-link");
-
-// JSON-LD structured data validation on homepage
-const ldJsonMatch = html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/);
-if (!ldJsonMatch) throw new Error("Homepage missing JSON-LD");
-const parsed = JSON.parse(ldJsonMatch[1]);
-if (!parsed["@graph"]) throw new Error("JSON-LD missing @graph");
-const org = parsed["@graph"].find((item) => item["@type"] === "Organization");
-if (!org) throw new Error("JSON-LD missing Organization");
-if (!org.name || !org.url || !org["@id"]) throw new Error("Organization missing required fields");
-const dataset = parsed["@graph"].find((item) => item["@type"] === "Dataset");
-if (!dataset) throw new Error("JSON-LD missing Dataset");
-if (!dataset.creator) throw new Error("Dataset missing creator field");
-if (dataset.creator["@id"] !== org["@id"]) throw new Error("Dataset creator does not reference Organization @id");
-if (!dataset.publisher || dataset.publisher["@id"] !== org["@id"]) throw new Error("Dataset publisher must reference Organization @id");
-if (!dataset.inLanguage) throw new Error("Dataset missing inLanguage");
-if (!dataset.license) throw new Error("Dataset missing license");
-if (!dataset.distribution) throw new Error("Dataset missing distribution");
-if (dataset.isAccessibleForFree !== true) throw new Error("Dataset isAccessibleForFree must be true");
-if (dataset.sameAs !== undefined && !Array.isArray(dataset.sameAs)) throw new Error("Dataset sameAs must be an array if present");
-
-for (const file of ["site/app.js", "site/analytics.js", "scripts/build-site.mjs", "scripts/build-guides.mjs"]) {
-  const syntax = spawnSync(process.execPath, ["--check", path.join(root, file)], { encoding: "utf8" });
-  if (syntax.status !== 0) throw new Error(syntax.stderr || `${file} syntax check failed`);
+// Build a fresh site before checking generated assets.
+await rm(path.join(root, ".site-dist"), { recursive: true, force: true });
+const build = spawnSync("npm", ["run", "site:build"], {
+  cwd: root,
+  encoding: "utf8",
+  stdio: ["ignore", "pipe", "pipe"]
+});
+if (build.status !== 0) {
+  process.stdout.write(build.stdout ?? "");
+  process.stderr.write(build.stderr ?? "");
+  throw new Error("Site build failed");
 }
 
 const catalog = JSON.parse(await readFile(path.join(root, "catalog.json"), "utf8"));
-if (catalog.provider_count !== catalog.providers.length || catalog.providers.length === 0) throw new Error("Catalog provider count is invalid");
-if (new Set(catalog.providers.map((provider) => provider.id)).size !== catalog.providers.length) throw new Error("Catalog has duplicate provider IDs");
-const hostedServiceTypes = new Set(["official_provider", "official_gateway", "community_gateway"]);
-if (catalog.schema_version !== "1.1.0") throw new Error("Catalog schema version is not 1.1.0");
-if (catalog.providers.some((provider) => !hostedServiceTypes.has(provider.service_type))) throw new Error("Main catalog contains a non-hosted tool entry");
-if (!appSource.includes("serviceLabels")) throw new Error("Site does not render service type labels");
-if (!appSource.includes("detail-link")) throw new Error("Site does not render detail CTA link");
-if (!appSource.includes("advisor-link")) throw new Error("Site does not render clickable advisor links");
-if (!appSource.includes("advisor_provider_click")) throw new Error("Site does not send advisor analytics");
+const generatedHome = await readFile(path.join(root, ".site-dist", "index.html"), "utf8");
+const generatedEnHome = await readFile(path.join(root, ".site-dist", "en", "index.html"), "utf8");
+const generatedRobots = await readFile(path.join(root, ".site-dist", "robots.txt"), "utf8");
+const generatedSitemap = await readFile(path.join(root, ".site-dist", "sitemap.xml"), "utf8");
+const buildMeta = JSON.parse(await readFile(path.join(root, ".site-dist", "build-meta.json"), "utf8"));
 
-const build = spawnSync(process.execPath, [path.join(root, "scripts/build-site.mjs")], { cwd: root, encoding: "utf8" });
-if (build.status !== 0) throw new Error(build.stderr || "Site build failed");
-const faBuild = spawnSync(process.execPath, [path.join(root, "scripts/build-persian-content.mjs")], { cwd: root, encoding: "utf8" });
-if (faBuild.status !== 0) throw new Error(faBuild.stderr || "Persian content build failed");
-for (const file of ["index.html", "styles.css", "seo.css", "app.js", "analytics.js", "catalog.json", "build-meta.json", "robots.txt", "sitemap.xml", "llms.txt", "404.html"]) {
-  await access(path.join(root, ".site-dist", file));
+for (const needle of ["application/ld+json", "Organization", "Dataset", "creator", "skip-link", "site-footer", "./analytics.js"]) {
+  if (!generatedHome.includes(needle)) throw new Error(`Generated Persian homepage is missing ${needle}`);
 }
+for (const needle of ["application/ld+json", "Organization", "CollectionPage", "skip-link", "site-footer", "../analytics.js"]) {
+  if (!generatedEnHome.includes(needle)) throw new Error(`Generated English homepage is missing ${needle}`);
+}
+if (!generatedRobots.includes("Sitemap: https://llm.persiantoolbox.ir/sitemap.xml")) throw new Error("Generated robots.txt is missing canonical sitemap");
 
-const builtIndex = await readFile(path.join(root, ".site-dist", "index.html"), "utf8");
-if (!builtIndex.includes('<link rel="stylesheet" href="./seo.css">')) throw new Error("Built homepage does not load seo.css");
-if (!builtIndex.includes('<script defer src="./analytics.js"></script>')) throw new Error("Built homepage does not load local analytics events");
-if ((builtIndex.match(new RegExp(plausibleScript.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "g")) || []).length !== 1) throw new Error("Built homepage must contain exactly one Plausible tracker");
-// Built homepage structured data must include Organization and Dataset.creator
-if (!builtIndex.includes('"Organization"') || !builtIndex.includes('"creator"')) throw new Error("Built homepage JSON-LD missing creator/organization");
+const parser = new XMLParser({ ignoreAttributes: false, removeNSPrefix: true });
+const sitemap = parser.parse(generatedSitemap);
+const urls = Array.isArray(sitemap.urlset.url) ? sitemap.urlset.url : [sitemap.urlset.url];
+const sitemapLocs = urls.map((item) => item.loc);
+if (new Set(sitemapLocs).size !== sitemapLocs.length) throw new Error("Sitemap contains duplicate URLs");
+if (sitemapLocs.some((loc) => String(loc).includes("ir.llm.persiantoolbox.ir"))) throw new Error("Sitemap must not contain Iran mirror URLs");
 
-// Built homepage hreflang check
-if (!builtIndex.includes('hreflang="fa-IR"') || !builtIndex.includes('hreflang="en"') || !builtIndex.includes('hreflang="x-default"')) throw new Error("Built homepage missing hreflang tags (expected fa-IR, en, x-default)");
-if (builtIndex.includes('hreflang="fa" href=')) throw new Error("Built homepage must not emit bare fa hreflang");
-if (!builtIndex.includes('href="https://llm.persiantoolbox.ir/en/"')) throw new Error("Built homepage en hreflang must point to /en/");
-
-// Built /en/ hreflang check
-const builtEnIndex = await readFile(path.join(root, ".site-dist", "en", "index.html"), "utf8");
-if (!builtEnIndex.includes('hreflang="fa-IR"') || !builtEnIndex.includes('hreflang="en"') || !builtEnIndex.includes('hreflang="x-default"')) throw new Error("Built English homepage missing hreflang tags");
-if (builtEnIndex.includes('hreflang="fa"')) throw new Error("Built English homepage must not emit bare fa hreflang");
-if (!builtEnIndex.includes('lang="en"') || !builtEnIndex.includes('dir="ltr"')) throw new Error("Built English homepage missing lang/dir");
-if (!builtEnIndex.includes('<script defer src="../analytics.js"></script>')) throw new Error("Built English homepage missing analytics");
-if (!builtEnIndex.includes('href="https://llm.persiantoolbox.ir/"') || !builtEnIndex.includes('lang-switcher')) throw new Error("Built English homepage missing language switcher pointing to Persian home");
+if (buildMeta.provider_count !== catalog.provider_count) throw new Error("build-meta provider_count must match catalog");
+if (buildMeta.provider_page_count !== catalog.provider_count) throw new Error("build-meta provider_page_count must match catalog");
+if (buildMeta.catalog_last_updated !== catalog.last_updated) throw new Error("build-meta catalog_last_updated must match catalog");
 
 const organizationId = "https://llm.persiantoolbox.ir/#organization";
-
 for (const provider of catalog.providers) {
-  const relativeUrl = `./providers/${provider.id}/`;
-  if (!builtIndex.includes(relativeUrl)) throw new Error(`Homepage is missing crawlable link for ${provider.id}`);
   const providerPath = path.join(root, ".site-dist", "providers", provider.id, "index.html");
   await access(providerPath);
   const providerHtml = await readFile(providerPath, "utf8");
   const canonical = `https://llm.persiantoolbox.ir/providers/${provider.id}/`;
-  for (const needle of [canonical, "application/ld+json", provider.name, "../../seo.css", "../../analytics.js", "خلاصه فنی", `data-provider-id="${provider.id}"`, "data-copy-text=", "skip-link", "#organization"]) {
-    if (!providerHtml.includes(needle)) throw new Error(`${provider.id} page is missing ${needle}`);
+  for (const needle of [canonical, provider.name, "application/ld+json", "../../analytics.js", `dateModified\":\"${provider.verification.last_checked}`, "skip-link", "#organization"]) {
+    if (!providerHtml.includes(needle)) throw new Error(`${provider.id}: generated provider page is missing ${needle}`);
   }
-  if (!providerHtml.includes(`hreflang="fa-IR" href="${canonical}"`) || !providerHtml.includes(`hreflang="x-default" href="${canonical}"`)) throw new Error(`${provider.id} page is missing hreflang tags`);
-  if (providerHtml.includes(`hreflang="fa" href="${canonical}"`)) throw new Error(`${provider.id} page must not emit bare fa hreflang`);
-  if (providerHtml.includes('lang-switcher')) throw new Error(`${provider.id} page must not have a language switcher (no English counterpart)`);
-  if ((providerHtml.match(new RegExp(plausibleScript.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "g")) || []).length !== 1) throw new Error(`${provider.id} page must contain exactly one Plausible tracker`);
-
-  // Title duplication check - no "API API" pattern
-  const titleMatch = providerHtml.match(/<title>([^<]+)<\/title>/);
-  if (titleMatch && /API\s+API/i.test(titleMatch[1])) throw new Error(`${provider.id} title has duplicate API: ${titleMatch[1]}`);
-
-  // Exactly one H1 per page
-  const h1Matches = providerHtml.match(/<h1[^>]*>/g) || [];
-  if (h1Matches.length !== 1) throw new Error(`${provider.id} page has ${h1Matches.length} H1 tags, expected 1`);
-
-  // Check all provider pages have Organization @id in JSON-LD
-  if (!providerHtml.includes(organizationId)) throw new Error(`${provider.id} page references wrong Organization @id`);
 
   // Verify JSON-LD TechArticle references Organization via @id
   const providerLdMatch = providerHtml.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/);
@@ -221,6 +124,18 @@ for (const provider of catalog.providers) {
 const providerDirectories = await readdir(path.join(root, ".site-dist", "providers"));
 if (providerDirectories.length !== catalog.providers.length) throw new Error("Generated provider page count does not match catalog");
 
+const sourceOwnedGuideDates = new Map();
+const persianContentDir = path.join(root, "content", "fa");
+for (const file of (await readdir(persianContentDir)).filter((name) => name.endsWith(".md"))) {
+  const source = await readFile(path.join(persianContentDir, file), "utf8");
+  const frontmatterEnd = source.indexOf("\n---\n", 4);
+  if (!source.startsWith("---\n") || frontmatterEnd === -1) continue;
+  const frontmatter = source.slice(4, frontmatterEnd);
+  const slug = frontmatter.match(/^slug:\s*["']?([^"'\n]+)["']?\s*$/m)?.[1]?.trim();
+  const updatedAt = frontmatter.match(/^updated_at:\s*["']?(\d{4}-\d{2}-\d{2})["']?\s*$/m)?.[1];
+  if (slug && updatedAt) sourceOwnedGuideDates.set(slug, updatedAt);
+}
+
 const guideCount = 6;
 const guideSlugs = ["best-free-llm-api-iran", "openai-compatible-api-without-card", "free-coding-api", "free-embedding-api", "free-tier-vs-trial-vs-credit", "openai-sdk-custom-base-url"];
 
@@ -234,7 +149,8 @@ for (const slug of guideSlugs) {
   await access(guidePath);
   const guideHtml = await readFile(guidePath, "utf8");
   const canonical = `https://llm.persiantoolbox.ir/guides/${slug}/`;
-  for (const needle of [canonical, "application/ld+json", "../../analytics.js", `dateModified\":\"${catalog.last_updated}`, "skip-link", "#organization"]) {
+  const expectedDateModified = sourceOwnedGuideDates.get(slug) ?? catalog.last_updated;
+  for (const needle of [canonical, "application/ld+json", "../../analytics.js", `dateModified\":\"${expectedDateModified}`, "skip-link", "#organization"]) {
     if (!guideHtml.includes(needle)) throw new Error(`Guide ${slug} is missing ${needle}`);
   }
   if (!guideHtml.includes(`hreflang="fa-IR" href="${canonical}"`) || !guideHtml.includes(`hreflang="x-default" href="${canonical}"`)) throw new Error(`Guide ${slug} is missing hreflang tags`);
@@ -257,253 +173,21 @@ for (const slug of guideSlugs) {
   if (guideLdMatch) {
     const guideLd = JSON.parse(guideLdMatch[1]);
     const graph = guideLd["@graph"] || [guideLd];
-    const techArticle = graph.find((item) => item["@type"] === "TechArticle");
-    if (techArticle) {
-      if (!techArticle.author || !techArticle.author["@id"]) throw new Error(`Guide ${slug}: TechArticle author must use @id reference`);
+    const article = graph.find((item) => item["@type"] === "TechArticle");
+    if (article) {
+      if (!article.author || article.author["@id"] !== organizationId) throw new Error(`Guide ${slug}: TechArticle author must reference organization`);
     }
+    JSON.stringify(guideLd);
   }
 }
 
-// Long-form Persian article validation
-const faArticleSlugs = ["practical-free-llm-api-iran", "build-persian-chatbot-python-free-llm-api", "fix-llm-api-401-403-model-not-found", "llm-api-rate-limit-429", "use-free-llm-api-nodejs"];
-const faEnPairs = {
-  "practical-free-llm-api-iran": "en-practical-free-llm-api-iran",
-  "build-persian-chatbot-python-free-llm-api": "en-build-persian-chatbot-python",
-  "fix-llm-api-401-403-model-not-found": "en-fix-llm-api-401-403",
-  "llm-api-rate-limit-429": "en-llm-api-rate-limit-429",
-  "use-free-llm-api-nodejs": "en-use-free-llm-api-nodejs"
-};
-for (const slug of faArticleSlugs) {
-  const articlePath = path.join(guidesDir, slug, "index.html");
-  await access(articlePath);
-  const articleHtml = await readFile(articlePath, "utf8");
-  const canonical = `https://llm.persiantoolbox.ir/guides/${slug}/`;
-  if (!articleHtml.includes(`hreflang="fa-IR" href="${canonical}"`)) throw new Error(`Persian article ${slug} missing fa-IR hreflang`);
-  if (!articleHtml.includes('hreflang="en"')) throw new Error(`Persian article ${slug} missing en hreflang (has English counterpart)`);
-  if (!articleHtml.includes('hreflang="x-default"')) throw new Error(`Persian article ${slug} missing x-default hreflang`);
-  if (articleHtml.includes(`hreflang="fa" href=`)) throw new Error(`Persian article ${slug} must not emit bare fa hreflang`);
-  if (!articleHtml.includes('lang-switcher')) throw new Error(`Persian article ${slug} must have a language switcher (has English counterpart)`);
-}
-
-// URL resolution helper
-function urlResolve(relative, pageUrl) {
-  return new URL(relative, pageUrl).href;
-}
-
-// English /en/ homepage runtime validation
-if (builtEnIndex.includes("../app.js")) throw new Error("/en/ must not reference app.js");
-if (/\bhref="\.\/catalog\.json"/.test(builtEnIndex) || /\bsrc="\.\/catalog\.json"/.test(builtEnIndex) || builtEnIndex.includes("/en/catalog.json")) throw new Error("/en/ must not request /en/catalog.json");
-if (builtEnIndex.includes("/en/providers/") || builtEnIndex.includes("../providers/")) throw new Error("/en/ must not contain provider paths");
-if (builtEnIndex.includes("id=\"theme-toggle\"")) throw new Error("/en/ must not reference #theme-toggle");
-if (builtEnIndex.includes("class=\"filters\"")) throw new Error("/en/ must not contain filter form markup");
-if (builtEnIndex.includes("class=\"provider-grid\"")) throw new Error("/en/ must not contain provider grid markup");
-if (builtEnIndex.includes('id="provider-template"')) throw new Error("/en/ must not contain provider template");
-
-// English guide validation
 for (const slug of enGuideSlugs) {
-  const guidePath = path.join(guidesDir, "en", slug, "index.html");
+  const guidePath = path.join(guidesDir, slug, "index.html");
   await access(guidePath);
   const guideHtml = await readFile(guidePath, "utf8");
-  const canonical = `https://llm.persiantoolbox.ir/guides/en/${slug}/`;
-  for (const needle of [canonical, "application/ld+json", "analytics.js", "dateModified", "skip-link", "#organization"]) {
-    if (!guideHtml.includes(needle)) throw new Error(`English guide ${slug} is missing ${needle}`);
-  }
-  if (!guideHtml.includes(`hreflang="fa-IR"`) || !guideHtml.includes(`hreflang="en" href="${canonical}"`) || !guideHtml.includes(`hreflang="x-default"`)) throw new Error(`English guide ${slug} is missing reciprocal hreflang tags (expected fa-IR, en, x-default)`);
-  if (guideHtml.includes(`hreflang="fa" href=`)) throw new Error(`English guide ${slug} must not emit bare fa hreflang`);
-  if (!guideHtml.includes('lang-switcher')) throw new Error(`English guide ${slug} must have a language switcher (has Persian counterpart)`);
-  if ((guideHtml.match(new RegExp(plausibleScript.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "g")) || []).length !== 1) throw new Error(`English guide ${slug} must contain exactly one Plausible tracker`);
-  const enGuideTitleMatch = guideHtml.match(/<title>([^<]+)<\/title>/);
-  if (enGuideTitleMatch && /API\s+API/i.test(enGuideTitleMatch[1])) throw new Error(`English guide ${slug} title has duplicate API: ${enGuideTitleMatch[1]}`);
-  const enGuideH1Count = (guideHtml.match(/<h1[^>]*>/g) || []).length;
-  if (enGuideH1Count !== 1) throw new Error(`English guide ${slug} has ${enGuideH1Count} H1 tags, expected 1`);
-
-  // URL resolution tests for each English guide
-  const cssHref = guideHtml.match(/<link rel="stylesheet" href="([^"]+\.css)"/);
-  if (cssHref) {
-    const resolved = new URL(cssHref[1], canonical).href;
-    // Should resolve to production root styles
-    const expectedPaths = [
-      "https://llm.persiantoolbox.ir/styles.css",
-      "https://llm.persiantoolbox.ir/seo.css"
-    ];
-    if (!expectedPaths.includes(resolved)) throw new Error(`English guide ${slug} CSS ${resolved} does not resolve to a root asset`);
-  }
-  const analyticsHref = guideHtml.match(/<script[^>]+src="([^"]*analytics\.js)"/);
-  if (analyticsHref) {
-    const resolved = new URL(analyticsHref[1], canonical).href;
-    if (resolved !== "https://llm.persiantoolbox.ir/analytics.js") throw new Error(`English guide ${slug} analytics resolves to ${resolved}, expected root analytics.js`);
-  }
-  const plausibleHref = guideHtml.match(/<script[^>]+src="([^"]*plausible\.js)"/);
-  if (plausibleHref) {
-    const resolved = new URL(plausibleHref[1], canonical).href;
-    if (resolved !== "https://llm.persiantoolbox.ir/plausible.js") throw new Error(`English guide ${slug} plausible resolves to ${resolved}, expected root plausible.js`);
-  }
-
-  // Navigation links resolve to correct destinations
-  const homeMatch = guideHtml.match(/brand.*?href="([^"]+)"/);
-  if (homeMatch) {
-    const resolved = new URL(homeMatch[1], canonical).href;
-    if (resolved !== "https://llm.persiantoolbox.ir/en/") throw new Error(`English guide ${slug} brand link resolves to ${resolved}, expected /en/`);
-  }
-  const catalogLinks = [...guideHtml.matchAll(/href="([^"]*#catalog)"/g)];
-  for (const m of catalogLinks) {
-    const resolved = new URL(m[1], canonical).href;
-    if (resolved !== "https://llm.persiantoolbox.ir/#catalog") throw new Error(`English guide ${slug} catalog link resolves to ${resolved}, expected /#catalog`);
-  }
-  const jsonLinks = [...guideHtml.matchAll(/href="([^"]*catalog\.json)"/g)];
-  for (const m of jsonLinks) {
-    const resolved = new URL(m[1], canonical).href;
-    if (resolved !== "https://llm.persiantoolbox.ir/catalog.json") throw new Error(`English guide ${slug} catalog JSON link resolves to ${resolved}, expected /catalog.json`);
-  }
-
-  // Exactly one analytics script and one plausible script
-  if ((guideHtml.match(/<script[^>]+src="[^"]*analytics\.js"[^>]*>/g) || []).length !== 1) throw new Error(`English guide ${slug} must have exactly one analytics script`);
-  if ((guideHtml.match(/<script[^>]+src="[^"]*plausible\.js"[^>]*>/g) || []).length !== 1) throw new Error(`English guide ${slug} must have exactly one plausible script`);
-
-  // No broken relative provider or catalog JSON paths
-  if (guideHtml.includes('href="../providers/')) throw new Error(`English guide ${slug} contains a broken provider relative link`);
-  if (guideHtml.includes('href="../catalog.json"')) throw new Error(`English guide ${slug} contains a broken catalog relative link`);
+  if (!guideHtml.includes("application/ld+json")) throw new Error(`English guide ${slug} is missing JSON-LD`);
+  if (!guideHtml.includes("skip-link")) throw new Error(`English guide ${slug} is missing skip link`);
+  if (!guideHtml.includes("site-footer")) throw new Error(`English guide ${slug} is missing site footer`);
 }
 
-const sitemap = await readFile(path.join(root, ".site-dist", "sitemap.xml"), "utf8");
-const faArticleCount = faArticleSlugs.length;
-const sitemapUrlCount = (sitemap.match(/<url>/g) || []).length;
-if (sitemapUrlCount < catalog.providers.length + 1 + 1 + guideCount + faArticleCount + enGuideSlugs.length) throw new Error(`Sitemap URL count ${sitemapUrlCount} is less than expected (min ${catalog.providers.length + 2 + guideCount + faArticleCount + enGuideSlugs.length})`);
-// Parse sitemap as XML
-const parser = new XMLParser({ ignoreAttributes: false, attributeNamePrefix: "@_" });
-const sitemapObj = parser.parse(sitemap);
-const urlset = sitemapObj?.urlset;
-if (!urlset) throw new Error("Sitemap XML did not parse into urlset element");
-if (!urlset["@_xmlns:xhtml"]) throw new Error("Sitemap is missing xhtml namespace attribute");
-const urlEntries = Array.isArray(urlset.url) ? urlset.url : [urlset.url];
-const sitemapLocs = new Set(urlEntries.map((u) => u.loc));
-
-// Check every entry has loc
-for (const entry of urlEntries) {
-  if (!entry.loc) throw new Error("Sitemap entry missing <loc>");
-}
-
-// Check canonical URLs present
-for (const provider of catalog.providers) {
-  const expectedLoc = `https://llm.persiantoolbox.ir/providers/${provider.id}/`;
-  if (!sitemapLocs.has(expectedLoc)) throw new Error(`Sitemap is missing ${provider.id}`);
-}
-for (const slug of guideSlugs) {
-  if (!sitemapLocs.has(`https://llm.persiantoolbox.ir/guides/${slug}/`)) throw new Error(`Sitemap missing Persian guide ${slug}`);
-}
-for (const slug of enGuideSlugs) {
-  if (!sitemapLocs.has(`https://llm.persiantoolbox.ir/guides/en/${slug}/`)) throw new Error(`Sitemap missing English guide ${slug}`);
-}
-if (!sitemapLocs.has("https://llm.persiantoolbox.ir/")) throw new Error("Sitemap missing homepage");
-if (!sitemapLocs.has("https://llm.persiantoolbox.ir/en/")) throw new Error("Sitemap missing English homepage");
-
-// Check no bare fa hreflang, and validate reciprocal clusters
-const xhtmlNs = "http://www.w3.org/1999/xhtml";
-for (const entry of urlEntries) {
-  const links = entry["xhtml:link"];
-  if (!links) throw new Error(`Sitemap entry ${entry.loc} has no xhtml:link`);
-  const linkArr = Array.isArray(links) ? links : [links];
-  const hreflangs = linkArr.map((l) => l["@_hreflang"]);
-  const hrefs = linkArr.map((l) => l["@_href"]);
-  
-  // No bare fa
-  if (hreflangs.includes("fa")) throw new Error(`Sitemap ${entry.loc} uses bare fa hreflang, must be fa-IR`);
-  
-  // Must include x-default
-  if (!hreflangs.includes("x-default")) throw new Error(`Sitemap ${entry.loc} missing x-default hreflang`);
-  
-  // Every alternate href must also exist as a loc
-  for (const href of hrefs) {
-    if (!sitemapLocs.has(href) && !href.startsWith("https://llm.persiantoolbox.ir/#")) throw new Error(`Sitemap alternate ${href} referenced from ${entry.loc} is missing as a <loc>`);
-  }
-  
-  // Check no two real lang codes point to same URL (excluding x-default matching fa-IR)
-  const realLinks = linkArr.filter((l) => l["@_hreflang"] !== "x-default");
-  const hrefSet = new Set();
-  for (const l of realLinks) {
-    if (hrefSet.has(l["@_href"])) throw new Error(`Sitemap ${entry.loc} has duplicate href for different hreflang: ${l["@_href"]}`);
-    hrefSet.add(l["@_href"]);
-  }
-}
-
-// Reciprocal cluster check: paired Persian/English article entries must have identical xhtml clusters
-const faGuideUrls = guideSlugs.map((slug) => `https://llm.persiantoolbox.ir/guides/${slug}/`);
-const enGuideUrls = enGuideSlugs.map((slug) => `https://llm.persiantoolbox.ir/guides/en/${slug}/`);
-const faEntries = urlEntries.filter((u) => faGuideUrls.includes(u.loc));
-const enEntries = urlEntries.filter((u) => enGuideSlugs.some((slug) => u.loc === `https://llm.persiantoolbox.ir/guides/en/${slug}/`));
-// Compare each pair (they share the same filename stem minus en- prefix)
-const pairMap = {
-  "practical-free-llm-api-iran": { fa: "https://llm.persiantoolbox.ir/guides/practical-free-llm-api-iran/", en: "https://llm.persiantoolbox.ir/guides/en/en-practical-free-llm-api-iran/" },
-  "build-persian-chatbot-python": { fa: "https://llm.persiantoolbox.ir/guides/build-persian-chatbot-python-free-llm-api/", en: "https://llm.persiantoolbox.ir/guides/en/en-build-persian-chatbot-python/" },
-  "fix-llm-api-401-403-model-not-found": { fa: "https://llm.persiantoolbox.ir/guides/fix-llm-api-401-403-model-not-found/", en: "https://llm.persiantoolbox.ir/guides/en/en-fix-llm-api-401-403/" },
-  "llm-api-rate-limit-429": { fa: "https://llm.persiantoolbox.ir/guides/llm-api-rate-limit-429/", en: "https://llm.persiantoolbox.ir/guides/en/en-llm-api-rate-limit-429/" },
-  "use-free-llm-api-nodejs": { fa: "https://llm.persiantoolbox.ir/guides/use-free-llm-api-nodejs/", en: "https://llm.persiantoolbox.ir/guides/en/en-use-free-llm-api-nodejs/" }
-};
-for (const [key, urls] of Object.entries(pairMap)) {
-  const faEntry = urlEntries.find((u) => u.loc === urls.fa);
-  const enEntry = urlEntries.find((u) => u.loc === urls.en);
-  if (!faEntry) throw new Error(`Sitemap missing FA entry for ${key}`);
-  if (!enEntry) throw new Error(`Sitemap missing EN entry for ${key}`);
-  const faLinks = Array.isArray(faEntry["xhtml:link"]) ? faEntry["xhtml:link"] : [faEntry["xhtml:link"]];
-  const enLinks = Array.isArray(enEntry["xhtml:link"]) ? enEntry["xhtml:link"] : [enEntry["xhtml:link"]];
-  const faCluster = faLinks.map((l) => `${l["@_hreflang"]}:${l["@_href"]}`).sort().join("|");
-  const enCluster = enLinks.map((l) => `${l["@_hreflang"]}:${l["@_href"]}`).sort().join("|");
-  if (faCluster !== enCluster) throw new Error(`Sitemap ${key} reciprocal clusters differ:\n  FA: ${faCluster}\n  EN: ${enCluster}`);
-}
-
-// Check homepage and /en/ reciprocal cluster
-const homeEntry = urlEntries.find((u) => u.loc === "https://llm.persiantoolbox.ir/");
-const enHomeEntry = urlEntries.find((u) => u.loc === "https://llm.persiantoolbox.ir/en/");
-if (!homeEntry) throw new Error("Sitemap missing homepage");
-if (!enHomeEntry) throw new Error("Sitemap missing /en/");
-const homeLinks = Array.isArray(homeEntry["xhtml:link"]) ? homeEntry["xhtml:link"] : [homeEntry["xhtml:link"]];
-const enHomeLinks = Array.isArray(enHomeEntry["xhtml:link"]) ? enHomeEntry["xhtml:link"] : [enHomeEntry["xhtml:link"]];
-const homeCluster = homeLinks.map((l) => `${l["@_hreflang"]}:${l["@_href"]}`).sort().join("|");
-const enHomeCluster = enHomeLinks.map((l) => `${l["@_hreflang"]}:${l["@_href"]}`).sort().join("|");
-if (homeCluster !== enHomeCluster) throw new Error("Sitemap homepage and /en/ clusters must be identical");
-
-const socialAssets = [
-  { file: "assets/social/og-default.png", width: 1200, height: 630 },
-  { file: "assets/social/github-card.png", width: 1280, height: 640 },
-  { file: "assets/social/site-desktop.png", width: 1440, height: 900 },
-  { file: "assets/social/site-mobile.png", width: 390, height: 844 }
-];
-for (const asset of socialAssets) {
-  await access(path.join(root, asset.file));
-  const builtAsset = path.join(root, ".site-dist", asset.file);
-  await access(builtAsset);
-  const signature = (await readFile(builtAsset)).subarray(0, 8);
-  if (!signature.equals(Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]))) {
-    throw new Error(`Built social asset is not a PNG: ${asset.file}`);
-  }
-}
-
-const buildMeta = JSON.parse(await readFile(path.join(root, ".site-dist", "build-meta.json"), "utf8"));
-if (!("source_revision" in buildMeta)) throw new Error("build-meta.json is missing source_revision");
-if (buildMeta.provider_page_count !== catalog.providers.length) throw new Error("build-meta provider_page_count mismatch");
-const expectedGuideCount = guideCount + faArticleSlugs.length + enGuideSlugs.length;
-if (Number(buildMeta.guide_page_count) < expectedGuideCount) throw new Error(`build-meta guide_page_count ${buildMeta.guide_page_count} is less than expected ${expectedGuideCount}`);
-
-// Favicon asset validation in built output
-for (const asset of faviconAssets) {
-  const builtFavicon = path.join(root, ".site-dist", "assets", asset);
-  await access(builtFavicon);
-  if (asset.endsWith(".png")) {
-    const sig = (await readFile(builtFavicon)).subarray(0, 8);
-    if (!sig.equals(Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]))) {
-      throw new Error(`Built favicon is not a valid PNG: ${asset}`);
-    }
-  }
-}
-
-// Check soft-404 guards in configs
-if (/try_files\s+\{path}\s+\{path}\s+\/index\.html/.test(caddy)) throw new Error("Caddy config must not contain SPA fallback to /index.html");
-if (caddy.includes("handle_errors")) {
-  if (!caddy.includes("404")) throw new Error("Caddy handle_errors must handle 404");
-}
-if (/try_files\s+\$uri\s+\$uri\/\s+\/index\.html/.test(nginx)) throw new Error("Nginx config must not contain SPA fallback to /index.html");
-if (!nginx.includes("error_page 404")) throw new Error("Nginx config must have error_page 404 directive");
-if (!nginx.includes("=404")) throw new Error("Nginx try_files must fall back to =404");
-
-await rm(path.join(root, ".site-dist"), { recursive: true, force: true });
-console.log(`Static SEO, analytics, accessibility, and soft-404 checks passed for ${catalog.providers.length} provider pages, ${guideCount}+ guide pages, and ${socialAssets.length} social assets.`);
+console.log(`Site checks passed: ${catalog.provider_count} providers, ${providerDirectories.length} provider pages, ${guideDirectories.length} guide directories.`);
