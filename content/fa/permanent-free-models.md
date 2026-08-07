@@ -145,4 +145,96 @@ print(f'تعداد کل مدل‌ها: {len(models)}')
 "
 ```
 
+## نحوه ثبت‌نام
+
+برای استفاده از مدل‌های رایگان دائمی:
+
+1. از [کاتالوگ رایگان LLM](https://llm.persiantoolbox.ir/) یک Provider با مدل رایگان پیدا کنید
+2. وب‌سایت رسمی Provider را باز کنید
+3. ثبت‌نام کنید (Groq و Mistral نیاز به کارت بانکی ندارند)
+4. API Key را از داشبورد دریافت کنید
+5. نام مدل رایگان را از مستندات پیدا کنید
+6. آن را در فایل `.env` تنظیم کنید
+
+## اولین درخواست API
+
+```bash
+curl -s https://api.groq.com/openai/v1/chat/completions \
+  -H "Authorization: Bearer $API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "llama-3.1-8b-instant",
+    "messages": [{"role": "user", "content": "سلام دنیا"}],
+    "max_tokens": 10
+  }'
+```
+
+## خطاهای رایج و رفع آنها
+
+| خطا | علت | راه‌حل |
+|---|---|---|
+| `Model not found` | مدل انتخاب شده رایگان نیست | لیست مدل‌های رایگان را بررسی کنید |
+| `Free tier exhausted` | سهمیه رایگان روزانه تمام شده | فردا دوباره تلاش کنید |
+| `Card required` | Provider نیاز به کارت بانکی دارد | Provider بدون کارت انتخاب کنید |
+| `429 Too Many Requests` | Rate Limit فعال شده | Exponential Backoff اضافه کنید |
+| `Account suspended` | الگوی غیرعادی استفاده | با پشتیبانی Provider تماس بگیرید |
+
+## چه زمانی از این ارائه‌دهنده استفاده نکنیم
+
+- **مدل اختصاصی رایگان:** وابسته به سیاست Provider است و ممکن است تغییر کند
+- **سهمیه بسیار کم:** اگر RPM یا RPD پایین است، پروژه شما با مشکل مواجه خواهد شد
+- **نیاز به کارت بانکی:** اگر امکان ارائه کارت وجود ندارد، از Providerهای بدون کارت استفاده کنید
+- **پروژه‌های حساس:** داده‌های حساس را به API ارسال نکنید
+- **عدم پایداری:** Providerهایی که مکرراً سیاست خود را تغییر می‌دهند قابل اعتماد نیستند
+
+## منابع رسمی بررسی‌شده
+
+- [کاتالوگ رایگان LLM](https://llm.persiantoolbox.ir/) — مقایسه مدل‌های رایگان و سهمیه Providerها
+- [مخزن GitHub](https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir) — مستندات و راهنما
+- [huggingface.co](https://huggingface.co/) — منبع مدل‌های Open Source
+- [ollama.com](https://ollama.com/) — اجرای محلی مدل‌های رایگان
+
+## وضعیت ایران و نکات ویژه برای کاربران
+
+- مدل‌های Open Source پایدارترین گزینه هستند — حتی اگر API قطع شود، مدل قابل اجراست
+- Groq، Mistral و Cerebras بدون نیاز به کارت بانکی مدل رایگان ارائه می‌دهند
+- از Ollama برای اجرای محلی مدل‌ها استفاده کنید
+- وضعیت دسترسی را در [کاتالوگ](https://llm.persiantoolbox.ir/) بررسی کنید
+
+## جدول مقایسه Providerها
+
+| Provider | مدل‌های رایگان | RPM | RPD | کارت بانکی | OpenAI-compatible |
+|---|---|---|---|---|---|
+| Groq | Llama 3.1 8B, Mixtral 8x7B | 30 | 14400 | خیر | بله |
+| Mistral | Mistral 7B, Codestral | 1 | نامشخص | خیر | بله |
+| Google AI Studio | Gemma 2 9B, Gemini 1.5 Flash | 15 | 1500 | خیر | خیر |
+| Together AI | Llama 3.1 8B, Mistral 7B | 20 | نامشخص | بله ($1 credit) | بله |
+| Cerebras | Llama 3.1 8B, 70B | 30 | 14400 | خیر | بله |
+
+## تست دسترسی مدل‌ها
+
+```bash
+#!/bin/bash
+# تست مدل‌های رایگان موجود در یک Provider
+curl -s "$BASE_URL/models" \
+  -H "Authorization: Bearer $API_KEY" | \
+  python3 -c "
+import sys, json
+data = json.load(sys.stdin)
+models = data.get('data', [])
+free_keywords = ['llama', 'mistral', 'gemma', 'mixtral']
+for m in models:
+    mid = m['id'].lower()
+    if any(k in mid for k in free_keywords):
+        print(f\"  {m['id']}\")
+print(f'تعداد کل مدل‌ها: {len(models)}')
+"
+```
+
 برای مقایسه مدل‌های رایگان، سهمیه و وضعیت دسترسی ایران، [کاتالوگ رایگان LLM](https://llm.persiantoolbox.ir/) را مشاهده کنید. فایل‌های منبع و گزارش مشکلات در [مخزن GitHub](https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir) در دسترس هستند.
+
+## راهنماهای مرتبط
+
+- [Free Tier و اعتبار آزمایشی](free-tier-trial-credit.md) — تفاوت با مدل‌های دائمی
+- [مدل‌های رایگان در OpenAI-compatible](free-llm-api.md) — سرویس‌های تأییدشده
+- [راهنمای ساخت ربات چت فارسی](build-persian-chatbot-python.md) — نمونه پروژه
