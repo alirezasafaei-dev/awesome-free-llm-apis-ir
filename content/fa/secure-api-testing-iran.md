@@ -141,10 +141,114 @@ fi
 
 ## نکات پیکربندی شبکه
 
-- **DNS:** از سرورهای DNS عمومی مانند سرویس گوگل و کلادفلر استفاده کنید
+- **DNS:** از سرورهای DNS عمومی (مانند Google DNS یا Cloudflare DNS) استفاده کنید
+- **Timeout:** مقدار `--connect-timeout` را روی 15-20 ثانیه تنظیم کنید
+- **TLS:** برخی ISPها با TLS handshaking مشکل دارند
+- **Base URL:** برخی Providerها چندین endpoint دارند؛ دامنه‌های جایگزین را امتحان کنید
+- **لاگینگ:** خطاهای شبکه را در فایل لاگ ذخیره کنید تا الگوهای قطعی شناسایی شوند
+
+## نحوه ثبت‌نام
+
+برای تست API از ایران:
+
+1. از [کاتالوگ رایگان LLM](https://llm.persiantoolbox.ir/) Provider مورد نظر را پیدا کنید
+2. وب‌سایت Provider را بدون VPN باز کنید — آیا قابل دسترسی است؟
+3. فرم ثبت‌نام را تکمیل کنید
+4. آیا ایمیل تأیید دریافت کردید؟
+5. API Key را از داشبورد دریافت کنید
+6. مراحل چهارگانه تست را اجرا کنید
+
+## اولین درخواست API
+
+```bash
+# مرحله ۱: تست شبکه
+curl --connect-timeout 10 -s -o /dev/null -w "%{http_code}" https://api.groq.com
+
+# مرحله ۲: تست کلید
+curl -s https://api.groq.com/openai/v1/models \
+  -H "Authorization: Bearer $API_KEY" | head -c 200
+
+# مرحله ۳: تست Inference
+curl -s https://api.groq.com/openai/v1/chat/completions \
+  -H "Authorization: Bearer $API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"model":"llama-3.1-8b-instant","messages":[{"role":"user","content":"سلام از ایران"}],"max_tokens":20}'
+```
+
+هر مرحله را جداگانه اجرا کنید تا دقیقاً مشخص شود مشکل کجاست.
+
+## خطاهای رایج و رفع آنها
+
+| خطا | علت | راه‌حل |
+|---|---|---|
+| `Connection timeout` | دامنه API توسط ISP فیلتر شده | DNS جایگزین امتحان کنید |
+| `SSL certificate error` | اختلال در TLS توسط شبکه | گواهی‌نامه‌ها را به‌روز کنید |
+| `401 Unauthorized` | کلید نامعتبر | کلید را مجدداً بسازید |
+| `403 Forbidden` | IP ایران مسدود شده | Provider دیگری انتخاب کنید |
+| `429 Too Many Requests` | Rate Limit فعال | تأخیر بین درخواست‌ها اضافه کنید |
+
+## چه زمانی از این ارائه‌دهنده استفاده نکنیم
+
+- **Provider IP ایران را مسدود کرده:** درخواست‌ها همیشه با خطا مواجه می‌شوند
+- **نیاز به کارت بانکی:** کاربران ایرانی نمی‌توانند کارت بین‌المللی ارائه دهند
+- **نیاز به VPN برای همه درخواست‌ها:** عملی نیست
+- **قطعی مکرر:** اتصال ناپایدار به معنای غیرقابل اعتماد بودن Provider است
+- **عدم مستندات قابل دسترس:** اگر مستندات فیلتر باشد، عیب‌یابی غیرممکن است
+
+## منابع رسمی بررسی‌شده
+
+- [کاتالوگ رایگان LLM](https://llm.persiantoolbox.ir/) — Providerهای تأیید شده با وضعیت دسترسی ایران
+- [مخزن GitHub](https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir) — گزارش‌های دسترسی از کاربران ایرانی
+- [groq.com](https://www.groq.com/) — Provider با دسترسی تأیید شده از ایران
+- [curl.se/docs](https://curl.se/docs/manpage.html) — مستندات کامل Curl برای تست
+
+## وضعیت ایران و نکات ویژه برای کاربران
+
+- همیشه ابتدا بدون VPN تست کنید — VPN ممکن است امنیت Provider را فعال کند
+- Providerهایی که شماره تلفن ایرانی می‌پذیرند محدود هستند
+- لیستی از Providerهای کارآمد نگه دارید — وضعیت دسترسی مکرراً تغییر می‌کند
+- از اسکریپت تست خودکار برای بررسی سریع چندین Provider استفاده کنید
+- یافته‌های خود را از طریق [مخزن GitHub](https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir) با جامعه به اشتراک بگذارید
+
+## اسکریپت تست خودکار
+
+```bash
+#!/bin/bash
+# تست خودکار چهارمرحله‌ای API
+# Usage: export API_KEY="YOUR_API_KEY" && export BASE_URL="https://api.groq.com/openai/v1" && ./test-api.sh
+
+echo "=== مرحله ۱: دسترسی شبکه ==="
+HTTP_CODE=$(curl --connect-timeout 10 -s -o /dev/null -w "%{http_code}" "$BASE_URL")
+if [ "$HTTP_CODE" = "000" ]; then
+  echo "ناموفق: شبکه مسدود شده"
+  exit 1
+else
+  echo "موفق: آدرس در دسترس (HTTP $HTTP_CODE)"
+fi
+
+echo ""
+echo "=== مرحله ۲: مدل‌ها ==="
+MODELS=$(curl -s --connect-timeout 10 "$BASE_URL/models" \
+  -H "Authorization: Bearer $API_KEY")
+if echo "$MODELS" | grep -q '"data"'; then
+  echo "موفق: مدل‌ها لیست شدند"
+else
+  echo "ناموفق: لیست مدل‌ها در دسترس نیست"
+fi
+```
+
+## نکات پیکربندی شبکه
+
+- **DNS:** از سرورهای DNS عمومی (مانند Google DNS یا Cloudflare DNS) استفاده کنید
 - **Timeout:** مقدار `--connect-timeout` را روی 15-20 ثانیه تنظیم کنید
 - **TLS:** برخی ISPها با TLS handshaking مشکل دارند
 - **Base URL:** برخی Providerها چندین endpoint دارند؛ دامنه‌های جایگزین را امتحان کنید
 - **لاگینگ:** خطاهای شبکه را در فایل لاگ ذخیره کنید تا الگوهای قطعی شناسایی شوند
 
 برای بررسی وضعیت دسترسی هر Provider از ایران، [کاتالوگ رایگان LLM](https://llm.persiantoolbox.ir/) را مشاهده کنید. فایل‌های منبع و گزارش مشکلات در [مخزن GitHub](https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir) در دسترس هستند.
+
+## راهنماهای مرتبط
+
+- [امنیت API Key](api-key-security.md) — جلوگیری از افشای کلید
+- [رفع خطاهای 401 و 403 و Model Not Found](fix-llm-api-401-403-model-not-found.md) — عیب‌یابی درخواست
+- [راهنمای عملی LLM رایگان در ایران](practical-free-llm-api-iran.md) — از انتخاب تا اولین درخواست
