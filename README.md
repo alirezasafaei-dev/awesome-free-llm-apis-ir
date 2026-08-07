@@ -44,7 +44,7 @@
 | [Cerebras Inference](https://cloud.cerebras.ai/) | Gateway رسمی | آزمایشی | 5 RPM · 30,000 TPM | ✅ | اتصال مستقیم برقرار نشد | نیاز به کارت بانکی بین‌المللی | 2026-07-20 |
 | [Cloudflare Workers AI](https://developers.cloudflare.com/workers-ai/) | Gateway رسمی | سهمیه دائمی | 10,000 neurons/day | ✅ | متصل مستقیم | بدون نیاز به کارت بانکی بین‌المللی | 2026-07-20 |
 | [Cohere](https://cohere.com/) | Provider رسمی | آزمایشی | 20 RPM · 1,000 requests/month | — | اتصال مستقیم برقرار نشد | بدون نیاز به کارت بانکی بین‌المللی | 2026-07-20 |
-| [Fireworks AI](https://fireworks.ai/) | Gateway رسمی | اعتبار ماهانه | 10 RPM | ✅ | وضعیت اتصال نامشخص | نیاز به تکمیل شرایط ثبت‌نام | 2026-07-22 |
+| [Fireworks AI](https://fireworks.ai/) | Gateway رسمی | one_time_credit | مدل‌محور | ✅ | وضعیت اتصال نامشخص | نیاز به تکمیل شرایط ثبت‌نام | 2026-08-07 |
 | [FreeTheAI](https://freetheai.xyz/) | Gateway اجتماعی | مدل‌های رایگان | 10 RPM · 250 RPD | ✅ | Endpoint مستقیم در دسترس است | نیاز به شماره موبایل خارجی | 2026-08-05 |
 | [GitHub Models](https://github.com/marketplace/models) | Gateway رسمی | سهمیه دائمی | 15 RPM · 150 RPD | ✅ | متصل مستقیم | بدون نیاز به کارت بانکی بین‌المللی | 2026-07-20 |
 | [Google Gemini API](https://ai.google.dev/) | Provider رسمی | سهمیه دائمی | وابسته به حساب/مدل | ✅ | ایران رسماً پشتیبانی نمی‌شود | بدون نیاز به کارت بانکی بین‌المللی | 2026-07-20 |
