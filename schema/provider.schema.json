@@ -19,8 +19,8 @@
     "sources"
   ],
   "properties": {
-    "schema_version": { "const": "1.1.0" },
-    "service_type": { "enum": ["official_provider", "official_gateway", "community_gateway", "session_bridge", "self_hosted"] },
+    "schema_version": { "enum": ["1.1.0", "1.2.0"] },
+    "service_type": { "enum": ["official_provider", "official_gateway", "community_gateway", "managed_model_hosting", "integrated_inference", "session_bridge", "self_hosted"] },
     "id": { "type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$" },
     "name": { "type": "string", "minLength": 2 },
     "website": { "type": "string", "format": "uri" },
@@ -53,7 +53,7 @@
       "required": ["status", "type", "requires_payment_method", "limits", "notes_fa"],
       "properties": {
         "status": { "enum": ["active", "limited", "trial", "none", "unknown"] },
-        "type": { "enum": ["permanent_allowance", "free_models", "monthly_credit", "trial", "unknown"] },
+        "type": { "enum": ["permanent_allowance", "free_models", "monthly_credit", "recurring_credit", "community_funded", "one_time_credit", "time_limited_credit", "conditional_program", "host_your_own_compute_credit", "trial", "unknown"] },
         "requires_payment_method": { "type": ["boolean", "null"] },
         "limits": {
           "type": "array",
@@ -130,6 +130,16 @@
               "credential_validated_status": { "type": ["integer", "null"], "minimum": 100, "maximum": 599 },
               "response_fingerprint": { "type": ["string", "null"] },
               "response_body_fingerprint": { "type": ["string", "null"] },
+              "rate_limit_headers": {
+                "type": ["object", "null"],
+                "additionalProperties": false,
+                "properties": {
+                  "limit": { "type": ["string", "null"] },
+                  "remaining": { "type": ["string", "null"] },
+                  "reset": { "type": ["string", "null"] },
+                  "retry_after": { "type": ["string", "null"] }
+                }
+              },
               "notes_fa": { "type": ["string", "null"] }
             },
             "allOf": [
@@ -191,7 +201,21 @@
         "level": { "enum": ["docs_verified", "live_verified", "community_report", "unverified"] },
         "last_checked": { "type": "string", "format": "date" },
         "checked_by": { "type": "string" },
-        "stale_after_days": { "type": "integer", "minimum": 1 }
+        "stale_after_days": { "type": "integer", "minimum": 1 },
+        "stages": {
+          "type": ["object", "null"],
+          "additionalProperties": false,
+          "properties": {
+            "documentary": { "type": "boolean" },
+            "signup": { "type": "boolean" },
+            "credential_issuance": { "type": "boolean" },
+            "model_listing": { "type": "boolean" },
+            "authenticated_inference": { "type": "boolean" },
+            "metering": { "type": "boolean" },
+            "iran_direct": { "type": "boolean" },
+            "foreign_control": { "type": "boolean" }
+          }
+        }
       }
     },
     "notes_fa": { "type": "string" },

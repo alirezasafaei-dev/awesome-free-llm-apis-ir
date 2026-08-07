@@ -93,6 +93,17 @@ These tracks continue, but they do not block the growth program unless they intr
 
 Credential validation through a non-Iranian route does not mean that a complete VPN-access matrix has been executed. Endpoint reachability also does not prove successful model execution.
 
+## P0 — Provider catalog expansion
+
+Status: **planned — in execution**
+
+- Grow from 22 to at least 50 accepted providers with real evidence
+- 33 screened candidates across 4 execution waves
+- Documentary research alone is insufficient; at least one authenticated inference required
+- Iran status is recorded separately and only after paired testing
+
+Detailed roadmap: [`docs/PROVIDER_EXPANSION_ROADMAP.en.md`](PROVIDER_EXPANSION_ROADMAP.en.md)
+
 ## P2 — Product development
 
 After an indexing and traffic baseline exists:
@@ -109,5 +120,6 @@ After an indexing and traffic baseline exists:
 2. Execute Issue #42 and record the first search/analytics baseline
 3. Publish the first Persian content cluster through Issue #43
 4. Execute the launch and distribution package in Issue #44
-5. Complete remaining security and verification tracks
-6. Build product features based on observed usage data
+5. Provider catalog expansion (detailed roadmap: [`PROVIDER_EXPANSION_ROADMAP.en.md`](PROVIDER_EXPANSION_ROADMAP.en.md))
+6. Complete remaining security and verification tracks
+7. Build product features based on observed usage data

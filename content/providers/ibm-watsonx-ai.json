@@ -1,0 +1,42 @@
+{
+  "schema_version": "1.0.0",
+  "provider_id": "ibm-watsonx-ai",
+  "intent_fa": "IBM watsonx.ai برای توسعه‌دهنده‌ای مناسب است که API برای چت و تولید متن با سهمیه تکرارشونده می‌خواهد. وضعیت سهمیه و دسترسی ایران باید از خلاصه فنی و Evidence تاریخ‌دار همین صفحه خوانده شود.",
+  "signup_steps_fa": [
+    "از صفحه رسمی IBM Cloud وارد حساب شوید و Lite plan را فعال کنید.",
+    "در بخش watsonx.ai یک کلید API بسازید.",
+    "کلید را در متغیر محیطی ذخیره کنید و آن را در کد یا مخزن Git قرار ندهید."
+  ],
+  "first_request": {
+    "language": "curl",
+    "code": "curl https://us-south.ml.cloud.ibm.com/ml/v1/chat/completions \\\n  -H \"Authorization: Bearer ${WATSONX_API_KEY}\" \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\"model\":\"ibm/granite-3-8b-instruct\",\"messages\":[{\"role\":\"user\",\"content\":\"یک پاسخ کوتاه فارسی بنویس\"}]}'",
+    "notes_fa": "نمونه از Endpoint watsonx.ai استفاده می‌کند. شناسه مدل باید با Lite plan تطبیق داده شود.",
+    "source_url": "https://www.ibm.com/products/watsonx-ai",
+    "checked_at": "2026-08-05"
+  },
+  "common_errors": [
+    {
+      "code": "401",
+      "title_fa": "کلید API نامعتبر یا ارسال‌نشده",
+      "resolution_fa": "وجود متغیر WATSONX_API_KEY را بررسی کنید و هدر Bearer را درست بسازید.",
+      "source_url": "https://www.ibm.com/products/watsonx-ai",
+      "checked_at": "2026-08-05"
+    },
+    {
+      "code": "429",
+      "title_fa": "عبور از Rate Limit",
+      "resolution_fa": "هدر Retry-After را بخوانید و درخواست‌ها را با تأخیر ارسال کنید.",
+      "source_url": "https://www.ibm.com/products/watsonx-ai",
+      "checked_at": "2026-08-05"
+    }
+  ],
+  "when_not_to_use_fa": [
+    "وقتی وضعیت دسترسی نمایش‌داده‌شده در همین صفحه با الزامات پروژه شما سازگار نیست.",
+    "وقتی بدون بررسی مدل و محدودیت حساب، به ظرفیت ثابت و SLA تضمین‌شده نیاز دارید."
+  ],
+  "related_guides": [
+    "openai-sdk-custom-base-url",
+    "free-tier-vs-trial-vs-credit"
+  ],
+  "last_reviewed": "2026-08-05"
+}

@@ -3,8 +3,8 @@
   "last_updated": "2026-07-23",
   "parent_issue": 29,
   "summary": {
-    "provider_count": 22,
-    "unknown_count": 0
+    "provider_count": 27,
+    "unknown_count": 5
   },
   "tracks": [
     {
@@ -78,7 +78,63 @@
           "reason": "Authenticated inference succeeded from the tested Iran direct route and a direct foreign control route"
         }
       ]
+    },
+    {
+      "id": "expansion_wave_a",
+      "issue": 226,
+      "priority": "P0",
+      "execution": "local",
+      "status": "open",
+      "providers": [
+        "z-ai",
+        "jina-ai",
+        "ibm-watsonx-ai",
+        "pinecone-inference",
+        "weaviate-embeddings"
+      ],
+      "blocker_type": "authenticated_inference_required"
     }
   ],
-  "providers": []
+  "providers": [
+    {
+      "provider_id": "z-ai",
+      "track_issue": 226,
+      "blocker_type": "authenticated_inference_required",
+      "next_action": "بررسی مستندات رسمی، وضعیت ثبت‌نام، و اجرای درخواست احراز هویت‌شده",
+      "requires_local_execution": true,
+      "automatable": false
+    },
+    {
+      "provider_id": "jina-ai",
+      "track_issue": 226,
+      "blocker_type": "authenticated_inference_required",
+      "next_action": "بررسی مستندات رسمی، فهرست مدل رایگان، و اجرای درخواست احراز هویت‌شده",
+      "requires_local_execution": true,
+      "automatable": false
+    },
+    {
+      "provider_id": "ibm-watsonx-ai",
+      "track_issue": 226,
+      "blocker_type": "authenticated_inference_required",
+      "next_action": "بررسی مستندات رسمی، جزئیات Lite plan، و اجرای درخواست احراز هویت‌شده",
+      "requires_local_execution": true,
+      "automatable": false
+    },
+    {
+      "provider_id": "pinecone-inference",
+      "track_issue": 226,
+      "blocker_type": "authenticated_inference_required",
+      "next_action": "بررسی مستندات رسمی، مدل‌های رایگان، و اجرای درخواست احراز هویت‌شده",
+      "requires_local_execution": true,
+      "automatable": false
+    },
+    {
+      "provider_id": "weaviate-embeddings",
+      "track_issue": 226,
+      "blocker_type": "authenticated_inference_required",
+      "next_action": "بررسی مستندات رسمی، مدل‌های Embedding رایگان، و اجرای درخواست احراز هویت‌شده",
+      "requires_local_execution": true,
+      "automatable": false
+    }
+  ]
 }

@@ -20,7 +20,8 @@ const phases = Object.freeze({
     "generate:tools:check",
     "tools:test",
     "tools:site:test",
-    "validate:repo-audits"
+    "validate:repo-audits",
+    "provider:expansion:test"
   ],
   content: [
     "content:fa:test",

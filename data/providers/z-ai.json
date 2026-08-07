@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.2.0",
+  "service_type": "official_gateway",
+  "id": "z-ai",
+  "name": "Z.AI",
+  "website": "https://z.ai/",
+  "docs": "https://z.ai/docs",
+  "signup": null,
+  "api": {
+    "base_url": "https://api.z.ai/v1",
+    "openai_compatible": true,
+    "auth": "api_key"
+  },
+  "capabilities": [
+    "chat",
+    "text_generation"
+  ],
+  "free_tier": {
+    "status": "unknown",
+    "type": "unknown",
+    "requires_payment_method": null,
+    "limits": [],
+    "notes_fa": "وضعیت سهمیه رایگان هنوز بررسی نشده است."
+  },
+  "iran_access": {
+    "status": "unknown",
+    "official_policy": "unknown",
+    "tested_from_iran": false,
+    "tested_at": null,
+    "test_method": "not_tested",
+    "network": null,
+    "evidence": [],
+    "notes_fa": "هنوز تست نشده است."
+  },
+  "models": {
+    "dynamic": false,
+    "source": null,
+    "notable": []
+  },
+  "verification": {
+    "level": "unverified",
+    "last_checked": "2026-08-05",
+    "checked_by": "expansion_backlog",
+    "stale_after_days": 30,
+    "stages": {
+      "documentary": false,
+      "signup": false,
+      "credential_issuance": false,
+      "model_listing": false,
+      "authenticated_inference": false,
+      "metering": false,
+      "iran_direct": false,
+      "foreign_control": false
+    }
+  },
+  "notes_fa": "کاندید موج A — نیاز به بررسی مستندات رسمی، وضعیت ثبت‌نام، و صدور Credential.",
+  "sources": ["https://z.ai/"]
+}

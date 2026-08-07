@@ -1,0 +1,345 @@
+{
+  "schema_version": "1.0.0",
+  "last_updated": "2026-08-05",
+  "research_date": "2026-08-05",
+  "target": 50,
+  "baseline": 22,
+  "screened_count": 33,
+  "waves": {
+    "a_immediate": [
+      {
+        "id": "z-ai",
+        "name": "Z.AI",
+        "wave": "a_immediate",
+        "status": "candidate",
+        "expected_service_type": "official_gateway",
+        "expected_free_tier_type": "free_models",
+        "notes": "Verify official API docs, zero-priced model documentation, signup requirements, and credential issuance"
+      },
+      {
+        "id": "jina-ai",
+        "name": "Jina AI",
+        "wave": "a_immediate",
+        "status": "candidate",
+        "expected_service_type": "official_provider",
+        "expected_free_tier_type": "free_models",
+        "notes": "Verify official API docs, free model list, signup requirements, and authenticated inference"
+      },
+      {
+        "id": "ibm-watsonx-ai",
+        "name": "IBM watsonx.ai",
+        "wave": "a_immediate",
+        "status": "candidate",
+        "expected_service_type": "official_provider",
+        "expected_free_tier_type": "recurring_credit",
+        "notes": "Verify official API docs, Lite plan details, signup requirements, and authenticated inference"
+      },
+      {
+        "id": "pinecone-inference",
+        "name": "Pinecone Inference",
+        "wave": "a_immediate",
+        "status": "candidate",
+        "expected_service_type": "official_gateway",
+        "expected_free_tier_type": "free_models",
+        "notes": "Verify official API docs, free tier models, signup requirements, and authenticated inference"
+      },
+      {
+        "id": "weaviate-embeddings",
+        "name": "Weaviate Embeddings",
+        "wave": "a_immediate",
+        "status": "candidate",
+        "expected_service_type": "official_provider",
+        "expected_free_tier_type": "free_models",
+        "notes": "Verify official API docs, free embedding models, signup requirements, and authenticated inference"
+      }
+    ],
+    "b_persistent_credit": [
+      {
+        "id": "ollama-cloud",
+        "name": "Ollama Cloud",
+        "wave": "b_persistent_credit",
+        "status": "candidate",
+        "expected_service_type": "managed_model_hosting",
+        "expected_free_tier_type": "community_funded",
+        "notes": "Classify as managed_model_hosting unless official evidence proves otherwise"
+      },
+      {
+        "id": "elevenlabs",
+        "name": "ElevenLabs",
+        "wave": "b_persistent_credit",
+        "status": "candidate",
+        "expected_service_type": "official_provider",
+        "expected_free_tier_type": "free_models",
+        "notes": "Verify text-to-speech free tier and API access"
+      },
+      {
+        "id": "modal",
+        "name": "Modal",
+        "wave": "b_persistent_credit",
+        "status": "candidate",
+        "expected_service_type": "managed_model_hosting",
+        "expected_free_tier_type": "host_your_own_compute_credit",
+        "notes": "Classify as managed_model_hosting; verify free compute credits"
+      },
+      {
+        "id": "beam",
+        "name": "Beam",
+        "wave": "b_persistent_credit",
+        "status": "candidate",
+        "expected_service_type": "managed_model_hosting",
+        "expected_free_tier_type": "host_your_own_compute_credit",
+        "notes": "Classify as managed_model_hosting; verify free compute credits"
+      },
+      {
+        "id": "roboflow",
+        "name": "Roboflow",
+        "wave": "b_persistent_credit",
+        "status": "candidate",
+        "expected_service_type": "official_provider",
+        "expected_free_tier_type": "free_models",
+        "notes": "Verify computer vision free tier"
+      },
+      {
+        "id": "ai-horde",
+        "name": "AI Horde",
+        "wave": "b_persistent_credit",
+        "status": "candidate",
+        "expected_service_type": "community_gateway",
+        "expected_free_tier_type": "community_funded",
+        "notes": "Community-funded gateway; verify API access and limits"
+      },
+      {
+        "id": "bytez",
+        "name": "Bytez",
+        "wave": "b_persistent_credit",
+        "status": "candidate",
+        "expected_service_type": "official_gateway",
+        "expected_free_tier_type": "free_models",
+        "notes": "Verify official API docs and free model list"
+      },
+      {
+        "id": "pollinations",
+        "name": "Pollinations",
+        "wave": "b_persistent_credit",
+        "status": "candidate",
+        "expected_service_type": "official_provider",
+        "expected_free_tier_type": "free_models",
+        "notes": "Verify free image/text generation API"
+      }
+    ],
+    "c_enhanced_review": [
+      {
+        "id": "ainative-studio",
+        "name": "AINative Studio",
+        "wave": "c_enhanced_review",
+        "status": "candidate",
+        "expected_service_type": "official_gateway",
+        "notes": "Requires enhanced provenance review"
+      },
+      {
+        "id": "zyloai",
+        "name": "ZyloAI",
+        "wave": "c_enhanced_review",
+        "status": "candidate",
+        "expected_service_type": "official_gateway",
+        "notes": "Requires enhanced provenance review"
+      },
+      {
+        "id": "bazaarlink",
+        "name": "BazaarLink",
+        "wave": "c_enhanced_review",
+        "status": "candidate",
+        "expected_service_type": "official_gateway",
+        "notes": "Requires enhanced provenance review"
+      },
+      {
+        "id": "speka",
+        "name": "Speka",
+        "wave": "c_enhanced_review",
+        "status": "candidate",
+        "expected_service_type": "official_gateway",
+        "notes": "Requires enhanced provenance review"
+      },
+      {
+        "id": "apifreellm",
+        "name": "ApiFreeLLM",
+        "wave": "c_enhanced_review",
+        "status": "candidate",
+        "expected_service_type": "community_gateway",
+        "notes": "Requires enhanced provenance review; community gateway"
+      },
+      {
+        "id": "infergrove",
+        "name": "InferGrove",
+        "wave": "c_enhanced_review",
+        "status": "candidate",
+        "expected_service_type": "official_gateway",
+        "notes": "Requires enhanced provenance review"
+      }
+    ],
+    "d_trial_conditional": [
+      {
+        "id": "alibaba-cloud-model-studio",
+        "name": "Alibaba Cloud Model Studio",
+        "wave": "d_trial_conditional",
+        "status": "candidate",
+        "expected_service_type": "official_provider",
+        "notes": "Trial/credit only; must be labeled explicitly"
+      },
+      {
+        "id": "mixedbread",
+        "name": "Mixedbread",
+        "wave": "d_trial_conditional",
+        "status": "candidate",
+        "expected_service_type": "official_provider",
+        "notes": "Trial/credit only; must be labeled explicitly"
+      },
+      {
+        "id": "assemblyai",
+        "name": "AssemblyAI",
+        "wave": "d_trial_conditional",
+        "status": "candidate",
+        "expected_service_type": "official_provider",
+        "notes": "Trial/credit only; must be labeled explicitly"
+      },
+      {
+        "id": "deepgram",
+        "name": "Deepgram",
+        "wave": "d_trial_conditional",
+        "status": "candidate",
+        "expected_service_type": "official_provider",
+        "notes": "Trial/credit only; must be labeled explicitly"
+      },
+      {
+        "id": "voyage-ai",
+        "name": "Voyage AI",
+        "wave": "d_trial_conditional",
+        "status": "candidate",
+        "expected_service_type": "official_provider",
+        "notes": "Trial/credit only; must be labeled explicitly"
+      },
+      {
+        "id": "eden-ai",
+        "name": "Eden AI",
+        "wave": "d_trial_conditional",
+        "status": "candidate",
+        "expected_service_type": "official_gateway",
+        "notes": "Trial/credit only; must be labeled explicitly"
+      },
+      {
+        "id": "stability-ai-platform",
+        "name": "Stability AI Platform",
+        "wave": "d_trial_conditional",
+        "status": "candidate",
+        "expected_service_type": "official_provider",
+        "notes": "Trial/credit only; must be labeled explicitly"
+      },
+      {
+        "id": "baseten",
+        "name": "Baseten",
+        "wave": "d_trial_conditional",
+        "status": "candidate",
+        "expected_service_type": "managed_model_hosting",
+        "notes": "Trial/credit only; must be labeled explicitly"
+      },
+      {
+        "id": "ai21-labs",
+        "name": "AI21 Labs",
+        "wave": "d_trial_conditional",
+        "status": "candidate",
+        "expected_service_type": "official_provider",
+        "notes": "Trial/credit only; must be labeled explicitly"
+      },
+      {
+        "id": "novita-ai",
+        "name": "Novita AI",
+        "wave": "d_trial_conditional",
+        "status": "candidate",
+        "expected_service_type": "official_gateway",
+        "notes": "Trial/credit only; must be labeled explicitly"
+      },
+      {
+        "id": "bento-inference-platform",
+        "name": "Bento Inference Platform",
+        "wave": "d_trial_conditional",
+        "status": "candidate",
+        "expected_service_type": "managed_model_hosting",
+        "notes": "Trial/credit only; must be labeled explicitly"
+      },
+      {
+        "id": "nebius-builder-program",
+        "name": "Nebius Builder Program",
+        "wave": "d_trial_conditional",
+        "status": "candidate",
+        "expected_service_type": "managed_model_hosting",
+        "notes": "Trial/credit only; must be labeled explicitly"
+      },
+      {
+        "id": "kushcompute-embeddings",
+        "name": "KushCompute Embeddings",
+        "wave": "d_trial_conditional",
+        "status": "candidate",
+        "expected_service_type": "official_provider",
+        "notes": "Trial/credit only; must be labeled explicitly"
+      },
+      {
+        "id": "clarifai",
+        "name": "Clarifai",
+        "wave": "d_trial_conditional",
+        "status": "candidate",
+        "expected_service_type": "official_provider",
+        "notes": "Trial/credit only; must be labeled explicitly"
+      }
+    ]
+  },
+  "rejected": [
+    {
+      "id": "together-ai",
+      "name": "Together AI",
+      "reason": "Does not offer persistent free tier",
+      "research_date": "2026-08-05"
+    },
+    {
+      "id": "chutes",
+      "name": "Chutes",
+      "reason": "Persistent free level not documented",
+      "research_date": "2026-08-05"
+    },
+    {
+      "id": "nscale",
+      "name": "Nscale",
+      "reason": "Persistent free tier not documented",
+      "research_date": "2026-08-05"
+    },
+    {
+      "id": "nebius-standard-token-factory",
+      "name": "Nebius Standard Token Factory",
+      "reason": "Initial trial only",
+      "research_date": "2026-08-05"
+    },
+    {
+      "id": "nomic-atlas-starter",
+      "name": "Nomic Atlas Starter",
+      "reason": "Limited to playgrounds",
+      "research_date": "2026-08-05"
+    },
+    {
+      "id": "segmind",
+      "name": "Segmind",
+      "reason": "Persistent free API tier not documented",
+      "research_date": "2026-08-05"
+    },
+    {
+      "id": "replicate",
+      "name": "Replicate",
+      "reason": "Payment required",
+      "research_date": "2026-08-05"
+    },
+    {
+      "id": "deepinfra",
+      "name": "DeepInfra",
+      "reason": "Upfront payment required",
+      "research_date": "2026-08-05"
+    }
+  ]
+}

@@ -1,0 +1,57 @@
+{
+  "schema_version": "1.2.0",
+  "service_type": "official_provider",
+  "id": "weaviate-embeddings",
+  "name": "Weaviate Embeddings",
+  "website": "https://weaviate.io/",
+  "docs": "https://weaviate.io/developers/weaviate",
+  "signup": null,
+  "api": {
+    "base_url": "https://api.weaviate.io/v1",
+    "openai_compatible": true,
+    "auth": "api_key"
+  },
+  "capabilities": [
+    "embeddings"
+  ],
+  "free_tier": {
+    "status": "unknown",
+    "type": "unknown",
+    "requires_payment_method": null,
+    "limits": [],
+    "notes_fa": "وضعیت سهمیه رایگان هنوز بررسی نشده است."
+  },
+  "iran_access": {
+    "status": "unknown",
+    "official_policy": "unknown",
+    "tested_from_iran": false,
+    "tested_at": null,
+    "test_method": "not_tested",
+    "network": null,
+    "evidence": [],
+    "notes_fa": "هنوز تست نشده است."
+  },
+  "models": {
+    "dynamic": false,
+    "source": null,
+    "notable": []
+  },
+  "verification": {
+    "level": "unverified",
+    "last_checked": "2026-08-05",
+    "checked_by": "expansion_backlog",
+    "stale_after_days": 30,
+    "stages": {
+      "documentary": false,
+      "signup": false,
+      "credential_issuance": false,
+      "model_listing": false,
+      "authenticated_inference": false,
+      "metering": false,
+      "iran_direct": false,
+      "foreign_control": false
+    }
+  },
+  "notes_fa": "کاندید موج A — نیاز به بررسی مستندات رسمی، مدل‌های Embedding رایگان، و درخواست احراز هویت‌شده.",
+  "sources": ["https://weaviate.io/"]
+}

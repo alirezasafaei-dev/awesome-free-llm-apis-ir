@@ -19,8 +19,14 @@ export function isInteractiveApplication(html) {
   return /["']@type["']\s*:\s*["'](?:WebApplication|SoftwareApplication)["']/i.test(html);
 }
 
+export function isProviderPage(html) {
+  return /["']@type["']\s*:\s*["'](?:LocalBusiness|Organization)["']/i.test(html)
+    || /data-provider-id/i.test(html);
+}
+
 export function shouldEnforceMinimumWordCount(html) {
   if (!shouldEnforceIndexMetadata(html)) return false;
   if (isInteractiveApplication(html)) return false;
+  if (isProviderPage(html)) return false;
   return true;
 }
