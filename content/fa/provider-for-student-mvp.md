@@ -183,7 +183,70 @@ console.log(response.choices[0].message.content);
 | نصب | آسان | متوسط | نیاز به سخت‌افزار |
 | پشتیبانی فارسی | مستندات انگلیسی | مستندات انگلیسی | جامعه فعال |
 
+## نحوه ثبت‌نام
+
+برای شروع کار با API رایگان در پروژه دانشجویی:
+
+1. از [کاتالوگ رایگان LLM](https://llm.persiantoolbox.ir/) یک Provider بدون نیاز به کارت بانکی انتخاب کنید
+2. Groq ساده‌ترین گزینه است — ثبت‌نام بدون کارت بانکی
+3. در [console.groq.com](https://console.groq.com/) حساب بسازید
+4. API Key را از بخش API Keys دریافت کنید
+5. آن را در فایل `.env` ذخیره کنید
+6. با کد Python یا Node.js بالا تست کنید
+
+## اولین درخواست API
+
+```bash
+curl -s https://api.groq.com/openai/v1/chat/completions \
+  -H "Authorization: Bearer $API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "llama-3.1-8b-instant",
+    "messages": [{"role": "user", "content": "پروژه من چطوره؟"}],
+    "max_tokens": 50
+  }'
+```
+
+## خطاهای رایج و رفع آنها
+
+| خطا | علت | راه‌حل |
+|---|---|---|
+| `401 Unauthorized` | API Key نامعتبر | کلید را مجدداً بسازید |
+| `Model not found` | مدل انتخاب شده رایگان نیست | `llama-3.1-8b-instant` را انتخاب کنید |
+| `Rate limit exceeded` | درخواست‌ها بیش از حد زیاد | تأخیر بین درخواست‌ها اضافه کنید |
+| `Connection timeout` | آدرس API فیلتر شده | DNS یا شبکه را بررسی کنید |
+| `Module not found` | OpenAI نصب نشده | `pip install openai` را اجرا کنید |
+
+## چه زمانی از این ارائه‌دهنده استفاده نکنیم
+
+- **داده‌های بسیار حساس:** از Ollama محلی استفاده کنید
+- **پروژه Production:** Free Tier برای پروژه‌های بزرگ مناسب نیست
+- **نیاز به مدل پیشرفته:** مدل‌های رایگان معمولاً کوچک‌تر هستند
+- **عدم دسترسی از ایران:** ابتدا سیاست دسترسی Provider را بررسی کنید
+- **نیاز به کارت بانکی:** اگر امکان ارائه کارت وجود ندارد، Provider دیگری انتخاب کنید
+
+## منابع رسمی بررسی‌شده
+
+- [کاتالوگ رایگان LLM](https://llm.persiantoolbox.ir/) — مقایسه جامع Providerها و وضعیت دسترسی ایران
+- [مخزن GitHub](https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir) — فایل‌های منبع، گزارش مشکلات و مشارکت
+- [groq.com](https://www.groq.com/) — Provider با سریع‌ترین Free Tier
+- [ollama.com](https://ollama.com/) — اجرای محلی مدل‌ها
+
+## نکات ویژه برای کاربران در ایران
+
+- Groq از ایران قابل دسترسی است و نیاز به کارت بانکی ندارد
+- اگر امکان ارائه کارت بانکی وجود ندارد، فقط از Providerهای بدون کارت استفاده کنید
+- وضعیت دسترسی را در [کاتالوگ](https://llm.persiantoolbox.ir/) بررسی کنید
+- برای پروژه‌های حساس از Ollama محلی استفاده کنید
+- همیشه یک Provider جایگزین آماده داشته باشید
+
 ## منابع
 
 - [کاتالوگ رایگان LLM](https://llm.persiantoolbox.ir/) - مقایسه جامع Providerها و وضعیت دسترسی ایران
 - [مخزن GitHub](https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir) - فایل‌های منبع، گزارش مشکلات و مشارکت
+
+## راهنماهای مرتبط
+
+- [راهنمای LLM رایگان](free-llm-api.md) — انتخاب Provider بر اساس نیاز و سهمیه
+- [راهنمای ساخت ربات چت فارسی با Python](build-persian-chatbot-python.md) — نمونه پروژه‌ی قابل اجرا برای دانشجو
+- [مدل‌های رایگان دائمی](permanent-free-models.md) — گزینه‌های بلندمدت برای MVP
