@@ -142,4 +142,71 @@ embeddings = response.json()["data"][0]["embedding"]
 - برای پروژه‌های دانشجویی، ابتدا از Ollama استفاده کنید و سپس در صورت نیاز به API مهاجرت کنید
 - همیشه یک Plan B برای مواقعی که API اصلی در دسترس نیست داشته باشید
 
+## نحوه ثبت‌نام
+
+برای استفاده از یک API رایگان Embedding:
+
+1. از [کاتالوگ رایگان LLM](https://llm.persiantoolbox.ir/) یک Provider Embedding را انتخاب کنید
+2. در وب‌سایت Provider ثبت‌نام کنید
+3. بخش API Keys یا Dashboard را پیدا کنید
+4. یک کلید API جدید بسازید
+5. کلید را در فایل `.env` ذخیره کنید
+6. مدل مورد نظر را انتخاب کنید (مثلاً `nomic-embed-text-v1.5` یا `text-embedding-3-small`)
+7. با درخواست ساده API تست کنید
+
+## اولین درخواست API
+
+```python
+import os
+import requests
+
+api_key = os.environ["EMBEDDING_API_KEY"]
+base_url = "https://api.groq.com/openai/v1"
+
+response = requests.post(
+    f"{base_url}/embeddings",
+    headers={"Authorization": f"Bearer {api_key}"},
+    json={"model": "nomic-embed-text-v1.5", "input": "متن تستی شما"}
+)
+print(response.json()["data"][0]["embedding"][:5])
+```
+
+## خطاهای رایج و رفع آنها
+
+| خطا | علت | راه‌حل |
+|---|---|---|
+| `Model not found` | مدل انتخاب شده در Free Tier نیست | مدل رایگان جایگزین انتخاب کنید |
+| `429 Too Many Requests` | Rate Limit فعال شده | Exponential Backoff اضافه کنید |
+| `Invalid API Key` | کلید نامعتبر | کلید را مجدداً بسازید |
+| `Unsupported language` | زبان فارسی توسط مدل پشتیبانی نمی‌شود | مدل چندزبانه دیگری امتحان کنید |
+| `Dimension mismatch` | ابعاد بردار با انتظار شما متفاوت است | مستندات مدل را بررسی کنید |
+
+## چه زمانی از این ارائه‌دهنده استفاده نکنیم
+
+- **داده‌های بسیار حساس:** از Ollama محلی استفاده کنید
+- **حجم داده بسیار بالا:** APIهای رایگان محدودیت حجمی دارند
+- **نیاز به کیفیت بالا:** ممکن است نیاز به مدل پولی باشد
+- **پروژه‌های realtime:** تأخیر API ممکن است مشکل‌ساز باشد
+- **عدم دسترسی از ایران:** ابتدا سیاست دسترسی Provider را بررسی کنید
+
+## منابع رسمی بررسی‌شده
+
+- [کاتالوگ رایگان LLM](https://llm.persiantoolbox.ir/) — مقایسه Providerها بر اساس سهمیه و ابعاد
+- [مخزن GitHub](https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir) — مستندات و راهنما
+- [MTEB Leaderboard](https://huggingface.co/spaces/mteb/leaderboard) — رتبه‌بندی مدل‌های Embedding
+- [Ollama Embedding Models](https://ollama.com/search?c=embedding) — مدل‌های محلی
+
+## وضعیت ایران و نکات ویژه برای کاربران
+
+- Groq Embedding از ایران قابل دسترسی است و نیاز به کارت بانکی ندارد
+- از مدل‌های محلی مانند Ollama برای داده‌های حساس استفاده کنید
+- مدل‌های چندزبانه معمولاً برای فارسی مناسب‌ترند
+- قبل از انتخاب Provider، وضعیت دسترسی را در [کاتالوگ](https://llm.persiantoolbox.ir/) بررسی کنید
+
 برای مقایسه سهمیه، مدل‌ها و وضعیت دسترسی ایران، [کاتالوگ رایگان LLM](https://llm.persiantoolbox.ir/) را بررسی کنید. فایل‌های منبع و گزارش مشکلات در [مخزن GitHub](https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir) در دسترس هستند.
+
+## راهنماهای مرتبط
+
+- [راهنمای LLM رایگان برای ایران](free-llm-api.md) — معرفی سرویس‌های رایگان بدون کارت بانکی
+- [راهنمای ثبت‌نام و ساخت حساب در Providerها](api-key-security.md) — نکات امنیت کلید و ساخت حساب
+- [زبان فارسی و ساخت مدل Embedding برای داده‌های حساس](build-persian-chatbot-python.md) — مثال عملی پروژه فارسی
