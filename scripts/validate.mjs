@@ -7,8 +7,8 @@ const providersDir = path.join(root, "data", "providers");
 const allowed = {
   capabilities: new Set(["chat", "text_generation", "reasoning", "embeddings", "tool_calling", "structured_output", "image_generation", "json_mode"]),
   freeStatus: new Set(["active", "limited", "trial", "none", "unknown"]),
-  freeType: new Set(["permanent_allowance", "free_models", "monthly_credit", "trial", "unknown"]),
-  serviceType: new Set(["official_provider", "official_gateway", "community_gateway", "session_bridge", "self_hosted"]),
+  freeType: new Set(["permanent_allowance", "free_models", "monthly_credit", "recurring_credit", "community_funded", "one_time_credit", "time_limited_credit", "conditional_program", "host_your_own_compute_credit", "trial", "unknown"]),
+  serviceType: new Set(["official_provider", "official_gateway", "community_gateway", "managed_model_hosting", "integrated_inference", "session_bridge", "self_hosted"]),
   auth: new Set(["api_key", "oauth", "token", "account_id_and_token", "none_or_api_key", "other"]),
   signupRequirement: new Set(["foreign_mobile_number", "identity_verification", "account_activation"]),
   iranStatus: new Set(["verified_working", "verified_working_vpn", "direct_blocked_vpn_working", "verified_blocked", "officially_unsupported", "intermittent", "signup_blocked", "unknown"]),
@@ -19,7 +19,7 @@ const allowed = {
   connectivityResult: new Set(["http_response", "connection_refused", "timeout", "dns_failure", "tls_failure", "network_error"]),
   verification: new Set(["docs_verified", "live_verified", "community_report", "unverified"])
 };
-const hostedServiceTypes = new Set(["official_provider", "official_gateway", "community_gateway"]);
+const hostedServiceTypes = new Set(["official_provider", "official_gateway", "community_gateway", "managed_model_hosting", "integrated_inference"]);
 const numericLimitFields = new Set([
   "rpm", "rpd", "rph", "tpm", "tph", "tpd", "input_tokens", "output_tokens",
   "concurrent_requests", "daily_units", "monthly_credit_usd", "monthly_requests"
@@ -31,9 +31,11 @@ const allowedKeys = {
   limit: new Set(["scope", "model", "condition", "rpm", "rpd", "rph", "tpm", "tph", "tpd", "input_tokens", "output_tokens", "concurrent_requests", "daily_units", "unit_name", "monthly_credit_usd", "monthly_requests", "notes_fa"]),
   iranAccess: new Set(["status", "official_policy", "tested_from_iran", "tested_at", "test_method", "network", "evidence", "notes_fa"]),
   network: new Set(["country", "isp", "asn", "city", "route", "exit_country", "vpn_provider"]),
-  evidence: new Set(["type", "url", "checked_at", "timestamp", "http_status", "latency_ms", "model_tested", "endpoint", "source", "connectivity_result", "auth_method", "credential_validated_from", "credential_validated_status", "response_fingerprint", "response_body_fingerprint", "notes_fa"]),
+  evidence: new Set(["type", "url", "checked_at", "timestamp", "http_status", "latency_ms", "model_tested", "endpoint", "source", "connectivity_result", "auth_method", "credential_validated_from", "credential_validated_status", "response_fingerprint", "response_body_fingerprint", "rate_limit_headers", "notes_fa"]),
   models: new Set(["dynamic", "source", "notable"]),
-  verification: new Set(["level", "last_checked", "checked_by", "stale_after_days"])
+  verification: new Set(["level", "last_checked", "checked_by", "stale_after_days", "stages"]),
+  rateLimitHeaders: new Set(["limit", "remaining", "reset", "retry_after"]),
+  verificationStages: new Set(["documentary", "signup", "credential_issuance", "model_listing", "authenticated_inference", "metering", "iran_direct", "foreign_control"])
 };
 
 const errors = [];
@@ -172,6 +174,19 @@ function validateEvidence(evidence, file, index) {
   if (hasCredentialStatus && (!Number.isInteger(evidence.credential_validated_status) || evidence.credential_validated_status < 100 || evidence.credential_validated_status > 599)) {
     fail(file, `${prefix}.credential_validated_status must be an integer from 100 to 599`);
   }
+
+  if (evidence.rate_limit_headers != null) {
+    if (typeof evidence.rate_limit_headers !== "object" || Array.isArray(evidence.rate_limit_headers)) {
+      fail(file, `${prefix}.rate_limit_headers must be an object or null`);
+    } else {
+      rejectUnknownKeys(evidence.rate_limit_headers, allowedKeys.rateLimitHeaders, file, `${prefix}.rate_limit_headers.`);
+      for (const hdr of ["limit", "remaining", "reset", "retry_after"]) {
+        if (evidence.rate_limit_headers[hdr] != null && typeof evidence.rate_limit_headers[hdr] !== "string") {
+          fail(file, `${prefix}.rate_limit_headers.${hdr} must be a string or null`);
+        }
+      }
+    }
+  }
 }
 
 function validateProvider(p, file) {
@@ -184,7 +199,7 @@ function validateProvider(p, file) {
   rejectUnknownKeys(p.models, allowedKeys.models, file, "models.");
   rejectUnknownKeys(p.verification, allowedKeys.verification, file, "verification.");
 
-  if (p.schema_version !== "1.1.0") fail(file, "schema_version must be 1.1.0");
+  if (p.schema_version !== "1.1.0" && p.schema_version !== "1.2.0") fail(file, "schema_version must be 1.1.0 or 1.2.0");
   if (!allowed.serviceType.has(p.service_type)) fail(file, "invalid service_type");
   if (!hostedServiceTypes.has(p.service_type)) fail(file, "session_bridge and self_hosted entries belong in the separate tools catalog");
   if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(p.id ?? "")) fail(file, "invalid id");
@@ -285,6 +300,19 @@ function validateProvider(p, file) {
   if (checked > today) fail(file, "verification date cannot be in the future");
   const ageDays = Math.floor((today - checked) / 86_400_000);
   if (ageDays > (p.verification?.stale_after_days ?? 0)) warn(file, `data is stale (${ageDays} days old)`);
+
+  if (p.verification?.stages != null) {
+    if (typeof p.verification.stages !== "object" || Array.isArray(p.verification.stages)) {
+      fail(file, "verification.stages must be an object or null");
+    } else {
+      rejectUnknownKeys(p.verification.stages, allowedKeys.verificationStages, file, "verification.stages.");
+      for (const stage of allowedKeys.verificationStages) {
+        if (p.verification.stages[stage] != null && typeof p.verification.stages[stage] !== "boolean") {
+          fail(file, `verification.stages.${stage} must be a boolean`);
+        }
+      }
+    }
+  }
 
   if ((liveEvidence.length > 0 || connectivityEvidence.length > 0) && p.verification?.level !== "live_verified") {
     fail(file, "live or connectivity evidence requires verification.level=live_verified");

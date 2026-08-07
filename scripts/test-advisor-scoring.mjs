@@ -9,6 +9,12 @@ function recommendationScore(provider, usecase, priority) {
   if (provider.api.openai_compatible) score += priority === "openai-compatible" ? 28 : 10;
   if (provider.free_tier.type === "permanent_allowance") score += 18;
   if (provider.free_tier.type === "free_models") score += 14;
+  if (provider.free_tier.type === "recurring_credit") score += 12;
+  if (provider.free_tier.type === "community_funded") score += 14;
+  if (provider.free_tier.type === "host_your_own_compute_credit") score += 14;
+  if (provider.free_tier.type === "one_time_credit") score += 6;
+  if (provider.free_tier.type === "time_limited_credit") score += 4;
+  if (provider.free_tier.type === "conditional_program") score += 2;
   if (provider.free_tier.requires_payment_method === false) score += priority === "low-friction" ? 20 : 8;
   if (!isStale(provider)) score += priority === "fresh" ? 20 : 8;
   if (priority === "iran-aware") {
@@ -66,7 +72,16 @@ const fixtures = {
   sessionBridge: makeFixture({ service_type: "session_bridge" }),
   notOpenai: makeFixture({ api: { openai_compatible: false } }),
   stale: makeFixture({ verification: { last_checked: "2020-01-01", stale_after_days: 1 } }),
-  limitedFree: makeFixture({ free_tier: { type: "trial", requires_payment_method: true } })
+  limitedFree: makeFixture({ free_tier: { type: "trial", requires_payment_method: true } }),
+  recurringCredit: makeFixture({ free_tier: { type: "recurring_credit", requires_payment_method: false } }),
+  communityFunded: makeFixture({ free_tier: { type: "community_funded", requires_payment_method: false } }),
+  oneTimeCredit: makeFixture({ free_tier: { type: "one_time_credit", requires_payment_method: false } }),
+  timeLimitedCredit: makeFixture({ free_tier: { type: "time_limited_credit", requires_payment_method: false } }),
+  conditionalProgram: makeFixture({ free_tier: { type: "conditional_program", requires_payment_method: null } }),
+  hostYourOwnCompute: makeFixture({ free_tier: { type: "host_your_own_compute_credit", requires_payment_method: false } }),
+  managedModelHosting: makeFixture({ service_type: "managed_model_hosting" }),
+  officialGateway: makeFixture({ service_type: "official_gateway" }),
+  integratedInference: makeFixture({ service_type: "integrated_inference" })
 };
 
 let passed = 0;
@@ -174,6 +189,53 @@ test("reasoning use-case prefers reasoning providers", () => {
   const withReasoning = makeFixture({ capabilities: ["chat", "reasoning"] });
   const withoutReasoning = makeFixture({ capabilities: ["chat"] });
   assert.ok(score(withReasoning, "reasoning") > score(withoutReasoning, "reasoning"));
+});
+
+// ─── New free-tier type scoring ──────────────────────────────
+
+test("recurring_credit scores lower than permanent_allowance but higher than trial", () => {
+  assert.ok(score(fixtures.recurringCredit) > score(fixtures.limitedFree));
+  assert.ok(score(fixtures.unknown) > score(fixtures.recurringCredit));
+});
+
+test("community_funded scores same as free_models", () => {
+  const freeModels = makeFixture({ free_tier: { type: "free_models", requires_payment_method: false } });
+  assert.equal(score(fixtures.communityFunded), score(freeModels));
+});
+
+test("host_your_own_compute_credit scores same as free_models", () => {
+  const freeModels = makeFixture({ free_tier: { type: "free_models", requires_payment_method: false } });
+  assert.equal(score(fixtures.hostYourOwnCompute), score(freeModels));
+});
+
+test("one_time_credit scores lower than recurring_credit", () => {
+  assert.ok(score(fixtures.recurringCredit) > score(fixtures.oneTimeCredit));
+});
+
+test("time_limited_credit scores lower than one_time_credit", () => {
+  assert.ok(score(fixtures.oneTimeCredit) > score(fixtures.timeLimitedCredit));
+});
+
+test("conditional_program scores lowest among free-tier types", () => {
+  assert.ok(score(fixtures.timeLimitedCredit) > score(fixtures.conditionalProgram));
+});
+
+test("trial scores lower than conditional_program", () => {
+  assert.ok(score(fixtures.conditionalProgram) > score(fixtures.limitedFree));
+});
+
+// ─── Service type handling ───────────────────────────────────
+
+test("managed_model_hosting has no penalty vs official_provider", () => {
+  assert.equal(score(fixtures.managedModelHosting), score(fixtures.unknown));
+});
+
+test("official_gateway has no penalty vs official_provider", () => {
+  assert.equal(score(fixtures.officialGateway), score(fixtures.unknown));
+});
+
+test("integrated_inference has no penalty vs official_provider", () => {
+  assert.equal(score(fixtures.integratedInference), score(fixtures.unknown));
 });
 
 // ─── Summary ────────────────────────────────────────────────

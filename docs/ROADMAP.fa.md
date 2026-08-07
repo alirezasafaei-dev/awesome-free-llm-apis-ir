@@ -93,6 +93,17 @@ Track اجرایی: Issue #44
 
 اعتبارسنجی Credential از مسیر غیرایرانی به معنی تکمیل ماتریس VPN نیست. Reachability نیز به معنی موفقیت مدل نیست.
 
+## P0 — گسترش Catalog Provider
+
+وضعیت: **برنامه‌ریزی‌شده — در حال اجرا**
+
+- رشد از ۲۲ به حداقل ۵۰ Provider پذیرفته‌شده با مدرک واقعی
+- ۳۳ کاندید غربال‌شده در ۴ موج اجرایی
+- تحقیق مستنداتی به‌تنهایی کافی نیست؛ حداقل یک درخواست احراز هویت‌شده لازم است
+- وضعیت ایران جداگانه و فقط با تست جفتی ثبت می‌شود
+
+نقشه تخصصی: [`docs/PROVIDER_EXPANSION_ROADMAP.fa.md`](PROVIDER_EXPANSION_ROADMAP.fa.md)
+
 ## P2 — توسعه محصول
 
 بعد از ایجاد Baseline ترافیک و Indexing:
@@ -109,5 +120,6 @@ Track اجرایی: Issue #44
 2. اجرای Issue #42 و ثبت Baseline Search/Analytics
 3. انتشار خوشه اول محتوای فارسی در Issue #43
 4. اجرای بسته معرفی و توزیع در Issue #44
-5. تکمیل Trackهای امنیت و Verification باقی‌مانده
-6. توسعه قابلیت‌های محصول بر اساس دادهٔ استفاده واقعی
+5. گسترش Catalog Provider (نقشه تخصصی: [`PROVIDER_EXPANSION_ROADMAP.fa.md`](PROVIDER_EXPANSION_ROADMAP.fa.md))
+6. تکمیل Trackهای امنیت و Verification باقی‌مانده
+7. توسعه قابلیت‌های محصول بر اساس دادهٔ استفاده واقعی

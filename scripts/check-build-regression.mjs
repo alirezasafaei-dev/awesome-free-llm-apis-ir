@@ -7,7 +7,7 @@ const root = process.cwd();
 const siteDir = path.join(root, ".site-dist");
 const catalogPath = path.join(root, "catalog.json");
 const dataJsonPath = path.join(root, "data.json");
-const expectedProviderCount = 22;
+const providersSourceDir = path.join(root, "data", "providers");
 
 const regressions = [];
 
@@ -28,14 +28,18 @@ async function main() {
     }
   }
 
-  // 1. Provider count
+  // 1. Provider count must match the canonical provider source directory.
+  const sourceProviderFiles = (await readdir(providersSourceDir))
+    .filter((name) => name.endsWith(".json"))
+    .sort();
+  const expectedProviderCount = sourceProviderFiles.length;
   const catalog = JSON.parse(await readFile(catalogPath, "utf8"));
   const actualCount = catalog.providers?.length || 0;
   invariant(
     actualCount === expectedProviderCount,
-    `Provider count mismatch: expected ${expectedProviderCount}, got ${actualCount}`
+    `Provider count mismatch: source has ${expectedProviderCount}, catalog has ${actualCount}`
   );
-  console.log(`Provider count: ${actualCount} (expected ${expectedProviderCount})`);
+  console.log(`Provider count: ${actualCount} (source files: ${expectedProviderCount})`);
 
   // 2. catalog.json structure
   invariant(catalog.schema_version, "catalog.json missing schema_version");
@@ -46,12 +50,17 @@ async function main() {
     `catalog.json provider_count (${catalog.provider_count}) does not match providers.length (${actualCount})`
   );
 
-  // Check catalog provider IDs are unique
-  const catalogIds = catalog.providers.map((p) => p.id);
+  // Check catalog provider IDs are unique and source-owned.
+  const catalogIds = catalog.providers.map((provider) => provider.id);
   const uniqueIds = new Set(catalogIds);
   invariant(
     uniqueIds.size === catalogIds.length,
     `catalog.json has ${catalogIds.length - uniqueIds.size} duplicate provider ID(s)`
+  );
+  const sourceIds = sourceProviderFiles.map((name) => name.replace(/\.json$/u, ""));
+  invariant(
+    JSON.stringify([...catalogIds].sort()) === JSON.stringify(sourceIds),
+    "catalog provider IDs do not match data/providers source files"
   );
   console.log(`catalog.json: ${catalogIds.length} unique provider IDs`);
 
@@ -63,6 +72,10 @@ async function main() {
   invariant(
     data.providerCount === actualCount,
     `data.json providerCount (${data.providerCount}) does not match catalog (${actualCount})`
+  );
+  invariant(
+    data.providers.length === actualCount,
+    `data.json providers.length (${data.providers.length}) does not match catalog (${actualCount})`
   );
   console.log(`data.json: ${data.providers.length} providers`);
 
@@ -92,8 +105,8 @@ async function main() {
       invariant(html.includes(id), `Provider page ${id}/index.html does not contain its own ID`);
       invariant(html.includes("application/ld+json"), `Provider page ${id}/index.html missing JSON-LD`);
       invariant(html.includes("canonical"), `Provider page ${id}/index.html missing canonical`);
-    } catch (err) {
-      regressions.push(`Cannot read provider page ${id}/index.html: ${err.message}`);
+    } catch (error) {
+      regressions.push(`Cannot read provider page ${id}/index.html: ${error.message}`);
     }
   }
 
@@ -101,7 +114,7 @@ async function main() {
   try {
     const sitemap = await readFile(path.join(siteDir, "sitemap.xml"), "utf8");
     const locMatches = sitemap.match(/<loc>([^<]+)<\/loc>/g) || [];
-    const sitemapUrls = locMatches.map((m) => m.replace(/<\/?loc>/g, ""));
+    const sitemapUrls = locMatches.map((match) => match.replace(/<\/?loc>/g, ""));
     const expectedLocations = new Set([
       "https://llm.persiantoolbox.ir/",
       "https://llm.persiantoolbox.ir/en/"
@@ -116,16 +129,16 @@ async function main() {
       );
     }
     console.log(`Sitemap: ${sitemapUrls.length} URLs, all expected locations present`);
-  } catch (err) {
-    regressions.push(`Cannot validate sitemap: ${err.message}`);
+  } catch (error) {
+    regressions.push(`Cannot validate sitemap: ${error.message}`);
   }
 
   // Report
   if (regressions.length) {
     console.error("\n# Build Regression Report");
     console.error(`\n${regressions.length} regression(s) found:\n`);
-    for (const r of regressions) {
-      console.error(`- ${r}`);
+    for (const regression of regressions) {
+      console.error(`- ${regression}`);
     }
     process.exit(1);
   }
@@ -133,7 +146,7 @@ async function main() {
   console.log("\nNo regressions detected. Build is healthy.");
 }
 
-await main().catch((err) => {
-  console.error(`Build regression check failed: ${err.message}`);
+await main().catch((error) => {
+  console.error(`Build regression check failed: ${error.message}`);
   process.exit(1);
 });

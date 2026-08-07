@@ -1,6 +1,7 @@
 import {
   isInteractiveApplication,
   isNoindexPage,
+  isProviderPage,
   parseRobotsContent,
   shouldEnforceIndexMetadata,
   shouldEnforceMinimumWordCount
@@ -24,6 +25,11 @@ const webApp = `<!doctype html><html><head>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication"}</script>
 </head><body>interactive tool</body></html>`;
 
+const providerPage = `<!doctype html><html><head>
+<meta name="robots" content="index,follow">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LocalBusiness","name":"Test Provider"}</script>
+</head><body>provider page with minimal content</body></html>`;
+
 if (parseRobotsContent(article) !== "index,follow") throw new Error("Could not parse standard robots meta");
 if (isNoindexPage(article)) throw new Error("Indexable article was classified as noindex");
 if (!shouldEnforceIndexMetadata(article)) throw new Error("Indexable article metadata checks were disabled");
@@ -40,5 +46,9 @@ if (shouldEnforceMinimumWordCount(reversedRobots)) throw new Error("Reversed noi
 if (!isInteractiveApplication(webApp)) throw new Error("WebApplication JSON-LD was not detected");
 if (!shouldEnforceIndexMetadata(webApp)) throw new Error("Indexable WebApplication metadata checks were disabled");
 if (shouldEnforceMinimumWordCount(webApp)) throw new Error("Interactive application should not require article word count");
+
+if (!isProviderPage(providerPage)) throw new Error("Provider page JSON-LD was not detected");
+if (!shouldEnforceIndexMetadata(providerPage)) throw new Error("Indexable provider page metadata checks were disabled");
+if (shouldEnforceMinimumWordCount(providerPage)) throw new Error("Provider page should not require article word count");
 
 console.log("SEO page-policy tests passed.");
