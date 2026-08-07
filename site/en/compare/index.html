@@ -4,9 +4,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1">
-  <meta name="description" content="Compare two or three free LLM APIs side by side: free-tier type, payment method, rate limits, models, OpenAI compatibility, and regional access evidence.">
-  <meta property="og:title" content="Compare Free LLM APIs — Side-by-Side Provider Comparison">
-  <meta property="og:description" content="Compare free AI providers by quota, models, signup requirements, and regional access. Evidence-based, sourced from official documentation.">
+  <meta name="description" content="Compare free LLM APIs by free-tier type, connection method, account requirements, request limits, models, and OpenAI compatibility.">
+  <meta property="og:title" content="Compare Free LLM APIs — Connection and Account Requirements">
+  <meta property="og:description" content="Compare providers with connection evidence and account prerequisites shown as separate facts.">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="en_US">
   <meta property="og:url" content="https://llm.persiantoolbox.ir/en/compare/">
@@ -19,7 +19,7 @@
   <link rel="alternate" hreflang="x-default" href="https://llm.persiantoolbox.ir/en/compare/">
   <link rel="alternate" type="application/json" href="../../catalog.json" title="Machine-readable provider catalog">
   <link rel="stylesheet" href="../../styles.css">
-  <title>Compare Free LLM APIs — Side-by-Side | Awesome Free LLM APIs</title>
+  <title>Compare Free LLM APIs — Connection and Account Requirements</title>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -29,7 +29,7 @@
         "@id": "https://llm.persiantoolbox.ir/en/compare/#app",
         "url": "https://llm.persiantoolbox.ir/en/compare/",
         "name": "Free LLM API Compare Tool",
-        "description": "Side-by-side comparison of free LLM providers based on evidence-based catalog data.",
+        "description": "Side-by-side comparison of free LLM providers with connection method and account requirements shown separately.",
         "applicationCategory": "DeveloperApplication",
         "operatingSystem": "All",
         "inLanguage": "en",
@@ -47,8 +47,8 @@
   </script>
   <link rel="stylesheet" href="./page-inline.css">
   <link rel="stylesheet" href="../../ux-clarity.css">
-    <link rel="stylesheet" href="../../ui-pro-max.css">
-    <link rel="stylesheet" href="../../ui-pro-max-components.css">
+  <link rel="stylesheet" href="../../ui-pro-max.css">
+  <link rel="stylesheet" href="../../ui-pro-max-components.css">
 </head>
 <body data-page-type="compare">
   <a class="skip-link" href="#compare-content">Skip to main content</a>
@@ -61,13 +61,13 @@
     <section class="compare-en-hero" aria-labelledby="compare-title">
       <p class="eyebrow">Decisions with the same data</p>
       <h1 id="compare-title">Compare providers<br><span>side by side.</span></h1>
-      <p>Free-tier type, payment method, rate limits, Base URL, models, and regional access — all read from the same <code>catalog.json</code>. This page does not guarantee quality or permanent availability.</p>
+      <p>Free-tier type, connection method, account requirements, request limits, Base URL, and models are read from the same <code>catalog.json</code>. A required international card or foreign phone number is not described as a network block.</p>
       <div class="hero-actions"><a class="button primary" href="../api-finder/">Back to API Finder</a></div>
     </section>
 
     <section class="compare-boundary" aria-labelledby="compare-boundary-title">
       <h2 id="compare-boundary-title">What this comparison does not prove</h2>
-      <p>Reachability, signup, key issuance, and inference are separate evidence layers. A status of "unknown" does not mean working or blocked. Before signing up, review each provider's timestamped evidence and official documentation.</p>
+      <p>Reachability, signup, account prerequisites, key issuance, and inference are separate evidence layers. A status of "unknown" does not mean working or blocked. Review each provider's timestamped evidence and official documentation before signing up.</p>
     </section>
 
     <div id="compare-loading" class="message-card">Loading catalog…</div>
@@ -80,7 +80,7 @@
 
     <section id="compare-results" aria-labelledby="compare-results-title" hidden>
       <div class="compare-heading">
-        <div><p class="eyebrow">Maximum three options</p><h2 id="compare-results-title">Feature & limit comparison</h2></div>
+        <div><p class="eyebrow">Maximum three options</p><h2 id="compare-results-title">Feature and requirement comparison</h2></div>
         <button id="compare-clear" class="button secondary" type="button">Clear all</button>
       </div>
       <div id="compare-grid" class="compare-grid"></div>
@@ -88,46 +88,21 @@
   </main>
 
   <footer class="site-footer" role="contentinfo">
-      <div class="footer-grid">
-        <div class="footer-brand">
-          <strong>Awesome Free LLM APIs IR</strong>
-          <p>Evidence-first catalog of free LLM APIs with quotas, OpenAI compatibility, and dated access evidence. No ads. No permanent-access guarantees.</p>
-        </div>
-        <nav class="footer-nav" aria-label="Footer">
-          <div>
-            <h2 class="footer-heading">Product</h2>
-            <ul>
-              <li><a href="../../en/">Home</a></li>
-              <li><a href="../../en/api-finder/">API Finder</a></li>
-              <li><a href="../../en/compare/">Compare</a></li>
-              <li><a href="../../en/quick-start/">Quick Start</a></li>
-              <li><a href="../../tools/">Tools</a></li>
-            </ul>
-          </div>
-          <div>
-            <h2 class="footer-heading">Trust &amp; data</h2>
-            <ul>
-              <li><a href="../../methodology/">Methodology</a></li>
-              <li><a href="../../catalog.json">catalog.json</a></li>
-              <li><a href="../../data.json">data.json</a></li>
-              <li><a href="../../sitemap.xml">Sitemap</a></li>
-              <li><a href="../../llms.txt">llms.txt</a></li>
-            </ul>
-          </div>
-          <div>
-            <h2 class="footer-heading">Contribute</h2>
-            <ul>
-              <li><a href="https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir">GitHub</a></li>
-              <li><a href="https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir/issues/new/choose">Report an issue</a></li>
-              <li><a href="../../">فارسی</a></li>
-            </ul>
-          </div>
-        </nav>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <strong>Awesome Free LLM APIs IR</strong>
+        <p>Evidence-first catalog of free LLM APIs with quotas, OpenAI compatibility, and dated access evidence. No ads. No permanent-access guarantees.</p>
       </div>
-      <p class="footer-meta">MIT License · No commercial affiliation with providers · Do not publish IPs, API keys, or account data</p>
-    </footer>
-  <script defer src="./compare.js"></script>
+      <nav class="footer-nav" aria-label="Footer">
+        <div><h2 class="footer-heading">Product</h2><ul><li><a href="../../en/">Home</a></li><li><a href="../../en/api-finder/">API Finder</a></li><li><a href="../../en/compare/">Compare</a></li><li><a href="../../en/quick-start/">Quick Start</a></li><li><a href="../../tools/">Tools</a></li></ul></div>
+        <div><h2 class="footer-heading">Trust &amp; data</h2><ul><li><a href="../../methodology/">Methodology</a></li><li><a href="../../catalog.json">catalog.json</a></li><li><a href="../../data.json">data.json</a></li><li><a href="../../sitemap.xml">Sitemap</a></li><li><a href="../../llms.txt">llms.txt</a></li></ul></div>
+        <div><h2 class="footer-heading">Contribute</h2><ul><li><a href="https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir">GitHub</a></li><li><a href="https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir/issues/new/choose">Report an issue</a></li><li><a href="../../">فارسی</a></li></ul></div>
+      </nav>
+    </div>
+    <p class="footer-meta">MIT License · No commercial affiliation with providers · Do not publish IPs, API keys, or account data</p>
+  </footer>
+  <script type="module" src="./compare.js"></script>
   <script defer src="../../plausible-guard.js"></script>
-    <script defer data-domain="llm.persiantoolbox.ir" src="../../plausible.js"></script>
+  <script defer data-domain="llm.persiantoolbox.ir" src="../../plausible.js"></script>
 </body>
 </html>

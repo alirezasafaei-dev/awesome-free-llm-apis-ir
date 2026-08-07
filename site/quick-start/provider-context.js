@@ -1,3 +1,10 @@
+import {
+  accountRequirementPresentation,
+  connectionPresentation,
+  freeTierLabel,
+  serviceTypeLabel
+} from "../provider-presentation.js";
+
 const runProviderContextWhenReady = (callback) => {
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", callback, { once: true });
   else callback();
@@ -25,33 +32,6 @@ runProviderContextWhenReady(async () => {
       safeProps[key] = value;
     }
     window.plausible(name, { props: safeProps });
-  };
-
-  const labels = {
-    service: {
-      official_provider: "Provider رسمی",
-      official_gateway: "Gateway رسمی",
-      community_gateway: "Gateway اجتماعی",
-      session_bridge: "Session bridge",
-      self_hosted: "Self-hosted"
-    },
-    freeTier: {
-      permanent_allowance: "سهمیه دائمی",
-      free_models: "مدل‌های رایگان",
-      monthly_credit: "اعتبار ماهانه",
-      trial: "آزمایشی",
-      unknown: "نامشخص"
-    },
-    access: {
-      verified_working: "مستقیم از ایران تست شده",
-      verified_working_vpn: "با VPN تست شده",
-      direct_blocked_vpn_working: "مستقیم مسدود؛ VPN موفق",
-      verified_blocked: "مستقیم مسدود",
-      officially_unsupported: "به‌طور رسمی پشتیبانی نمی‌شود",
-      intermittent: "ناپایدار",
-      signup_blocked: "ثبت‌نام مسدود",
-      unknown: "هنوز مدرک کافی نداریم"
-    }
   };
 
   function safeHttpsUrl(value) {
@@ -85,12 +65,6 @@ runProviderContextWhenReady(async () => {
       .map((limit) => typeof limit.model === "string" ? limit.model.trim() : "")
       .filter((model) => modelPattern.test(model));
     return [...new Set(models)][0] ?? null;
-  }
-
-  function paymentLabel(value) {
-    if (value === false) return "کارت بانکی لازم نیست";
-    if (value === true) return "روش پرداخت لازم است";
-    return "نیاز به پرداخت نامشخص است";
   }
 
   function environmentText(baseUrl, model) {
@@ -134,6 +108,8 @@ runProviderContextWhenReady(async () => {
     const apiBaseUrl = safeHttpsUrl(provider.api?.base_url);
     const docsUrl = safeHttpsUrl(provider.docs);
     const baseUrlLabel = apiBaseUrl ?? "در کاتالوگ ثبت نشده یا HTTPS معتبر نیست";
+    const connection = connectionPresentation(provider, "fa");
+    const account = accountRequirementPresentation(provider, "fa");
     const hero = document.querySelector(".quick-start-hero");
     if (!hero) return;
 
@@ -148,18 +124,18 @@ runProviderContextWhenReady(async () => {
     panel.append(textElement(
       "p",
       provider.api?.openai_compatible && apiBaseUrl
-        ? "اطلاعات زیر مستقیم از catalog.json بارگذاری شده است. کلید API فقط در متغیر محیطی دستگاه شما قرار می‌گیرد و در این صفحه وارد یا ذخیره نمی‌شود."
+        ? "اطلاعات زیر مستقیم از catalog.json بارگذاری شده است. روش اتصال و پیش‌نیاز حساب دو موضوع جدا هستند. کلید API فقط در متغیر محیطی دستگاه شما قرار می‌گیرد و در این صفحه وارد یا ذخیره نمی‌شود."
         : "این Provider یا Base URL آن برای نمونه OpenAI-compatible به‌صورت معتبر تأیید نشده است. از نمونه‌کد عمومی فقط پس از تطبیق با مستندات رسمی استفاده کنید."
     ));
 
     const grid = document.createElement("div");
     grid.className = "provider-context-grid";
     grid.append(
-      contextItem("نوع سرویس", labels.service[provider.service_type] ?? provider.service_type ?? "نامشخص"),
-      contextItem("نوع دسترسی رایگان", labels.freeTier[provider.free_tier?.type] ?? provider.free_tier?.type ?? "نامشخص"),
-      contextItem("پرداخت", paymentLabel(provider.free_tier?.requires_payment_method)),
+      contextItem("نوع سرویس", serviceTypeLabel(provider.service_type, "fa")),
+      contextItem("نوع دسترسی رایگان", freeTierLabel(provider.free_tier?.type, "fa")),
+      contextItem("روش اتصال از ایران", connection.label),
+      contextItem("پیش‌نیاز حساب", account.label),
       contextItem("Base URL", baseUrlLabel, true),
-      contextItem("وضعیت ایران", labels.access[provider.iran_access?.status] ?? provider.iran_access?.status ?? "نامشخص"),
       contextItem("آخرین بررسی", provider.verification?.last_checked ?? "تاریخ ثبت نشده"),
       contextItem("مدل نمونه", model ?? "VERIFIED_MODEL_ID", true),
       contextItem("کاربرد انتخاب‌شده", usecase)

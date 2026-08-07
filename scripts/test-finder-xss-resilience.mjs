@@ -160,6 +160,17 @@ function renderFinder(source, label, provider, payload) {
     serviceLabels: {},
     accessLabels: {},
     accessEmoji: {},
+    serviceTypeLabel: (value) => String(value ?? ""),
+    connectionPresentation: (value) => ({
+      status: String(value?.iran_access?.status ?? "unknown"),
+      tone: "unknown",
+      label: String(value?.iran_access?.status ?? "")
+    }),
+    accountRequirementPresentation: (value) => ({
+      requirements: [],
+      tone: "unknown",
+      label: String(value?.service_type ?? "")
+    }),
     limitText: () => payload,
     isStale: () => false
   };
@@ -170,6 +181,10 @@ function renderFinder(source, label, provider, payload) {
     "globalThis.render = createCardElement;"
   ].join("\n"), sandbox, { filename: label });
   return sandbox.render(provider, 99, { fixture: { label: payload, value: 1 } }, 0, "chat", "any");
+}
+
+function stripModuleImports(source) {
+  return source.replace(/^import\s*\{[\s\S]*?\}\s*from\s*["'][^"']+["'];\s*/u, "");
 }
 
 function compareHarness(source, label) {
@@ -191,10 +206,22 @@ function compareHarness(source, label) {
     console,
     fetch: () => pending,
     setTimeout,
-    clearTimeout
+    clearTimeout,
+    serviceTypeLabel: (value) => String(value ?? ""),
+    freeTierLabel: (value) => String(value ?? ""),
+    connectionPresentation: (value) => ({
+      status: String(value?.iran_access?.status ?? "unknown"),
+      tone: "unknown",
+      label: String(value?.iran_access?.status ?? "")
+    }),
+    accountRequirementPresentation: (value) => ({
+      requirements: [],
+      tone: "unknown",
+      label: String(value?.service_type ?? "")
+    })
   };
   vm.runInNewContext(
-    `${source}\n;globalThis.render = providerCard; globalThis.safe = safeIds;`,
+    `${stripModuleImports(source)}\n;globalThis.render = providerCard; globalThis.safe = safeIds;`,
     sandbox,
     { filename: label }
   );

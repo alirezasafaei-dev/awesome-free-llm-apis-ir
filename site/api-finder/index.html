@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#111827">
     <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
-    <meta name="description" content="ابزار هوشمند پیدا کردن API رایگان LLM بر اساس نیاز شما: کاربرد، بودجه، ظرفیت درخواست و منطقه. با امتیازدهی شفاف و مقایسه دقیق.">
-    <meta property="og:title" content="API Finder | پیدا کردن API رایگان LLM">
-    <meta property="og:description" content="ابزار هوشمند جست‌وجو و مقایسه APIهای رایگان LLM با فیلترهای دقیق و سیستم امتیازدهی شفاف.">
+    <meta name="description" content="پیداکردن API رایگان LLM بر اساس کاربرد، بودجه، ظرفیت درخواست، روش اتصال از ایران و پیش‌نیاز حساب؛ با امتیازدهی شفاف.">
+    <meta property="og:title" content="API Finder | انتخاب API با روش اتصال و شرایط حساب">
+    <meta property="og:description" content="APIهای رایگان LLM را با روش اتصال، کارت بانکی، شماره خارجی و امتیازدهی شفاف مقایسه کنید.">
     <meta property="og:type" content="website">
     <meta property="og:locale" content="fa_IR">
     <meta property="og:site_name" content="Awesome Free LLM APIs IR">
@@ -16,8 +16,8 @@
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="API Finder | پیدا کردن API رایگان LLM">
-    <meta name="twitter:description" content="ابزار هوشمند جست‌وجو و مقایسه APIهای رایگان LLM.">
+    <meta name="twitter:title" content="API Finder | انتخاب API رایگان LLM">
+    <meta name="twitter:description" content="جست‌وجو و مقایسه APIهای رایگان با روش اتصال و پیش‌نیاز حساب.">
     <meta name="twitter:image" content="https://llm.persiantoolbox.ir/assets/social/og-default.png">
     <link rel="canonical" href="https://llm.persiantoolbox.ir/api-finder/">
     <link rel="alternate" hreflang="fa-IR" href="https://llm.persiantoolbox.ir/api-finder/">
@@ -27,7 +27,7 @@
     <link rel="alternate" type="text/plain" href="../llms.txt" title="LLM-readable project summary">
     <link rel="manifest" href="../manifest.webmanifest">
     <link rel="stylesheet" href="../styles.css">
-    <title>API Finder | پیدا کردن API رایگان LLM | Awesome Free LLM APIs IR</title>
+    <title>API Finder | روش اتصال و پیش‌نیاز حساب</title>
     <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
     <link rel="mask-icon" href="../assets/mask-icon.svg" color="#2563EB">
     <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32x32.png">
@@ -50,15 +50,11 @@
           "url": "https://llm.persiantoolbox.ir/api-finder/",
           "name": "API Finder — ابزار پیدا کردن API رایگان LLM",
           "inLanguage": ["fa", "en"],
-          "description": "ابزار هوشمند جست‌وجو و مقایسه APIهای رایگان LLM با فیلترهای دقیق و سیستم امتیازدهی شفاف.",
+          "description": "ابزار انتخاب API رایگان LLM با تفکیک روش اتصال از پیش‌نیاز حساب و امتیازدهی شفاف.",
           "applicationCategory": "DeveloperApplication",
           "operatingSystem": "All",
           "browserRequirements": "Requires JavaScript",
-          "offers": {
-            "@type": "Offer",
-            "price": "0",
-            "priceCurrency": "USD"
-          },
+          "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
           "publisher": { "@id": "https://llm.persiantoolbox.ir/#organization" }
         },
         {
@@ -76,144 +72,56 @@
     <link rel="stylesheet" href="../ux-clarity.css">
     <link rel="stylesheet" href="../ui-pro-max.css">
     <link rel="stylesheet" href="../ui-pro-max-components.css">
-</head>
+  </head>
   <body>
     <a class="skip-link" href="#main-content">رفتن به محتوای اصلی</a>
-
     <header class="topbar">
-      <a class="brand" href="../" aria-label="صفحه اصلی">
-        <span class="brand-mark" aria-hidden="true"><img src="../assets/logo-symbol.svg" alt="" width="40" height="40"></span>
-        <span>Awesome Free LLM APIs IR</span>
-      </a>
-      <nav aria-label="پیوندهای اصلی">
-        <a href="../">خانه</a>
-        <a href="../api-finder/" aria-current="page">انتخاب API</a>
-        <a href="../quick-start/">شروع سریع</a>
-        <a href="../compare/">مقایسه</a>
-        <a href="../tools/">ابزارها</a>
-        <a class="language-link" href="../en/api-finder/">EN</a>
-        <button id="theme-toggle" class="icon-button" type="button" aria-pressed="false" aria-label="تغییر به پوسته روشن">◐</button>
-      </nav>
+      <a class="brand" href="../" aria-label="صفحه اصلی"><span class="brand-mark" aria-hidden="true"><img src="../assets/logo-symbol.svg" alt="" width="40" height="40"></span><span>Awesome Free LLM APIs IR</span></a>
+      <nav aria-label="پیوندهای اصلی"><a href="../">خانه</a><a href="../api-finder/" aria-current="page">انتخاب API</a><a href="../quick-start/">شروع سریع</a><a href="../compare/">مقایسه</a><a href="../tools/">ابزارها</a><a class="language-link" href="../en/api-finder/">EN</a><button id="theme-toggle" class="icon-button" type="button" aria-pressed="false" aria-label="تغییر به پوسته روشن">◐</button></nav>
     </header>
 
     <main id="main-content">
       <section class="api-finder-hero" aria-labelledby="finder-hero-title">
         <p class="eyebrow">انتخاب مبتنی بر شواهد</p>
         <h1 id="finder-hero-title">API مناسب پروژه‌ات را پیدا کن</h1>
-        <p>نوع پروژه و محدودیت رایگان را مشخص کن. پیشنهادها از کاتالوگ تاریخ‌دار ساخته می‌شوند و هر نتیجه دلیل، محدودیت و مسیر بررسی خودش را دارد.</p>
+        <p>کاربرد و محدودیت را مشخص کن. روش اتصال از ایران، پیش‌نیاز حساب و سهمیه رایگان جدا نمایش داده می‌شوند؛ نیاز به کارت یا شماره خارجی به‌معنای مسدودیت شبکه نیست.</p>
       </section>
 
       <form id="finder-form" class="finder-form" role="search" aria-label="فرم جست‌وجوی API">
-        <label>کاربرد / Use Case
-          <select id="finder-usecase">
-            <option value="chat">چت و تولید متن / Chat</option>
-            <option value="coding">کدنویسی / Coding</option>
-            <option value="reasoning">استدلال / Reasoning</option>
-            <option value="embeddings">Embedding و جست‌وجو</option>
-          </select>
-        </label>
-        <label>بودجه / Budget
-          <select id="finder-budget">
-            <option value="no-card">بدون کارت بانکی / No credit card</option>
-            <option value="free-only">فقط رایگان / Free only</option>
-            <option value="any">هر نوع / Any</option>
-          </select>
-        </label>
-        <label>ظرفیت درخواست / Rate limit
-          <select id="finder-latency">
-            <option value="low">کم اهمیت / Low priority</option>
-            <option value="important">مهم / Important</option>
-            <option value="critical">بحرانی / Critical</option>
-          </select>
-        </label>
-        <label>منطقه / Region
-          <select id="finder-region">
-            <option value="iran">ایران مستقیم / Iran direct</option>
-            <option value="iran-vpn">ایران با VPN / Iran VPN</option>
-            <option value="any">هر منطقه / Any</option>
-          </select>
-        </label>
-        <div class="finder-actions">
-          <button class="button primary" type="submit" id="finder-submit">نمایش پیشنهادها</button>
-          <button class="button secondary" type="reset" id="finder-reset">پاک‌کردن / Reset</button>
-        </div>
+        <label>کاربرد / Use Case<select id="finder-usecase"><option value="chat">چت و تولید متن / Chat</option><option value="coding">کدنویسی / Coding</option><option value="reasoning">استدلال / Reasoning</option><option value="embeddings">Embedding و جست‌وجو</option></select></label>
+        <label>بودجه / Budget<select id="finder-budget"><option value="no-card">بدون کارت بانکی / No credit card</option><option value="free-only">فقط رایگان / Free only</option><option value="any">هر نوع / Any</option></select></label>
+        <label>ظرفیت درخواست / Rate limit<select id="finder-latency"><option value="low">کم اهمیت / Low priority</option><option value="important">مهم / Important</option><option value="critical">بحرانی / Critical</option></select></label>
+        <label>روش اتصال / Connection<select id="finder-region"><option value="iran">اتصال مستقیم از ایران</option><option value="iran-vpn">متصل با فیلترشکن</option><option value="any">هر روش اتصال</option></select></label>
+        <div class="finder-actions"><button class="button primary" type="submit" id="finder-submit">نمایش پیشنهادها</button><button class="button secondary" type="reset" id="finder-reset">پاک‌کردن / Reset</button></div>
       </form>
 
-      <div id="finder-status" class="finder-status" hidden>
-        <p id="finder-status-text"></p>
-      </div>
-
+      <div id="finder-status" class="finder-status" hidden><p id="finder-status-text"></p></div>
       <div id="finder-results" class="finder-results"></div>
       <div id="finder-loading" class="message-card" role="status" aria-live="polite">در حال آماده‌کردن پیشنهادها…</div>
       <div id="finder-error" class="message-card error" role="alert" hidden>دریافت داده ناموفق بود. <button class="button secondary" type="button" id="finder-retry">تلاش دوباره</button></div>
-      <div id="finder-empty" class="finder-empty" hidden>
-        <p><strong>موردی مطابق فیلترهای شما پیدا نشد.</strong></p>
-        <p>معیارهای دیگری را امتحان کنید یا <a href="https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir/issues/new/choose">گزارش دهید</a> که چه سرویسی نیاز دارید.</p>
-      </div>
+      <div id="finder-empty" class="finder-empty" hidden><p><strong>موردی مطابق فیلترهای شما پیدا نشد.</strong></p><p>معیارهای دیگری را امتحان کنید یا <a href="https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir/issues/new/choose">گزارش دهید</a> که چه سرویسی نیاز دارید.</p></div>
 
       <details id="finder-disclosure" class="finder-disclosure">
         <summary>چرا این امتیاز؟ / Why this score?</summary>
         <div class="finder-disclosure-content">
-          <div><strong>تطابق قابلیت (+۳۵)</strong><span>اگر Provider قابلیت‌های موردنیاز کاربرد انتخاب‌شده (چت، کدنویسی، استدلال، Embedding) را داشته باشد.</span></div>
-          <div><strong>بودجه (تا +۲۰)</strong><span>بدون کارت بانکی +۲۰، فقط مدل رایگان +۱۵، هر نوع +۵.</span></div>
-          <div><strong>ظرفیت درخواست (تا +۱۵)</strong><span>بر اساس بیشترین RPM ثبت‌شده؛ RPM معادل سرعت پاسخ نیست.</span></div>
-          <div><strong>منطقه (تا +۳۰)</strong><span>ایران مستقیم +۳۰، ایران با VPN +۱۵، هر منطقه +۵.</span></div>
-          <div><strong>جریمه‌ها (۰ تا -۳۰)</strong><span>Gateway اجتماعی -۱۵، مسدود -۳۰، نامشخص -۵.</span></div>
+          <div><strong>تطابق قابلیت (+۳۵)</strong><span>قابلیت‌های موردنیاز کاربرد انتخاب‌شده.</span></div>
+          <div><strong>بودجه (تا +۲۰)</strong><span>بدون کارت بانکی +۲۰، مدل رایگان +۱۵.</span></div>
+          <div><strong>ظرفیت درخواست (تا +۱۵)</strong><span>بر اساس بیشترین RPM ثبت‌شده؛ RPM سرعت پاسخ نیست.</span></div>
+          <div><strong>روش اتصال (تا +۳۰)</strong><span>اتصال مستقیم و اتصال با فیلترشکن بر اساس Evidence جدا ارزیابی می‌شوند.</span></div>
+          <div><strong>پیش‌نیاز حساب</strong><span>کارت بانکی، شماره موبایل خارجی، احراز هویت یا فعال‌سازی حساب جداگانه در حالت شروع کم‌دردسر اثر می‌گذارند.</span></div>
+          <div><strong>ریسک سرویس</strong><span>Gateway اجتماعی، وضعیت شبکه نامشخص یا محدودیت شبکه واقعی جداگانه محاسبه می‌شود.</span></div>
         </div>
       </details>
 
-      <section class="finder-contribute">
-        <div>
-          <p class="eyebrow">کمک به بهبود</p>
-          <h2>این ابزار با مشارکت شما بهتر می‌شود.</h2>
-          <p>آیا امتیازدهی منصفانه است؟ معیار دیگری پیشنهاد داری؟ یا داده‌ای اشتباه می‌بینی؟ گزارش تو به بهبود این ابزار برای همه کمک می‌کند.</p>
-        </div>
-        <a class="button primary" href="https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir/issues/new/choose">ثبت پیشنهاد در GitHub</a>
-      </section>
+      <section class="finder-contribute"><div><p class="eyebrow">کمک به بهبود</p><h2>این ابزار با مشارکت شما بهتر می‌شود.</h2><p>آیا امتیازدهی منصفانه است؟ داده اشتباه را با منبع و تاریخ گزارش کنید.</p></div><a class="button primary" href="https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir/issues/new/choose">ثبت پیشنهاد در GitHub</a></section>
     </main>
 
     <footer class="site-footer" role="contentinfo">
-      <div class="footer-grid">
-        <div class="footer-brand">
-          <strong>Awesome Free LLM APIs IR</strong>
-          <p>کاتالوگ evidence-first از APIهای رایگان LLM برای توسعه‌دهندگان فارسی و کاربران ایران. داده machine-readable، بدون تبلیغ و بدون تضمین دسترسی دائمی.</p>
-        </div>
-        <nav class="footer-nav" aria-label="پیوندهای پاورقی">
-          <div>
-            <h2 class="footer-heading">محصول</h2>
-            <ul>
-              <li><a href="../">خانه</a></li>
-              <li><a href="../#catalog">کاتالوگ APIها</a></li>
-              <li><a href="../api-finder/">انتخاب هوشمند</a></li>
-              <li><a href="../compare/">مقایسه</a></li>
-              <li><a href="../quick-start/">شروع سریع</a></li>
-              <li><a href="../tools/">ابزارها</a></li>
-            </ul>
-          </div>
-          <div>
-            <h2 class="footer-heading">اعتماد و داده</h2>
-            <ul>
-              <li><a href="../methodology/">روش‌شناسی</a></li>
-              <li><a href="../catalog.json">catalog.json</a></li>
-              <li><a href="../data.json">data.json</a></li>
-              <li><a href="../sitemap.xml">Sitemap</a></li>
-              <li><a href="../llms.txt">llms.txt</a></li>
-            </ul>
-          </div>
-          <div>
-            <h2 class="footer-heading">مشارکت</h2>
-            <ul>
-              <li><a href="https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir">GitHub</a></li>
-              <li><a href="https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir/issues/new/choose">گزارش خطا</a></li>
-              <li><a href="../en/">English</a></li>
-            </ul>
-          </div>
-        </nav>
-      </div>
+      <div class="footer-grid"><div class="footer-brand"><strong>Awesome Free LLM APIs IR</strong><p>کاتالوگ evidence-first از APIهای رایگان LLM برای توسعه‌دهندگان فارسی و کاربران ایران.</p></div><nav class="footer-nav" aria-label="پیوندهای پاورقی"><div><h2 class="footer-heading">محصول</h2><ul><li><a href="../">خانه</a></li><li><a href="../#catalog">کاتالوگ APIها</a></li><li><a href="../api-finder/">انتخاب هوشمند</a></li><li><a href="../compare/">مقایسه</a></li><li><a href="../quick-start/">شروع سریع</a></li><li><a href="../tools/">ابزارها</a></li></ul></div><div><h2 class="footer-heading">اعتماد و داده</h2><ul><li><a href="../methodology/">روش‌شناسی</a></li><li><a href="../catalog.json">catalog.json</a></li><li><a href="../data.json">data.json</a></li><li><a href="../sitemap.xml">Sitemap</a></li><li><a href="../llms.txt">llms.txt</a></li></ul></div><div><h2 class="footer-heading">مشارکت</h2><ul><li><a href="https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir">GitHub</a></li><li><a href="https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir/issues/new/choose">گزارش خطا</a></li><li><a href="../en/">English</a></li></ul></div></nav></div>
       <p class="footer-meta">MIT License · بدون وابستگی تجاری به Providerها · بدون انتشار IP، کلید API یا داده حساب</p>
     </footer>
 
-    <script defer src="./finder-core.js"></script>
+    <script type="module" src="./finder-core.js"></script>
     <script defer src="../plausible-guard.js"></script>
     <script defer data-domain="llm.persiantoolbox.ir" src="../plausible.js"></script>
   </body>

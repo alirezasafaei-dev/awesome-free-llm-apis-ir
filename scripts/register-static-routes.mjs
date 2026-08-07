@@ -29,7 +29,6 @@ const productRoutes = [
 
 let sitemap = await readFile(sitemapPath, "utf8");
 let sitemapChanged = false;
-
 for (const route of productRoutes) {
   if (!sitemap.includes(`<loc>${route.url}</loc>`)) {
     const counterpart = route.url.includes("/en/") ? route.url.replace("/en/", "/") : route.url;
@@ -64,8 +63,6 @@ buildMeta.static_product_pages = [...new Set([
 await writeFile(buildMetaPath, `${JSON.stringify(buildMeta, null, 2)}\n`);
 
 let homepage = await readFile(homepagePath, "utf8");
-// Prefer portable relative links already present on the homepage.
-// Only inject a discoverable Quick Start link when none exists (relative or absolute).
 const hasQuickStartLink =
   homepage.includes('href="./quick-start/"') ||
   homepage.includes(`href="${canonicalOrigin}/quick-start/"`) ||
@@ -82,7 +79,6 @@ if (!hasQuickStartLink) {
   await writeFile(homepagePath, homepage);
 }
 if (!homepage.includes('href="./methodology/"') && !homepage.includes(`href="${canonicalOrigin}/methodology/"`)) {
-  // Support both legacy minimal footer and the expanded site-footer markup.
   if (homepage.includes('<a href="./catalog.json">داده JSON</a>')) {
     homepage = homepage.replace(
       '<a href="./catalog.json">داده JSON</a>',
@@ -110,53 +106,36 @@ if (existsSync(enIndexPath)) {
 
 let apiFinder = await readFile(apiFinderPath, "utf8");
 if (!apiFinder.includes('href="./finder-clarity.css"')) {
-  apiFinder = apiFinder.replace(
-    "</head>",
-    '  <link rel="stylesheet" href="./finder-clarity.css">\n</head>'
-  );
+  apiFinder = apiFinder.replace("</head>", '  <link rel="stylesheet" href="./finder-clarity.css">\n</head>');
 }
 if (!apiFinder.includes('href="./funnel-activation.css"')) {
-  apiFinder = apiFinder.replace(
-    "</head>",
-    '  <link rel="stylesheet" href="./funnel-activation.css">\n</head>'
-  );
+  apiFinder = apiFinder.replace("</head>", '  <link rel="stylesheet" href="./funnel-activation.css">\n</head>');
 }
 if (!apiFinder.includes('src="./finder-clarity.js"')) {
-  apiFinder = apiFinder.replace(
-    "</body>",
-    '    <script defer src="./finder-clarity.js"></script>\n  </body>'
-  );
+  apiFinder = apiFinder.replace("</body>", '    <script defer src="./finder-clarity.js"></script>\n  </body>');
 }
 await writeFile(apiFinderPath, apiFinder);
 
 let quickStart = await readFile(quickStartPath, "utf8");
 if (!quickStart.includes('href="./provider-context.css"')) {
-  quickStart = quickStart.replace(
-    "</head>",
-    '  <link rel="stylesheet" href="./provider-context.css">\n</head>'
-  );
+  quickStart = quickStart.replace("</head>", '  <link rel="stylesheet" href="./provider-context.css">\n</head>');
 }
 if (!quickStart.includes('src="./provider-context.js"')) {
-  quickStart = quickStart.replace(
-    "</body>",
-    '  <script defer src="./provider-context.js"></script>\n</body>'
-  );
+  quickStart = quickStart.replace("</body>", '  <script type="module" src="./provider-context.js"></script>\n</body>');
+} else {
+  quickStart = quickStart.replace('<script defer src="./provider-context.js"></script>', '<script type="module" src="./provider-context.js"></script>');
 }
 await writeFile(quickStartPath, quickStart);
 
 if (existsSync(enQuickStartPath)) {
   let enQuickStart = await readFile(enQuickStartPath, "utf8");
   if (!enQuickStart.includes('href="../../quick-start/provider-context.css"')) {
-    enQuickStart = enQuickStart.replace(
-      "</head>",
-      '  <link rel="stylesheet" href="../../quick-start/provider-context.css">\n</head>'
-    );
+    enQuickStart = enQuickStart.replace("</head>", '  <link rel="stylesheet" href="../../quick-start/provider-context.css">\n</head>');
   }
   if (!enQuickStart.includes('src="./provider-context-en.js"')) {
-    enQuickStart = enQuickStart.replace(
-      "</body>",
-      '  <script defer src="./provider-context-en.js"></script>\n</body>'
-    );
+    enQuickStart = enQuickStart.replace("</body>", '  <script type="module" src="./provider-context-en.js"></script>\n</body>');
+  } else {
+    enQuickStart = enQuickStart.replace('<script defer src="./provider-context-en.js"></script>', '<script type="module" src="./provider-context-en.js"></script>');
   }
   await writeFile(enQuickStartPath, enQuickStart);
 }

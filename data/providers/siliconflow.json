@@ -6,6 +6,9 @@
   "website": "https://cloud.siliconflow.cn/",
   "docs": "https://cloud.siliconflow.cn/account/ak",
   "signup": "https://cloud.siliconflow.cn/account/ak",
+  "signup_requirements": [
+    "foreign_mobile_number"
+  ],
   "api": {
     "base_url": "https://api.siliconflow.cn/v1",
     "openai_compatible": true,
@@ -31,7 +34,7 @@
         "notes_fa": "۳۰ RPM · ۶۰K TPM. نیاز به تأیید شماره تلفن چینی. ۲۰۰+ مدل پولی نیز موجود است."
       }
     ],
-    "notes_fa": "Provider چینی با مدل‌های رایگان دائمی. Qwen3-8B و DeepSeek-R1-Distill-Qwen-7B رایگان. نیاز به API Key و تأیید شماره تلفن چینی دارد."
+    "notes_fa": "Provider چینی با مدل‌های رایگان دائمی. Qwen3-8B و DeepSeek-R1-Distill-Qwen-7B رایگان. دریافت کلید نیاز به شماره موبایل خارجی (+86) دارد."
   },
   "iran_access": {
     "status": "signup_blocked",
@@ -57,10 +60,10 @@
         "endpoint": "https://api.siliconflow.cn/v1/models",
         "source": "IRAN_SERVER — direct connectivity probe",
         "connectivity_result": "http_response",
-        "notes_fa": "Endpoint از مسیر مستقیم ایران پاسخ HTTP 401 داد؛ مانع تأیید حساب مستقل از Reachability شبکه است."
+        "notes_fa": "Endpoint از مسیر مستقیم ایران پاسخ HTTP 401 داد؛ پیش‌نیاز شماره تلفن مستقل از Reachability شبکه است."
       }
     ],
-    "notes_fa": "Endpoint از ایران قابل دسترس است، اما دریافت Credential به تأیید حساب موردنیاز سرویس وابسته است؛ این محدودیت بدون دورزدن کنترل پلتفرم ثبت شده است."
+    "notes_fa": "Endpoint مستقیم از ایران در دسترس است؛ دریافت Credential نیاز به شماره موبایل خارجی (+86) دارد."
   },
   "models": {
     "dynamic": true,

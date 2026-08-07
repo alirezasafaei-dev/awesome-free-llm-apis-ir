@@ -1,31 +1,13 @@
+import {
+  accountRequirementPresentation,
+  connectionPresentation,
+  freeTierLabel,
+  serviceTypeLabel
+} from "../provider-presentation.js";
+
 const SHORTLIST_STORAGE_KEY = "llm-provider-shortlist-v1";
 const SHORTLIST_LIMIT = 3;
 const PROVIDER_ID_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
-
-const labels = {
-  service: {
-    official_provider: "Provider رسمی",
-    official_gateway: "Gateway رسمی",
-    community_gateway: "Gateway اجتماعی"
-  },
-  free: {
-    permanent_allowance: "سهمیه دائمی",
-    free_models: "مدل‌های رایگان",
-    monthly_credit: "اعتبار ماهانه",
-    trial: "آزمایشی",
-    unknown: "نامشخص"
-  },
-  iran: {
-    verified_working: "مستقیم تست‌شده",
-    verified_working_vpn: "با VPN تست‌شده",
-    direct_blocked_vpn_working: "مستقیم مسدود / VPN موفق",
-    verified_blocked: "مستقیم مسدود",
-    officially_unsupported: "پشتیبانی‌نشده رسمی",
-    intermittent: "ناپایدار",
-    signup_blocked: "ثبت‌نام مسدود",
-    unknown: "نامشخص"
-  }
-};
 
 function safeIds(values) {
   const ids = [];
@@ -101,12 +83,6 @@ function limitText(provider) {
   return values.slice(0, 3).join(" · ") || limit.condition || "مدل‌محور";
 }
 
-function paymentText(value) {
-  if (value === true) return "نیاز دارد";
-  if (value === false) return "نیاز ندارد";
-  return "در منبع مشخص نیست";
-}
-
 function createFact(term, value, { code = false } = {}) {
   const row = document.createElement("div");
   const dt = document.createElement("dt");
@@ -136,6 +112,8 @@ function providerCard(provider) {
   const models = provider.models?.notable ?? [];
   const capabilities = provider.capabilities ?? [];
   const quickParams = new URLSearchParams({ provider: provider.id, usecase: "chat", region: "iran" });
+  const connection = connectionPresentation(provider, "fa");
+  const account = accountRequirementPresentation(provider, "fa");
 
   const article = document.createElement("article");
   article.className = "compare-card";
@@ -143,7 +121,7 @@ function providerCard(provider) {
 
   const eyebrow = document.createElement("p");
   eyebrow.className = "eyebrow";
-  eyebrow.textContent = labels.service[provider.service_type] || provider.service_type;
+  eyebrow.textContent = serviceTypeLabel(provider.service_type, "fa");
   article.appendChild(eyebrow);
 
   const title = document.createElement("h3");
@@ -155,16 +133,19 @@ function providerCard(provider) {
   id.textContent = provider.id;
   article.appendChild(id);
 
-  const access = document.createElement("span");
-  access.className = "compare-access";
-  access.textContent = labels.iran[provider.iran_access?.status] || provider.iran_access?.status || "نامشخص";
-  article.appendChild(access);
+  const connectionBadge = document.createElement("span");
+  connectionBadge.className = "compare-access access-badge";
+  connectionBadge.dataset.status = connection.status;
+  connectionBadge.dataset.tone = connection.tone;
+  connectionBadge.textContent = connection.label;
+  article.appendChild(connectionBadge);
 
   const facts = document.createElement("dl");
   facts.className = "compare-facts";
   facts.append(
-    createFact("نوع Free Tier", labels.free[provider.free_tier?.type] || provider.free_tier?.type || "نامشخص"),
-    createFact("نیاز به کارت/پرداخت", paymentText(provider.free_tier?.requires_payment_method)),
+    createFact("نوع Free Tier", freeTierLabel(provider.free_tier?.type, "fa")),
+    createFact("روش اتصال از ایران", connection.label),
+    createFact("پیش‌نیاز حساب", account.label),
     createFact("محدودیت نمونه", limitText(provider)),
     createFact("سازگار با OpenAI", provider.api?.openai_compatible ? "بله" : "خیر"),
     createFact("Base URL", provider.api?.base_url || "نامشخص", { code: true }),

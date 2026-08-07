@@ -65,12 +65,23 @@ const requiredHtmlSignals = [
   'class="search-field catalog-search"',
   'id="clear-search"',
   'class="quick-filter-row"',
-  'value="account_activation_blocked"',
+  'id="access-status"',
+  'id="account-requirement"',
+  'value="vpn"',
+  'value="foreign-phone"',
+  "نیاز به ثبت‌نام یا فعال‌سازی حساب",
   'src="./ui-pro-max.js"',
   'data-page-type="home"'
 ];
 for (const signal of requiredHtmlSignals) {
   if (!html.includes(signal)) throw new Error(`Homepage UI Pro Max contract is missing: ${signal}`);
+}
+for (const stale of [
+  'value="account_activation_blocked"',
+  "مستقیم مسدود / VPN موفق",
+  "مانع ثبت‌نام"
+]) {
+  if (html.includes(stale)) throw new Error(`Homepage UI Pro Max contract contains stale blocked-oriented semantics: ${stale}`);
 }
 
 const catalogSearchPosition = html.indexOf('class="search-field catalog-search"');
@@ -102,7 +113,14 @@ if (/transform:\s*translateY\(-/u.test(css)) {
   throw new Error("UI Pro Max layer must not use layout-shifting card hover transforms");
 }
 
-for (const signal of [".search-input-shell", ".clear-search", "min-height: 44px", "@media (max-width: 520px)"]) {
+for (const signal of [
+  ".search-input-shell",
+  ".clear-search",
+  ".account-requirement-label",
+  '.access-badge[data-status="signup_blocked"]',
+  "min-height: 44px",
+  "@media (max-width: 520px)"
+]) {
   if (!components.includes(signal)) throw new Error(`UI Pro Max component CSS is missing: ${signal}`);
 }
 
@@ -138,7 +156,7 @@ for (const [label, page, pageCss, pageJs] of [
   ["Persian Finder", finderFaHtml, finderFaCss, finderFaJs],
   ["English Finder", finderEnHtml, finderEnCss, finderEnJs]
 ]) {
-  if (!page.includes('href="./finder-core.css"') || !page.includes('src="./finder-core.js"')) throw new Error(`${label} does not own external core assets`);
+  if (!page.includes('href="./finder-core.css"') || !page.includes('type="module" src="./finder-core.js"')) throw new Error(`${label} does not own external module core assets`);
   if (/<style\b/i.test(page) || /<script>([\s\S]*?)<\/script>/i.test(page)) throw new Error(`${label} contains inline executable assets`);
   if (!pageCss.includes(".finder-form") || !pageJs.includes("function scoreProvider")) throw new Error(`${label} core source assets are incomplete`);
 }
@@ -168,4 +186,4 @@ for (const signal of [
   if (!xss.includes(signal)) throw new Error(`Source-owned Finder/Compare XSS contract is missing: ${signal}`);
 }
 
-console.log("UI UX Pro Max contract passed: task-first hierarchy, semantic tokens, responsive behavior, source-owned Finder safety and evidence-first cards are enforced.");
+console.log("UI UX Pro Max contract passed: task-first hierarchy, separate connection/account controls, semantic tokens, responsive behavior, and source-owned product safety are enforced.");

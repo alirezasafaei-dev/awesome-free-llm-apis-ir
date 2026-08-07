@@ -26,6 +26,11 @@
     "website": { "type": "string", "format": "uri" },
     "docs": { "type": "string", "format": "uri" },
     "signup": { "type": ["string", "null"], "format": "uri" },
+    "signup_requirements": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "enum": ["foreign_mobile_number", "identity_verification", "account_activation"] }
+    },
     "api": {
       "type": "object",
       "additionalProperties": false,

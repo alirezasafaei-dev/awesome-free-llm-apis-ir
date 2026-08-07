@@ -10,6 +10,7 @@ const allowed = {
   freeType: new Set(["permanent_allowance", "free_models", "monthly_credit", "trial", "unknown"]),
   serviceType: new Set(["official_provider", "official_gateway", "community_gateway", "session_bridge", "self_hosted"]),
   auth: new Set(["api_key", "oauth", "token", "account_id_and_token", "none_or_api_key", "other"]),
+  signupRequirement: new Set(["foreign_mobile_number", "identity_verification", "account_activation"]),
   iranStatus: new Set(["verified_working", "verified_working_vpn", "direct_blocked_vpn_working", "verified_blocked", "officially_unsupported", "intermittent", "signup_blocked", "unknown"]),
   officialPolicy: new Set(["supported", "unsupported", "not_documented", "unknown"]),
   testMethod: new Set(["live_request", "connectivity_probe", "signup_only", "community_report", "official_docs", "not_tested"]),
@@ -24,7 +25,7 @@ const numericLimitFields = new Set([
   "concurrent_requests", "daily_units", "monthly_credit_usd", "monthly_requests"
 ]);
 const allowedKeys = {
-  provider: new Set(["schema_version", "service_type", "id", "name", "website", "docs", "signup", "api", "capabilities", "free_tier", "iran_access", "models", "verification", "notes_fa", "sources"]),
+  provider: new Set(["schema_version", "service_type", "id", "name", "website", "docs", "signup", "signup_requirements", "api", "capabilities", "free_tier", "iran_access", "models", "verification", "notes_fa", "sources"]),
   api: new Set(["base_url", "openai_compatible", "auth"]),
   freeTier: new Set(["status", "type", "requires_payment_method", "limits", "notes_fa"]),
   limit: new Set(["scope", "model", "condition", "rpm", "rpd", "rph", "tpm", "tph", "tpd", "input_tokens", "output_tokens", "concurrent_requests", "daily_units", "unit_name", "monthly_credit_usd", "monthly_requests", "notes_fa"]),
@@ -195,6 +196,16 @@ function validateProvider(p, file) {
     if (!validHttpsTemplate(value)) fail(file, `${label} must be an HTTPS URL`);
   }
   if (p.signup !== undefined && p.signup !== null && !validHttps(p.signup)) fail(file, "signup must be an HTTPS URL or null");
+  if (p.signup_requirements !== undefined) {
+    if (!Array.isArray(p.signup_requirements)) {
+      fail(file, "signup_requirements must be an array when present");
+    } else {
+      if (new Set(p.signup_requirements).size !== p.signup_requirements.length) fail(file, "signup_requirements must be unique");
+      for (const requirement of p.signup_requirements) {
+        if (!allowed.signupRequirement.has(requirement)) fail(file, `unknown signup requirement ${requirement}`);
+      }
+    }
+  }
   if (typeof p.api?.openai_compatible !== "boolean") fail(file, "api.openai_compatible must be boolean");
   if (!allowed.auth.has(p.api?.auth)) fail(file, "invalid api.auth");
 
