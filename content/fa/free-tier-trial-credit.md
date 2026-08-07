@@ -118,4 +118,101 @@ else:
 | Mistral | 1 RPM رایگان | ندارد | خیر | متغیر |
 | OpenRouter | متغیر بر اساس مدل | ندارد | خیر | متغیر |
 
+## نحوه ثبت‌نام
+
+برای استفاده از Free Tier، Trial یا Credit رایگان:
+
+1. از [کاتالوگ رایگان LLM](https://llm.persiantoolbox.ir/) Provider مورد نظر را پیدا کنید
+2. وب‌سایت رسمی Provider را باز کنید
+3. بخش Pricing یا Plans را بررسی کنید تا سیاست رایگان مشخص شود
+4. ثبت‌نام را تکمیل کنید
+5. اگر کارت بانکی لازم است، آیا امکان ارائه آن وجود دارد؟
+6. سهمیه را مستند کنید (RPM، RPD، توکن)
+7. Provider را در [کاتالوگ](https://llm.persiantoolbox.ir/) ثبت کنید
+
+## اولین درخواست API
+
+```bash
+curl -s https://api.groq.com/openai/v1/chat/completions \
+  -H "Authorization: Bearer $API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "llama-3.1-8b-instant",
+    "messages": [{"role": "user", "content": "تست سهمیه رایگان"}],
+    "max_tokens": 10
+  }'
+```
+
+اگر پاسخ معتبر دریافت کردید، سهمیه رایگان فعال است.
+
+## خطاهای رایج و رفع آنها
+
+| خطا | علت | راه‌حل |
+|---|---|---|
+| `Free tier limit reached` | سهمیه رایگان روزانه تمام شده | فردا دوباره تلاش کنید |
+| `Card required` | نیاز به کارت بانکی برای فعال‌سازی | Provider بدون نیاز به کارت انتخاب کنید |
+| `Trial expired` | دوره آزمایشی تمام شده | حساب را ارتقا دهید یا Provider دیگری انتخاب کنید |
+| `Credit insufficient` | اعتبار رایگان کافی نیست | حساب را شارژ کنید یا Provider دیگری انتخاب کنید |
+| `Account suspended` | الگوی غیرعادی استفاده تشخیص داده شده | با پشتیبانی Provider تماس بگیرید |
+
+## چه زمانی از این ارائه‌دهنده استفاده نکنیم
+
+- **Trial یا Credit به‌عنوان پایه پروژه:** اگر پروژه بلندمدت دارید، فقط روی Free Tier حساب کنید
+- **سهمیه بسیار کم:** اگر RPM یا RPD خیلی پایین است، پروژه شما با مشکل مواجه خواهد شد
+- **نیاز به کارت بانکی:** اگر امکان ارائه کارت وجود ندارد، از Providerهای بدون کارت استفاده کنید
+- **تغییرات مکرر سیاست:** Providerهایی که مکرراً Free Tier خود را کاهش می‌دهند قابل اعتماد نیستند
+- **عدم شفافیت:** اگر Provider سیاست قیمت‌گذاری را به‌وضوح اعلام نمی‌کند، محتاط باشید
+
+## منابع رسمی بررسی‌شده
+
+- [کاتالوگ رایگان LLM](https://llm.persiantoolbox.ir/) — مقایسه Free Tier، Trial و Credit Providerها
+- [مخزن GitHub](https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir) — مستندات و راهنما
+- [groq.com/pricing](https://www.groq.com/pricing/) — نمونه سیاست Free Tier
+- [together.ai/pricing](https://www.together.ai/pricing) — نمونه سیاست Credit
+
+## وضعیت ایران و نکات ویژه برای کاربران
+
+- اولویت اول: Providerهایی با Free Tier واقعی و بدون نیاز به کارت بانکی
+- اولویت دوم: Providerهایی با Credit ثبت‌نام رایگان بدون نیاز به کارت
+- اولویت سوم: Providerهایی با Trial موقت بدون نیاز به کارت
+- Providerهایی که نیاز به کارت بانکی بین‌المللی دارند معمولاً برای کاربران ایرانی مناسب نیستند
+- وضعیت دسترسی را در [کاتالوگ](https://llm.persiantoolbox.ir/) بررسی کنید
+
+## بررسی موجودی Credit
+
+```python
+import os
+import requests
+
+api_key = os.environ["YOUR_API_KEY"]
+base_url = "https://api.groq.com/openai/v1"
+
+# بررسی دسترسی به مدل‌ها برای تأیید عملکرد کلید
+response = requests.get(
+    f"{base_url}/models",
+    headers={"Authorization": f"Bearer {api_key}"}
+)
+if response.status_code == 200:
+    models = response.json().get("data", [])
+    print(f"دسترسی تأیید شد: {len(models)} مدل موجود")
+else:
+    print(f"مشکل دسترسی: {response.status_code}")
+```
+
+## جدول مقایسه سیاست Providerها
+
+| Provider | Free Tier | Trial/Credit | کارت بانکی | دسترسی ایران |
+|---|---|---|---|---|
+| Groq | 30 RPM, 14400 RPD | ندارد | خیر | بله |
+| Together AI | ندارد | $1 اعتبار ثبت‌نام | بله | متغیر |
+| Google AI Studio | 15 RPM | ندارد | خیر | متغیر |
+| Mistral | 1 RPM رایگان | ندارد | خیر | متغیر |
+| OpenRouter | متغیر بر اساس مدل | ندارد | خیر | متغیر |
+
 برای بررسی وضعیت Free Tier، Trial و دسترسی ایران هر Provider، [کاتالوگ رایگان LLM](https://llm.persiantoolbox.ir/) را مشاهده کنید. فایل‌های منبع و گزارش مشکلات در [مخزن GitHub](https://github.com/alirezasafaei-dev/awesome-free-llm-apis-ir) در دسترس هستند.
+
+## راهنماهای مرتبط
+
+- [مدل‌های رایگان دائمی](permanent-free-models.md) — تفاوت Free Tier با مدل‌های دائمی
+- [API رایگان بدون کارت بانکی](free-gpt-api-no-credit-card.md) — ثبت‌نام بدون کارت
+- [راهنمای انتخاب Provider برای دانشجو](provider-for-student-mvp.md) — معیارهای انتخاب برای MVP
