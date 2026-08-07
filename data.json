@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-08-05",
+  "lastUpdated": "2026-08-07",
   "providerCount": 27,
   "providers": [
     {
@@ -309,11 +309,11 @@
         "auth": "api_key"
       },
       "freeTier": {
-        "status": "active",
-        "type": "monthly_credit",
+        "status": "limited",
+        "type": "one_time_credit",
         "requiresPaymentMethod": false,
-        "limitExample": "10 RPM",
-        "notesFa": "$۱ اعتبار رایگان در شروع کار. بدون نیاز به کارت بانکی. پس از اتمام اعتبار، حساب متوقف می‌شود مگر کارت اضافه کنید."
+        "limitExample": "طبق صفحه رسمی قیمت‌گذاری، کاربر جدید با ۱ دلار اعتبار اولیه شروع می‌کند. این اعتبار ماهانه نیست؛ پس از اتمام آن برای ادامه استفاده باید اعتبار اضافه شود و روش پرداخت لازم است.",
+        "notesFa": "Fireworks برای حساب‌های self-serve از سیستم اعتبار پیش‌پرداخت استفاده می‌کند. کاربر جدید طبق منبع رسمی ۱ دلار اعتبار اولیه دریافت می‌کند. اگر موجودی به صفر برسد و Auto Reload فعال نباشد، استفاده متوقف می‌شود تا اعتبار اضافه شود. برای ادامه پس از پایان اعتبار اولیه، روش پرداخت لازم است."
       },
       "capabilities": [
         "chat",
@@ -327,7 +327,7 @@
         "status": "signup_blocked",
         "label": "🧾 ثبت‌نام مسدود",
         "tested": true,
-        "testedAt": "2026-07-21",
+        "testedAt": "2026-07-22",
         "network": {
           "country": "IR",
           "route": "direct"
@@ -344,7 +344,7 @@
       ],
       "verification": {
         "level": "live_verified",
-        "lastChecked": "2026-07-22",
+        "lastChecked": "2026-08-07",
         "staleAfterDays": 14
       },
       "health": {

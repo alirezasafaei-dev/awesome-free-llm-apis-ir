@@ -221,6 +221,18 @@ for (const provider of catalog.providers) {
 const providerDirectories = await readdir(path.join(root, ".site-dist", "providers"));
 if (providerDirectories.length !== catalog.providers.length) throw new Error("Generated provider page count does not match catalog");
 
+const sourceOwnedGuideDates = new Map();
+const persianContentDir = path.join(root, "content", "fa");
+for (const file of (await readdir(persianContentDir)).filter((name) => name.endsWith(".md"))) {
+  const source = await readFile(path.join(persianContentDir, file), "utf8");
+  const frontmatterEnd = source.indexOf("\n---\n", 4);
+  if (!source.startsWith("---\n") || frontmatterEnd === -1) continue;
+  const frontmatter = source.slice(4, frontmatterEnd);
+  const slug = frontmatter.match(/^slug:\s*["']?([^"'\n]+)["']?\s*$/m)?.[1]?.trim();
+  const updatedAt = frontmatter.match(/^updated_at:\s*["']?(\d{4}-\d{2}-\d{2})["']?\s*$/m)?.[1];
+  if (slug && updatedAt) sourceOwnedGuideDates.set(slug, updatedAt);
+}
+
 const guideCount = 6;
 const guideSlugs = ["best-free-llm-api-iran", "openai-compatible-api-without-card", "free-coding-api", "free-embedding-api", "free-tier-vs-trial-vs-credit", "openai-sdk-custom-base-url"];
 
@@ -234,7 +246,8 @@ for (const slug of guideSlugs) {
   await access(guidePath);
   const guideHtml = await readFile(guidePath, "utf8");
   const canonical = `https://llm.persiantoolbox.ir/guides/${slug}/`;
-  for (const needle of [canonical, "application/ld+json", "../../analytics.js", `dateModified\":\"${catalog.last_updated}`, "skip-link", "#organization"]) {
+  const expectedDateModified = sourceOwnedGuideDates.get(slug) ?? catalog.last_updated;
+  for (const needle of [canonical, "application/ld+json", "../../analytics.js", `dateModified\":\"${expectedDateModified}`, "skip-link", "#organization"]) {
     if (!guideHtml.includes(needle)) throw new Error(`Guide ${slug} is missing ${needle}`);
   }
   if (!guideHtml.includes(`hreflang="fa-IR" href="${canonical}"`) || !guideHtml.includes(`hreflang="x-default" href="${canonical}"`)) throw new Error(`Guide ${slug} is missing hreflang tags`);
