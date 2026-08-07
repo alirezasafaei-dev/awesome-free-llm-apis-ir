@@ -125,7 +125,7 @@ fi
 
 ## Network Configuration Tips
 
-- **DNS:** Use public DNS servers (8.8.8.8 or 1.1.1.1) if local DNS filters API domains
+- **DNS:** Use public DNS servers such as those from Google and Cloudflare if local DNS filters API domains
 - **Timeout:** Increase `--connect-timeout` to 15-20 seconds for slow connections
 - **TLS:** Some ISPs interfere with TLS handshakes; try different network interfaces if available
 - **Base URL:** Some providers have multiple endpoints; try alternate domains if one is filtered
