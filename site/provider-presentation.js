@@ -40,11 +40,13 @@ const accountCopy = Object.freeze({
   })
 });
 
+// These labels are shared by generated repository surfaces and the runtime UI.
 const freeTierCopy = Object.freeze({
   fa: Object.freeze({
     permanent_allowance: "سهمیه دائمی",
     free_models: "مدل‌های رایگان",
     monthly_credit: "اعتبار ماهانه",
+    one_time_credit: "اعتبار یک‌باره",
     trial: "آزمایشی",
     unknown: "نامشخص"
   }),
@@ -52,6 +54,7 @@ const freeTierCopy = Object.freeze({
     permanent_allowance: "Permanent allowance",
     free_models: "Free models",
     monthly_credit: "Monthly credit",
+    one_time_credit: "One-time credit",
     trial: "Trial",
     unknown: "Unknown"
   })
