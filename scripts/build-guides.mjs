@@ -15,6 +15,7 @@ const freeLabels = {
   permanent_allowance: "سهمیه رایگان دائمی",
   free_models: "مدل‌های رایگان",
   monthly_credit: "اعتبار رایگان ماهانه",
+  one_time_credit: "اعتبار یک‌باره",
   trial: "دوره آزمایشی",
   unknown: "نامشخص"
 };
