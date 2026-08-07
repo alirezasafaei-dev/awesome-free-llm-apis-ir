@@ -40,6 +40,7 @@ const accountCopy = Object.freeze({
   })
 });
 
+// These labels are shared by generated repository surfaces and the runtime UI.
 const freeTierCopy = Object.freeze({
   fa: Object.freeze({
     permanent_allowance: "سهمیه دائمی",
