@@ -1,5 +1,6 @@
 import { execFileSync } from "node:child_process";
 import { readFile } from "node:fs/promises";
+import { fileURLToPath } from "node:url";
 
 const scriptUrl = new URL("../deploy/caddy/apply-caddy-config.sh", import.meta.url);
 const source = await readFile(scriptUrl, "utf8");
@@ -43,7 +44,7 @@ for (const forbidden of [
 }
 
 try {
-  execFileSync("bash", ["-n", new URL(scriptUrl).pathname], { stdio: "pipe" });
+  execFileSync("bash", ["-n", fileURLToPath(scriptUrl)], { stdio: "pipe" });
 } catch (error) {
   failures.push(`bash syntax validation failed: ${error.stderr?.toString().trim() || error.message}`);
 }
