@@ -20,7 +20,7 @@ function bashPath(filePath) {
 }
 
 function readLink(filePath) {
-  return run("bash", ["-c", 'readlink "$1"', "_", bashPath(filePath)]).stdout.trim();
+  return run("bash", ["-c", 'readlink -f "$1"', "_", bashPath(filePath)]).stdout.trim();
 }
 
 async function makeArchive(revision, number) {
