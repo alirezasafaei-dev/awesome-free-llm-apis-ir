@@ -4,7 +4,7 @@
 
 ## هدف عملیاتی
 
-بعد از نصب اولیه، اضافه‌کردن یا ویرایش ابزار، توضیح، لینک، ترتیب نمایش، Featured و Publish/Unpublish فقط از پنل ادمین انجام می‌شود و **هیچ build یا deploy سایت برای تغییر محتوا لازم نیست**.
+بعد از نصب اولیه، اضافه‌کردن یا ویرایش ابزار، آیکون، توضیح، لینک، ترتیب نمایش، Featured، Publish/Unpublish و در صورت نیاز حذف از پنل ادمین انجام می‌شود و **هیچ build یا deploy سایت برای تغییر محتوا لازم نیست**.
 
 ## آدرس‌ها
 
@@ -22,6 +22,7 @@
 - واحد systemd: `deploy/discover/persiantoolbox-discover.service`.
 - کد سرویس در `/opt/persiantoolbox-discover/current` قرار می‌گیرد.
 - تنظیمات خصوصی سرویس در `/etc/persiantoolbox-discover/` نگه داشته می‌شوند.
+- آیکون هر ابزار بدون schema جدید و به‌صورت metadata کنترل‌شده در badge داخلی `icon:<value>` ذخیره می‌شود؛ UI این metadata را از badgeهای قابل‌نمایش جدا می‌کند.
 
 ## پیش‌نیاز نصب اولیه
 
@@ -53,13 +54,13 @@
 
 1. وارد `/discover/admin/` شوید.
 2. «ابزار جدید» را بزنید.
-3. نام، slug پایدار، توضیح فارسی، لینک HTTPS، پلتفرم، دسته، قابلیت‌ها، badgeها و تاریخ آخرین تست را وارد کنید.
+3. نام، slug پایدار، آیکون، توضیح فارسی، لینک HTTPS، پلتفرم، دسته، قابلیت‌ها، badgeها و تاریخ آخرین تست را وارد کنید.
 4. ابزار را ابتدا به‌صورت Draft ذخیره کنید.
 5. لینک و متن را بررسی کنید.
 6. گزینه Published را فعال و ذخیره کنید.
 7. ابزار بدون deploy در `/discover/` ظاهر می‌شود.
 
-برای برداشتن یک لینک از دید عموم، Published را خاموش کنید. در Phase 1 پنل روی lifecycle غیرمخرب طراحی شده و Unpublish روش استاندارد خروج از صفحه عمومی است.
+برای برداشتن موقت یک لینک از دید عموم، Published را خاموش کنید. حذف دائمی نیز در پنل وجود دارد، اما باید فقط زمانی استفاده شود که واقعاً قصد حذف رکورد را دارید؛ UI قبل از حذف تأیید صریح می‌گیرد.
 
 ## قرارداد داده و ایمنی
 
@@ -108,8 +109,11 @@ curl -I https://llm.persiantoolbox.ir/discover/
 - `discover_tool_click`
 - `discover_search`
 - `discover_filter`
+- `discover_persiantoolbox_click`
 
-عبارت خام جستجو و URL مقصد به‌عنوان property analytics ارسال نمی‌شوند.
+با این eventها می‌توان ورود به Discover، CTR هر ابزار، دسته‌های محبوب، استفاده از جستجو و conversion به سایت اصلی PersianToolbox را تحلیل کرد. عبارت خام جستجو و URL مقصد به‌عنوان property analytics ارسال نمی‌شوند و client هیچ شناسه ماندگار، `localStorage` یا `sessionStorage` برای ردیابی کاربر ایجاد نمی‌کند.
+
+برای تحلیل بازگشت کاربر، از metricهای aggregate سرویس analytics استفاده شود؛ این Pilot عمداً برای ساخت «returning user» دقیق هیچ cookie یا شناسه پایدار اختصاصی ایجاد نمی‌کند.
 
 ## Phase 1 و mirror ایران
 
@@ -121,7 +125,8 @@ Source of truth این pilot فقط canonical/global یعنی `llm.persiantoolbo
 - Health داخلی و خارجی سبز است.
 - `/discover/` صفحه عمومی را لود می‌کند و داده را از API می‌گیرد.
 - `/discover/admin/` پشت Basic Auth است.
-- Create/Edit/Publish/Unpublish از پنل کار می‌کند.
+- Create/Edit/Delete/Publish/Unpublish/Featured/Order/Icon از پنل کار می‌کند.
+- Search/Filter و eventهای view/tool-click/search/filter/conversion کار می‌کنند.
 - بعد از یک deploy استاتیک آزمایشی، رکوردهای DB بدون تغییر باقی می‌مانند.
 - هیچ credential یا DB داخل release artifact قرار ندارد.
 
