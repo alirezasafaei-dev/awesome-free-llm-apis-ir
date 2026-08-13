@@ -5,18 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>ابزارهای تست‌شده ریلز | PersianToolbox</title>
   <meta name="description" content="لینک ابزارها و اپ‌هایی که در ریلزهای PersianToolbox معرفی و تست شده‌اند؛ یک‌جا، مرتب و قابل جستجو.">
-  <link rel="canonical" href="https://llm.persiantoolbox.ir/discover/">
-  <meta name="robots" content="index,follow">
+  <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1">
   <meta name="theme-color" content="#155eef">
+  <link rel="canonical" href="https://llm.persiantoolbox.ir/discover/">
   <link rel="stylesheet" href="../styles.css">
   <link rel="stylesheet" href="./discover.css">
+  <link rel="stylesheet" href="../ux-clarity.css">
+  <link rel="stylesheet" href="../ui-pro-max.css">
+  <link rel="stylesheet" href="../ui-pro-max-components.css">
 </head>
 <body data-page-type="discover">
   <header class="discover-topbar">
-    <a class="discover-brand" href="../" aria-label="بازگشت به PersianToolbox">
-      <span class="discover-brand-mark" aria-hidden="true">PT</span>
-      <span>PersianToolbox</span>
-    </a>
+    <a class="discover-brand" href="../" aria-label="بازگشت به PersianToolbox"><span class="discover-brand-mark" aria-hidden="true">PT</span><span>PersianToolbox</span></a>
     <a class="discover-back" href="../">سایت اصلی LLM</a>
   </header>
 
@@ -25,50 +25,30 @@
       <div class="discover-eyebrow">لینک مستقیم ابزارهای معرفی‌شده</div>
       <h1 id="discover-title">ابزارهایی که توی ریلز دیدی، اینجاست</h1>
       <p>هر چیزی که در ریلز معرفی می‌کنیم، بعد از تست اینجا قرار می‌گیرد؛ اسم، کاربرد، وضعیت تست و لینک استفاده در یک صفحه.</p>
-      <div class="discover-trust-row" aria-label="ویژگی‌های فهرست">
-        <span>✓ تست‌شده</span>
-        <span>↗ لینک مستقیم</span>
-        <span>⌕ قابل جستجو</span>
-      </div>
+      <div class="discover-trust-row" aria-label="ویژگی‌های فهرست"><span>✓ تست‌شده</span><span>↗ لینک مستقیم</span><span>⌕ قابل جستجو</span></div>
     </section>
 
     <section class="discover-controls" aria-label="جستجو و فیلتر ابزارها">
-      <label class="discover-search-wrap" for="discover-search">
-        <span class="discover-search-icon" aria-hidden="true">⌕</span>
-        <span class="sr-only">جستجوی ابزار</span>
-        <input id="discover-search" type="search" autocomplete="off" inputmode="search" placeholder="اسم ابزار یا کاربردش رو جستجو کن…">
-      </label>
+      <label class="discover-search-wrap" for="discover-search"><span class="discover-search-icon" aria-hidden="true">⌕</span><span class="sr-only">جستجوی ابزار</span><input id="discover-search" type="search" autocomplete="off" inputmode="search" placeholder="اسم ابزار یا کاربردش رو جستجو کن…"></label>
       <div id="discover-categories" class="discover-categories" aria-label="دسته‌بندی‌ها"></div>
     </section>
 
     <section class="discover-results" aria-labelledby="discover-results-title">
-      <div class="discover-section-head">
-        <div>
-          <h2 id="discover-results-title">ابزارهای تست‌شده</h2>
-          <p id="discover-count" aria-live="polite"></p>
-        </div>
-      </div>
-
+      <div class="discover-section-head"><div><h2 id="discover-results-title">ابزارهای تست‌شده</h2><p id="discover-count" aria-live="polite"></p></div></div>
       <p id="discover-loading" class="discover-state" role="status">دارم ابزارها رو میارم…</p>
       <p id="discover-error" class="discover-state discover-state-error" role="alert" hidden>فعلاً نتونستم فهرست رو بگیرم. چند لحظه دیگه دوباره امتحان کن.</p>
       <p id="discover-empty" class="discover-state" hidden>چیزی با این فیلتر پیدا نشد. یه عبارت دیگه امتحان کن.</p>
       <div id="discover-list" class="discover-grid" aria-live="polite"></div>
     </section>
 
-    <section class="discover-note" aria-label="روش بررسی ابزارها">
-      <strong>چرا این صفحه؟</strong>
-      <p>لینک‌های ریلز گم نمی‌شن و برای هر ابزار می‌تونی آخرین تاریخ تست و نکته‌های مهم استفاده رو ببینی.</p>
-    </section>
+    <section class="discover-note" aria-label="روش بررسی ابزارها"><strong>چرا این صفحه؟</strong><p>لینک‌های ریلز گم نمی‌شن و برای هر ابزار می‌تونی آخرین تاریخ تست و نکته‌های مهم استفاده رو ببینی.</p></section>
   </main>
 
-  <footer class="discover-footer">
-    <a href="../">PersianToolbox LLM</a>
-    <span aria-hidden="true">•</span>
-    <span>ابزارهای کاربردی، قبل از معرفی تست می‌شن.</span>
-  </footer>
+  <footer class="discover-footer"><a href="../">PersianToolbox LLM</a><span aria-hidden="true">•</span><span>ابزارهای کاربردی، قبل از معرفی تست می‌شن.</span></footer>
 
-  <script src="../plausible.js" defer></script>
-  <script src="../analytics.js" defer></script>
   <script src="./discover.js" defer></script>
+  <script defer src="../analytics.js"></script>
+  <script defer src="../plausible-guard.js"></script>
+  <script defer data-domain="llm.persiantoolbox.ir" src="../plausible.js"></script>
 </body>
 </html>
