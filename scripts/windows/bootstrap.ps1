@@ -49,8 +49,9 @@ if ($nodeMajor -lt 20) { Fail "Node.js $nodeVersion is unsupported. Install Node
 if ($nodeMajor -ne 22) { Write-Warning "Repository prefers Node.js 22; detected $nodeVersion." }
 
 Invoke-Checked $git @("rev-parse", "--is-inside-work-tree")
-$origin = (& $git remote get-url origin 2>$null).Trim()
-if ($LASTEXITCODE -eq 0 -and $origin -and $origin -notmatch 'alirezasafaei-dev/awesome-free-llm-apis-ir(\.git)?$') {
+$originOutput = & $git remote get-url origin 2>$null
+$origin = if ($LASTEXITCODE -eq 0) { ($originOutput | Out-String).Trim() } else { "" }
+if ($origin -and $origin -notmatch 'alirezasafaei-dev/awesome-free-llm-apis-ir(\.git)?$') {
   Write-Warning "Unexpected origin remote: $origin"
 }
 
@@ -61,13 +62,26 @@ Write-Host "Git: $((& $git --version).Trim())"
 
 Invoke-Checked $npm @("ci")
 
-if (-not $SkipTests) {
-  Invoke-Checked $npm @("test")
+$shimPath = (Resolve-Path (Join-Path $PSScriptRoot "npm-spawn-shim.cjs")).Path
+$previousNodeOptions = $env:NODE_OPTIONS
+$shimOption = "--require=$shimPath"
+if ($previousNodeOptions) {
+  if (-not $previousNodeOptions.Contains($shimPath)) { $env:NODE_OPTIONS = "$previousNodeOptions $shimOption" }
+} else {
+  $env:NODE_OPTIONS = $shimOption
 }
 
-if (-not $SkipBuild) {
-  Invoke-Checked $npm @("run", "site:build")
-  Invoke-Checked $npm @("run", "site:check")
+try {
+  if (-not $SkipTests) {
+    Invoke-Checked $npm @("test")
+  }
+
+  if (-not $SkipBuild) {
+    Invoke-Checked $npm @("run", "site:build")
+    Invoke-Checked $npm @("run", "site:check")
+  }
+} finally {
+  $env:NODE_OPTIONS = $previousNodeOptions
 }
 
 Write-Host ""
