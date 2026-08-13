@@ -155,3 +155,5 @@ try {
   await app.stop().catch(() => {});
   await rm(root, { recursive: true, force: true });
 }
+
+await import("./test-discover-site.mjs");
