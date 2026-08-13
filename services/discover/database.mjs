@@ -89,7 +89,9 @@ export function openDiscoverDatabase(databasePath) {
       if (!Number.isInteger(numericId) || numericId < 1) return null;
       const existing = byId.get(numericId);
       if (!existing) return null;
-      const row = { ...encode(validateToolInput(payload), existing.created_at), id: numericId };
+      const row = encode(validateToolInput(payload), existing.created_at);
+      delete row.created_at;
+      row.id = numericId;
       try { update.run(row); return decode(byId.get(numericId)); }
       catch (error) { return rethrowConstraint(error); }
     },
