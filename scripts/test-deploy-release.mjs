@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { mkdtemp, mkdir, readlink, rm, writeFile } from "node:fs/promises";
+import { mkdtemp, mkdir, rm, writeFile } from "node:fs/promises";
 import { spawnSync } from "node:child_process";
 import os from "node:os";
 import path from "node:path";
@@ -14,6 +14,15 @@ function run(command, args, options = {}) {
   return result;
 }
 
+function bashPath(filePath) {
+  if (process.platform !== "win32") return filePath;
+  return run("bash", ["-c", 'cygpath -u "$1"', "_", filePath]).stdout.trim();
+}
+
+function readLink(filePath) {
+  return run("bash", ["-c", 'readlink "$1"', "_", bashPath(filePath)]).stdout.trim();
+}
+
 async function makeArchive(revision, number) {
   const source = path.join(tempParent, `source-${number}`);
   const archive = path.join(tempParent, `release-${number}.tar.gz`);
@@ -26,21 +35,22 @@ async function makeArchive(revision, number) {
 }
 
 try {
+  const deployRootForBash = bashPath(deployRoot);
   const firstArchive = await makeArchive(revisions[0], 1);
-  run("bash", ["deploy/remote-release.sh", deployRoot, firstArchive, revisions[0]], { env: { ...process.env, DEPLOY_TEST_MODE: "1" } });
-  const firstTarget = await readlink(path.join(deployRoot, "current"));
+  run("bash", ["deploy/remote-release.sh", deployRootForBash, bashPath(firstArchive), revisions[0]], { env: { ...process.env, DEPLOY_TEST_MODE: "1" } });
+  const firstTarget = readLink(path.join(deployRoot, "current"));
   assert.ok(firstTarget.includes(revisions[0]));
 
   await new Promise((resolve) => setTimeout(resolve, 1100));
   const secondArchive = await makeArchive(revisions[1], 2);
-  run("bash", ["deploy/remote-release.sh", deployRoot, secondArchive, revisions[1]], { env: { ...process.env, DEPLOY_TEST_MODE: "1" } });
-  const secondTarget = await readlink(path.join(deployRoot, "current"));
-  const previousTarget = await readlink(path.join(deployRoot, "previous"));
+  run("bash", ["deploy/remote-release.sh", deployRootForBash, bashPath(secondArchive), revisions[1]], { env: { ...process.env, DEPLOY_TEST_MODE: "1" } });
+  const secondTarget = readLink(path.join(deployRoot, "current"));
+  const previousTarget = readLink(path.join(deployRoot, "previous"));
   assert.ok(secondTarget.includes(revisions[1]));
   assert.ok(previousTarget.includes(revisions[0]));
 
-  run("bash", ["deploy/rollback-release.sh", deployRoot], { env: { ...process.env, DEPLOY_TEST_MODE: "1" } });
-  const rolledBackTarget = await readlink(path.join(deployRoot, "current"));
+  run("bash", ["deploy/rollback-release.sh", deployRootForBash], { env: { ...process.env, DEPLOY_TEST_MODE: "1" } });
+  const rolledBackTarget = readLink(path.join(deployRoot, "current"));
   assert.ok(rolledBackTarget.includes(revisions[0]));
   console.log("Atomic release and rollback integration test passed.");
 } finally {
