@@ -4,6 +4,9 @@ import path from "node:path";
 import process from "node:process";
 
 const root = process.cwd();
+const bash = process.platform === "win32"
+  ? path.join(process.env.ProgramFiles ?? "C:\\Program Files", "Git", "bin", "bash.exe")
+  : "bash";
 const files = {
   release: "deploy/remote-release.sh",
   rollback: "deploy/rollback-release.sh",
@@ -16,7 +19,7 @@ const files = {
 
 for (const file of Object.values(files)) await access(path.join(root, file));
 for (const file of [files.release, files.rollback, files.transport]) {
-  const check = spawnSync("bash", ["-n", path.join(root, file)], { encoding: "utf8" });
+  const check = spawnSync(bash, ["-n", path.join(root, file)], { encoding: "utf8" });
   if (check.status !== 0) throw new Error(check.stderr || `${file} has invalid shell syntax`);
 }
 

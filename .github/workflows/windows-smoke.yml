@@ -1,0 +1,39 @@
+name: Windows smoke
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  windows-native:
+    runs-on: windows-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v4.2.1
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v4.3.0
+        with:
+          node-version: 22
+          cache: npm
+      - name: Run full native Windows bootstrap
+        shell: pwsh
+        run: ./scripts/windows/bootstrap.ps1
+      - name: Verify generated Windows build artifacts
+        shell: pwsh
+        run: |
+          $required = @(
+            '.site-dist/index.html',
+            '.site-dist/catalog.json',
+            '.site-dist/data.json',
+            '.site-dist/api-finder/index.html',
+            '.site-dist/compare/index.html',
+            '.site-dist/quick-start/index.html',
+            '.site-dist/tools/index.html'
+          )
+          foreach ($path in $required) {
+            if (-not (Test-Path $path -PathType Leaf)) { throw "Missing build artifact: $path" }
+          }
+      - name: Smoke local HTTP server
+        run: node scripts/test-local-site-server.mjs
