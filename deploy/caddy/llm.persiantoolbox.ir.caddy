@@ -2,11 +2,21 @@ llm.persiantoolbox.ir {
 	encode zstd gzip
 	root * /srv/awesome-free-llm-apis-ir/current
 
-	# Preserve route order: Caddy normally sorts try_files before handle, which
-	# would turn analytics POSTs into the static 404 page before proxying them.
+	# Discover admin is locked by default. Production supplies the real user/hash
+	# through the private Caddy service environment; the fallback hash has no known password.
+	@discover_admin path /discover/admin /discover/admin/* /discover/api/admin /discover/api/admin/*
+	basic_auth @discover_admin {
+		{$DISCOVER_ADMIN_USER:discover-disabled} {$DISCOVER_ADMIN_PASSWORD_HASH:$2y$12$0Y0SCD5WgiKPezdxwF1dMuJ2mQ7GIdFF7RTmIX5sFWAVD/u8kG8uG}
+	}
+
+	# Preserve route order: dynamic endpoints must be handled before static 404s.
 	route {
 		handle /api/event {
 			reverse_proxy 127.0.0.1:8002
+		}
+
+		handle /discover/api/* {
+			reverse_proxy 127.0.0.1:8003
 		}
 
 		handle {
@@ -19,6 +29,9 @@ llm.persiantoolbox.ir {
 	header @catalog Cache-Control "public, max-age=300, must-revalidate"
 	@buildmeta path /build-meta.json
 	header @buildmeta Cache-Control "no-store"
+	@discover_page path /discover /discover/ /discover/index.html
+	header @discover_page Cache-Control "no-cache, must-revalidate"
+	header @discover_admin Cache-Control "no-store"
 	# Asset filenames are currently stable rather than content-hashed. They must
 	# revalidate so a new HTML release cannot execute stale JavaScript or CSS.
 	@static path *.js *.css *.png *.svg *.webmanifest
