@@ -23,6 +23,11 @@ function readLink(filePath) {
   return run("bash", ["-c", 'readlink -f "$1"', "_", bashPath(filePath)]).stdout.trim();
 }
 
+function describeDeployRoot() {
+  const root = bashPath(deployRoot);
+  return run("bash", ["-c", 'printf "ROOT=%s\\n" "$1"; ls -la "$1"; printf "CURRENT_READLINK="; readlink "$1/current" || true; printf "\\nCURRENT_REAL="; readlink -f "$1/current" || true; printf "\\nRELEASES=\\n"; find "$1/releases" -mindepth 1 -maxdepth 1 -print 2>/dev/null || true', "_", root]).stdout.trim();
+}
+
 async function makeArchive(revision, number) {
   const source = path.join(tempParent, `source-${number}`);
   const archive = path.join(tempParent, `release-${number}.tar.gz`);
@@ -39,19 +44,19 @@ try {
   const firstArchive = await makeArchive(revisions[0], 1);
   run("bash", ["deploy/remote-release.sh", deployRootForBash, bashPath(firstArchive), revisions[0]], { env: { ...process.env, DEPLOY_TEST_MODE: "1" } });
   const firstTarget = readLink(path.join(deployRoot, "current"));
-  assert.ok(firstTarget.includes(revisions[0]));
+  assert.ok(firstTarget.includes(revisions[0]), `first release target mismatch\nfirstTarget=${firstTarget}\n${describeDeployRoot()}`);
 
   await new Promise((resolve) => setTimeout(resolve, 1100));
   const secondArchive = await makeArchive(revisions[1], 2);
   run("bash", ["deploy/remote-release.sh", deployRootForBash, bashPath(secondArchive), revisions[1]], { env: { ...process.env, DEPLOY_TEST_MODE: "1" } });
   const secondTarget = readLink(path.join(deployRoot, "current"));
   const previousTarget = readLink(path.join(deployRoot, "previous"));
-  assert.ok(secondTarget.includes(revisions[1]));
-  assert.ok(previousTarget.includes(revisions[0]));
+  assert.ok(secondTarget.includes(revisions[1]), `second release target mismatch\nsecondTarget=${secondTarget}\n${describeDeployRoot()}`);
+  assert.ok(previousTarget.includes(revisions[0]), `previous release target mismatch\npreviousTarget=${previousTarget}\n${describeDeployRoot()}`);
 
   run("bash", ["deploy/rollback-release.sh", deployRootForBash], { env: { ...process.env, DEPLOY_TEST_MODE: "1" } });
   const rolledBackTarget = readLink(path.join(deployRoot, "current"));
-  assert.ok(rolledBackTarget.includes(revisions[0]));
+  assert.ok(rolledBackTarget.includes(revisions[0]), `rollback target mismatch\nrolledBackTarget=${rolledBackTarget}\n${describeDeployRoot()}`);
   console.log("Atomic release and rollback integration test passed.");
 } finally {
   await rm(tempParent, { recursive: true, force: true });
