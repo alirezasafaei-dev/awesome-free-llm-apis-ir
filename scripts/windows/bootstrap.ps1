@@ -77,8 +77,8 @@ try {
   }
 
   if (-not $SkipBuild) {
-    Invoke-Checked $npm @("run", "site:build")
     Invoke-Checked $npm @("run", "site:check")
+    Invoke-Checked $npm @("run", "site:build")
   }
 } finally {
   $env:NODE_OPTIONS = $previousNodeOptions
