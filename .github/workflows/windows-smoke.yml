@@ -1,0 +1,51 @@
+name: Windows smoke
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  windows-native:
+    runs-on: windows-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v4.2.1
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v4.3.0
+        with:
+          node-version: 22
+          cache: npm
+      - name: Install locked dependencies
+        run: npm ci
+      - name: Run full repository tests natively on Windows
+        run: npm test
+      - name: Build site
+        run: npm run site:build
+        env:
+          SOURCE_REVISION: ${{ github.sha }}
+      - name: Validate built site
+        run: npm run site:check
+      - name: Exercise Windows bootstrap script
+        shell: pwsh
+        run: ./scripts/windows/bootstrap.ps1 -SkipTests -SkipBuild
+      - name: Smoke local static server
+        shell: pwsh
+        run: |
+          $server = Start-Process node -ArgumentList @('scripts/serve-site.mjs', '--port', '4173') -PassThru -NoNewWindow
+          try {
+            $ready = $false
+            for ($i = 0; $i -lt 20; $i++) {
+              Start-Sleep -Milliseconds 250
+              try {
+                $response = Invoke-WebRequest -UseBasicParsing http://127.0.0.1:4173/
+                if ($response.StatusCode -eq 200) { $ready = $true; break }
+              } catch { }
+            }
+            if (-not $ready) { throw 'Local site did not become ready on port 4173.' }
+            $catalog = Invoke-WebRequest -UseBasicParsing http://127.0.0.1:4173/catalog.json
+            if ($catalog.StatusCode -ne 200) { throw 'catalog.json smoke failed.' }
+          } finally {
+            if ($server -and -not $server.HasExited) { Stop-Process -Id $server.Id -Force }
+          }
