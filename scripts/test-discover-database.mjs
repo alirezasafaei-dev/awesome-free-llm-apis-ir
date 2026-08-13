@@ -40,7 +40,6 @@ try {
 
     const normal = repository.createTool(sample({ slug: "normal-tool", name: "Normal Tool", destination_url: "https://example.com/normal", published: true, sort_order: 5 }));
     const featured = repository.createTool(sample({ slug: "featured-tool", name: "Featured Tool", destination_url: "https://example.com/featured", published: true, featured: true, sort_order: 100 }));
-
     assert.deepEqual(repository.listPublishedTools().map((tool) => tool.id), [featured.id, normal.id]);
 
     const updated = repository.updateTool(draft.id, { ...sample(), name: "Vibe AI Updated", published: true, featured: true, sort_order: 1 });
@@ -68,8 +67,9 @@ try {
   const normalized = validateToolInput(sample({ capabilities: [" chat ", "image", "chat"], badges: [" فارسی ", "فارسی"] }));
   assert.deepEqual(normalized.capabilities, ["chat", "image"]);
   assert.deepEqual(normalized.badges, ["فارسی"]);
-
   console.log("Discover SQLite/validation contract passed.");
 } finally {
   await rm(root, { recursive: true, force: true });
 }
+
+await import("./test-discover-api.mjs");
