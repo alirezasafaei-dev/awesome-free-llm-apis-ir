@@ -35,3 +35,5 @@ jobs:
           foreach ($path in $required) {
             if (-not (Test-Path $path -PathType Leaf)) { throw "Missing build artifact: $path" }
           }
+      - name: Smoke local HTTP server
+        run: node scripts/test-local-site-server.mjs
