@@ -1,40 +1,15 @@
-const form = document.querySelector("#admin-tool-form");
-const list = document.querySelector("#admin-tools-list");
-const statusEl = document.querySelector("#admin-save-status");
-
-async function loadTools() {
-  const response = await fetch("/discover/api/admin/tools", { headers: { accept: "application/json" } });
-  const data = await response.json();
-  list.textContent = `${data.tools?.length ?? 0} ابزار`;
-}
-
-form.addEventListener("submit", async (event) => {
-  event.preventDefault();
-  statusEl.textContent = "در حال ذخیره…";
-  const payload = {
-    slug: form.elements.slug.value.trim(),
-    name: form.elements.name.value.trim(),
-    short_description_fa: form.elements.short_description_fa.value.trim(),
-    description_fa: form.elements.description_fa.value.trim(),
-    destination_url: form.elements.destination_url.value.trim(),
-    platform: form.elements.platform.value,
-    category: form.elements.category.value.trim(),
-    capabilities: [],
-    badges: [],
-    access_note_fa: form.elements.access_note_fa.value.trim(),
-    cta_label_fa: form.elements.cta_label_fa.value.trim(),
-    featured: form.elements.featured.checked,
-    sort_order: Number(form.elements.sort_order.value || 0),
-    published: form.elements.published.checked,
-    last_tested_date: form.elements.last_tested_date.value || null
-  };
-  const response = await fetch("/discover/api/admin/tools", {
-    method: "POST",
-    headers: { "content-type": "application/json", "X-Discover-CSRF": "1" },
-    body: JSON.stringify(payload)
-  });
-  statusEl.textContent = response.ok ? "ذخیره شد." : "ذخیره ناموفق بود.";
-  if (response.ok) await loadTools();
-});
-
+const form=document.querySelector("#admin-tool-form"),list=document.querySelector("#admin-tools-list"),statusEl=document.querySelector("#admin-save-status"),deleteButton=document.querySelector("#admin-delete");
+let tools=[],activeId=null;
+const fields=["name","slug","short_description_fa","description_fa","destination_url","platform","category","cta_label_fa","last_tested_date","sort_order","access_note_fa"];
+const csv=value=>String(value||"").split(",").map(item=>item.trim()).filter(Boolean).filter((item,index,all)=>all.indexOf(item)===index);
+function showStatus(text,kind=""){statusEl.textContent=text;statusEl.className=kind?`admin-status-${kind}`:""}
+function formPayload(){const value=Object.fromEntries(fields.map(name=>[name,form.elements[name].value.trim()]));return{slug:value.slug,name:value.name,short_description_fa:value.short_description_fa,description_fa:value.description_fa,destination_url:value.destination_url,platform:value.platform,category:value.category,capabilities:csv(form.elements.capabilities.value),badges:csv(form.elements.badges.value),access_note_fa:value.access_note_fa,cta_label_fa:value.cta_label_fa,featured:form.elements.featured.checked,sort_order:Number(value.sort_order||0),published:form.elements.published.checked,last_tested_date:value.last_tested_date||null}}
+async function request(url,options={}){const response=await fetch(url,{...options,headers:{accept:"application/json",...(options.body?{"content-type":"application/json","X-Discover-CSRF":"1"}:{})}});if(response.status===204)return null;const data=await response.json().catch(()=>({}));if(!response.ok)throw new Error(data?.error?.message||`HTTP ${response.status}`);return data}
+function clearForm(){activeId=null;form.reset();form.elements.platform.value="android";form.elements.category.value="assistant";form.elements.cta_label_fa.value="باز کردن ابزار";form.elements.sort_order.value="0";deleteButton.hidden=true;showStatus("")}
+function editTool(tool){activeId=tool.id;for(const name of fields)form.elements[name].value=tool[name]??"";form.elements.capabilities.value=(tool.capabilities||[]).join(", ");form.elements.badges.value=(tool.badges||[]).join(", ");form.elements.featured.checked=Boolean(tool.featured);form.elements.published.checked=Boolean(tool.published);deleteButton.hidden=false;showStatus(`ویرایش: ${tool.name}`)}
+function renderTools(){list.replaceChildren();if(!tools.length){list.textContent="هنوز ابزاری ثبت نشده.";return}for(const tool of tools){const button=document.createElement("button");button.type="button";button.className="admin-tool-row";const title=document.createElement("strong");title.textContent=tool.name;const meta=document.createElement("span");meta.textContent=`${tool.published?"منتشر":"پیش‌نویس"} · ${tool.featured?"ویژه · ":""}${tool.slug}`;button.append(title,meta);button.addEventListener("click",()=>editTool(tool));list.append(button)}}
+async function loadTools(){try{const data=await request("/discover/api/admin/tools");tools=Array.isArray(data.tools)?data.tools:[];renderTools()}catch(error){showStatus(error.message,"error")}}
+form.addEventListener("submit",async event=>{event.preventDefault();if(!form.reportValidity())return;showStatus("در حال ذخیره…");try{const body=JSON.stringify(formPayload());if(activeId)await request(`/discover/api/admin/tools/${activeId}`,{method: "PUT",body});else await request("/discover/api/admin/tools",{method: "POST",body});await loadTools();clearForm();showStatus("ذخیره شد.","ok")}catch(error){showStatus(error.message,"error")}});
+document.querySelector("#admin-new-tool").addEventListener("click",clearForm);document.querySelector("#admin-cancel").addEventListener("click",clearForm);
+window.DiscoverAdmin={getActiveId:()=>activeId,afterDelete:async()=>{clearForm();await loadTools();showStatus("حذف شد.","ok")},showStatus};
 void loadTools();
