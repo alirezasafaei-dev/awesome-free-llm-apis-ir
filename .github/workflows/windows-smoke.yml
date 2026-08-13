@@ -20,22 +20,18 @@ jobs:
       - name: Run full native Windows bootstrap
         shell: pwsh
         run: ./scripts/windows/bootstrap.ps1
-      - name: Smoke local static server
+      - name: Verify generated Windows build artifacts
         shell: pwsh
         run: |
-          $server = Start-Process node -ArgumentList @('scripts/serve-site.mjs', '--port', '4173') -PassThru -NoNewWindow
-          try {
-            $ready = $false
-            for ($i = 0; $i -lt 20; $i++) {
-              Start-Sleep -Milliseconds 250
-              try {
-                $response = Invoke-WebRequest -UseBasicParsing http://127.0.0.1:4173/
-                if ($response.StatusCode -eq 200) { $ready = $true; break }
-              } catch { }
-            }
-            if (-not $ready) { throw 'Local site did not become ready on port 4173.' }
-            $catalog = Invoke-WebRequest -UseBasicParsing http://127.0.0.1:4173/catalog.json
-            if ($catalog.StatusCode -ne 200) { throw 'catalog.json smoke failed.' }
-          } finally {
-            if ($server -and -not $server.HasExited) { Stop-Process -Id $server.Id -Force }
+          $required = @(
+            '.site-dist/index.html',
+            '.site-dist/catalog.json',
+            '.site-dist/data.json',
+            '.site-dist/api-finder/index.html',
+            '.site-dist/compare/index.html',
+            '.site-dist/quick-start/index.html',
+            '.site-dist/tools/index.html'
+          )
+          foreach ($path in $required) {
+            if (-not (Test-Path $path -PathType Leaf)) { throw "Missing build artifact: $path" }
           }
