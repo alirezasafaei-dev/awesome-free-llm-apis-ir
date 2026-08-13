@@ -1,5 +1,5 @@
 const FIELD_NAMES = new Set([
-  "slug", "name", "short_description_fa", "description_fa", "destination_url", "platform", "category",
+  "slug", "name", "icon", "short_description_fa", "description_fa", "destination_url", "platform", "category",
   "capabilities", "badges", "access_note_fa", "cta_label_fa", "featured", "sort_order", "published", "last_tested_date"
 ]);
 const PLATFORMS = new Set(["android", "ios", "web", "telegram", "desktop", "multi"]);
@@ -79,6 +79,7 @@ export function validateToolInput(value) {
   return {
     slug,
     name: text(value.name, "name", { min: 1, max: 160 }),
+    icon: text(value.icon ?? "✦", "icon", { min: 1, max: 12 }),
     short_description_fa: text(value.short_description_fa, "short_description_fa", { min: 1, max: 280 }),
     description_fa: text(value.description_fa, "description_fa", { max: 4000, required: false }),
     destination_url: checkedUrl(value.destination_url),
