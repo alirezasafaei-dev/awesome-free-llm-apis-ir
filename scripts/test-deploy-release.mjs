@@ -53,3 +53,7 @@ if (process.platform === "win32") {
 }
 
 await import("./test-caddy-apply-contract.mjs");
+
+const deployCheck = spawnSync(process.execPath, ["scripts/check-deploy.mjs"], { encoding: "utf8" });
+assert.equal(deployCheck.status, 0, `check-deploy.mjs failed\n${deployCheck.stdout}\n${deployCheck.stderr}`);
+console.log("Cross-platform deployment contract check passed.");
