@@ -1,0 +1,13 @@
+import assert from "node:assert/strict";
+import { readFile } from "node:fs/promises";
+import { spawnSync } from "node:child_process";
+import path from "node:path";
+import process from "node:process";
+const dir=path.join(process.cwd(),"site/discover/admin");
+const [html,css,js]=await Promise.all([readFile(path.join(dir,"index.html"),"utf8"),readFile(path.join(dir,"admin.css"),"utf8"),readFile(path.join(dir,"admin.js"),"utf8")]);
+for(const signal of ["مدیریت لینک‌های ریلز","admin-tool-form","admin-tools-list","destination_url","published","featured"])assert.ok(html.includes(signal));
+assert.ok(css.includes(".admin-layout")&&css.includes("@media"));
+assert.ok(js.includes("textContent")&&js.includes("activeId")&&js.includes("published")&&js.includes("featured"));
+const syntax=spawnSync(process.execPath,["--check",path.join(dir,"admin.js")],{encoding:"utf8"});
+assert.equal(syntax.status,0,syntax.stderr);
+console.log("Discover admin editor contract passed.");
