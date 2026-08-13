@@ -29,3 +29,6 @@ try{
 
 await import("./test-discover-api.mjs");
 await import("./test-discover-admin-site.mjs");
+await import("./test-discover-proxy-contract.mjs");
+await import("./test-discover-service-contract.mjs");
+await import("./test-discover-deploy-contract.mjs");
