@@ -10,7 +10,8 @@ const unitPath=path.join(root,"deploy/discover/persiantoolbox-discover.service")
 const [installer,unit]=await Promise.all([readFile(installPath,"utf8"),readFile(unitPath,"utf8")]);
 
 for(const signal of [
-  "/opt/persiantoolbox-discover/releases",
+  'BASE_DIR="/opt/persiantoolbox-discover"',
+  'RELEASES_DIR="$BASE_DIR/releases"',
   "/var/lib/persiantoolbox-discover",
   "/etc/persiantoolbox-discover",
   "Node.js 22.13+",
