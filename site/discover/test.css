@@ -1,0 +1,2 @@
+.discover-grid { display: grid; }
+@media (min-width: 680px) { .discover-grid { grid-template-columns: 1fr 1fr; } }
