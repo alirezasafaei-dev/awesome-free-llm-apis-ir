@@ -1,0 +1,37 @@
+[Unit]
+Description=PersianToolbox Discover dynamic catalog
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=persiantoolbox-discover
+Group=persiantoolbox-discover
+WorkingDirectory=/opt/persiantoolbox-discover/current
+Environment=NODE_ENV=production
+Environment=DISCOVER_HOST=127.0.0.1
+Environment=DISCOVER_PORT=8003
+Environment=DISCOVER_DATABASE_PATH=/var/lib/persiantoolbox-discover/discover.sqlite3
+EnvironmentFile=-/etc/persiantoolbox-discover/discover.env
+ExecStart=/usr/bin/node /opt/persiantoolbox-discover/current/services/discover/server.mjs
+Restart=on-failure
+RestartSec=3
+TimeoutStopSec=15
+StateDirectory=persiantoolbox-discover
+StateDirectoryMode=0750
+ConfigurationDirectory=persiantoolbox-discover
+ConfigurationDirectoryMode=0750
+NoNewPrivileges=true
+PrivateTmp=true
+PrivateDevices=true
+ProtectSystem=strict
+ProtectHome=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictSUIDSGID=true
+LockPersonality=true
+ReadWritePaths=/var/lib/persiantoolbox-discover
+
+[Install]
+WantedBy=multi-user.target
