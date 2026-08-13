@@ -17,24 +17,9 @@ jobs:
         with:
           node-version: 22
           cache: npm
-      - name: Install locked dependencies
-        run: npm ci
-      - name: Enable Windows nested npm compatibility
+      - name: Run full native Windows bootstrap
         shell: pwsh
-        run: |
-          $shim = (Resolve-Path .\scripts\windows\npm-spawn-shim.cjs).Path
-          "NODE_OPTIONS=--require=$shim" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
-      - name: Run full repository tests natively on Windows
-        run: npm test
-      - name: Build site
-        run: npm run site:build
-        env:
-          SOURCE_REVISION: ${{ github.sha }}
-      - name: Validate built site
-        run: npm run site:check
-      - name: Exercise Windows bootstrap script
-        shell: pwsh
-        run: ./scripts/windows/bootstrap.ps1 -SkipTests -SkipBuild
+        run: ./scripts/windows/bootstrap.ps1
       - name: Smoke local static server
         shell: pwsh
         run: |
