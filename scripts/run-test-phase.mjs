@@ -54,7 +54,8 @@ const phases = Object.freeze({
     "ux:research:test",
     "advisor:test",
     "pages:paths:test",
-    "analytics:production:test"
+    "analytics:production:test",
+    "discover:test"
   ],
   operations: [
     "verify:iran:dry",

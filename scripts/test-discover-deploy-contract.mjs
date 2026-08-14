@@ -22,9 +22,11 @@ for(const signal of [
   "systemctl daemon-reload",
   "systemctl restart",
   "127.0.0.1:8003/discover/api/health",
+  "node_modules/simple-icons",
   "rollback"
 ]) assert.ok(installer.includes(signal),`Discover installer missing ${signal}`);
 assert.ok(!installer.includes("rm -rf \"$DATA_DIR\""),"Installer must never recursively remove persistent data");
+assert.ok(!/npm\s+(?:i|install|ci)\b/.test(installer),"Installer must not mutate dependencies on the VPS");
 assert.ok(installer.includes("NR>10"),"Backup retention must be bounded");
 for(const signal of ["User=persiantoolbox-discover","DISCOVER_HOST=127.0.0.1","ProtectSystem=strict","ReadWritePaths=/var/lib/persiantoolbox-discover"])assert.ok(unit.includes(signal));
 
@@ -32,4 +34,4 @@ if(process.platform!=="win32"){
   const syntax=spawnSync("bash",["-n",installPath],{encoding:"utf8"});
   assert.equal(syntax.status,0,syntax.stderr||"Discover installer shell syntax failed");
 }
-console.log("Discover deployment/service persistence contract passed.");
+console.log("Discover deployment/service persistence/dependency contract passed.");

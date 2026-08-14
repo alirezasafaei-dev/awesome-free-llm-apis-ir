@@ -31,6 +31,10 @@ if [[ ! -f "$SOURCE_DIR/services/discover/server.mjs" ]]; then
   echo "Discover server entrypoint is missing from staged source." >&2
   exit 2
 fi
+if [[ ! -f "$SOURCE_DIR/node_modules/simple-icons/package.json" ]]; then
+  echo "Discover runtime dependency node_modules/simple-icons is missing from staged source." >&2
+  exit 2
+fi
 
 NODE_BIN="$(command -v node || true)"
 if [[ -z "$NODE_BIN" ]]; then
@@ -54,8 +58,9 @@ if [[ -e "$DEST" ]]; then
   echo "Release already exists: $DEST" >&2
   exit 4
 fi
-install -d -m 0755 "$DEST/services"
+install -d -m 0755 "$DEST/services" "$DEST/node_modules"
 cp -a "$SOURCE_DIR/services/discover" "$DEST/services/"
+cp -a "$SOURCE_DIR/node_modules/simple-icons" "$DEST/node_modules/"
 chown -R root:root "$DEST"
 find "$DEST" -type d -exec chmod 0755 {} +
 find "$DEST" -type f -exec chmod 0644 {} +

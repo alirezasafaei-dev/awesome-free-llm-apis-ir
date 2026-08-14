@@ -9,7 +9,10 @@ on:
       - 'deploy/caddy/llm.persiantoolbox.ir.caddy'
       - 'deploy/nginx/ir.llm.persiantoolbox.ir.conf'
       - 'scripts/test-discover-*.mjs'
+      - 'scripts/run-discover-tests.mjs'
+      - 'scripts/vendor-discover-assets.mjs'
       - '.github/workflows/discover-smoke.yml'
+      - '.github/workflows/deploy-discover.yml'
       - 'package.json'
       - 'package-lock.json'
   workflow_dispatch:
@@ -20,13 +23,13 @@ permissions:
 jobs:
   discover-node22:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v4.2.1
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v4.3.0
         with:
           node-version: 22
           cache: npm
       - run: npm ci
-      - name: Run Discover database contract
-        run: node scripts/test-discover-database.mjs
+      - name: Run complete Discover contract suite
+        run: npm run discover:test

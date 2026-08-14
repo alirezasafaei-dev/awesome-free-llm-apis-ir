@@ -4,6 +4,7 @@ import process from "node:process";
 import { fileURLToPath } from "node:url";
 import { openDiscoverDatabase } from "./database.mjs";
 import { enforceMutationRequest, errorResponse, readJsonBody, sendEmpty, sendJson } from "./http.mjs";
+import { renderSimpleIconSvg } from "./icons.mjs";
 
 function assertRuntime() {
   const [major, minor] = process.versions.node.split(".").map(Number);
@@ -23,6 +24,17 @@ function rejectMutation(request, response) {
   return true;
 }
 
+function sendSvg(response, body) {
+  response.writeHead(200, {
+    "content-type": "image/svg+xml; charset=utf-8",
+    "content-length": Buffer.byteLength(body),
+    "cache-control": "public, max-age=86400, must-revalidate",
+    "x-content-type-options": "nosniff",
+    "referrer-policy": "no-referrer"
+  });
+  response.end(body);
+}
+
 export function createDiscoverServer({ databasePath, host = "127.0.0.1", port = 8003 }) {
   assertRuntime();
   const repository = openDiscoverDatabase(databasePath);
@@ -35,6 +47,14 @@ export function createDiscoverServer({ databasePath, host = "127.0.0.1", port = 
       if (pathname === "/discover/api/health") {
         if (request.method !== "GET") return methodNotAllowed(response, "GET");
         return sendJson(response, 200, { ok: true });
+      }
+
+      const iconMatch = pathname.match(/^\/discover\/api\/icons\/simple-icons\/([a-z0-9][a-z0-9_-]{0,79})\.svg$/);
+      if (iconMatch) {
+        if (request.method !== "GET") return methodNotAllowed(response, "GET");
+        const svg = renderSimpleIconSvg(iconMatch[1]);
+        if (!svg) return sendJson(response, 404, { error: { code: "not_found", message: "icon not found" } });
+        return sendSvg(response, svg);
       }
 
       if (pathname === "/discover/api/tools") {
