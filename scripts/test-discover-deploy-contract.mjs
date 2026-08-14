@@ -44,8 +44,9 @@ for(const signal of [
 ]) assert.ok(manifest.includes(signal),`Node runtime manifest missing ${signal}`);
 for(const signal of [
   "https://nodejs.org/dist/",
-  "node-v${NODE_RUNTIME_VERSION}-linux-x64.tar.gz",
-  "node-v${NODE_RUNTIME_VERSION}-linux-arm64.tar.gz",
+  'file="node-v${NODE_RUNTIME_VERSION}-linux-${arch}.tar.gz"',
+  'fetch_runtime x64 "$NODE_RUNTIME_X64_SHA256"',
+  'fetch_runtime arm64 "$NODE_RUNTIME_ARM64_SHA256"',
   "sha256sum -c"
 ]) assert.ok(runtime.includes(signal),`Node runtime preparation missing ${signal}`);
 
