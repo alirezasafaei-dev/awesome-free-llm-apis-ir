@@ -44,7 +44,7 @@ if [[ ! -f "$RUNTIME_MANIFEST" ]]; then
   exit 2
 fi
 
-for command in curl install mv readlink sha256sum tar uname useradd systemctl; do
+for command in curl install journalctl mv readlink runuser sha256sum tar uname useradd systemctl; do
   command -v "$command" >/dev/null 2>&1 || {
     echo "Required command is missing: $command" >&2
     exit 3
@@ -171,6 +171,14 @@ rollback() {
 }
 trap rollback ERR
 
+runuser -u "$SERVICE_USER" -- env \
+  NODE_ENV=production \
+  DISCOVER_HOST=127.0.0.1 \
+  DISCOVER_PORT=8003 \
+  DISCOVER_DATABASE_PATH="$DB_PATH" \
+  DISCOVER_PREFLIGHT_ONLY=1 \
+  "$NODE_BIN" "$DEST/services/discover/server.mjs"
+
 systemctl restart "$SERVICE_NAME"
 for _ in {1..20}; do
   if curl --fail --silent --show-error --max-time 2 http://127.0.0.1:8003/discover/api/health | grep -q '"ok":true'; then
@@ -180,4 +188,8 @@ for _ in {1..20}; do
   fi
   sleep 1
 done
+
+echo "Discover service did not become healthy; bounded startup diagnostics follow." >&2
+systemctl status "$SERVICE_NAME" --no-pager --full >&2 || true
+journalctl -u "$SERVICE_NAME" -n 60 --no-pager -o cat >&2 || true
 false
