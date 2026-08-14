@@ -1,7 +1,6 @@
 import { DatabaseSync } from "node:sqlite";
+import { hasSimpleIcon } from "./icons.mjs";
 import { validateToolInput, ValidationError } from "./validation.mjs";
-
-const SIMPLE_ICON_SLUG = /^[a-z0-9][a-z0-9_-]{0,79}$/;
 
 function safeJsonArray(value) {
   try {
@@ -57,7 +56,7 @@ function migrateIconColumns(db) {
     const legacy = badges.find((item) => item.startsWith("icon:"));
     if (!legacy) continue;
     const legacyKey = legacy.slice(5).trim().toLowerCase();
-    const provider = SIMPLE_ICON_SLUG.test(legacyKey) && legacyKey !== "sparkles" ? "simple-icons" : "generic";
+    const provider = hasSimpleIcon(legacyKey) ? "simple-icons" : "generic";
     const key = provider === "simple-icons" ? legacyKey : "sparkles";
     const cleaned = badges.filter((item) => !item.startsWith("icon:"));
     updateLegacy.run(JSON.stringify(cleaned), provider, key, row.id);
