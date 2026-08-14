@@ -46,29 +46,25 @@ Requirements:
 - UI must remain usable on touch devices and without drag support;
 - dependency must not obtain network access or collect analytics.
 
-### 3.2 Simple Icons — approved for brand icons
+### 3.2 Simple Icons — approved now for brand icons
 
-Use Simple Icons data for known third-party brand marks where an official/usable brand icon exists.
+Use the `simple-icons` package as the only new brand-icon source in the first implementation cycle.
 
 Requirements:
 
 - no browser request to Simple Icons or another external icon service;
 - no arbitrary remote image URL stored or rendered as an icon;
-- icon names are validated against an allowlisted local provider;
+- icon names are validated against the locally installed package;
 - brand/trademark usage remains subject to the brand owner's rules;
 - unknown or unavailable brand icons fall back to a generic local icon.
 
-### 3.3 Generic icon source — approved only as local/offline data
+### 3.3 Generic icon source — approved for future local/offline use, not installed now
 
-A generic open-source icon set may be consumed through local/offline Iconify-compatible data if the implementation needs icons beyond brand marks.
+A generic open-source icon set may later be consumed through local/offline Iconify-compatible data if measured product needs require icons beyond brand marks.
 
-Requirements:
+For the first implementation cycle, do **not** add an Iconify runtime, Iconify public API, or a generic icon package. Use the repository-owned generic fallback SVG instead.
 
-- no Iconify public runtime API;
-- no remote SVG fetch;
-- only explicitly approved local icon collections may be included;
-- the implementation must avoid shipping an unnecessarily large icon catalog to every browser;
-- server-side resolution or generated local assets are preferred over a large client bundle.
+Any later generic icon package must remain same-origin/offline, bounded, and explicitly reviewed under the dependency admission gate below.
 
 ### 3.4 Fuse.js — conditional, not installed now
 
@@ -84,28 +80,39 @@ The current `icon:<value>` encoding inside `badges` is a transitional implementa
 
 Introduce explicit icon fields through an additive SQLite migration:
 
-- `icon_provider`: constrained identifier such as `simple-icons`, `generic`, or `emoji`.
-- `icon_key`: validated provider-specific key.
+- `icon_provider`: constrained to `simple-icons` or `generic` in the first implementation cycle.
+- `icon_key`: validated provider-specific key. For `generic`, the only first-cycle value is the repository fallback key `sparkles`.
 
 Rules:
 
 - Existing records must remain readable during migration.
-- If a legacy `icon:<value>` badge is present, migration may convert it once and remove only that metadata token; ordinary badges must remain unchanged.
-- Public API responses expose normalized icon fields, not the legacy badge token.
-- Invalid/missing icons resolve to a deterministic generic local fallback.
-- Arbitrary SVG/HTML, JavaScript URLs, external image URLs, and untrusted data URIs are not accepted as icon input.
-- Routine icon selection for an icon already present in an approved local provider must require zero static-site deploy.
+- If a legacy `icon:<value>` badge is present, migration converts it once where possible and removes only that metadata token; ordinary badges remain unchanged.
+- Public API responses expose normalized `icon_provider` and `icon_key`, not the legacy badge token.
+- Invalid/missing icons resolve to `generic:sparkles` for reads; invalid admin mutations are rejected before storage.
+- Arbitrary SVG/HTML, JavaScript URLs, external image URLs, emoji-as-markup, and untrusted data URIs are not accepted as icon input.
+- Selecting any icon already available in the installed `simple-icons` package requires zero static-site deploy.
 
-## 5. Local icon delivery
+## 5. Local icon delivery — locked design
 
-Preferred design for zero-deploy catalog edits:
+The first implementation cycle uses a same-origin sidecar endpoint, not client-side icon packages and not a third-party API.
 
-1. Approved icon packages are installed with the Discover service release or otherwise packaged as bounded local service assets.
-2. The sidecar validates `icon_provider` + `icon_key`.
-3. Public cards obtain icon output from the same origin, either embedded in the API response as sanitized data or through a bounded same-origin icon endpoint.
-4. The browser never contacts third-party icon infrastructure.
+Flow:
 
-The implementation plan must choose the smallest option that keeps CSP strict and does not make every content edit require a deployment.
+1. `simple-icons` is an exact lockfile-resolved production dependency available to the Discover service release.
+2. The sidecar validates `icon_provider` + `icon_key` against the locally installed icon source.
+3. Brand icons are served through `GET /discover/api/icons/simple-icons/:key.svg`.
+4. The endpoint returns a minimal sanitized SVG generated only from trusted package data, with `image/svg+xml`, `X-Content-Type-Options: nosniff`, a bounded cache policy, no scripts/events/foreign objects, and no user-supplied SVG fragments.
+5. `generic:sparkles` resolves to a repository-owned same-origin fallback SVG; it does not require a package lookup.
+6. Public cards render icons with normal same-origin `<img>` references. The browser never contacts third-party icon infrastructure.
+7. Unknown icon GET requests return a deterministic 404 or generic fallback according to the API contract; they never proxy or fetch remotely.
+
+Package/deploy rule:
+
+- The Discover release process must package/install the lockfile-resolved production dependency in a deterministic, bounded way.
+- No `npm install` occurs per request or as an uncontrolled production mutation.
+- The deployment contract must fail before activation if the required icon package or fallback asset is absent.
+
+This preserves strict CSP and zero-deploy catalog edits for any brand icon already present in the deployed package version.
 
 ## 6. Dependency admission gate
 
@@ -154,16 +161,17 @@ These are product/data semantics, not generic UI commodities.
 
 ## 9. Discover implementation changes covered by this design
 
-The first implementation cycle after this spec is approved must be limited to:
+The first implementation cycle after this spec is approved is limited to:
 
 1. finish the missing controlled Discover deployment workflow and full `discover:test` aggregation already required by the existing Discover plan;
 2. replace the legacy badge-encoded icon contract with explicit additive icon fields;
-3. integrate local/offline brand icon resolution with a deterministic generic fallback;
-4. add SortableJS-backed admin reordering with an accessible/manual fallback;
-5. extend database/API/admin/public/proxy/build/privacy tests for these changes;
-6. preserve zero-deploy routine catalog CRUD after the one-time service activation.
+3. add lockfile-resolved `simple-icons` service-side brand resolution plus the repository-owned generic fallback;
+4. expose the bounded same-origin icon endpoint defined above;
+5. add SortableJS-backed admin reordering with an accessible/manual fallback;
+6. extend database/API/admin/public/proxy/build/privacy/deploy tests for these changes;
+7. preserve zero-deploy routine catalog CRUD after the one-time service activation.
 
-Do not include an Astro migration, general site redesign, fuzzy-search migration, or Alpine.js conversion in this implementation cycle.
+Do not include an Astro migration, general site redesign, fuzzy-search migration, Iconify runtime, generic icon package, or Alpine.js conversion in this implementation cycle.
 
 ## 10. Data and request flow
 
@@ -179,9 +187,9 @@ Public browser
   -> /discover/
   -> /discover/api/tools
   -> normalized catalog + icon identifiers
-  -> same-origin/local icon resolution
+  -> /discover/api/icons/simple-icons/:key.svg OR local generic fallback
 
-SortableJS
+SortableJS (local asset)
   -> browser-only ordering interaction
   -> normalized integer ordering mutation
   -> existing protected admin API
@@ -191,10 +199,11 @@ No external runtime dependency is added to the public request path.
 
 ## 11. Failure and fallback behavior
 
-- Icon package lookup failure: render generic local icon; do not break the card.
-- Unknown icon key: validation error in admin mutation; existing valid records stay unaffected.
+- Icon package lookup failure: public card renders the generic local icon; it does not break the card or trigger a remote request.
+- Unknown icon key in an admin mutation: validation error; existing valid records stay unaffected.
+- Unknown icon GET: deterministic bounded response with no remote fallback/proxy behavior.
 - JavaScript/Sortable unavailable: manual order field remains functional.
-- Dependency asset missing from release: Discover tests/release contract must fail before production activation.
+- Dependency asset missing from release: Discover tests/release contract fail before production activation.
 - Database migration failure: service activation fails and follows the existing code rollback/DB backup boundary; never silently recreate or discard the persistent DB.
 - Third-party package update regression: reject the update; do not weaken tests.
 
@@ -202,14 +211,15 @@ No external runtime dependency is added to the public request path.
 
 `npm run discover:test` must become the single local/CI aggregation point for all Discover contracts and include, at minimum:
 
-- SQLite schema/migration and CRUD;
+- SQLite additive schema migration and CRUD;
+- legacy badge-icon migration behavior;
 - API security and validation;
+- icon endpoint content type, validation, sanitization contract, cache policy, and no remote fallback;
 - admin UI CRUD/delete/order/icon controls;
 - public UI search/filter/card/icon behavior;
-- Sortable asset/local-delivery contract and manual ordering fallback;
-- icon validation and fallback behavior;
+- Sortable local-asset delivery and manual ordering fallback;
 - Caddy/admin protection and mirror isolation;
-- service installer/persistent DB/backup/rollback contract;
+- service installer/dependency packaging/persistent DB/backup/rollback contract;
 - controlled global-only deployment workflow contract;
 - static build inclusion and CSP/privacy invariants.
 
@@ -222,7 +232,8 @@ This design is successfully implemented when:
 - routine Discover content edits remain zero-deploy;
 - admin ordering is faster and touch-friendly without sacrificing accessibility;
 - icons are structured data rather than badge metadata;
-- brand/generic icons are served locally with no third-party runtime request;
+- brand icons are served from trusted local package data via the same origin;
+- no third-party runtime icon request exists;
 - the production dependency surface remains small and documented;
 - all Discover contracts and required repository gates pass without weakening privacy/evidence rules;
 - the existing Node/SQLite/Caddy deployment model remains intact.
@@ -234,6 +245,7 @@ Explicitly deferred to later, evidence-driven work:
 - Astro evaluation/migration for the broader static site;
 - Fuse.js fuzzy search;
 - Alpine.js admin migration;
+- Iconify/generic icon package adoption;
 - multi-user admin/auth roles;
 - remote user-submitted images or arbitrary icon uploads;
 - external SaaS database/auth/CDN dependencies.
