@@ -31,14 +31,7 @@ for (const marker of [
   if (!deployWorkflow.includes(marker)) failures.push(`deploy-vps workflow is missing: ${marker}`);
 }
 
-for (const marker of [
-  "name: Deploy Discover pilot",
-  "workflow_dispatch:",
-  "production-global",
-  "Prepare verified Discover Node runtime",
-  "deploy/discover/prepare-node-runtime.sh .discover-runtime",
-  ".discover-runtime"
-]) {
+for (const marker of ["name: Deploy Discover pilot", "workflow_dispatch:", "production-global", "install-discover-service.sh"]) {
   if (!serviceWorkflow.includes(marker)) failures.push(`deploy-discover workflow is missing: ${marker}`);
 }
 
@@ -112,4 +105,4 @@ if (failures.length) {
   process.exit(1);
 }
 
-console.log("Release orchestration contract passed: CI packages a verified private Node runtime, protected-main global release activates and verifies Discover before static publication, and Iran remains static-only.");
+console.log("Release orchestration contract passed: CI packages a verified private Node runtime, protected-main global release activates and verifies Discover before static publication, the manual service workflow remains compatible via the installer's checksum-verified fallback, and Iran remains static-only.");
