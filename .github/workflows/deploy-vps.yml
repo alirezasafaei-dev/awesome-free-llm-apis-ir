@@ -34,12 +34,11 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 2
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v4.2.1
       - name: Ensure no infrastructure secrets in public workflow
         run: |
           set -Eeuo pipefail
           WORKFLOW_FILE=".github/workflows/deploy-vps.yml"
-          # Patterns that must never appear in the public workflow
           IP_PATTERN='[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}'
           USER_HOST_PATTERN='[a-z]+@[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}'
           if grep -EoP "$IP_PATTERN" "$WORKFLOW_FILE" | grep -vE '^(127\.0\.0\.1|0\.0\.0\.0)$'; then
@@ -54,10 +53,10 @@ jobs:
 
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v4.2.1
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v4.3.0
         with:
           node-version: 22
       - run: npm ci
@@ -65,13 +64,24 @@ jobs:
       - run: npm run site:build
         env:
           SOURCE_REVISION: ${{ github.sha }}
-      - name: Package immutable release
+      - name: Package immutable static release
         run: tar -C .site-dist -czf site-release.tar.gz .
-      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+      - name: Package bounded Discover service release
+        run: |
+          tar -czf discover-service-release.tar.gz \
+            services/discover \
+            deploy/discover \
+            deploy/caddy/llm.persiantoolbox.ir.caddy \
+            deploy/caddy/apply-caddy-config.sh \
+            node_modules/simple-icons \
+            package.json package-lock.json
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v4.6.2
         with:
           name: site-release-${{ github.sha }}
           path: |
             site-release.tar.gz
+            discover-service-release.tar.gz
+            scripts/check-discover-live-crud.mjs
             deploy/remote-release.sh
             deploy/rollback-release.sh
             deploy/publish-release-over-ssh.sh
@@ -82,7 +92,7 @@ jobs:
     if: github.event_name == 'push' || inputs.target == 'both' || inputs.target == 'global'
     needs: [build, privacy-check]
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 25
     environment:
       name: production-global
       url: https://llm.persiantoolbox.ir/
@@ -90,6 +100,7 @@ jobs:
       - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v4.1.8
         with:
           name: site-release-${{ github.sha }}
+
       - name: Configure pinned SSH identity
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
@@ -103,6 +114,127 @@ jobs:
           printf '%s\n' "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
           chmod 600 ~/.ssh/id_ed25519 ~/.ssh/known_hosts
           ssh-keygen -y -f ~/.ssh/id_ed25519 >/dev/null
+
+      - name: Prepare Discover admin credential
+        env:
+          CONFIGURED_ADMIN_USER: ${{ secrets.DISCOVER_ADMIN_USER }}
+          CONFIGURED_ADMIN_PASSWORD: ${{ secrets.DISCOVER_ADMIN_PASSWORD }}
+        run: |
+          set -Eeuo pipefail
+          admin_user="${CONFIGURED_ADMIN_USER:-discover-admin}"
+          admin_password="${CONFIGURED_ADMIN_PASSWORD:-}"
+          if [[ -z "$admin_password" ]]; then
+            admin_password="$(openssl rand -hex 32)"
+          fi
+          [[ "$admin_user" =~ ^[A-Za-z0-9._-]{8,64}$ ]]
+          [[ "$admin_password" =~ ^[A-Za-z0-9._~+-]{24,128}$ ]]
+          umask 077
+          printf '%s' "$admin_user" > .discover-admin-user
+          printf '%s' "$admin_password" > .discover-admin-password
+          chmod 600 .discover-admin-user .discover-admin-password
+
+      - name: Capture Discover rollback state
+        id: discover_state
+        env:
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_PORT: ${{ secrets.SSH_PORT }}
+        run: |
+          set -Eeuo pipefail
+          test -n "$SSH_HOST" && test -n "$SSH_USER" && test -n "$SSH_PORT"
+          remote="${SSH_USER}@${SSH_HOST}"
+          stage="/tmp/persiantoolbox-discover-${GITHUB_SHA}"
+          ssh -i ~/.ssh/id_ed25519 -p "$SSH_PORT" -o BatchMode=yes -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes "$remote" \
+            "rm -rf -- '$stage' && install -d -m 700 '$stage'"
+          scp -i ~/.ssh/id_ed25519 -P "$SSH_PORT" -o BatchMode=yes -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes \
+            discover-service-release.tar.gz .discover-admin-user .discover-admin-password "$remote:$stage/"
+          ssh -i ~/.ssh/id_ed25519 -p "$SSH_PORT" -o BatchMode=yes -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes "$remote" "STAGE='$stage' bash -se" <<'REMOTE'
+          set -Eeuo pipefail
+          tar -xzf "$STAGE/discover-service-release.tar.gz" -C "$STAGE"
+          if systemctl is-active --quiet persiantoolbox-discover 2>/dev/null; then printf active > "$STAGE/pre-service-active"; fi
+          if systemctl is-enabled --quiet persiantoolbox-discover 2>/dev/null; then printf enabled > "$STAGE/pre-service-enabled"; fi
+          if [[ -L /opt/persiantoolbox-discover/current ]]; then readlink -f /opt/persiantoolbox-discover/current > "$STAGE/pre-current-target"; fi
+          if sudo test -f /etc/systemd/system/persiantoolbox-discover.service; then sudo cp -a /etc/systemd/system/persiantoolbox-discover.service "$STAGE/pre-service-unit"; fi
+          if sudo test -f /etc/caddy/sites-enabled/llm.persiantoolbox.ir.caddy; then sudo cp -a /etc/caddy/sites-enabled/llm.persiantoolbox.ir.caddy "$STAGE/pre-caddy-site"; fi
+          if sudo test -f /etc/systemd/system/caddy.service.d/discover-admin.conf; then sudo cp -a /etc/systemd/system/caddy.service.d/discover-admin.conf "$STAGE/pre-caddy-dropin"; fi
+          if sudo test -f /etc/persiantoolbox-discover/caddy.env; then sudo cp -a /etc/persiantoolbox-discover/caddy.env "$STAGE/pre-caddy-env"; fi
+          if sudo test -f /etc/persiantoolbox-discover/admin-owner-credentials; then sudo cp -a /etc/persiantoolbox-discover/admin-owner-credentials "$STAGE/pre-owner-credentials"; fi
+          REMOTE
+
+      - name: Activate Discover sidecar before static publication
+        id: discover_activation
+        env:
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_PORT: ${{ secrets.SSH_PORT }}
+        run: |
+          set -Eeuo pipefail
+          remote="${SSH_USER}@${SSH_HOST}"
+          stage="/tmp/persiantoolbox-discover-${GITHUB_SHA}"
+          ssh -i ~/.ssh/id_ed25519 -p "$SSH_PORT" -o BatchMode=yes -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes "$remote" "STAGE='$stage' RELEASE_ID='$GITHUB_SHA' bash -se" <<'REMOTE'
+          set -Eeuo pipefail
+          cd "$STAGE"
+          admin_user="$(cat "$STAGE/.discover-admin-user")"
+          admin_password="$(cat "$STAGE/.discover-admin-password")"
+          test -n "$admin_user" && test -n "$admin_password"
+
+          sudo bash deploy/discover/install-discover-service.sh "$STAGE" "$RELEASE_ID"
+
+          listen_count="$(sudo ss -ltnH 'sport = :8003' | awk '$4 == "127.0.0.1:8003" {count++} END {print count+0}')"
+          test "$listen_count" = "1"
+          ! sudo ss -ltnH 'sport = :8003' | awk '{print $4}' | grep -Evq '^127\.0\.0\.1:8003$'
+          sudo test -f /var/lib/persiantoolbox-discover/discover.sqlite3
+          ! sudo find /opt/persiantoolbox-discover/releases -type f -name '*.sqlite3' -print -quit | grep -q .
+
+          admin_hash="$(sudo caddy hash-password --algorithm bcrypt --plaintext "$admin_password")"
+          test -n "$admin_hash"
+          sudo install -d -m 750 -o root -g persiantoolbox-discover /etc/persiantoolbox-discover
+          private_env="$STAGE/caddy.env"
+          owner_credentials="$STAGE/admin-owner-credentials"
+          umask 077
+          printf 'DISCOVER_ADMIN_USER=%s\nDISCOVER_ADMIN_PASSWORD_HASH=%s\n' "$admin_user" "$admin_hash" > "$private_env"
+          printf 'username=%s\npassword=%s\n' "$admin_user" "$admin_password" > "$owner_credentials"
+          sudo install -m 600 -o root -g root "$private_env" /etc/persiantoolbox-discover/caddy.env
+          sudo install -m 600 -o root -g root "$owner_credentials" /etc/persiantoolbox-discover/admin-owner-credentials
+
+          sudo install -d -m 755 /etc/systemd/system/caddy.service.d
+          printf '%s\n' '[Service]' 'EnvironmentFile=/etc/persiantoolbox-discover/caddy.env' | \
+            sudo tee /etc/systemd/system/caddy.service.d/discover-admin.conf >/dev/null
+          sudo chmod 644 /etc/systemd/system/caddy.service.d/discover-admin.conf
+          sudo systemctl daemon-reload
+
+          export DISCOVER_ADMIN_USER="$admin_user"
+          export DISCOVER_ADMIN_PASSWORD_HASH="$admin_hash"
+          bash deploy/caddy/apply-caddy-config.sh
+          sudo systemctl restart caddy
+          sudo systemctl is-active --quiet caddy
+          curl --fail --silent --show-error --max-time 5 http://127.0.0.1:8003/discover/api/health | grep -q '"ok":true'
+          REMOTE
+
+      - name: Prove Discover zero-deploy CRUD before static publication
+        run: |
+          set -Eeuo pipefail
+          admin_user="$(cat .discover-admin-user)"
+          admin_password="$(cat .discover-admin-password)"
+
+          curl --fail --silent --show-error --max-time 15 \
+            https://llm.persiantoolbox.ir/discover/api/health | grep -q '"ok":true'
+
+          headers="$(mktemp)"
+          status="$(curl --silent --show-error --max-time 15 --output /dev/null --dump-header "$headers" \
+            --write-out '%{http_code}' https://llm.persiantoolbox.ir/discover/admin/)"
+          test "$status" = "401"
+          grep -Eiq '^www-authenticate:.*basic' "$headers"
+          rm -f "$headers"
+
+          curl --fail --silent --show-error --max-time 15 --user "$admin_user:$admin_password" \
+            --output /dev/null https://llm.persiantoolbox.ir/discover/api/admin/tools
+
+          DISCOVER_ADMIN_USER="$admin_user" \
+          DISCOVER_ADMIN_PASSWORD="$admin_password" \
+          DISCOVER_BASE_URL="https://llm.persiantoolbox.ir/discover" \
+            node scripts/check-discover-live-crud.mjs
+
       - name: Publish atomic release
         id: release
         env:
@@ -111,11 +243,14 @@ jobs:
           SSH_PORT: ${{ secrets.SSH_PORT }}
           DEPLOY_ROOT: ${{ secrets.DEPLOY_ROOT }}
         run: bash deploy/publish-release-over-ssh.sh
+
       - name: Verify canonical deployment
         env:
           EXPECTED_SHA: ${{ github.sha }}
         run: |
           set -Eeuo pipefail
+          admin_user="$(cat .discover-admin-user)"
+          admin_password="$(cat .discover-admin-password)"
           for attempt in $(seq 1 12); do
             headers="$(mktemp)"
             body="$(mktemp)"
@@ -130,7 +265,13 @@ jobs:
                 const meta = JSON.parse(fs.readFileSync(process.env.META_FILE, "utf8"));
                 if (meta.source_revision !== process.env.EXPECTED_SHA) process.exit(1);
                 if (!Number.isInteger(meta.provider_count) || meta.provider_count < 1) process.exit(1);
-              '; then
+              ' && \
+              curl --fail --silent --show-error --max-time 15 --output /dev/null \
+                https://llm.persiantoolbox.ir/discover/ && \
+              curl --fail --silent --show-error --max-time 15 --user "$admin_user:$admin_password" \
+                https://llm.persiantoolbox.ir/discover/admin/ | grep -q 'مدیریت لینک‌های ریلز' && \
+              curl --fail --silent --show-error --max-time 15 --output /dev/null \
+                https://llm.persiantoolbox.ir/discover/api/icons/simple-icons/github.svg; then
               if grep -Eiq '^x-robots-tag:.*noindex' "$headers"; then
                 echo 'Canonical endpoint unexpectedly contains noindex.' >&2
               else
@@ -142,6 +283,7 @@ jobs:
             sleep 5
           done
           exit 1
+
       - name: Roll back failed publication
         if: failure() && steps.release.outcome == 'success'
         env:
@@ -151,9 +293,67 @@ jobs:
           DEPLOY_ROOT: ${{ secrets.DEPLOY_ROOT }}
         run: |
           ssh -i ~/.ssh/id_ed25519 -p "$SSH_PORT" -o BatchMode=yes -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes "${SSH_USER}@${SSH_HOST}" "bash /tmp/llm-rollback-${GITHUB_SHA}.sh ${DEPLOY_ROOT}"
-      - name: Remove local SSH material
+
+      - name: Rollback Discover activation after failed publication
+        if: failure() && steps.discover_state.outcome == 'success'
+        env:
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_PORT: ${{ secrets.SSH_PORT }}
+        run: |
+          set -Eeuo pipefail
+          remote="${SSH_USER}@${SSH_HOST}"
+          stage="/tmp/persiantoolbox-discover-${GITHUB_SHA}"
+          ssh -i ~/.ssh/id_ed25519 -p "$SSH_PORT" -o BatchMode=yes -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes "$remote" "STAGE='$stage' bash -se" <<'REMOTE' || true
+          set -Eeuo pipefail
+          [[ -d "$STAGE" ]] || exit 0
+
+          sudo systemctl stop persiantoolbox-discover >/dev/null 2>&1 || true
+          if [[ -s "$STAGE/pre-current-target" ]]; then
+            previous="$(cat "$STAGE/pre-current-target")"
+            if [[ -d "$previous" ]]; then
+              sudo ln -sfn "$previous" /opt/persiantoolbox-discover/current.next
+              sudo mv -Tf /opt/persiantoolbox-discover/current.next /opt/persiantoolbox-discover/current
+            fi
+          else
+            sudo rm -f /opt/persiantoolbox-discover/current
+          fi
+
+          if [[ -f "$STAGE/pre-service-unit" ]]; then
+            sudo cp -a "$STAGE/pre-service-unit" /etc/systemd/system/persiantoolbox-discover.service
+          else
+            sudo rm -f /etc/systemd/system/persiantoolbox-discover.service
+          fi
+          if [[ -f "$STAGE/pre-service-enabled" ]]; then
+            sudo systemctl enable persiantoolbox-discover >/dev/null 2>&1 || true
+          else
+            sudo systemctl disable persiantoolbox-discover >/dev/null 2>&1 || true
+          fi
+          sudo systemctl daemon-reload
+          if [[ -f "$STAGE/pre-service-active" ]]; then sudo systemctl start persiantoolbox-discover >/dev/null 2>&1 || true; fi
+
+          if [[ -f "$STAGE/pre-caddy-site" ]]; then sudo cp -a "$STAGE/pre-caddy-site" /etc/caddy/sites-enabled/llm.persiantoolbox.ir.caddy; else sudo rm -f /etc/caddy/sites-enabled/llm.persiantoolbox.ir.caddy; fi
+          if [[ -f "$STAGE/pre-caddy-dropin" ]]; then sudo cp -a "$STAGE/pre-caddy-dropin" /etc/systemd/system/caddy.service.d/discover-admin.conf; else sudo rm -f /etc/systemd/system/caddy.service.d/discover-admin.conf; fi
+          if [[ -f "$STAGE/pre-caddy-env" ]]; then sudo cp -a "$STAGE/pre-caddy-env" /etc/persiantoolbox-discover/caddy.env; else sudo rm -f /etc/persiantoolbox-discover/caddy.env; fi
+          if [[ -f "$STAGE/pre-owner-credentials" ]]; then sudo cp -a "$STAGE/pre-owner-credentials" /etc/persiantoolbox-discover/admin-owner-credentials; else sudo rm -f /etc/persiantoolbox-discover/admin-owner-credentials; fi
+          sudo systemctl daemon-reload
+          sudo caddy validate --config /etc/caddy/Caddyfile --adapter caddyfile >/dev/null
+          sudo systemctl restart caddy
+          REMOTE
+
+      - name: Remove Discover staging and local SSH material
         if: always()
-        run: rm -f ~/.ssh/id_ed25519 ~/.ssh/known_hosts
+        env:
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_PORT: ${{ secrets.SSH_PORT }}
+        run: |
+          if [[ -f ~/.ssh/id_ed25519 && -n "${SSH_HOST:-}" && -n "${SSH_USER:-}" && -n "${SSH_PORT:-}" ]]; then
+            ssh -i ~/.ssh/id_ed25519 -p "$SSH_PORT" -o BatchMode=yes -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes \
+              "${SSH_USER}@${SSH_HOST}" "rm -rf -- '/tmp/persiantoolbox-discover-${GITHUB_SHA}'" || true
+          fi
+          rm -f .discover-admin-user .discover-admin-password discover-service-release.tar.gz
+          rm -f ~/.ssh/id_ed25519 ~/.ssh/known_hosts
 
   deploy-iran:
     if: github.event_name == 'push' || inputs.target == 'both' || inputs.target == 'iran'
