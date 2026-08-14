@@ -32,13 +32,13 @@
 - `icon_provider`: در این فاز فقط `simple-icons` یا `generic`
 - `icon_key`: کلید معتبر provider؛ برای `generic` مقدار `sparkles`
 
-DBهای قدیمی به‌صورت additive migrate می‌شوند. اگر badge قدیمی `icon:<value>` وجود داشته باشد، فقط همان metadata به fieldهای جدید منتقل و از badgeها حذف می‌شود؛ badgeهای عادی حفظ می‌شوند.
+DBهای قدیمی به‌صورت additive migrate می‌شوند. اگر badge قدیمی `icon:<value>` وجود داشته باشد، فقط همان metadata به fieldهای جدید منتقل و از badgeها حذف می‌شود؛ badgeهای عادی حفظ می‌شوند. اگر key قدیمی در نسخه نصب‌شده Simple Icons واقعاً وجود نداشته باشد، migration آن را به `generic:sparkles` تبدیل می‌کند.
 
-برای `simple-icons`، sidecar فقط داده package محلی و lockfile-resolved را می‌خواند و یک SVG حداقلی same-origin می‌سازد. key ناشناخته یا نامعتبر به remote proxy/fetch تبدیل نمی‌شود. UI در خطای icon از asset محلی `/discover/assets/sparkles.svg` استفاده می‌کند.
+برای `simple-icons`، sidecar فقط داده package محلی و lockfile-resolved را می‌خواند و یک SVG حداقلی same-origin می‌سازد. key ناشناخته یا نامعتبر قبل از ذخیره رد می‌شود و endpoint هیچ remote proxy/fetch ندارد. UI در خطای icon از asset محلی `/discover/assets/sparkles.svg` استفاده می‌کند.
 
 ## Dependency policy
 
-Policy رسمی در این فایل است:
+Policy رسمی:
 
 `docs/superpowers/specs/2026-08-14-oss-dependency-policy-design.md`
 
@@ -51,7 +51,7 @@ React/Vue/Next/Tailwind/Bootstrap/Prisma/Supabase/Firebase/Astro/Fuse/Alpine/Ico
 
 ## تست واحد Discover
 
-Source of truth تست این feature:
+Source of truth تست feature:
 
 ```bash
 npm ci
@@ -70,30 +70,51 @@ npm run site:check
 
 هیچ provider date/evidence برای سبزکردن این تست‌ها نباید بدون evidence معتبر تغییر کند.
 
-## پیش‌نیاز activation اولیه
+## چرا activation اولیه داخل release اصلی انجام می‌شود
 
-- Node.js `22.13+` روی VPS canonical/global.
-- دسترسی sudo برای systemd/Caddy و directoryهای سرویس.
-- Caddy فعال برای `llm.persiantoolbox.ir`.
-- secretهای خصوصی در GitHub Environment `production-global`:
-  - `SSH_PRIVATE_KEY`
-  - `SSH_KNOWN_HOSTS`
-  - `SSH_HOST`
-  - `SSH_USER`
-  - `SSH_PORT`
-  - `DISCOVER_ADMIN_USER`
-  - `DISCOVER_ADMIN_PASSWORD_HASH`
-  - `DISCOVER_ADMIN_PASSWORD`
+Environment `production-global` فقط deployment از protected branch را مجاز می‌کند. بنابراین PR branch عمداً این protection را bypass نمی‌کند. اولین activation از push محافظت‌شده `main` انجام می‌شود، اما ترتیب workflow به شکلی است که static Discover **قبل از آماده‌شدن backend منتشر نمی‌شود**.
 
-`DISCOVER_ADMIN_PASSWORD_HASH` باید bcrypt متناظر با plaintext ادمین باشد. هیچ‌یک از این مقادیر نباید در Git، issue، PR، artifact عمومی یا log منتشر شوند.
+در `.github/workflows/deploy-vps.yml` ترتیب global release چنین است:
 
-## Workflow کنترل‌شده deployment
+1. build کامل + `npm test` + static build؛
+2. ساخت `site-release.tar.gz` و `discover-service-release.tar.gz` bounded؛
+3. ورود job به protected environment `production-global`؛
+4. capture کردن state قبلی sidecar/Caddy برای rollback؛
+5. نصب sidecar دقیقاً با همان `${github.sha}`؛
+6. verify اینکه listener فقط `127.0.0.1:8003` است و SQLite خارج از release tree قرار دارد؛
+7. نصب Caddy auth environment و proxy؛
+8. health عمومی، Basic Auth boundary و CRUD واقعی Create → Edit → Publish → Public → Unpublish → Delete؛
+9. **فقط پس از موفقیت مراحل بالا** انتشار atomic static site؛
+10. verify SHA، صفحه `/discover/`، Admin authenticated و icon endpoint؛
+11. اگر مرحله بعد از activation fail شود، static release و state قبلی Discover/Caddy rollback می‌شوند؛ DB persistent حذف نمی‌شود.
+
+Job `deploy-iran` همچنان فقط static release را منتشر می‌کند و هیچ `persiantoolbox-discover` sidecar یا DB نصب نمی‌کند.
+
+## Credential ادمین در اولین release
+
+در environment `production-global` secretهای SSH موجود release استفاده می‌شوند:
+
+- `SSH_PRIVATE_KEY`
+- `SSH_KNOWN_HOSTS`
+- `SSH_HOST`
+- `SSH_USER`
+- `SSH_PORT`
+- `DEPLOY_ROOT`
+
+دو secret زیر اختیاری‌اند:
+
+- `DISCOVER_ADMIN_USER`
+- `DISCOVER_ADMIN_PASSWORD`
+
+اگر مقدار password از قبل تنظیم نشده باشد، release job یک password تصادفی قوی تولید می‌کند؛ plaintext در log چاپ نمی‌شود. Caddy hash روی VPS ساخته می‌شود و یک نسخه owner-only از credential با permission `0600` در `/etc/persiantoolbox-discover/admin-owner-credentials` نگه داشته می‌شود. فایل Caddy environment نیز private است. هیچ credential در Git، artifact عمومی، PR یا response عمومی قرار نمی‌گیرد.
+
+## Workflow دستی برای releaseهای service-only
 
 فایل:
 
 `.github/workflows/deploy-discover.yml`
 
-ویژگی‌ها:
+این workflow برای عملیات service-only بعدی باقی می‌ماند:
 
 - فقط `workflow_dispatch`؛ trigger خودکار push/PR ندارد.
 - فقط environment `production-global`.
@@ -101,9 +122,7 @@ npm run site:check
 - package محدود شامل Discover service/deploy/Caddy و `node_modules/simple-icons` است؛ روی VPS `npm install` اجرا نمی‌شود.
 - SSH فقط با known-host pinning، `BatchMode=yes` و `StrictHostKeyChecking=yes`.
 - installer sidecar را اتمیک فعال و DB موجود را قبل از release backup می‌کند.
-- Caddy credentialها در EnvironmentFile خصوصی سرور قرار می‌گیرند.
-- health loopback/public و challenge/credential ادمین بعد از activation بررسی می‌شوند.
-- staging و SSH material موقت پاک می‌شوند.
+- برای این workflow دستی، `DISCOVER_ADMIN_USER`, `DISCOVER_ADMIN_PASSWORD_HASH`, `DISCOVER_ADMIN_PASSWORD` باید به‌صورت private در environment آماده باشند.
 
 ## عملیات روزانه از پنل ادمین
 
@@ -129,7 +148,7 @@ npm run site:check
 - فقط رکورد Published از API عمومی برمی‌گردد.
 - mutation ادمین علاوه بر Basic Auth به `application/json`، `X-Discover-CSRF: 1` و same-origin semantics نیاز دارد.
 - CORS permissive فعال نیست.
-- `icon_key` فقط slug محدود است؛ raw SVG/HTML/data URI/remote URL از Admin پذیرفته نمی‌شود.
+- `icon_key` فقط slug محدود و موجود در package local است؛ raw SVG/HTML/data URI/remote URL از Admin پذیرفته نمی‌شود.
 - SVG برند فقط از package trusted محلی تولید می‌شود و script/event/foreignObject از ورودی کاربر وارد آن نمی‌شود.
 - CSP فعلی same-origin باقی می‌ماند؛ هیچ CDN جدیدی اضافه نشده است.
 - دیتابیس/credential داخل static release یا response عمومی قرار نمی‌گیرند.
@@ -159,7 +178,7 @@ installer قبل از تغییر service release از DB موجود backup times
 
 `/var/lib/persiantoolbox-discover/discover.sqlite3`
 
-rollback کد سرویس نباید این DB را حذف یا recreate کند. migration icon additive است. اگر health release جدید fail شود، installer symlink کد را به release قبلی برمی‌گرداند.
+rollback کد سرویس نباید این DB را حذف یا recreate کند. migration icon additive است. اگر health release جدید fail شود، installer symlink کد را به release قبلی برمی‌گرداند. Release workflow همچنین state قبلی Caddy/service را قبل از activation نگه می‌دارد تا failure بعدی static publication بتواند state سرویس را rollback کند.
 
 ## Analytics
 
