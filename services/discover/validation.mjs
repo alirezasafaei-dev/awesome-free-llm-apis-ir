@@ -1,3 +1,5 @@
+import { hasSimpleIcon } from "./icons.mjs";
+
 const FIELD_NAMES = new Set([
   "slug", "name", "short_description_fa", "description_fa", "destination_url", "platform", "category",
   "capabilities", "badges", "icon_provider", "icon_key", "access_note_fa", "cta_label_fa", "featured",
@@ -81,6 +83,9 @@ function checkedIcon(value) {
   }
   if (provider === "generic" && key !== "sparkles") {
     throw new ValidationError("generic icon_key must be sparkles", "icon_key");
+  }
+  if (provider === "simple-icons" && !hasSimpleIcon(key)) {
+    throw new ValidationError("icon_key is not available in the installed Simple Icons package", "icon_key");
   }
   return { icon_provider: provider, icon_key: key };
 }
