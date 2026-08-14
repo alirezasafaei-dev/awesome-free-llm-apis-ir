@@ -71,7 +71,11 @@ esac
 NODE_ARCHIVE="node-v${NODE_RUNTIME_VERSION}-linux-${NODE_ARCH}.tar.gz"
 NODE_ARCHIVE_PATH="$RUNTIME_SOURCE_DIR/$NODE_ARCHIVE"
 if [[ ! -f "$NODE_ARCHIVE_PATH" ]]; then
-  echo "Bundled Discover Node runtime is missing: $NODE_ARCHIVE" >&2
+  echo "Bundled Discover Node runtime is absent; preparing the pinned checksum-verified fallback." >&2
+  bash "$SOURCE_DIR/deploy/discover/prepare-node-runtime.sh" "$RUNTIME_SOURCE_DIR"
+fi
+if [[ ! -f "$NODE_ARCHIVE_PATH" ]]; then
+  echo "Discover Node runtime is missing after preparation: $NODE_ARCHIVE" >&2
   exit 3
 fi
 printf '%s  %s\n' "$NODE_ARCH_SHA256" "$NODE_ARCHIVE_PATH" | sha256sum -c - >/dev/null
