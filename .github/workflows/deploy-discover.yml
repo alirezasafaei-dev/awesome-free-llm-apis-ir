@@ -54,20 +54,6 @@ jobs:
           chmod 600 ~/.ssh/id_ed25519 ~/.ssh/known_hosts
           ssh-keygen -y -f ~/.ssh/id_ed25519 >/dev/null
 
-      - name: Prepare private Discover admin environment
-        env:
-          DISCOVER_ADMIN_USER: ${{ secrets.DISCOVER_ADMIN_USER }}
-          DISCOVER_ADMIN_PASSWORD_HASH: ${{ secrets.DISCOVER_ADMIN_PASSWORD_HASH }}
-          DISCOVER_ADMIN_PASSWORD: ${{ secrets.DISCOVER_ADMIN_PASSWORD }}
-        run: |
-          set -Eeuo pipefail
-          test -n "$DISCOVER_ADMIN_USER"
-          test -n "$DISCOVER_ADMIN_PASSWORD_HASH"
-          test -n "$DISCOVER_ADMIN_PASSWORD"
-          [[ "$DISCOVER_ADMIN_USER" =~ ^[A-Za-z0-9._-]{8,64}$ ]]
-          [[ "$DISCOVER_ADMIN_PASSWORD_HASH" =~ ^\$2[aby]\$[0-9]{2}\$.+ ]]
-        continue-on-error: true
-
       - name: Validate and write private admin material
         env:
           DISCOVER_ADMIN_USER: ${{ secrets.DISCOVER_ADMIN_USER }}
