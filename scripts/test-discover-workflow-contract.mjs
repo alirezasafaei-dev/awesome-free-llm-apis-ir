@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { readFile } from "node:fs/promises";
+import { access, readFile } from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
 
@@ -21,12 +21,15 @@ for (const signal of [
   "127.0.0.1:8003/discover/api/health",
   "https://llm.persiantoolbox.ir/discover/api/health",
   "https://llm.persiantoolbox.ir/discover/admin/",
+  "https://llm.persiantoolbox.ir/discover/api/admin/tools",
+  "node scripts/check-discover-live-crud.mjs",
   "DISCOVER_ADMIN_USER",
   "DISCOVER_ADMIN_PASSWORD_HASH",
   "DISCOVER_ADMIN_PASSWORD"
 ]) {
   assert.ok(workflow.includes(signal), `Discover deployment workflow is missing ${signal}`);
 }
+await access(path.join(root, "scripts", "check-discover-live-crud.mjs"));
 
 assert.ok(!/^\s*push\s*:/m.test(workflow), "Discover deployment must not run automatically on push");
 assert.ok(!/^\s*pull_request\s*:/m.test(workflow), "Discover deployment must not run automatically on pull requests");
@@ -43,8 +46,9 @@ for (const action of actionUses) {
 }
 
 assert.match(workflow, /tar\s+-[^\n]*discover-release\.tgz[^\n]*services\/discover[^\n]*deploy\/discover/s, "Discover package must be bounded to service/deploy assets");
+assert.ok(workflow.includes("node_modules/simple-icons"), "Discover package must include the trusted runtime icon dependency");
 assert.ok(workflow.includes("StrictHostKeyChecking=yes"), "SSH must use strict host-key checking");
 assert.ok(workflow.includes("BatchMode=yes"), "SSH must run non-interactively");
 assert.ok(workflow.includes("rm -f ~/.ssh/id_ed25519 ~/.ssh/known_hosts"), "Workflow must remove local SSH material");
 
-console.log("Discover controlled deployment workflow contract passed.");
+console.log("Discover controlled deployment/workflow CRUD contract passed.");
