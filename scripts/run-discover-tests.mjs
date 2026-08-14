@@ -3,6 +3,7 @@ const tests = [
   "./test-discover-api.mjs",
   "./test-discover-admin-site.mjs",
   "./test-discover-proxy-contract.mjs",
+  "./test-discover-symlink-main.mjs",
   "./test-discover-service-contract.mjs",
   "./test-discover-deploy-contract.mjs",
   "./test-discover-workflow-contract.mjs"

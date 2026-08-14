@@ -1,4 +1,5 @@
 import http from "node:http";
+import { realpathSync } from "node:fs";
 import path from "node:path";
 import process from "node:process";
 import { fileURLToPath } from "node:url";
@@ -128,7 +129,8 @@ export function createDiscoverServer({ databasePath, host = "127.0.0.1", port = 
 
 const currentFile = fileURLToPath(import.meta.url);
 const invokedFile = process.argv[1] ? path.resolve(process.argv[1]) : "";
-if (invokedFile && path.resolve(currentFile) === invokedFile) {
+const invokedThroughLink = invokedFile && realpathSync(invokedFile) === realpathSync(currentFile);
+if (invokedFile && invokedThroughLink) {
   const databasePath = process.env.DISCOVER_DATABASE_PATH || "/var/lib/persiantoolbox-discover/discover.sqlite3";
   const host = process.env.DISCOVER_HOST || "127.0.0.1";
   const port = Number(process.env.DISCOVER_PORT || 8003);
