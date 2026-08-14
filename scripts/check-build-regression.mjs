@@ -21,7 +21,8 @@ async function main() {
     await access(path.join(siteDir, "guides", "llm-api-rate-limit-429", "index.html"));
   } catch {
     console.log("Building site for regression check...");
-    const result = spawnSync("npm", ["run", "site:build"], { cwd: root, encoding: "utf8", stdio: "inherit" });
+    const npmCommand = process.platform === "win32" ? "npm.cmd" : "npm";
+    const result = spawnSync(npmCommand, ["run", "site:build"], { cwd: root, encoding: "utf8", stdio: "inherit", ...(process.platform === "win32" ? { shell: true } : {}) });
     if (result.status !== 0) {
       console.error("Site build failed");
       process.exit(1);
