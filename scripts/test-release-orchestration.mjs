@@ -58,6 +58,9 @@ if (globalStart < 0 || iranStart < 0 || iranStart <= globalStart) {
   if (crudIndex >= 0 && publishIndex >= 0 && crudIndex > publishIndex) failures.push("Discover CRUD proof must happen before static publication");
   if (!globalJob.includes("Rollback Discover activation after failed publication")) failures.push("global deploy must roll back Discover activation when later publication fails");
   if (!globalJob.includes("pre-runtime-target")) failures.push("global rollback state must capture the previous Discover runtime symlink");
+  if (!globalJob.includes("/usr/local/bin/persiantoolbox-discover-node")) failures.push("global release/rollback must use the systemd-safe app-specific Node symlink in /usr/local/bin");
+  if (globalJob.includes("/opt/persiantoolbox-discover/runtime/node-current")) failures.push("global release workflow must not capture/restore the obsolete /opt Node exec symlink");
+  if (!globalJob.includes('if [[ -x "$previous_runtime" ]]')) failures.push("global rollback must verify the saved runtime target is executable");
   if (!globalJob.includes("printf '%s' \"$admin_password\" | sudo caddy hash-password --algorithm bcrypt")) {
     failures.push("Caddy password hashing must use stdin rather than plaintext process arguments");
   }
@@ -105,4 +108,4 @@ if (failures.length) {
   process.exit(1);
 }
 
-console.log("Release orchestration contract passed: CI packages a verified private Node runtime, protected-main global release activates and verifies Discover before static publication, the manual service workflow remains compatible via the installer's checksum-verified fallback, and Iran remains static-only.");
+console.log("Release orchestration contract passed: CI packages a verified private Node runtime, systemd executes it through the app-specific /usr/local/bin path with matching rollback state, protected-main global release activates and verifies Discover before static publication, the manual service workflow remains compatible via the installer fallback, and Iran remains static-only.");

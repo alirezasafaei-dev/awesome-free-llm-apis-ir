@@ -9,7 +9,7 @@ BASE_DIR="/opt/persiantoolbox-discover"
 RELEASES_DIR="$BASE_DIR/releases"
 CURRENT_LINK="$BASE_DIR/current"
 RUNTIME_DIR="$BASE_DIR/runtime"
-NODE_CURRENT_LINK="$RUNTIME_DIR/node-current"
+NODE_CURRENT_LINK="/usr/local/bin/persiantoolbox-discover-node"
 DATA_DIR="/var/lib/persiantoolbox-discover"
 DB_PATH="$DATA_DIR/discover.sqlite3"
 BACKUP_DIR="$DATA_DIR/backups"
@@ -53,6 +53,7 @@ done
 
 # shellcheck disable=SC1090
 source "$RUNTIME_MANIFEST"
+NODE_VERSIONED_BIN="/usr/local/bin/persiantoolbox-discover-node-${NODE_RUNTIME_VERSION}"
 case "$(uname -m)" in
   x86_64|amd64)
     NODE_ARCH="x64"
@@ -104,6 +105,16 @@ NODE_BIN="$NODE_RUNTIME_RELEASE/bin/node"
   exit 3
 }
 
+# Keep the full verified runtime under the application tree for provenance, but
+# execute a versioned app-specific copy from the standard executable hierarchy.
+# This avoids MAC/systemd policies that deny EXEC from /opt without replacing
+# or modifying the VPS system Node installation.
+install -m 0755 "$NODE_BIN" "$NODE_VERSIONED_BIN"
+if command -v restorecon >/dev/null 2>&1; then
+  restorecon -F "$NODE_VERSIONED_BIN" >/dev/null 2>&1 || true
+fi
+"$NODE_VERSIONED_BIN" -e 'const [M,m]=process.versions.node.split(".").map(Number); if(M<22 || (M===22 && m<13)) process.exit(1); require("node:sqlite")'
+
 DEST="$RELEASES_DIR/$RELEASE_ID"
 if [[ -e "$DEST" ]]; then
   echo "Release already exists: $DEST" >&2
@@ -139,8 +150,11 @@ if [[ -f "$DB_PATH" ]]; then
   find "$BACKUP_DIR" -maxdepth 1 -type f -name 'discover-*-pre-*.sqlite3' -printf '%T@ %p\n' | sort -nr | awk 'NR>10 {print substr($0,index($0,$2))}' | xargs -r rm -f --
 fi
 
-ln -sfn "$NODE_RUNTIME_RELEASE" "$NODE_CURRENT_LINK.next"
+ln -sfn "$NODE_VERSIONED_BIN" "$NODE_CURRENT_LINK.next"
 mv -Tf "$NODE_CURRENT_LINK.next" "$NODE_CURRENT_LINK"
+if command -v restorecon >/dev/null 2>&1; then
+  restorecon -F "$NODE_CURRENT_LINK" >/dev/null 2>&1 || true
+fi
 ln -sfn "$DEST" "$CURRENT_LINK.next"
 mv -Tf "$CURRENT_LINK.next" "$CURRENT_LINK"
 install -m 0644 "$UNIT_SOURCE" "$UNIT_DEST"
@@ -158,14 +172,14 @@ rollback() {
     rm -f "$CURRENT_LINK"
   fi
 
-  if [[ -n "$PREVIOUS_RUNTIME" && -d "$PREVIOUS_RUNTIME" ]]; then
+  if [[ -n "$PREVIOUS_RUNTIME" && -x "$PREVIOUS_RUNTIME" ]]; then
     ln -sfn "$PREVIOUS_RUNTIME" "$NODE_CURRENT_LINK.next"
     mv -Tf "$NODE_CURRENT_LINK.next" "$NODE_CURRENT_LINK"
   else
     rm -f "$NODE_CURRENT_LINK"
   fi
 
-  if [[ "$service_was_active" == true && -n "$PREVIOUS" && -d "$PREVIOUS" && -x "$NODE_CURRENT_LINK/bin/node" ]]; then
+  if [[ "$service_was_active" == true && -n "$PREVIOUS" && -d "$PREVIOUS" ]]; then
     systemctl start "$SERVICE_NAME" >/dev/null 2>&1 || true
   fi
 }
@@ -177,7 +191,7 @@ runuser -u "$SERVICE_USER" -- env \
   DISCOVER_PORT=8003 \
   DISCOVER_DATABASE_PATH="$DB_PATH" \
   DISCOVER_PREFLIGHT_ONLY=1 \
-  "$NODE_BIN" "$DEST/services/discover/server.mjs"
+  "$NODE_CURRENT_LINK" "$DEST/services/discover/server.mjs"
 
 systemctl restart "$SERVICE_NAME"
 for _ in {1..20}; do
