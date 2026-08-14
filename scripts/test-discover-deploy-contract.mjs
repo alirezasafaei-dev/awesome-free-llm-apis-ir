@@ -15,12 +15,15 @@ const [installer,unit,runtime,manifest]=await Promise.all([
 
 for(const signal of [
   'BASE_DIR="/opt/persiantoolbox-discover"', 'RELEASES_DIR="$BASE_DIR/releases"',
-  'RUNTIME_DIR="$BASE_DIR/runtime"', 'NODE_CURRENT_LINK="$RUNTIME_DIR/node-current"',
+  'RUNTIME_DIR="$BASE_DIR/runtime"', 'NODE_CURRENT_LINK="/usr/local/bin/persiantoolbox-discover-node"',
+  'NODE_VERSIONED_BIN="/usr/local/bin/persiantoolbox-discover-node-${NODE_RUNTIME_VERSION}"',
   "/var/lib/persiantoolbox-discover", "/etc/persiantoolbox-discover", "discover.sqlite3",
   "pre-${RELEASE_ID}", "CURRENT_LINK.next", "NODE_CURRENT_LINK.next", "mv -Tf", "uname -m",
   ".discover-runtime", "sha256sum", "node_modules/simple-icons", "127.0.0.1:8003/discover/api/health",
   "runuser", "DISCOVER_PREFLIGHT_ONLY=1", "systemctl status", "journalctl -u", "--no-pager", "rollback"
 ]) assert.ok(installer.includes(signal),`Discover installer missing ${signal}`);
+assert.ok(installer.includes('install -m 0755 "$NODE_BIN" "$NODE_VERSIONED_BIN"'),"Installer must install the verified app-specific Node executable into /usr/local/bin");
+assert.ok(installer.includes("restorecon"),"Installer should restore the standard executable security context when SELinux tooling is present");
 assert.ok(!installer.includes('command -v node'),"Installer must not depend on the VPS system Node");
 assert.ok(!installer.includes("rm -rf \"$DATA_DIR\""),"Installer must never recursively remove persistent data");
 assert.ok(!/npm\s+(?:i|install|ci)\b/.test(installer),"Installer must not mutate dependencies on the VPS");
@@ -39,9 +42,10 @@ for(const signal of ["https://nodejs.org/dist/", 'file="node-v${NODE_RUNTIME_VER
 for(const signal of [
   "User=persiantoolbox-discover", "DISCOVER_HOST=127.0.0.1", "ProtectSystem=strict",
   "ReadWritePaths=/var/lib/persiantoolbox-discover",
-  "ExecStart=/opt/persiantoolbox-discover/runtime/node-current/bin/node /opt/persiantoolbox-discover/current/services/discover/server.mjs"
+  "ExecStart=/usr/local/bin/persiantoolbox-discover-node /opt/persiantoolbox-discover/current/services/discover/server.mjs"
 ]) assert.ok(unit.includes(signal),`Discover service contract missing ${signal}`);
 assert.ok(!unit.includes("ExecStart=/usr/bin/node"),"Discover service must not depend on /usr/bin/node");
+assert.ok(!unit.includes("ExecStart=/opt/persiantoolbox-discover/runtime"),"systemd must not execute the private Node binary from the MAC-denied /opt path");
 
 if(process.platform!=="win32"){
   for(const file of [installPath,runtimePath]){
@@ -49,4 +53,4 @@ if(process.platform!=="win32"){
     assert.equal(syntax.status,0,syntax.stderr||`Shell syntax failed: ${file}`);
   }
 }
-console.log("Discover deployment/service bundled-runtime/startup-diagnostics contract passed.");
+console.log("Discover deployment/service systemd-safe exec-path contract passed.");
