@@ -13,7 +13,7 @@ Environment=DISCOVER_HOST=127.0.0.1
 Environment=DISCOVER_PORT=8003
 Environment=DISCOVER_DATABASE_PATH=/var/lib/persiantoolbox-discover/discover.sqlite3
 EnvironmentFile=-/etc/persiantoolbox-discover/discover.env
-ExecStart=/usr/bin/node /opt/persiantoolbox-discover/current/services/discover/server.mjs
+ExecStart=/opt/persiantoolbox-discover/runtime/node-current/bin/node /opt/persiantoolbox-discover/current/services/discover/server.mjs
 Restart=on-failure
 RestartSec=3
 TimeoutStopSec=15
