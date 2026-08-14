@@ -11,7 +11,11 @@ const productionBase = "https://llm.persiantoolbox.ir/";
 const brandColor = "#155EEF";
 
 const npmCommand = process.platform === "win32" ? "npm.cmd" : "npm";
-const build = spawnSync(npmCommand, ["run", "site:build"], { cwd: root, encoding: "utf8" });
+const build = spawnSync(npmCommand, ["run", "site:build"], {
+  cwd: root,
+  encoding: "utf8",
+  ...(process.platform === "win32" ? { shell: true } : {})
+});
 if (build.status !== 0) throw new Error(build.stderr || build.stdout || "Brand production build failed");
 
 const sourceAssets = ["logo-symbol.svg", "favicon.svg", "mask-icon.svg", "social-avatar.svg"];

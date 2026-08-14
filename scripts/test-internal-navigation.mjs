@@ -11,11 +11,13 @@ async function ensureBuild() {
     await access(path.join(dist, "index.html"));
   } catch {
     console.log("Building site for internal navigation test...");
-    const result = spawnSync("npm", ["run", "site:build"], {
+    const npmCommand = process.platform === "win32" ? "npm.cmd" : "npm";
+    const result = spawnSync(npmCommand, ["run", "site:build"], {
       cwd: root,
       encoding: "utf8",
       stdio: "inherit",
-      env: process.env
+      env: process.env,
+      ...(process.platform === "win32" ? { shell: true } : {})
     });
     if (result.status !== 0) {
       console.error("Site build failed for internal navigation test.");

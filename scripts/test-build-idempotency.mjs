@@ -26,11 +26,13 @@ async function hashFiles(dir) {
 
 async function cleanBuild() {
   await rm(dist, { recursive: true, force: true });
-  const result = spawnSync("npm", ["run", "site:build"], {
+  const npmCommand = process.platform === "win32" ? "npm.cmd" : "npm";
+  const result = spawnSync(npmCommand, ["run", "site:build"], {
     cwd: root,
     encoding: "utf8",
     stdio: "inherit",
-    env: { ...process.env, SOURCE_REVISION: "build-idempotency-test" }
+    env: { ...process.env, SOURCE_REVISION: "build-idempotency-test" },
+    ...(process.platform === "win32" ? { shell: true } : {})
   });
   if (result.status !== 0) {
     throw new Error(`First build failed: ${result.stderr || result.stdout}`);
