@@ -2,6 +2,7 @@ import { access, readFile } from "node:fs/promises";
 import process from "node:process";
 
 const deployWorkflow = await readFile(new URL("../.github/workflows/deploy-vps.yml", import.meta.url), "utf8");
+const serviceWorkflow = await readFile(new URL("../.github/workflows/deploy-discover.yml", import.meta.url), "utf8");
 const verifyWorkflow = await readFile(new URL("../.github/workflows/verify-live-release.yml", import.meta.url), "utf8");
 
 const failures = [];
@@ -16,7 +17,10 @@ for (const marker of [
   "verify-mirror-consistency",
   "actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
   "actions/setup-node@820762786026740c76f36085b0efc47a31fe5020",
+  "Prepare verified Discover Node runtime",
+  "deploy/discover/prepare-node-runtime.sh .discover-runtime",
   "discover-service-release.tar.gz",
+  ".discover-runtime",
   "deploy/discover/install-discover-service.sh",
   "node_modules/simple-icons",
   "check-discover-live-crud.mjs",
@@ -25,6 +29,17 @@ for (const marker of [
   "admin-owner-credentials"
 ]) {
   if (!deployWorkflow.includes(marker)) failures.push(`deploy-vps workflow is missing: ${marker}`);
+}
+
+for (const marker of [
+  "name: Deploy Discover pilot",
+  "workflow_dispatch:",
+  "production-global",
+  "Prepare verified Discover Node runtime",
+  "deploy/discover/prepare-node-runtime.sh .discover-runtime",
+  ".discover-runtime"
+]) {
+  if (!serviceWorkflow.includes(marker)) failures.push(`deploy-discover workflow is missing: ${marker}`);
 }
 
 const pushBlock = deployWorkflow.match(/on:\s*\n\s*push:\s*\n([\s\S]*?)\n\s*workflow_dispatch:/)?.[1] ?? "";
@@ -49,6 +64,10 @@ if (globalStart < 0 || iranStart < 0 || iranStart <= globalStart) {
   if (activateIndex >= 0 && publishIndex >= 0 && activateIndex > publishIndex) failures.push("Discover activation must happen before static publication");
   if (crudIndex >= 0 && publishIndex >= 0 && crudIndex > publishIndex) failures.push("Discover CRUD proof must happen before static publication");
   if (!globalJob.includes("Rollback Discover activation after failed publication")) failures.push("global deploy must roll back Discover activation when later publication fails");
+  if (!globalJob.includes("pre-runtime-target")) failures.push("global rollback state must capture the previous Discover runtime symlink");
+  if (!globalJob.includes("printf '%s' \"$admin_password\" | sudo caddy hash-password --algorithm bcrypt")) {
+    failures.push("Caddy password hashing must use stdin rather than plaintext process arguments");
+  }
   if (iranJob.includes("install-discover-service.sh") || iranJob.includes("127.0.0.1:8003/discover/api/health")) {
     failures.push("Iran deploy job must never install or health-check a dynamic Discover sidecar");
   }
@@ -93,4 +112,4 @@ if (failures.length) {
   process.exit(1);
 }
 
-console.log("Release orchestration contract passed: protected-main global release activates and verifies Discover before static publication, while Iran remains static-only.");
+console.log("Release orchestration contract passed: CI packages a verified private Node runtime, protected-main global release activates and verifies Discover before static publication, and Iran remains static-only.");
