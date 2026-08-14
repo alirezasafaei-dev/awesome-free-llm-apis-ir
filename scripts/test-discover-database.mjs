@@ -72,21 +72,31 @@ try {
     updated_at TEXT NOT NULL
   ) STRICT;`);
   const now = new Date().toISOString();
-  legacy.prepare(`INSERT INTO tools (
+  const insertLegacy = legacy.prepare(`INSERT INTO tools (
     slug,name,short_description_fa,description_fa,destination_url,platform,category,capabilities_json,badges_json,
     access_note_fa,cta_label_fa,featured,sort_order,published,last_tested_date,created_at,updated_at
-  ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`).run(
+  ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`);
+  insertLegacy.run(
     "legacy", "Legacy", "قدیمی", "", "https://example.com/legacy", "web", "assistant", "[]",
     JSON.stringify(["icon:github", "قدیمی"]), "", "باز کردن", 0, 0, 1, null, now, now
+  );
+  insertLegacy.run(
+    "legacy-unknown", "Legacy Unknown", "قدیمی", "", "https://example.com/legacy-unknown", "web", "assistant", "[]",
+    JSON.stringify(["icon:not-a-real-simple-icon-zzzz", "حفظ شود"]), "", "باز کردن", 0, 1, 1, null, now, now
   );
   legacy.close();
 
   const migrated = openDiscoverDatabase(legacyPath);
   try {
-    const tool = migrated.listAdminTools()[0];
+    const tools = migrated.listAdminTools();
+    const tool = tools.find((item) => item.slug === "legacy");
     assert.equal(tool.icon_provider, "simple-icons");
     assert.equal(tool.icon_key, "github");
     assert.deepEqual(tool.badges, ["قدیمی"]);
+    const unknown = tools.find((item) => item.slug === "legacy-unknown");
+    assert.equal(unknown.icon_provider, "generic");
+    assert.equal(unknown.icon_key, "sparkles");
+    assert.deepEqual(unknown.badges, ["حفظ شود"]);
     const columns = migrated.db.prepare("PRAGMA table_info(tools)").all().map((row) => row.name);
     assert.ok(columns.includes("icon_provider"));
     assert.ok(columns.includes("icon_key"));
@@ -101,6 +111,7 @@ try {
   assert.throws(() => validateToolInput(sample({ featured: "yes" })), ValidationError);
   assert.throws(() => validateToolInput(sample({ icon_provider: "remote" })), ValidationError);
   assert.throws(() => validateToolInput(sample({ icon_key: "https://evil.example/icon.svg" })), ValidationError);
+  assert.throws(() => validateToolInput(sample({ icon_provider: "simple-icons", icon_key: "not-a-real-simple-icon-zzzz" })), ValidationError);
   assert.throws(() => validateToolInput(sample({ unexpected: "field" })), ValidationError);
   console.log("Discover SQLite/validation/icon migration contract passed.");
 } finally {
