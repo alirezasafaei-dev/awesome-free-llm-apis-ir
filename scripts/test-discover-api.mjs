@@ -18,6 +18,8 @@ function sample(overrides = {}) {
     category: "assistant",
     capabilities: ["chat", "image", "code"],
     badges: ["تست‌شده"],
+    icon_provider: "generic",
+    icon_key: "sparkles",
     access_note_fa: "",
     cta_label_fa: "باز کردن",
     featured: false,
@@ -51,6 +53,23 @@ try {
   assert.deepEqual(await json(health), { ok: true });
   assert.equal(health.headers.get("access-control-allow-origin"), null);
   assert.equal(health.headers.get("x-content-type-options"), "nosniff");
+
+  const icon = await fetch(`${base}/discover/api/icons/simple-icons/github.svg`);
+  assert.equal(icon.status, 200);
+  assert.equal(icon.headers.get("content-type"), "image/svg+xml; charset=utf-8");
+  assert.equal(icon.headers.get("x-content-type-options"), "nosniff");
+  assert.match(icon.headers.get("cache-control") || "", /max-age=/);
+  const iconBody = await icon.text();
+  assert.match(iconBody, /^<svg\b/);
+  assert.ok(iconBody.includes("<path"));
+  assert.ok(!/<script\b|on[a-z]+\s*=|foreignObject/i.test(iconBody));
+
+  const missingIcon = await fetch(`${base}/discover/api/icons/simple-icons/not-a-real-simple-icon-zzzz.svg`);
+  assert.equal(missingIcon.status, 404);
+  assert.equal(missingIcon.headers.get("access-control-allow-origin"), null);
+
+  const traversalIcon = await fetch(`${base}/discover/api/icons/simple-icons/..%2Fgithub.svg`);
+  assert.equal(traversalIcon.status, 404);
 
   const initialPublic = await fetch(`${base}/discover/api/tools`);
   assert.equal(initialPublic.status, 200);
@@ -91,6 +110,8 @@ try {
   const created = await json(createdResponse);
   assert.equal(created.tool.slug, "vibe-ai");
   assert.equal(created.tool.published, false);
+  assert.equal(created.tool.icon_provider, "generic");
+  assert.equal(created.tool.icon_key, "sparkles");
 
   const draftsHidden = await json(await fetch(`${base}/discover/api/tools`));
   assert.deepEqual(draftsHidden, { tools: [] });
@@ -101,15 +122,17 @@ try {
   const updatedResponse = await fetch(`${base}/discover/api/admin/tools/${created.tool.id}`, {
     method: "PUT",
     headers: sameOriginHeaders,
-    body: JSON.stringify(sample({ published: true, featured: true, name: "Vibe AI Published" }))
+    body: JSON.stringify(sample({ published: true, featured: true, name: "Vibe AI Published", icon_provider: "simple-icons", icon_key: "github" }))
   });
   assert.equal(updatedResponse.status, 200);
   const updated = await json(updatedResponse);
   assert.equal(updated.tool.published, true);
+  assert.equal(updated.tool.icon_key, "github");
 
   const publicList = await json(await fetch(`${base}/discover/api/tools`));
   assert.equal(publicList.tools.length, 1);
   assert.equal(publicList.tools[0].name, "Vibe AI Published");
+  assert.equal(publicList.tools[0].icon_provider, "simple-icons");
 
   const invalidUrl = await fetch(`${base}/discover/api/admin/tools/${created.tool.id}`, {
     method: "PUT",
@@ -150,7 +173,7 @@ try {
   const missingRoute = await fetch(`${base}/discover/api/nope`);
   assert.equal(missingRoute.status, 404);
 
-  console.log("Discover HTTP API/security contract passed.");
+  console.log("Discover HTTP API/security/icon contract passed.");
 } finally {
   await app.stop().catch(() => {});
   await rm(root, { recursive: true, force: true });
