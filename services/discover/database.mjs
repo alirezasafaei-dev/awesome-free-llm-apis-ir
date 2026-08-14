@@ -1,13 +1,25 @@
 import { DatabaseSync } from "node:sqlite";
 import { validateToolInput, ValidationError } from "./validation.mjs";
 
+const SIMPLE_ICON_SLUG = /^[a-z0-9][a-z0-9_-]{0,79}$/;
+
+function safeJsonArray(value) {
+  try {
+    const parsed = JSON.parse(value);
+    return Array.isArray(parsed) ? parsed.filter((item) => typeof item === "string") : [];
+  } catch {
+    return [];
+  }
+}
+
 function decode(row) {
   if (!row) return null;
   return {
     id: Number(row.id), slug: row.slug, name: row.name,
     short_description_fa: row.short_description_fa, description_fa: row.description_fa,
     destination_url: row.destination_url, platform: row.platform, category: row.category,
-    capabilities: JSON.parse(row.capabilities_json), badges: JSON.parse(row.badges_json),
+    capabilities: safeJsonArray(row.capabilities_json), badges: safeJsonArray(row.badges_json).filter((item) => !item.startsWith("icon:")),
+    icon_provider: row.icon_provider || "generic", icon_key: row.icon_key || "sparkles",
     access_note_fa: row.access_note_fa, cta_label_fa: row.cta_label_fa,
     featured: Boolean(row.featured), sort_order: Number(row.sort_order), published: Boolean(row.published),
     last_tested_date: row.last_tested_date, created_at: row.created_at, updated_at: row.updated_at
@@ -21,6 +33,7 @@ function encode(input, createdAt = null) {
     description_fa: input.description_fa, destination_url: input.destination_url,
     platform: input.platform, category: input.category,
     capabilities_json: JSON.stringify(input.capabilities), badges_json: JSON.stringify(input.badges),
+    icon_provider: input.icon_provider, icon_key: input.icon_key,
     access_note_fa: input.access_note_fa, cta_label_fa: input.cta_label_fa,
     featured: input.featured ? 1 : 0, sort_order: input.sort_order, published: input.published ? 1 : 0,
     last_tested_date: input.last_tested_date, created_at: createdAt ?? now, updated_at: now
@@ -30,6 +43,25 @@ function encode(input, createdAt = null) {
 function rethrowConstraint(error) {
   if (String(error?.message ?? "").includes("tools.slug")) throw new ValidationError("slug must be unique", "slug");
   throw error;
+}
+
+function migrateIconColumns(db) {
+  const columns = new Set(db.prepare("PRAGMA table_info(tools)").all().map((row) => row.name));
+  if (!columns.has("icon_provider")) db.exec("ALTER TABLE tools ADD COLUMN icon_provider TEXT NOT NULL DEFAULT 'generic';");
+  if (!columns.has("icon_key")) db.exec("ALTER TABLE tools ADD COLUMN icon_key TEXT NOT NULL DEFAULT 'sparkles';");
+
+  const rows = db.prepare("SELECT id, badges_json, icon_provider, icon_key FROM tools").all();
+  const updateLegacy = db.prepare("UPDATE tools SET badges_json = ?, icon_provider = ?, icon_key = ? WHERE id = ?");
+  for (const row of rows) {
+    const badges = safeJsonArray(row.badges_json);
+    const legacy = badges.find((item) => item.startsWith("icon:"));
+    if (!legacy) continue;
+    const legacyKey = legacy.slice(5).trim().toLowerCase();
+    const provider = SIMPLE_ICON_SLUG.test(legacyKey) && legacyKey !== "sparkles" ? "simple-icons" : "generic";
+    const key = provider === "simple-icons" ? legacyKey : "sparkles";
+    const cleaned = badges.filter((item) => !item.startsWith("icon:"));
+    updateLegacy.run(JSON.stringify(cleaned), provider, key, row.id);
+  }
 }
 
 export function openDiscoverDatabase(databasePath) {
@@ -46,6 +78,8 @@ export function openDiscoverDatabase(databasePath) {
     category TEXT NOT NULL,
     capabilities_json TEXT NOT NULL DEFAULT '[]',
     badges_json TEXT NOT NULL DEFAULT '[]',
+    icon_provider TEXT NOT NULL DEFAULT 'generic',
+    icon_key TEXT NOT NULL DEFAULT 'sparkles',
     access_note_fa TEXT NOT NULL DEFAULT '',
     cta_label_fa TEXT NOT NULL,
     featured INTEGER NOT NULL DEFAULT 0 CHECK (featured IN (0,1)),
@@ -55,24 +89,25 @@ export function openDiscoverDatabase(databasePath) {
     created_at TEXT NOT NULL,
     updated_at TEXT NOT NULL
   ) STRICT;`);
+  migrateIconColumns(db);
   db.exec("CREATE INDEX IF NOT EXISTS tools_public_order_idx ON tools(published, featured DESC, sort_order ASC, name ASC);");
 
   const byId = db.prepare("SELECT * FROM tools WHERE id = ?");
   const listAdmin = db.prepare("SELECT * FROM tools ORDER BY featured DESC, sort_order ASC, name COLLATE NOCASE ASC");
   const listPublic = db.prepare("SELECT * FROM tools WHERE published = 1 ORDER BY featured DESC, sort_order ASC, name COLLATE NOCASE ASC");
   const insert = db.prepare(`INSERT INTO tools (
-    slug,name,short_description_fa,description_fa,destination_url,platform,category,capabilities_json,badges_json,
+    slug,name,short_description_fa,description_fa,destination_url,platform,category,capabilities_json,badges_json,icon_provider,icon_key,
     access_note_fa,cta_label_fa,featured,sort_order,published,last_tested_date,created_at,updated_at
   ) VALUES (
-    :slug,:name,:short_description_fa,:description_fa,:destination_url,:platform,:category,:capabilities_json,:badges_json,
+    :slug,:name,:short_description_fa,:description_fa,:destination_url,:platform,:category,:capabilities_json,:badges_json,:icon_provider,:icon_key,
     :access_note_fa,:cta_label_fa,:featured,:sort_order,:published,:last_tested_date,:created_at,:updated_at
   )`);
   const update = db.prepare(`UPDATE tools SET
     slug=:slug,name=:name,short_description_fa=:short_description_fa,description_fa=:description_fa,
     destination_url=:destination_url,platform=:platform,category=:category,capabilities_json=:capabilities_json,
-    badges_json=:badges_json,access_note_fa=:access_note_fa,cta_label_fa=:cta_label_fa,featured=:featured,
-    sort_order=:sort_order,published=:published,last_tested_date=:last_tested_date,updated_at=:updated_at
-    WHERE id=:id`);
+    badges_json=:badges_json,icon_provider=:icon_provider,icon_key=:icon_key,access_note_fa=:access_note_fa,
+    cta_label_fa=:cta_label_fa,featured=:featured,sort_order=:sort_order,published=:published,
+    last_tested_date=:last_tested_date,updated_at=:updated_at WHERE id=:id`);
   const removeById = db.prepare("DELETE FROM tools WHERE id = ?");
 
   return {
