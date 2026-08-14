@@ -61,8 +61,8 @@ if (globalStart < 0 || iranStart < 0 || iranStart <= globalStart) {
   if (!globalJob.includes("/usr/local/bin/persiantoolbox-discover-node")) failures.push("global release/rollback must use the systemd-safe app-specific Node symlink in /usr/local/bin");
   if (globalJob.includes("/opt/persiantoolbox-discover/runtime/node-current")) failures.push("global release workflow must not capture/restore the obsolete /opt Node exec symlink");
   if (!globalJob.includes('if [[ -x "$previous_runtime" ]]')) failures.push("global rollback must verify the saved runtime target is executable");
-  if (!globalJob.includes("printf '%s' \"$admin_password\" | sudo caddy hash-password --algorithm bcrypt")) {
-    failures.push("Caddy password hashing must use stdin rather than plaintext process arguments");
+  if (!globalJob.includes("printf '%s\\n' \"$admin_password\" | sudo caddy hash-password --algorithm bcrypt")) {
+    failures.push("Caddy password hashing must use stdin (with a trailing newline) rather than plaintext process arguments");
   }
   if (iranJob.includes("install-discover-service.sh") || iranJob.includes("127.0.0.1:8003/discover/api/health")) {
     failures.push("Iran deploy job must never install or health-check a dynamic Discover sidecar");

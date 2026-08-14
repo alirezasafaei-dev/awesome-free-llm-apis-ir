@@ -106,7 +106,7 @@ Job `deploy-iran` همچنان فقط static release را منتشر می‌کن
 - `DISCOVER_ADMIN_USER`
 - `DISCOVER_ADMIN_PASSWORD`
 
-اگر مقدار password از قبل تنظیم نشده باشد، release job یک password تصادفی قوی تولید می‌کند؛ plaintext در log چاپ نمی‌شود. Caddy hash روی VPS ساخته می‌شود و یک نسخه owner-only از credential با permission `0600` در `/etc/persiantoolbox-discover/admin-owner-credentials` نگه داشته می‌شود. فایل Caddy environment نیز private است. هیچ credential در Git، artifact عمومی، PR یا response عمومی قرار نمی‌گیرد.
+اگر مقدار password از قبل تنظیم نشده باشد، release job یک password تصادفی قوی تولید می‌کند؛ plaintext در log چاپ نمی‌شود. Caddy hash روی VPS ساخته می‌شود (password با trailing newline به `caddy hash-password` داده می‌شود؛ stdin بدون newline باعث خطای `io.EOF` در caddy می‌شود) و یک نسخه owner-only از credential با permission `0600` در `/etc/persiantoolbox-discover/admin-owner-credentials` نگه داشته می‌شود. فایل Caddy environment نیز private است. هیچ credential در Git، artifact عمومی، PR یا response عمومی قرار نمی‌گیرد.
 
 ## Workflow دستی برای releaseهای service-only
 
