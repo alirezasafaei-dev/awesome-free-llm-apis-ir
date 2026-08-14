@@ -92,7 +92,10 @@ fi
 install -m 644 "$CONFIG_SRC" "$CANDIDATE_SITE"
 
 if grep -qF "$IMPORT_LINE" "$CANDIDATE_CADDYFILE"; then
-  sed -i "s|${IMPORT_LINE}|import ${CANDIDATE_SITES}/*|g" "$CANDIDATE_CADDYFILE"
+  # IMPORT_LINE contains a glob '*' that would be consumed as a BRE quantifier,
+  # silently producing 'sites-enabled/**'; escape it so it matches literally.
+  escaped_import="${IMPORT_LINE//\*/\\*}"
+  sed -i "s|${escaped_import}|import ${CANDIDATE_SITES}/*|g" "$CANDIDATE_CADDYFILE"
 else
   printf '\nimport %s/*\n' "$CANDIDATE_SITES" >> "$CANDIDATE_CADDYFILE"
 fi
@@ -100,7 +103,9 @@ fi
 caddy fmt --overwrite "$CANDIDATE_CADDYFILE" >/dev/null
 caddy fmt --overwrite "$CANDIDATE_SITE" >/dev/null
 log "validating complete candidate configuration"
-caddy validate --config "$CANDIDATE_CADDYFILE" --adapter caddyfile
+# The site config opens a log file under root-owned /var/log/caddy; validate as
+# root (post-install validation below already does the same).
+sudo caddy validate --config "$CANDIDATE_CADDYFILE" --adapter caddyfile
 
 log "creating protected backup"
 sudo install -d -m 700 "$BACKUP_ROOT"
