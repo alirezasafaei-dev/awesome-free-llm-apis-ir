@@ -133,11 +133,19 @@ if (invokedFile && path.resolve(currentFile) === invokedFile) {
   const host = process.env.DISCOVER_HOST || "127.0.0.1";
   const port = Number(process.env.DISCOVER_PORT || 8003);
   const app = createDiscoverServer({ databasePath, host, port });
-  await app.start();
-  const shutdown = async () => {
+
+  if (process.env.DISCOVER_PREFLIGHT_ONLY === "1") {
+    app.repository.listAdminTools();
+    renderSimpleIconSvg("github");
     await app.stop();
-    process.exit(0);
-  };
-  process.once("SIGTERM", shutdown);
-  process.once("SIGINT", shutdown);
+    console.log("Discover service-user preflight passed.");
+  } else {
+    await app.start();
+    const shutdown = async () => {
+      await app.stop();
+      process.exit(0);
+    };
+    process.once("SIGTERM", shutdown);
+    process.once("SIGINT", shutdown);
+  }
 }
