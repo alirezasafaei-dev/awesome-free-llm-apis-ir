@@ -53,7 +53,7 @@ jobs:
 
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v4.2.1
       - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v4.3.0
@@ -64,6 +64,8 @@ jobs:
       - run: npm run site:build
         env:
           SOURCE_REVISION: ${{ github.sha }}
+      - name: Prepare verified Discover Node runtime
+        run: bash deploy/discover/prepare-node-runtime.sh .discover-runtime
       - name: Package immutable static release
         run: tar -C .site-dist -czf site-release.tar.gz .
       - name: Package bounded Discover service release
@@ -74,6 +76,7 @@ jobs:
             deploy/caddy/llm.persiantoolbox.ir.caddy \
             deploy/caddy/apply-caddy-config.sh \
             node_modules/simple-icons \
+            .discover-runtime \
             package.json package-lock.json
       - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v4.6.2
         with:
@@ -154,6 +157,7 @@ jobs:
           if systemctl is-active --quiet persiantoolbox-discover 2>/dev/null; then printf active > "$STAGE/pre-service-active"; fi
           if systemctl is-enabled --quiet persiantoolbox-discover 2>/dev/null; then printf enabled > "$STAGE/pre-service-enabled"; fi
           if [[ -L /opt/persiantoolbox-discover/current ]]; then readlink -f /opt/persiantoolbox-discover/current > "$STAGE/pre-current-target"; fi
+          if [[ -L /opt/persiantoolbox-discover/runtime/node-current ]]; then readlink -f /opt/persiantoolbox-discover/runtime/node-current > "$STAGE/pre-runtime-target"; fi
           if sudo test -f /etc/systemd/system/persiantoolbox-discover.service; then sudo cp -a /etc/systemd/system/persiantoolbox-discover.service "$STAGE/pre-service-unit"; fi
           if sudo test -f /etc/caddy/sites-enabled/llm.persiantoolbox.ir.caddy; then sudo cp -a /etc/caddy/sites-enabled/llm.persiantoolbox.ir.caddy "$STAGE/pre-caddy-site"; fi
           if sudo test -f /etc/systemd/system/caddy.service.d/discover-admin.conf; then sudo cp -a /etc/systemd/system/caddy.service.d/discover-admin.conf "$STAGE/pre-caddy-dropin"; fi
@@ -186,7 +190,7 @@ jobs:
           sudo test -f /var/lib/persiantoolbox-discover/discover.sqlite3
           ! sudo find /opt/persiantoolbox-discover/releases -type f -name '*.sqlite3' -print -quit | grep -q .
 
-          admin_hash="$(sudo caddy hash-password --algorithm bcrypt --plaintext "$admin_password")"
+          admin_hash="$(printf '%s' "$admin_password" | sudo caddy hash-password --algorithm bcrypt)"
           test -n "$admin_hash"
           sudo install -d -m 750 -o root -g persiantoolbox-discover /etc/persiantoolbox-discover
           private_env="$STAGE/caddy.env"
@@ -317,6 +321,17 @@ jobs:
             fi
           else
             sudo rm -f /opt/persiantoolbox-discover/current
+          fi
+
+          if [[ -s "$STAGE/pre-runtime-target" ]]; then
+            previous_runtime="$(cat "$STAGE/pre-runtime-target")"
+            if [[ -d "$previous_runtime" ]]; then
+              sudo install -d -m 755 /opt/persiantoolbox-discover/runtime
+              sudo ln -sfn "$previous_runtime" /opt/persiantoolbox-discover/runtime/node-current.next
+              sudo mv -Tf /opt/persiantoolbox-discover/runtime/node-current.next /opt/persiantoolbox-discover/runtime/node-current
+            fi
+          else
+            sudo rm -f /opt/persiantoolbox-discover/runtime/node-current
           fi
 
           if [[ -f "$STAGE/pre-service-unit" ]]; then
