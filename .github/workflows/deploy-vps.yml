@@ -157,7 +157,7 @@ jobs:
           if systemctl is-active --quiet persiantoolbox-discover 2>/dev/null; then printf active > "$STAGE/pre-service-active"; fi
           if systemctl is-enabled --quiet persiantoolbox-discover 2>/dev/null; then printf enabled > "$STAGE/pre-service-enabled"; fi
           if [[ -L /opt/persiantoolbox-discover/current ]]; then readlink -f /opt/persiantoolbox-discover/current > "$STAGE/pre-current-target"; fi
-          if [[ -L /opt/persiantoolbox-discover/runtime/node-current ]]; then readlink -f /opt/persiantoolbox-discover/runtime/node-current > "$STAGE/pre-runtime-target"; fi
+          if [[ -L /usr/local/bin/persiantoolbox-discover-node ]]; then readlink -f /usr/local/bin/persiantoolbox-discover-node > "$STAGE/pre-runtime-target"; fi
           if sudo test -f /etc/systemd/system/persiantoolbox-discover.service; then sudo cp -a /etc/systemd/system/persiantoolbox-discover.service "$STAGE/pre-service-unit"; fi
           if sudo test -f /etc/caddy/sites-enabled/llm.persiantoolbox.ir.caddy; then sudo cp -a /etc/caddy/sites-enabled/llm.persiantoolbox.ir.caddy "$STAGE/pre-caddy-site"; fi
           if sudo test -f /etc/systemd/system/caddy.service.d/discover-admin.conf; then sudo cp -a /etc/systemd/system/caddy.service.d/discover-admin.conf "$STAGE/pre-caddy-dropin"; fi
@@ -325,13 +325,13 @@ jobs:
 
           if [[ -s "$STAGE/pre-runtime-target" ]]; then
             previous_runtime="$(cat "$STAGE/pre-runtime-target")"
-            if [[ -d "$previous_runtime" ]]; then
-              sudo install -d -m 755 /opt/persiantoolbox-discover/runtime
-              sudo ln -sfn "$previous_runtime" /opt/persiantoolbox-discover/runtime/node-current.next
-              sudo mv -Tf /opt/persiantoolbox-discover/runtime/node-current.next /opt/persiantoolbox-discover/runtime/node-current
+            if [[ -x "$previous_runtime" ]]; then
+              sudo ln -sfn "$previous_runtime" /usr/local/bin/persiantoolbox-discover-node.next
+              sudo mv -Tf /usr/local/bin/persiantoolbox-discover-node.next /usr/local/bin/persiantoolbox-discover-node
+              if command -v restorecon >/dev/null 2>&1; then sudo restorecon -F /usr/local/bin/persiantoolbox-discover-node >/dev/null 2>&1 || true; fi
             fi
           else
-            sudo rm -f /opt/persiantoolbox-discover/runtime/node-current
+            sudo rm -f /usr/local/bin/persiantoolbox-discover-node
           fi
 
           if [[ -f "$STAGE/pre-service-unit" ]]; then
