@@ -6,6 +6,7 @@ const password = process.env.DISCOVER_ADMIN_PASSWORD || "";
 const revision = String(process.env.GITHUB_SHA || Date.now().toString(16)).toLowerCase().replace(/[^a-z0-9]/g, "").slice(0, 16) || "manual";
 const origin = new URL(base).origin;
 const auth = `Basic ${Buffer.from(`${user}:${password}`).toString("base64")}`;
+let readNonce = 0;
 
 if (!user || !password) throw new Error("Discover admin credentials are required for live CRUD verification");
 
@@ -38,7 +39,10 @@ async function admin(path, { method = "GET", body } = {}) {
 }
 
 async function publicTools() {
-  const response = await fetch(`${base}/api/tools`, { headers: { accept: "application/json", "cache-control": "no-cache" } });
+  readNonce += 1;
+  const response = await fetch(`${base}/api/tools?verify=${revision}-${readNonce}`, {
+    headers: { accept: "application/json", "cache-control": "no-cache", pragma: "no-cache" }
+  });
   const payload = await parseJson(response);
   if (!response.ok || !Array.isArray(payload?.tools)) throw new Error(`Discover public tools verification failed with HTTP ${response.status}`);
   return payload.tools;
