@@ -83,6 +83,11 @@ install -d -m 700 "$CANDIDATE_SITES"
 sudo cat "$CADDYFILE" > "$CANDIDATE_CADDYFILE"
 if [[ -d "$SITES_DIR" ]]; then
   sudo cp -a "$SITES_DIR/." "$CANDIDATE_SITES/"
+  # cp -a with a "dir/." source applies the source directory's ownership and
+  # mode to the destination directory. The candidate tree must stay owned by
+  # the deploying user so the non-sudo install/fmt steps below can replace
+  # entries inside it.
+  sudo chown -R "$(id -u):$(id -g)" "$CANDIDATE_ROOT"
 fi
 install -m 644 "$CONFIG_SRC" "$CANDIDATE_SITE"
 

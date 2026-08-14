@@ -24,6 +24,8 @@ for (const [marker, description] of [
   ["/var/backups/caddy/", "persistent protected backup"],
   ["CANDIDATE_CADDYFILE", "candidate Caddyfile"],
   ["CANDIDATE_SITES", "candidate sites directory"],
+  ["sudo cp -a \"$SITES_DIR/.\" \"$CANDIDATE_SITES/\"", "candidate copy of live sites"],
+  ["sudo chown -R \"$(id -u):$(id -g)\" \"$CANDIDATE_ROOT\"", "candidate re-ownership after sudo cp -a"],
   ["caddy validate --config \"$CANDIDATE_CADDYFILE\"", "pre-install candidate validation"],
   ["sudo mv -f \"$STAGED_SITE\" \"$CONFIG_DST\"", "atomic site replacement"],
   ["sudo caddy validate --config \"$CADDYFILE\"", "post-install validation"],
