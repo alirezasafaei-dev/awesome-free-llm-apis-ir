@@ -14,5 +14,6 @@ await import("./register-provider-quick-start-links.mjs");
 await import("./build-tools-pages.mjs");
 await import("./register-compare-route.mjs");
 await import("./enrich-provider-pages.mjs");
+await import("./vendor-discover-assets.mjs");
 
-console.log("Published source-owned UI/CSP assets, data catalogs, product routes, Provider Quick Start handoff and SEO enrichments without tracker-path repair.");
+console.log("Published source-owned UI/CSP assets, data catalogs, product routes, Provider Quick Start handoff, Discover OSS assets and SEO enrichments without tracker-path repair.");
