@@ -13,6 +13,7 @@ on:
       - 'scripts/vendor-discover-assets.mjs'
       - '.github/workflows/discover-smoke.yml'
       - '.github/workflows/deploy-discover.yml'
+      - '.github/workflows/deploy-vps.yml'
       - 'package.json'
       - 'package-lock.json'
   workflow_dispatch:
@@ -23,7 +24,7 @@ permissions:
 jobs:
   discover-node22:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v4.2.1
       - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v4.3.0
@@ -33,3 +34,14 @@ jobs:
       - run: npm ci
       - name: Run complete Discover contract suite
         run: npm run discover:test
+      - name: Verify pinned official Node runtime artifacts
+        run: |
+          set -Eeuo pipefail
+          runtime_dir="$RUNNER_TEMP/discover-runtime"
+          extracted="$RUNNER_TEMP/discover-node-x64"
+          bash deploy/discover/prepare-node-runtime.sh "$runtime_dir"
+          test -f "$runtime_dir/node-v22.23.2-linux-x64.tar.gz"
+          test -f "$runtime_dir/node-v22.23.2-linux-arm64.tar.gz"
+          install -d "$extracted"
+          tar -xzf "$runtime_dir/node-v22.23.2-linux-x64.tar.gz" -C "$extracted" --strip-components=1
+          "$extracted/bin/node" -e 'if(process.versions.node!=="22.23.2")process.exit(1); require("node:sqlite"); console.log("Pinned Node runtime and node:sqlite smoke passed.")'
