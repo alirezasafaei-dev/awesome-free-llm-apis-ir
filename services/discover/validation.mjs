@@ -1,8 +1,10 @@
 const FIELD_NAMES = new Set([
   "slug", "name", "short_description_fa", "description_fa", "destination_url", "platform", "category",
-  "capabilities", "badges", "access_note_fa", "cta_label_fa", "featured", "sort_order", "published", "last_tested_date"
+  "capabilities", "badges", "icon_provider", "icon_key", "access_note_fa", "cta_label_fa", "featured",
+  "sort_order", "published", "last_tested_date"
 ]);
 const PLATFORMS = new Set(["android", "ios", "web", "telegram", "desktop", "multi"]);
+const ICON_PROVIDERS = new Set(["generic", "simple-icons"]);
 
 export class ValidationError extends Error {
   constructor(message, field = null) {
@@ -43,6 +45,9 @@ function list(value, field) {
     if (typeof item !== "string") throw new ValidationError(`${field} entries must be strings`, field);
     const normalized = item.trim();
     if (!normalized || normalized.length > 64) throw new ValidationError(`${field} contains an invalid entry`, field);
+    if (field === "badges" && normalized.toLowerCase().startsWith("icon:")) {
+      throw new ValidationError("badges must not contain reserved icon metadata", field);
+    }
     if (!seen.has(normalized)) { seen.add(normalized); result.push(normalized); }
   }
   return result;
@@ -65,6 +70,21 @@ function checkedUrl(value) {
   return url.href;
 }
 
+function checkedIcon(value) {
+  const provider = value.icon_provider == null ? "generic" : text(value.icon_provider, "icon_provider", { min: 1, max: 32 });
+  if (!ICON_PROVIDERS.has(provider)) throw new ValidationError("icon_provider is not supported", "icon_provider");
+
+  const defaultKey = provider === "generic" ? "sparkles" : "";
+  const key = value.icon_key == null ? defaultKey : text(value.icon_key, "icon_key", { min: 1, max: 80 });
+  if (!/^[a-z0-9][a-z0-9_-]{0,79}$/.test(key)) {
+    throw new ValidationError("icon_key must be a stable local icon slug", "icon_key");
+  }
+  if (provider === "generic" && key !== "sparkles") {
+    throw new ValidationError("generic icon_key must be sparkles", "icon_key");
+  }
+  return { icon_provider: provider, icon_key: key };
+}
+
 export function validateToolInput(value) {
   if (!value || typeof value !== "object" || Array.isArray(value)) throw new ValidationError("tool payload must be an object");
   for (const key of Object.keys(value)) if (!FIELD_NAMES.has(key)) throw new ValidationError(`unknown field: ${key}`, key);
@@ -75,6 +95,7 @@ export function validateToolInput(value) {
   if (!PLATFORMS.has(platform)) throw new ValidationError("platform is not supported", "platform");
   const category = text(value.category, "category", { min: 1, max: 80 });
   if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(category)) throw new ValidationError("category must be a stable lowercase slug", "category");
+  const icon = checkedIcon(value);
 
   return {
     slug,
@@ -86,6 +107,7 @@ export function validateToolInput(value) {
     category,
     capabilities: list(value.capabilities, "capabilities"),
     badges: list(value.badges, "badges"),
+    ...icon,
     access_note_fa: text(value.access_note_fa, "access_note_fa", { max: 500, required: false }),
     cta_label_fa: text(value.cta_label_fa, "cta_label_fa", { min: 1, max: 80 }),
     featured: flag(value.featured, "featured"),
