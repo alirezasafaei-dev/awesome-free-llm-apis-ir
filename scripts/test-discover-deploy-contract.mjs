@@ -14,46 +14,30 @@ const [installer,unit,runtime,manifest]=await Promise.all([
 ]);
 
 for(const signal of [
-  'BASE_DIR="/opt/persiantoolbox-discover"',
-  'RELEASES_DIR="$BASE_DIR/releases"',
-  'RUNTIME_DIR="$BASE_DIR/runtime"',
-  'NODE_CURRENT_LINK="$RUNTIME_DIR/node-current"',
-  "/var/lib/persiantoolbox-discover",
-  "/etc/persiantoolbox-discover",
-  "discover.sqlite3",
-  "pre-${RELEASE_ID}",
-  "CURRENT_LINK.next",
-  "NODE_CURRENT_LINK.next",
-  "mv -Tf",
-  "uname -m",
-  ".discover-runtime",
-  "sha256sum",
-  "node_modules/simple-icons",
-  "127.0.0.1:8003/discover/api/health",
-  "rollback"
+  'BASE_DIR="/opt/persiantoolbox-discover"', 'RELEASES_DIR="$BASE_DIR/releases"',
+  'RUNTIME_DIR="$BASE_DIR/runtime"', 'NODE_CURRENT_LINK="$RUNTIME_DIR/node-current"',
+  "/var/lib/persiantoolbox-discover", "/etc/persiantoolbox-discover", "discover.sqlite3",
+  "pre-${RELEASE_ID}", "CURRENT_LINK.next", "NODE_CURRENT_LINK.next", "mv -Tf", "uname -m",
+  ".discover-runtime", "sha256sum", "node_modules/simple-icons", "127.0.0.1:8003/discover/api/health",
+  "runuser", "DISCOVER_PREFLIGHT_ONLY=1", "systemctl status", "journalctl -u", "--no-pager", "rollback"
 ]) assert.ok(installer.includes(signal),`Discover installer missing ${signal}`);
 assert.ok(!installer.includes('command -v node'),"Installer must not depend on the VPS system Node");
 assert.ok(!installer.includes("rm -rf \"$DATA_DIR\""),"Installer must never recursively remove persistent data");
 assert.ok(!/npm\s+(?:i|install|ci)\b/.test(installer),"Installer must not mutate dependencies on the VPS");
 assert.ok(installer.includes("NR>10"),"Backup retention must be bounded");
+assert.ok(!installer.includes("systemctl show-environment"),"Diagnostics must not dump systemd environment");
+assert.ok(!installer.includes("printenv"),"Diagnostics must not dump process environment");
 
 for(const signal of [
   "NODE_RUNTIME_VERSION=22.23.2",
   "NODE_RUNTIME_X64_SHA256=b294a556e639d64338823920e5866c21c02741742d2e1529ee1a225c1ec9252a",
   "NODE_RUNTIME_ARM64_SHA256=013b59cfd2819703a6f4a14ab891fc46fc2a4e3f5bcd92de3fb4929b43e35b30"
 ]) assert.ok(manifest.includes(signal),`Node runtime manifest missing ${signal}`);
-for(const signal of [
-  "https://nodejs.org/dist/",
-  'file="node-v${NODE_RUNTIME_VERSION}-linux-${arch}.tar.gz"',
-  'fetch_runtime x64 "$NODE_RUNTIME_X64_SHA256"',
-  'fetch_runtime arm64 "$NODE_RUNTIME_ARM64_SHA256"',
-  "sha256sum -c"
-]) assert.ok(runtime.includes(signal),`Node runtime preparation missing ${signal}`);
+for(const signal of ["https://nodejs.org/dist/", 'file="node-v${NODE_RUNTIME_VERSION}-linux-${arch}.tar.gz"', 'fetch_runtime x64 "$NODE_RUNTIME_X64_SHA256"', 'fetch_runtime arm64 "$NODE_RUNTIME_ARM64_SHA256"', "sha256sum -c"])
+  assert.ok(runtime.includes(signal),`Node runtime preparation missing ${signal}`);
 
 for(const signal of [
-  "User=persiantoolbox-discover",
-  "DISCOVER_HOST=127.0.0.1",
-  "ProtectSystem=strict",
+  "User=persiantoolbox-discover", "DISCOVER_HOST=127.0.0.1", "ProtectSystem=strict",
   "ReadWritePaths=/var/lib/persiantoolbox-discover",
   "ExecStart=/opt/persiantoolbox-discover/runtime/node-current/bin/node /opt/persiantoolbox-discover/current/services/discover/server.mjs"
 ]) assert.ok(unit.includes(signal),`Discover service contract missing ${signal}`);
@@ -65,4 +49,4 @@ if(process.platform!=="win32"){
     assert.equal(syntax.status,0,syntax.stderr||`Shell syntax failed: ${file}`);
   }
 }
-console.log("Discover deployment/service bundled-runtime contract passed.");
+console.log("Discover deployment/service bundled-runtime/startup-diagnostics contract passed.");
