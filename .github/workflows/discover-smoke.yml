@@ -10,6 +10,7 @@ on:
       - 'deploy/nginx/ir.llm.persiantoolbox.ir.conf'
       - 'scripts/test-discover-*.mjs'
       - 'scripts/run-discover-tests.mjs'
+      - 'scripts/vendor-discover-assets.mjs'
       - '.github/workflows/discover-smoke.yml'
       - '.github/workflows/deploy-discover.yml'
       - 'package.json'
@@ -31,4 +32,4 @@ jobs:
           cache: npm
       - run: npm ci
       - name: Run complete Discover contract suite
-        run: node scripts/run-discover-tests.mjs
+        run: npm run discover:test
