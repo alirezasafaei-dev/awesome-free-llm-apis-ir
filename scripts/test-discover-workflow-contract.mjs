@@ -6,6 +6,8 @@ import process from "node:process";
 const root = process.cwd();
 const workflowPath = path.join(root, ".github", "workflows", "deploy-discover.yml");
 const workflow = await readFile(workflowPath, "utf8");
+const vpsWorkflowPath = path.join(root, ".github", "workflows", "deploy-vps.yml");
+const vpsWorkflow = await readFile(vpsWorkflowPath, "utf8");
 
 for (const signal of [
   "name: Deploy Discover pilot",
@@ -50,5 +52,60 @@ assert.ok(workflow.includes("node_modules/simple-icons"), "Discover package must
 assert.ok(workflow.includes("StrictHostKeyChecking=yes"), "SSH must use strict host-key checking");
 assert.ok(workflow.includes("BatchMode=yes"), "SSH must run non-interactively");
 assert.ok(workflow.includes("rm -f ~/.ssh/id_ed25519 ~/.ssh/known_hosts"), "Workflow must remove local SSH material");
+
+// The automatic deploy-vps.yml release path is the primary Discover activation
+// route (protected production-global environment). Validate its release order
+// and its credential hashing so a regression cannot silently break activation.
+for (const signal of [
+  "name: Deploy VPS mirrors",
+  "branches: [main]",
+  "name: production-global",
+  "node scripts/check-discover-live-crud.mjs",
+  "install-discover-service.sh",
+  "127.0.0.1:8003/discover/api/health",
+  "Activate Discover sidecar before static publication",
+  "Publish atomic release",
+  "Prove Discover zero-deploy CRUD before static publication",
+  "Verify canonical deployment"
+]) {
+  assert.ok(vpsWorkflow.includes(signal), `Discover VPS release workflow is missing ${signal}`);
+}
+assert.ok(
+  vpsWorkflow.includes("sport = :8003") && vpsWorkflow.includes("127.0.0.1:8003"),
+  "Discover VPS release workflow must verify the service listens only on loopback"
+);
+assert.ok(
+  vpsWorkflow.includes("ss -ltnH") || vpsWorkflow.includes("netstat"),
+  "Discover VPS release workflow must inspect the live listener"
+);
+assert.ok(
+  vpsWorkflow.includes("/var/lib/persiantoolbox-discover/discover.sqlite3") &&
+  vpsWorkflow.includes('! sudo find /opt/persiantoolbox-discover/releases -type f -name \'*.sqlite3\''),
+  "Discover VPS release workflow must prove SQLite persistence lives outside the release tree"
+);
+assert.ok(
+  /caddy hash-password --algorithm bcrypt/.test(vpsWorkflow) &&
+  /printf '%s\\n'/.test(vpsWorkflow),
+  "Discover VPS release workflow must feed the password with a trailing newline so caddy hash-password does not fail with io.EOF"
+);
+assert.ok(
+  vpsWorkflow.includes("deploy-iran:") &&
+  vpsWorkflow.includes("Publish atomic release") &&
+  !/deploy-iran[\s\S]*install-discover-service\.sh/.test(vpsWorkflow),
+  "The Iran mirror must remain a static-only release with no Discover sidecar or database"
+);
+assert.ok(
+  vpsWorkflow.includes("pre-current-target") && vpsWorkflow.includes("Rollback Discover activation after failed publication"),
+  "Discover VPS release workflow must capture and restore prior sidecar/runtime state on failure"
+);
+assert.ok(
+  vpsWorkflow.includes("sudo test -f /var/lib/persiantoolbox-discover/discover.sqlite3"),
+  "Discover VPS release workflow must assert the persistent SQLite database exists"
+);
+assert.ok(
+  vpsWorkflow.includes('! sudo find /opt/persiantoolbox-discover/releases') &&
+  vpsWorkflow.includes("'*.sqlite3'"),
+  "Discover VPS release workflow must assert no SQLite database lives inside the release tree"
+);
 
 console.log("Discover controlled deployment/workflow CRUD contract passed.");

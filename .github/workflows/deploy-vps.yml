@@ -190,7 +190,9 @@ jobs:
           sudo test -f /var/lib/persiantoolbox-discover/discover.sqlite3
           ! sudo find /opt/persiantoolbox-discover/releases -type f -name '*.sqlite3' -print -quit | grep -q .
 
-          admin_hash="$(printf '%s' "$admin_password" | sudo caddy hash-password --algorithm bcrypt)"
+          # caddy hash-password reads stdin with bufio ReadBytes('\n'); a missing
+          # trailing newline makes it return io.EOF ("Error: EOF") before hashing.
+          admin_hash="$(printf '%s\n' "$admin_password" | sudo caddy hash-password --algorithm bcrypt)"
           test -n "$admin_hash"
           sudo install -d -m 750 -o root -g persiantoolbox-discover /etc/persiantoolbox-discover
           private_env="$STAGE/caddy.env"
