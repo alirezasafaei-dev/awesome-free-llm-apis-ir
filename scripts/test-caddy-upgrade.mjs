@@ -26,7 +26,7 @@ exit 0
 `;
 await writeFile(caddyBin, fakeCaddy("2.6.2"));
 await chmod(caddyBin, 0o755);
-await writeFile(path.join(payload, "caddy"), fakeCaddy("2.11.4"));
+await writeFile(path.join(payload, "caddy"), fakeCaddy("v2.11.4 h1:verified-build-metadata"));
 await chmod(path.join(payload, "caddy"), 0o755);
 await writeFile(path.join(bin, "systemctl"), `#!/usr/bin/env bash
 echo "$*" >> "$SERVICE_LOG"
