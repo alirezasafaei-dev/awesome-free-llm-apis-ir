@@ -19,6 +19,7 @@
 - HTML/CSS/JS عمومی و ادمین داخل release استاتیک سایت قرار می‌گیرند.
 - سرویس داینامیک Node.js فقط روی `127.0.0.1:8003` اجرا می‌شود.
 - Caddy درخواست‌های `/discover/api/*` را فقط به loopback proxy می‌کند و `/discover/admin/*` و API ادمین را با Basic Auth محافظت می‌کند.
+- مسیر release، Caddy استاندارد را روی نسخهٔ pin‌شدهٔ `2.11.4` نگه می‌دارد. آرشیو رسمی با SHA-256 ثابت بررسی می‌شود؛ باینری جدید پیش از نصب کل Caddyfile فعال را validate می‌کند و در شکست نصب/restart، باینری قبلی را از backup بازمی‌گرداند.
 - SQLite در `/var/lib/persiantoolbox-discover/discover.sqlite3` قرار دارد و مستقل از release استاتیک است.
 - کد سرویس در `/opt/persiantoolbox-discover/current` قرار می‌گیرد.
 - تنظیمات خصوصی سرویس در `/etc/persiantoolbox-discover/` نگه داشته می‌شوند.

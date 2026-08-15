@@ -70,6 +70,14 @@ for (const signal of [
 ]) {
   assert.ok(vpsWorkflow.includes(signal), `Discover VPS release workflow is missing ${signal}`);
 }
+for (const upgradeSignal of [
+  "caddy_2.11.4_linux_amd64.tar.gz",
+  "527fbf917c39189a1e3b31d34fa955601680b2d5c8055d2a87b8b9588dec7bb9",
+  "deploy/caddy/upgrade-caddy.sh",
+  "Upgrade Caddy with pinned verified binary"
+]) {
+  assert.ok(vpsWorkflow.includes(upgradeSignal), `Caddy upgrade path is missing ${upgradeSignal}`);
+}
 for (const diagnostic of [
   "Inspect production-global state (read-only)",
   "caddy version",

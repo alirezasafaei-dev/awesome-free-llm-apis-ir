@@ -61,6 +61,15 @@ jobs:
           node-version: 22
       - run: npm ci
       - run: npm test
+      - name: Fetch checksum-pinned official Caddy release
+        run: |
+          set -Eeuo pipefail
+          readonly caddy_archive="caddy_2.11.4_linux_amd64.tar.gz"
+          readonly caddy_sha256="527fbf917c39189a1e3b31d34fa955601680b2d5c8055d2a87b8b9588dec7bb9"
+          curl --proto '=https' --tlsv1.2 --fail --silent --show-error --location \
+            --output "$caddy_archive" \
+            "https://github.com/caddyserver/caddy/releases/download/v2.11.4/$caddy_archive"
+          printf '%s  %s\n' "$caddy_sha256" "$caddy_archive" | sha256sum --check --strict
       - run: npm run site:build
         env:
           SOURCE_REVISION: ${{ github.sha }}
@@ -75,6 +84,8 @@ jobs:
             deploy/discover \
             deploy/caddy/llm.persiantoolbox.ir.caddy \
             deploy/caddy/apply-caddy-config.sh \
+            deploy/caddy/upgrade-caddy.sh \
+            caddy_2.11.4_linux_amd64.tar.gz \
             node_modules/simple-icons \
             .discover-runtime \
             package.json package-lock.json
@@ -227,6 +238,11 @@ jobs:
           admin_user="$(cat "$STAGE/.discover-admin-user")"
           admin_password="$(cat "$STAGE/.discover-admin-password")"
           test -n "$admin_user" && test -n "$admin_password"
+
+          # Upgrade Caddy with pinned verified binary before rendering v2.8+ syntax.
+          bash deploy/caddy/upgrade-caddy.sh \
+            "$STAGE/caddy_2.11.4_linux_amd64.tar.gz" \
+            "527fbf917c39189a1e3b31d34fa955601680b2d5c8055d2a87b8b9588dec7bb9"
 
           sudo bash deploy/discover/install-discover-service.sh "$STAGE" "$RELEASE_ID"
 
