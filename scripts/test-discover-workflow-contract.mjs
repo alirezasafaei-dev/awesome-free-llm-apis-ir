@@ -119,6 +119,16 @@ assert.ok(
   !/deploy-iran[\s\S]*install-discover-service\.sh/.test(vpsWorkflow),
   "The Iran mirror must remain a static-only release with no Discover sidecar or database"
 );
+for (const iranDiagnostic of [
+  "Inspect production-iran origin (read-only)",
+  "systemctl is-active nginx",
+  "iran_current_release",
+  "iran_discover_service",
+  "iran_discover_db",
+  "127.0.0.1:80"
+]) {
+  assert.ok(vpsWorkflow.includes(iranDiagnostic), `Iran origin preflight is missing ${iranDiagnostic}`);
+}
 assert.ok(
   vpsWorkflow.includes("pre-current-target") && vpsWorkflow.includes("Rollback Discover activation after failed publication"),
   "Discover VPS release workflow must capture and restore prior sidecar/runtime state on failure"
