@@ -32,6 +32,10 @@ for (const signal of [
   assert.ok(workflow.includes(signal), `Discover deployment workflow is missing ${signal}`);
 }
 await access(path.join(root, "scripts", "check-discover-live-crud.mjs"));
+const liveCrud = await readFile(path.join(root, "scripts", "check-discover-live-crud.mjs"), "utf8");
+for (const field of ["category", "icon_provider", "icon_key", "featured", "sort_order", "reorder"]) {
+  assert.ok(liveCrud.includes(field), `Live production CRUD proof must exercise ${field}`);
+}
 
 assert.ok(!/^\s*push\s*:/m.test(workflow), "Discover deployment must not run automatically on push");
 assert.ok(!/^\s*pull_request\s*:/m.test(workflow), "Discover deployment must not run automatically on pull requests");

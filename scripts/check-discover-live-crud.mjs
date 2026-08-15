@@ -80,16 +80,38 @@ try {
   if (!Number.isInteger(id)) throw new Error("Discover live CRUD create did not return an integer id");
   if (created.tool.published !== false) throw new Error("Discover live CRUD draft unexpectedly published");
 
-  const editedBody = { ...initial, name: "Discover release smoke edited", icon_provider: "simple-icons", icon_key: "github" };
+  const editedBody = {
+    ...initial,
+    name: "Discover release smoke edited",
+    category: "ai-productivity",
+    icon_provider: "simple-icons",
+    icon_key: "github",
+    featured: true,
+    sort_order: 5
+  };
   const edited = await admin(`/tools/${id}`, { method: "PUT", body: editedBody });
-  if (edited?.tool?.name !== editedBody.name || edited?.tool?.icon_key !== "github") throw new Error("Discover live CRUD edit verification failed");
+  if (
+    edited?.tool?.name !== editedBody.name ||
+    edited?.tool?.category !== "ai-productivity" ||
+    edited?.tool?.icon_key !== "github" ||
+    edited?.tool?.featured !== true ||
+    edited?.tool?.sort_order !== 5
+  ) throw new Error("Discover live CRUD edit/category/icon/featured verification failed");
 
   const publishedBody = { ...editedBody, published: true };
   await admin(`/tools/${id}`, { method: "PUT", body: publishedBody });
   const visible = (await publicTools()).find((tool) => tool.slug === slug);
-  if (!visible || visible.name !== editedBody.name || visible.icon_key !== "github") throw new Error("Discover live CRUD publish was not visible through public API");
+  if (!visible || visible.name !== editedBody.name || visible.category !== "ai-productivity" || visible.icon_key !== "github" || visible.featured !== true) {
+    throw new Error("Discover live CRUD publish was not visible through public API");
+  }
 
-  await admin(`/tools/${id}`, { method: "PUT", body: { ...publishedBody, published: false } });
+  const reorderedBody = { ...publishedBody, sort_order: 777 };
+  const reordered = await admin(`/tools/${id}`, { method: "PUT", body: reorderedBody });
+  if (reordered?.tool?.sort_order !== 777) throw new Error("Discover live CRUD reorder verification failed");
+  const reorderedVisible = (await publicTools()).find((tool) => tool.slug === slug);
+  if (reorderedVisible?.sort_order !== 777) throw new Error("Discover live CRUD reordered value was not visible through public API");
+
+  await admin(`/tools/${id}`, { method: "PUT", body: { ...reorderedBody, published: false } });
   if ((await publicTools()).some((tool) => tool.slug === slug)) throw new Error("Discover live CRUD unpublish remained visible through public API");
 
   await admin(`/tools/${id}`, { method: "DELETE" });
@@ -97,7 +119,7 @@ try {
   const finalAdmin = await admin("/tools");
   if (finalAdmin?.tools?.some((tool) => tool.slug === slug)) throw new Error("Discover live CRUD delete verification failed");
 
-  console.log("Discover live CRUD proof passed: create -> edit -> publish -> public -> unpublish -> delete.");
+  console.log("Discover live CRUD proof passed: create -> edit/category/icon/featured -> publish -> public -> reorder -> unpublish -> delete.");
 } finally {
   if (id != null) {
     await admin(`/tools/${id}`, { method: "DELETE" }).catch(() => {});
