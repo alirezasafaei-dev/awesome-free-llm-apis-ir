@@ -118,6 +118,52 @@ jobs:
           chmod 600 ~/.ssh/id_ed25519 ~/.ssh/known_hosts
           ssh-keygen -y -f ~/.ssh/id_ed25519 >/dev/null
 
+      - name: Inspect production-global state (read-only)
+        env:
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_PORT: ${{ secrets.SSH_PORT }}
+        run: |
+          set -Eeuo pipefail
+          remote="${SSH_USER}@${SSH_HOST}"
+          ssh -i ~/.ssh/id_ed25519 -p "$SSH_PORT" -o BatchMode=yes -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes "$remote" 'bash -se' <<'REMOTE'
+          set -Eeuo pipefail
+          echo "caddy_version=$(caddy version)"
+          echo "caddy_modules_begin"
+          caddy list-modules --versions 2>/dev/null || caddy list-modules
+          echo "caddy_modules_end"
+          echo "caddy_active=$(systemctl is-active caddy 2>/dev/null || true)"
+          echo "discover_active=$(systemctl is-active persiantoolbox-discover 2>/dev/null || true)"
+          echo "discover_enabled=$(systemctl is-enabled persiantoolbox-discover 2>/dev/null || true)"
+          if sudo test -f /etc/caddy/Caddyfile; then
+            sudo caddy validate --config /etc/caddy/Caddyfile --adapter caddyfile >/dev/null
+            echo "caddyfile_valid=yes"
+            echo "caddyfile_sha256=$(sudo sha256sum /etc/caddy/Caddyfile | awk '{print $1}')"
+          else
+            echo "caddyfile_valid=missing"
+          fi
+          site=/etc/caddy/sites-enabled/llm.persiantoolbox.ir.caddy
+          if sudo test -f "$site"; then
+            echo "site_config_sha256=$(sudo sha256sum "$site" | awk '{print $1}')"
+            echo "site_basic_auth_count=$(sudo grep -Ec '^[[:space:]]*basic_auth([[:space:]]|$)' "$site" || true)"
+            echo "site_basicauth_count=$(sudo grep -Ec '^[[:space:]]*basicauth([[:space:]]|$)' "$site" || true)"
+          else
+            echo "site_config_sha256=missing"
+          fi
+          if [[ -L /opt/persiantoolbox-discover/current ]]; then
+            echo "discover_current_release=$(basename "$(readlink -f /opt/persiantoolbox-discover/current)")"
+          else
+            echo "discover_current_release=none"
+          fi
+          if sudo test -f /var/lib/persiantoolbox-discover/discover.sqlite3; then
+            echo "discover_db=present"
+            echo "discover_db_mode=$(sudo stat -c '%a:%U:%G' /var/lib/persiantoolbox-discover/discover.sqlite3)"
+          else
+            echo "discover_db=missing"
+          fi
+          echo "discover_release_db_count=$(sudo find /opt/persiantoolbox-discover/releases -type f -name '*.sqlite3' 2>/dev/null | wc -l)"
+          REMOTE
+
       - name: Prepare Discover admin credential
         env:
           CONFIGURED_ADMIN_USER: ${{ secrets.DISCOVER_ADMIN_USER }}
