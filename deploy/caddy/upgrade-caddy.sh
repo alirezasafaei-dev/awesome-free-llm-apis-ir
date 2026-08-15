@@ -51,10 +51,11 @@ if [[ "$current_version" == "$TARGET_VERSION" ]]; then
 fi
 
 WORK_DIR="$(mktemp -d)"
+chmod 755 "$WORK_DIR"
 tar -xzf "$ARCHIVE" -C "$WORK_DIR" caddy
 chmod 755 "$WORK_DIR/caddy"
 [[ "$(caddy_version "$WORK_DIR/caddy")" == "$TARGET_VERSION" ]] || { echo "Unexpected Caddy payload version" >&2; exit 1; }
-"$WORK_DIR/caddy" validate --config "$CADDYFILE" --adapter caddyfile >/dev/null
+privileged "$WORK_DIR/caddy" validate --config "$CADDYFILE" --adapter caddyfile >/dev/null
 
 privileged install -d -m 700 "$BACKUP_ROOT"
 BACKUP="$BACKUP_ROOT/caddy-${current_version}-$(date -u +%Y%m%dT%H%M%SZ)"
