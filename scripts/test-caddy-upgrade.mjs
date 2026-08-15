@@ -3,11 +3,15 @@ import { chmod, mkdtemp, mkdir, readFile, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { spawnSync } from "node:child_process";
+import { readFile as readSource } from "node:fs/promises";
 
 if (process.platform === "win32") {
   console.log("Skipping Linux Caddy binary-upgrade integration on Windows; Linux CI remains authoritative.");
   process.exit(0);
 }
+
+const upgradeSource = await readSource("deploy/caddy/upgrade-caddy.sh", "utf8");
+assert.ok(upgradeSource.includes('privileged "$WORK_DIR/caddy" validate'), "candidate validation must have log-writer privileges");
 
 const root = await mkdtemp(path.join(os.tmpdir(), "caddy-upgrade-test-"));
 const bin = path.join(root, "bin");
