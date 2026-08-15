@@ -459,6 +459,31 @@ jobs:
           printf '%s\n' "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
           chmod 600 ~/.ssh/id_ed25519 ~/.ssh/known_hosts
           ssh-keygen -y -f ~/.ssh/id_ed25519 >/dev/null
+      - name: Inspect production-iran origin (read-only)
+        env:
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_PORT: ${{ secrets.SSH_PORT }}
+          DEPLOY_ROOT: ${{ secrets.DEPLOY_ROOT }}
+        run: |
+          set -Eeuo pipefail
+          remote="${SSH_USER}@${SSH_HOST}"
+          ssh -i ~/.ssh/id_ed25519 -p "$SSH_PORT" -o BatchMode=yes -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes "$remote" "DEPLOY_ROOT='$DEPLOY_ROOT' bash -se" <<'REMOTE'
+          set -Eeuo pipefail
+          echo "nginx_active=$(systemctl is-active nginx 2>/dev/null || true)"
+          echo "nginx_enabled=$(systemctl is-enabled nginx 2>/dev/null || true)"
+          if [[ -L "$DEPLOY_ROOT/current" ]]; then
+            echo "iran_current_release=$(basename "$(readlink -f "$DEPLOY_ROOT/current")")"
+          else
+            echo "iran_current_release=none"
+          fi
+          echo "iran_root_usage=$(df -P "$DEPLOY_ROOT" | awk 'NR==2 {print $5}')"
+          echo "iran_http_listener_count=$(sudo ss -ltnH 'sport = :80' | awk '$4 ~ /:80$/ {count++} END {print count+0}')"
+          echo "iran_discover_service=$(systemctl is-active persiantoolbox-discover 2>/dev/null || true)"
+          if sudo test -e /var/lib/persiantoolbox-discover/discover.sqlite3; then echo "iran_discover_db=present"; else echo "iran_discover_db=absent"; fi
+          curl --fail --silent --show-error --max-time 10 --output /dev/null --resolve ir.llm.persiantoolbox.ir:80:127.0.0.1 http://ir.llm.persiantoolbox.ir/
+          echo "iran_origin_127.0.0.1:80=healthy"
+          REMOTE
       - name: Publish atomic release
         id: release
         env:
