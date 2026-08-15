@@ -70,6 +70,19 @@ for (const signal of [
 ]) {
   assert.ok(vpsWorkflow.includes(signal), `Discover VPS release workflow is missing ${signal}`);
 }
+for (const diagnostic of [
+  "Inspect production-global state (read-only)",
+  "caddy version",
+  "caddy list-modules",
+  "systemctl is-active caddy",
+  "systemctl is-active persiantoolbox-discover",
+  "/etc/caddy/Caddyfile",
+  "/etc/caddy/sites-enabled/llm.persiantoolbox.ir.caddy",
+  "/var/lib/persiantoolbox-discover/discover.sqlite3",
+  "/opt/persiantoolbox-discover/current"
+]) {
+  assert.ok(vpsWorkflow.includes(diagnostic), `Production preflight is missing ${diagnostic}`);
+}
 assert.ok(
   vpsWorkflow.includes("sport = :8003") && vpsWorkflow.includes("127.0.0.1:8003"),
   "Discover VPS release workflow must verify the service listens only on loopback"
