@@ -18,6 +18,8 @@ privileged() {
   if [[ "${CADDY_UPGRADE_UNPRIVILEGED:-0}" == "1" ]]; then "$@"; else sudo "$@"; fi
 }
 
+caddy_version() { "$1" version | awk '{print $1}' | sed 's/^v//'; }
+
 cleanup() { [[ -z "$WORK_DIR" || ! -d "$WORK_DIR" ]] || rm -rf "$WORK_DIR"; }
 
 rollback() {
@@ -42,7 +44,7 @@ for command in sha256sum tar install systemctl; do command -v "$command" >/dev/n
 actual_sha256="$(sha256sum "$ARCHIVE" | awk '{print $1}')"
 [[ "$actual_sha256" == "$EXPECTED_SHA256" ]] || { echo "Caddy archive checksum mismatch" >&2; exit 1; }
 
-current_version="$($CADDY_BIN version | sed 's/^v//')"
+current_version="$(caddy_version "$CADDY_BIN")"
 if [[ "$current_version" == "$TARGET_VERSION" ]]; then
   echo "[caddy-upgrade] Caddy $TARGET_VERSION already installed"
   exit 0
@@ -51,7 +53,7 @@ fi
 WORK_DIR="$(mktemp -d)"
 tar -xzf "$ARCHIVE" -C "$WORK_DIR" caddy
 chmod 755 "$WORK_DIR/caddy"
-[[ "$("$WORK_DIR/caddy" version | sed 's/^v//')" == "$TARGET_VERSION" ]] || { echo "Unexpected Caddy payload version" >&2; exit 1; }
+[[ "$(caddy_version "$WORK_DIR/caddy")" == "$TARGET_VERSION" ]] || { echo "Unexpected Caddy payload version" >&2; exit 1; }
 "$WORK_DIR/caddy" validate --config "$CADDYFILE" --adapter caddyfile >/dev/null
 
 privileged install -d -m 700 "$BACKUP_ROOT"
@@ -60,7 +62,7 @@ privileged install -m 700 "$CADDY_BIN" "$BACKUP"
 privileged install -m 755 "$WORK_DIR/caddy" "$CADDY_BIN"
 INSTALLED=true
 
-[[ "$($CADDY_BIN version | sed 's/^v//')" == "$TARGET_VERSION" ]]
+[[ "$(caddy_version "$CADDY_BIN")" == "$TARGET_VERSION" ]]
 privileged "$CADDY_BIN" validate --config "$CADDYFILE" --adapter caddyfile >/dev/null
 privileged systemctl restart caddy
 privileged systemctl is-active --quiet caddy
