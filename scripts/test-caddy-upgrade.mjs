@@ -4,6 +4,11 @@ import os from "node:os";
 import path from "node:path";
 import { spawnSync } from "node:child_process";
 
+if (process.platform === "win32") {
+  console.log("Skipping Linux Caddy binary-upgrade integration on Windows; Linux CI remains authoritative.");
+  process.exit(0);
+}
+
 const root = await mkdtemp(path.join(os.tmpdir(), "caddy-upgrade-test-"));
 const bin = path.join(root, "bin");
 const payload = path.join(root, "payload");
