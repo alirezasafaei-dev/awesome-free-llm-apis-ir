@@ -1,0 +1,23 @@
+.discover-retry {
+  display: block;
+  min-height: 44px;
+  margin: 12px auto 0;
+  padding: 9px 16px;
+  border: 1px solid var(--db);
+  border-radius: 12px;
+  color: #fff;
+  background: var(--db);
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.discover-chip:focus-visible,
+.discover-cta:focus-visible,
+.discover-main-site:focus-visible,
+.discover-retry:focus-visible,
+.discover-back:focus-visible,
+.discover-brand:focus-visible {
+  outline: 3px solid rgba(21, 94, 239, .3);
+  outline-offset: 3px;
+}

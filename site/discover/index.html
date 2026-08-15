@@ -10,6 +10,7 @@
   <link rel="canonical" href="https://llm.persiantoolbox.ir/discover/">
   <link rel="stylesheet" href="../styles.css">
   <link rel="stylesheet" href="./discover.css">
+  <link rel="stylesheet" href="./discover-accessibility.css">
   <link rel="stylesheet" href="../ux-clarity.css">
   <link rel="stylesheet" href="../ui-pro-max.css">
   <link rel="stylesheet" href="../ui-pro-max-components.css">
@@ -34,8 +35,9 @@
       <div class="discover-section-head"><div><h2 id="discover-results-title">ابزارهای تست‌شده</h2><p id="discover-count" aria-live="polite"></p></div></div>
       <p id="discover-loading" class="discover-state" role="status">دارم ابزارها رو میارم…</p>
       <p id="discover-error" class="discover-state discover-state-error" role="alert" hidden>فعلاً نتونستم فهرست رو بگیرم. چند لحظه دیگه دوباره امتحان کن.</p>
+      <button id="discover-retry" class="discover-retry" type="button" hidden>تلاش دوباره</button>
       <p id="discover-empty" class="discover-state" hidden>چیزی با این فیلتر پیدا نشد. یه عبارت دیگه امتحان کن.</p>
-      <div id="discover-list" class="discover-grid" aria-live="polite"></div>
+      <div id="discover-list" class="discover-grid" aria-live="polite" aria-busy="true"></div>
     </section>
     <section class="discover-note" aria-label="روش بررسی ابزارها"><strong>چرا این صفحه؟</strong><p>لینک‌های ریلز گم نمی‌شن و برای هر ابزار می‌تونی آخرین تاریخ تست و نکته‌های مهم استفاده رو ببینی.</p><a id="discover-main-site" class="discover-main-site" href="https://persiantoolbox.ir/">رفتن به PersianToolbox اصلی</a></section>
   </main>

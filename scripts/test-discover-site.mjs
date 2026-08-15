@@ -11,9 +11,11 @@ const jsPath = path.join(root, "site", "discover", "discover.js");
 const enhancementPath = path.join(root, "site", "discover", "discover-enhancements.js");
 const destination = path.join(root, ".site-dist");
 
-const [page, css, script, enhancements] = await Promise.all([
+const accessibilityCssPath = path.join(root, "site", "discover", "discover-accessibility.css");
+const [page, css, accessibilityCss, script, enhancements] = await Promise.all([
   readFile(pagePath, "utf8"),
   readFile(cssPath, "utf8"),
+  readFile(accessibilityCssPath, "utf8"),
   readFile(jsPath, "utf8"),
   readFile(enhancementPath, "utf8")
 ]);
@@ -22,7 +24,7 @@ for (const signal of [
   'lang="fa"', 'dir="rtl"',
   '<link rel="canonical" href="https://llm.persiantoolbox.ir/discover/">',
   'id="discover-search"', 'id="discover-categories"', 'id="discover-list"',
-  'id="discover-loading"', 'id="discover-empty"', 'id="discover-error"',
+  'id="discover-loading"', 'id="discover-empty"', 'id="discover-error"', 'id="discover-retry"',
   'id="discover-main-site"', 'https://persiantoolbox.ir/',
   'src="./discover.js"', 'src="./discover-enhancements.js"', 'src="../analytics.js"', 'src="../plausible.js"'
 ]) {
@@ -30,10 +32,11 @@ for (const signal of [
 }
 assert.equal((page.match(/<h1(?:\s|>)/g) || []).length, 1, "Discover page must have exactly one H1");
 assert.ok(css.includes(".discover-grid") && css.includes(".discover-main-site") && css.includes("@media"), "Discover CSS must include grid, conversion CTA and responsive behavior");
+assert.ok(accessibilityCss.includes(".discover-retry") && accessibilityCss.includes(":focus-visible"), "Discover accessibility CSS must style retry and keyboard focus");
 
 for (const signal of [
   '/discover/api/tools', '/discover/api/icons/simple-icons/', '/discover/assets/sparkles.svg',
-  'icon_provider', 'icon_key', 'discover_view', 'discover_tool_click', 'discover_search', 'discover_filter',
+  'icon_provider', 'icon_key', 'discover_view', 'discover_tool_click', 'discover_search', 'discover_filter', 'discover_retry', 'aria-busy',
   'noopener noreferrer', 'textContent', 'result_bucket', 'tool_slug'
 ]) {
   assert.ok(script.includes(signal), `Discover script is missing ${signal}`);
