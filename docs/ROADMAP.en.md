@@ -1,6 +1,6 @@
 # Project roadmap
 
-Last reviewed: 2026-07-16
+Last reviewed: 2026-08-07
 
 This document defines the main project priorities. The detailed growth plan is maintained in [`docs/SEO_GROWTH_ROADMAP.fa.md`](SEO_GROWTH_ROADMAP.fa.md).
 
@@ -25,7 +25,7 @@ The current provider count is sufficient for the first product version. Broad ca
 4. Organic-growth measurement
 5. Professional distribution of the website and repository
 
-A new provider should be accepted only when it offers distinct practical value, a verified free tier, and complete canonical data.
+During the maintenance and growth phase approved on 2026-08-07, provider expansion and product development are frozen. A new provider may be accepted only after an explicit owner reopening and only when it offers distinct practical value, a verified free tier, and complete canonical data.
 
 ## P0 — Live website and technical SEO
 
@@ -93,12 +93,12 @@ These tracks continue, but they do not block the growth program unless they intr
 
 Credential validation through a non-Iranian route does not mean that a complete VPN-access matrix has been executed. Endpoint reachability also does not prove successful model execution.
 
-## P0 — Provider catalog expansion
+## P0 — Provider catalog expansion (frozen)
 
-Status: **planned — in execution**
+Status: **paused until explicit owner decision**
 
-- Grow from 22 to at least 50 accepted providers with real evidence
-- 33 screened candidates across 4 execution waves
+- The numerical goal of growing from 22 to 50 providers is not active in this phase.
+- Screened candidates and execution waves remain paused until explicit owner reopening.
 - Documentary research alone is insufficient; at least one authenticated inference required
 - Iran status is recorded separately and only after paired testing
 
@@ -120,6 +120,5 @@ After an indexing and traffic baseline exists:
 2. Execute Issue #42 and record the first search/analytics baseline
 3. Publish the first Persian content cluster through Issue #43
 4. Execute the launch and distribution package in Issue #44
-5. Provider catalog expansion (detailed roadmap: [`PROVIDER_EXPANSION_ROADMAP.en.md`](PROVIDER_EXPANSION_ROADMAP.en.md))
-6. Complete remaining security and verification tracks
-7. Build product features based on observed usage data
+5. Complete remaining security, data-maintenance, and verification tracks
+6. Reopen product or catalog expansion only after measured demand and an explicit owner decision
