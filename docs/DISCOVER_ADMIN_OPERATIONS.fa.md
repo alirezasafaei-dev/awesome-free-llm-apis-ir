@@ -189,6 +189,7 @@ rollback کد سرویس نباید این DB را حذف یا recreate کند. 
 - `discover_tool_click`
 - `discover_search`
 - `discover_filter`
+- `discover_retry`
 - `discover_persiantoolbox_click`
 
 عبارت خام جستجو یا URL مقصد به property analytics فرستاده نمی‌شود و client برای analytics شناسه پایدار، `localStorage` یا `sessionStorage` ایجاد نمی‌کند.

@@ -69,6 +69,7 @@ try {
   const builtPage = await readFile(path.join(destination, "discover", "index.html"), "utf8");
   const builtScript = await readFile(path.join(destination, "discover", "discover.js"), "utf8");
   const builtEnhancements = await readFile(path.join(destination, "discover", "discover-enhancements.js"), "utf8");
+  const builtAccessibilityCss = await readFile(path.join(destination, "discover", "discover-accessibility.css"), "utf8");
   const builtAdmin = await readFile(path.join(destination, "discover", "admin", "index.html"), "utf8");
   const builtVendor = path.join(destination, "discover", "admin", "vendor", "sortable.min.js");
   await access(builtVendor);
@@ -76,6 +77,7 @@ try {
   assert.ok(builtPage.includes("ابزارهایی که توی ریلز دیدی"));
   assert.ok(builtScript.includes("/discover/api/tools"));
   assert.ok(builtEnhancements.includes("discover_persiantoolbox_click"));
+  assert.ok(builtAccessibilityCss.includes(".discover-retry") && builtAccessibilityCss.includes(":focus-visible"));
   assert.ok(builtAdmin.includes("./vendor/sortable.min.js"));
   assert.ok(sortable.includes("Sortable") && sortable.includes("MIT"));
   assert.ok(!sortable.includes("cdn.jsdelivr.net") && !sortable.includes("unpkg.com"));
