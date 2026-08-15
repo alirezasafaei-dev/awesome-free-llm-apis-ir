@@ -6,7 +6,8 @@ const tests = [
   "./test-discover-symlink-main.mjs",
   "./test-discover-service-contract.mjs",
   "./test-discover-deploy-contract.mjs",
-  "./test-discover-workflow-contract.mjs"
+  "./test-discover-workflow-contract.mjs",
+  "./test-caddy-upgrade.mjs"
 ];
 
 for (const test of tests) {
