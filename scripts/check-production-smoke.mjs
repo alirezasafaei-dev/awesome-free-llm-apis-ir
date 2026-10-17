@@ -9,11 +9,6 @@ const DEFAULT_TARGETS = [
     robotsPolicy: "index"
   },
   {
-    name: "iran",
-    baseUrl: "https://ir.llm.persiantoolbox.ir/",
-    robotsPolicy: "noindex"
-  },
-  {
     name: "pages",
     baseUrl: "https://alirezasafaei-dev.github.io/awesome-free-llm-apis-ir/",
     robotsPolicy: "index"

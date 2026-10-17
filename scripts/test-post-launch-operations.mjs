@@ -45,7 +45,6 @@ if (!expectedRevisionBlock.test(workflow)) {
 
 const smokeTokens = [
   "https://llm.persiantoolbox.ir/",
-  "https://ir.llm.persiantoolbox.ir/",
   "https://alirezasafaei-dev.github.io/awesome-free-llm-apis-ir/",
   "catalog.json",
   "data.json",

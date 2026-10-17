@@ -41,8 +41,8 @@ for (const [name, pin] of Object.entries(exactActionPins)) {
 if (!pagesWorkflow.includes(exactActionPins.uploadPages) || !pagesWorkflow.includes(exactActionPins.deployPages)) {
   throw new Error("GitHub Pages workflow does not use the reviewed v5 artifact/deploy pair");
 }
-if (!vpsWorkflow.includes(exactActionPins.upload) || (vpsWorkflow.match(new RegExp(exactActionPins.download, "g")) || []).length < 2) {
-  throw new Error("Dual-VPS workflow does not use the reviewed upload/download artifact pair");
+if (!vpsWorkflow.includes(exactActionPins.upload) || (vpsWorkflow.match(new RegExp(exactActionPins.download, "g")) || []).length < 1) {
+  throw new Error("Canonical VPS workflow does not use the reviewed upload/download artifact pair");
 }
 
 for (const script of ["release:check", "release:candidate:test", "deployment:artifact:test"]) {
