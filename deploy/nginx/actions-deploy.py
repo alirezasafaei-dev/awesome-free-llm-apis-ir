@@ -78,6 +78,11 @@ def extract_bundle(archive, destination, revision, manifest):
                 with source.extractfile(entry) as data, target.open('xb') as output:
                     shutil.copyfileobj(data, output)
                 target.chmod(0o644)
+        # Root keeps the staging container private, while archived site trees
+        # must remain traversable by Nginx after atomic publication.
+        for directory in destination.rglob('*'):
+            if directory.is_dir():
+                directory.chmod(0o755)
 
 
 def upload(revision):

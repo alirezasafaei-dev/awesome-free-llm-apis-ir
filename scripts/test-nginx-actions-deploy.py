@@ -53,6 +53,19 @@ class ArchiveSafety(unittest.TestCase):
         self.module.extract_bundle(archive, self.root / 'out', 'a' * 40, b'pinned')
         self.assertTrue((self.root / 'out/site/index.html').is_file())
 
+    @unittest.skipUnless(os.name == 'posix', 'POSIX serving modes are checked by Linux CI')
+    def test_public_directories_remain_readable_under_private_root_umask(self):
+        archive = self.archive(self.files())
+        previous_umask = os.umask(0o077)
+        try:
+            self.module.extract_bundle(archive, self.root / 'out', 'a' * 40, b'pinned')
+        finally:
+            os.umask(previous_umask)
+        self.assertEqual((self.root / 'out').stat().st_mode & 0o777, 0o700)
+        for directory in (self.root / 'out').rglob('*'):
+            if directory.is_dir():
+                self.assertEqual(directory.stat().st_mode & 0o777, 0o755, str(directory))
+
     def test_rejects_traversal_links_duplicates_and_private_files(self):
         for name, value in [('../escape', b'x'), ('/etc/passwd', b'x'), ('site/link', None), ('site/.env', b'x'), ('other/payload', b'x'), ('site/index.html', b'duplicate')]:
             archive = self.archive(self.files() + [(name, value)])
