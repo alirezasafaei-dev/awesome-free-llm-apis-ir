@@ -1,10 +1,8 @@
 #!/usr/bin/python3
 """Root-owned, application-scoped SSH deployment endpoint. No shell evaluation."""
-import fcntl
 import hashlib
 import json
 import os
-import pwd
 import re
 import shutil
 import signal
@@ -172,6 +170,7 @@ def restore_transaction(revision, log):
 
 
 def publish(revision, expected_digest, log):
+    import pwd  # Linux service identity; archive validation is platform-independent.
     archive = BASE / (revision + '.tar.gz')
     if hashlib.sha256(archive.read_bytes()).hexdigest() != expected_digest:
         raise ValueError('release transport checksum mismatch')
@@ -232,6 +231,7 @@ def publish(revision, expected_digest, log):
 
 
 def main():
+    import fcntl  # Deployment locking is supported only on the Linux target.
     if os.geteuid() != 0:
         raise ValueError('privileged application endpoint required')
     command = os.environ.get('SSH_ORIGINAL_COMMAND') if len(sys.argv) == 1 else ' '.join(sys.argv[1:])

@@ -7,6 +7,7 @@ import tarfile
 import tempfile
 import unittest
 import hashlib
+import os
 from unittest.mock import patch
 from pathlib import Path
 
@@ -81,6 +82,7 @@ class WorkflowSafety(unittest.TestCase):
         self.assertIn('production-global', WORKFLOW)
 
 
+@unittest.skipUnless(os.name == 'posix', 'systemd, POSIX signals and release symlinks are verified by Linux CI')
 class RollbackSafety(ArchiveSafety):
     def setUp(self):
         super().setUp()
