@@ -4,7 +4,6 @@ import process from "node:process";
 const DEFAULT_TIMEOUT_MS = 15_000;
 const DEFAULT_TARGETS = [
   { name: "global", baseUrl: "https://llm.persiantoolbox.ir/" },
-  { name: "iran", baseUrl: "https://ir.llm.persiantoolbox.ir/" },
   { name: "pages", baseUrl: "https://alirezasafaei-dev.github.io/awesome-free-llm-apis-ir/" }
 ];
 

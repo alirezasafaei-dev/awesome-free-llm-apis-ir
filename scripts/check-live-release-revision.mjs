@@ -8,11 +8,6 @@ export const DEFAULT_RELEASE_TARGETS = Object.freeze([
     robotsPolicy: "index"
   }),
   Object.freeze({
-    name: "iran",
-    baseUrl: "https://ir.llm.persiantoolbox.ir/",
-    robotsPolicy: "noindex"
-  }),
-  Object.freeze({
     name: "pages",
     baseUrl: "https://alirezasafaei-dev.github.io/awesome-free-llm-apis-ir/",
     robotsPolicy: "index"

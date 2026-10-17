@@ -5,6 +5,7 @@ on:
     workflows:
       - Deploy VPS mirrors
       - Deploy website
+      - Deploy Discover pilot
     types: [completed]
   workflow_dispatch:
 
@@ -85,7 +86,7 @@ jobs:
           echo "Triggering deployment workflow concluded with: $UPSTREAM_CONCLUSION" >&2
           exit 1
 
-      - name: Verify exact revision on global, Iran and Pages targets
+      - name: Verify exact revision on canonical and Pages targets
         run: >-
           node scripts/check-live-release-revision.mjs
           --expected-revision=${EXPECTED_SHA}
