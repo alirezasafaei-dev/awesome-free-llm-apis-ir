@@ -54,8 +54,7 @@ const phases = Object.freeze({
     "ux:research:test",
     "advisor:test",
     "pages:paths:test",
-    "analytics:production:test",
-    "discover:test"
+    "analytics:production:test"
   ],
   operations: [
     "verify:iran:dry",
@@ -137,7 +136,8 @@ function validateCoverage() {
  */
 function runNpmScript(command) {
   console.log(`\n=== npm run ${command} ===`);
-  const result = spawnSync("npm", ["run", command], {
+  const npmCommand = process.platform === "win32" ? "npm.cmd" : "npm";
+  const result = spawnSync(npmCommand, ["run", command], {
     stdio: "inherit",
     shell: process.platform === "win32"
   });

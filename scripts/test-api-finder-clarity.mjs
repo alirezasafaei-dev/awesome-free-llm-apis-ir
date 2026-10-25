@@ -98,10 +98,12 @@ if (/\bsk-[A-Za-z0-9_-]{16,}\b/.test(script + styles)) throw new Error("Possible
 const syntax = spawnSync(process.execPath, ["--check", clarityScript], { encoding: "utf8" });
 if (syntax.status !== 0) throw new Error(syntax.stderr || "API Finder clarity script syntax failed");
 
-const build = spawnSync("npm", ["run", "site:build"], {
+const npmCommand = process.platform === "win32" ? "npm.cmd" : "npm";
+const build = spawnSync(npmCommand, ["run", "site:build"], {
   cwd: root,
   encoding: "utf8",
-  env: { ...process.env, SOURCE_REVISION: "api-finder-funnel-contract" }
+  env: { ...process.env, SOURCE_REVISION: "api-finder-funnel-contract" },
+  ...(process.platform === "win32" ? { shell: true } : {})
 });
 if (build.status !== 0) throw new Error(build.stderr || build.stdout || "Production site build failed");
 

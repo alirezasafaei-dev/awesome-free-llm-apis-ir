@@ -6,11 +6,13 @@ import process from "node:process";
 const root = process.cwd();
 const dist = path.join(root, ".site-dist");
 
-const build = spawnSync("npm", ["run", "site:build"], {
+const npmCommand = process.platform === "win32" ? "npm.cmd" : "npm";
+const build = spawnSync(npmCommand, ["run", "site:build"], {
   cwd: root,
   encoding: "utf8",
   stdio: "inherit",
-  env: process.env
+  env: process.env,
+  ...(process.platform === "win32" ? { shell: true } : {})
 });
 if (build.status !== 0) {
   console.error("Finder ranking contract could not build the final site artifact.");
