@@ -4,7 +4,7 @@ slug: "en-official-gateway-vs-community-gateway"
 translation_key: "official-gateway-vs-community-gateway"
 description: "Compare official and community gateways for accessing LLM APIs; covering security, stability, privacy, and practical considerations."
 primary_keyword: "en official gateway vs community gateway"
-canonical_target: "https://llm.persiantoolbox.ir/guides/en-official-gateway-vs-community-gateway/"
+canonical_target: "https://llm.persiantoolbox.ir/guides/en/en-official-gateway-vs-community-gateway/"
 updated_at: "2026-08-05"
 status: "READY_FOR_SITE"
 ---

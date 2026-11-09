@@ -4,7 +4,7 @@ slug: "en-free-embedding-api"
 translation_key: "free-embedding-api"
 description: "Compare free embedding APIs for RAG, semantic search, and text processing; including dimensions, context length, multilingual support, and free tier details."
 primary_keyword: "free embedding API"
-canonical_target: "https://llm.persiantoolbox.ir/guides/en-free-embedding-api/"
+canonical_target: "https://llm.persiantoolbox.ir/guides/en/en-free-embedding-api/"
 updated_at: "2026-08-05"
 status: "READY_FOR_SITE"
 ---

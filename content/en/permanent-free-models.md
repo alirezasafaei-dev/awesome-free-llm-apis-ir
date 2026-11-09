@@ -4,7 +4,7 @@ slug: "en-permanent-free-models"
 translation_key: "permanent-free-models"
 description: "Guide to identifying and comparing permanently free models in LLM APIs; covering provider policy stability, open source models, and long-term project selection."
 primary_keyword: "en permanent free models"
-canonical_target: "https://llm.persiantoolbox.ir/guides/en-permanent-free-models/"
+canonical_target: "https://llm.persiantoolbox.ir/guides/en/en-permanent-free-models/"
 updated_at: "2026-08-05"
 status: "READY_FOR_SITE"
 ---

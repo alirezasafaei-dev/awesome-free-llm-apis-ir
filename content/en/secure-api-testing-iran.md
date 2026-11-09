@@ -4,7 +4,7 @@ slug: "en-secure-api-testing-iran"
 translation_key: "secure-api-testing-iran"
 description: "Practical guide for secure and successful LLM API testing from Iran; covering network access, registration, authentication, inference, and common error troubleshooting."
 primary_keyword: "en secure api testing iran"
-canonical_target: "https://llm.persiantoolbox.ir/guides/en-secure-api-testing-iran/"
+canonical_target: "https://llm.persiantoolbox.ir/guides/en/en-secure-api-testing-iran/"
 updated_at: "2026-08-05"
 status: "READY_FOR_SITE"
 ---
