@@ -213,7 +213,7 @@ Do not log API keys or private prompt content in monitoring systems.
 ## Related Guides
 
 - [Free LLM API list](https://llm.persiantoolbox.ir/guides/en/en-free-llm-api/) — full comparison of all free LLM APIs
-- [Fix 401/403/model-not-found errors](https://llm.persiantoolbox.ir/guides/en/en-fix-llm-api-401-403-model-not-found/) — troubleshooting free LLM API errors
+- [Fix 401/403/model-not-found errors](https://llm.persiantoolbox.ir/guides/en/en-fix-llm-api-401-403/) — troubleshooting free LLM API errors
 - [Practical free LLM API guide for Iran](https://llm.persiantoolbox.ir/guides/en/en-practical-free-llm-api-iran/) — full guide from signup to first request
 
 ## Summary
