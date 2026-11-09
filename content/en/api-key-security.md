@@ -4,7 +4,7 @@ slug: "en-api-key-security"
 translation_key: "api-key-security"
 description: "Practical guide to preventing API key exposure in AI projects; covering environment variables, Git verification, server security, and best practices."
 primary_keyword: "en api key security"
-canonical_target: "https://llm.persiantoolbox.ir/guides/en-api-key-security/"
+canonical_target: "https://llm.persiantoolbox.ir/guides/en/en-api-key-security/"
 updated_at: "2026-08-05"
 status: "READY_FOR_SITE"
 ---

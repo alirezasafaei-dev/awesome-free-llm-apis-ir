@@ -4,7 +4,7 @@ slug: "en-free-tier-trial-credit"
 translation_key: "free-tier-trial-credit"
 description: "Explain the difference between permanent free tiers, time-limited trials, and free credits in LLM APIs; including evaluation criteria, risks, and selection guidance."
 primary_keyword: "en free tier trial credit"
-canonical_target: "https://llm.persiantoolbox.ir/guides/en-free-tier-trial-credit/"
+canonical_target: "https://llm.persiantoolbox.ir/guides/en/en-free-tier-trial-credit/"
 updated_at: "2026-08-05"
 status: "READY_FOR_SITE"
 ---

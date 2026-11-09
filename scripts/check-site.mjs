@@ -391,9 +391,23 @@ if (!urlset["@_xmlns:xhtml"]) throw new Error("Sitemap is missing xhtml namespac
 const urlEntries = Array.isArray(urlset.url) ? urlset.url : [urlset.url];
 const sitemapLocs = new Set(urlEntries.map((u) => u.loc));
 
-// Check every entry has loc
+// Every sitemap URL must resolve to its own generated canonical page.
 for (const entry of urlEntries) {
   if (!entry.loc) throw new Error("Sitemap entry missing <loc>");
+  const url = new URL(entry.loc);
+  if (url.origin !== "https://llm.persiantoolbox.ir" || url.search || url.hash) {
+    throw new Error(`Sitemap must contain canonical production URLs: ${entry.loc}`);
+  }
+  const pagePath = path.join(root, ".site-dist", url.pathname, "index.html");
+  let html;
+  try {
+    html = await readFile(pagePath, "utf8");
+  } catch {
+    throw new Error(`Sitemap URL has no generated page: ${entry.loc}`);
+  }
+  if (!html.includes(`<link rel="canonical" href="${entry.loc}">`)) {
+    throw new Error(`Sitemap URL must self-canonicalize: ${entry.loc}`);
+  }
 }
 
 // Check canonical URLs present

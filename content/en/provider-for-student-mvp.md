@@ -4,7 +4,7 @@ slug: "en-provider-for-student-mvp"
 translation_key: "provider-for-student-mvp"
 description: "Guide to choosing free LLM APIs for student projects and MVPs; covering cost, simplicity, stability, and practical startup tips."
 primary_keyword: "en provider for student mvp"
-canonical_target: "https://llm.persiantoolbox.ir/guides/en-provider-for-student-mvp/"
+canonical_target: "https://llm.persiantoolbox.ir/guides/en/en-provider-for-student-mvp/"
 updated_at: "2026-08-05"
 status: "READY_FOR_SITE"
 ---

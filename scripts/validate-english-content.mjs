@@ -58,8 +58,9 @@ for (const filename of entries) {
   if (slugs.has(metadata.slug)) throw new Error(`${filename}: duplicate slug ${metadata.slug}`);
   slugs.add(metadata.slug);
 
-  if (!metadata.canonical_target.startsWith("https://llm.persiantoolbox.ir/")) {
-    throw new Error(`${filename}: canonical target must use the production domain`);
+  const expectedCanonical = `https://llm.persiantoolbox.ir/guides/en/${metadata.slug}/`;
+  if (metadata.canonical_target !== expectedCanonical) {
+    throw new Error(`${filename}: canonical target must match generated route ${expectedCanonical}`);
   }
   if (metadata.status !== "READY_FOR_SITE") {
     throw new Error(`${filename}: status must be READY_FOR_SITE`);
